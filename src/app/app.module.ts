@@ -1,24 +1,35 @@
 import { NgModule } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
-import { MyApp } from './app.component';
-import { Page1 } from '../pages/page1/page1';
-import { Page2 } from '../pages/page2/page2';
+import { sportspip } from './app.component';
+import { HomePage,PopoverPage } from '../pages/home/home';
+import { EditorPage } from '../pages/editor/editor';
+import { SettingsPage } from '../pages/settings/settings';
+import { CollectionPage } from '../pages/collection/collection'
+import { ChannelCollectionPage } from '../pages/channelcollection/channelcollection'
 
 @NgModule({
   declarations: [
-    MyApp,
-    Page1,
-    Page2
+    sportspip,
+    HomePage,
+    PopoverPage,
+    EditorPage,
+    SettingsPage,
+    CollectionPage,
+    ChannelCollectionPage
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(sportspip)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    Page1,
-    Page2
+    sportspip,
+    HomePage,
+    PopoverPage,
+    EditorPage,
+    SettingsPage,
+    CollectionPage,
+    ChannelCollectionPage
   ],
   providers: []
 })
-export class AppModule {}
+export class AppModule { }
