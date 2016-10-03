@@ -1,0 +1,65 @@
+<ion-header color="primary">
+  <ion-navbar no-border-bottom>
+    <ion-title start>
+      Sports PIP
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="openSettings()"><ion-icon name="settings"></ion-icon></button>
+      <button ion-button icon-only (click)="presentPopover($event)"><ion-icon name="more"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar>
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="selectedSegment">
+      <ion-segment-button value="local">
+        <ion-icon name="albums"></ion-icon> Matrices
+      </ion-segment-button>
+      <ion-segment-button value="server">
+        <ion-icon name="cloud-download"></ion-icon> Channels
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- Real floating action button, fixed. It will not scroll with the content -->
+  <ion-fab bottom right>
+    <button ion-fab (click)="newMatrix()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+
+  <div [ngSwitch]="selectedSegment">
+
+    <div *ngSwitchCase="'local'">
+      <ion-list>
+        <ion-item-divider>
+          <button ion-button item-right (click)="openCollection()">View All</button>
+        </ion-item-divider>
+        <ion-item-sliding *ngFor='let matrix of localMatrices'>
+          <ion-item (click)="openMatrix(matrix.title)">{{matrix.title}}</ion-item>
+          <ion-item-options>
+            <button light><ion-icon name="copy"></ion-icon></button>
+            <button danger><ion-icon name="trash"></ion-icon></button>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+    </div>
+
+    <div *ngSwitchCase="'server'">
+      <ion-item-group *ngFor="let channel of channels">
+        <ion-item-divider>
+          {{channel.title}} <button ion-button item-right (click)="openChannelCollection(channel.title)">View All</button>
+        </ion-item-divider>
+        <ion-item-sliding *ngFor="let matrix of channel.channelMatrices">
+          <ion-item (click)="downloadMatrix()">
+            {{matrix.title}}
+          </ion-item>
+          <ion-item-options>
+            <button light><ion-icon name="copy"></ion-icon></button>
+            <button danger><ion-icon name="trash"></ion-icon></button>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-item-group>
+    </div>
+
+  </div>
+</ion-content>
