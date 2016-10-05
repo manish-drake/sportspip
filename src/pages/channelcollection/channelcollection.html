@@ -20,13 +20,27 @@
 
 
 <ion-content padding>
-  <ion-list>
-    <ion-item-sliding *ngFor='let matrix of channelMatrices'>
-      <ion-item (click)="downloadMatrix()">{{matrix.title}}</ion-item>
-      <ion-item-options>
-        <button light><ion-icon name="copy"></ion-icon></button>
-        <button danger><ion-icon name="trash"></ion-icon></button>
-      </ion-item-options>
-    </ion-item-sliding>
-  </ion-list>
+  <div class="items">
+    <div class="item" *ngFor="let matrix of channelMatrices">
+      <ion-card (click)="downloadMatrix()">
+        <img [src]="matrix.image" />
+        <ion-card-content>
+          <ion-card-title style="font-size:18px;flex-wrap: nowrap;">
+            <ion-row>
+              <ion-col>
+                <div style="text-overflow:ellipsis;">{{matrix.title}}</div>
+              </ion-col>
+              <ion-col center text-right style="width:10px;">
+                <p>Oct 3</p>
+              </ion-col>
+            </ion-row>
+          </ion-card-title>
+          <div style="display:block;">
+            <p>Sport/Skill</p>
+            <p>00:00</p>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
 </ion-content>

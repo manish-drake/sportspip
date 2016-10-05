@@ -29,7 +29,7 @@
   <ion-fab top right edge #fab>
     <button ion-fab mini><ion-icon name="add"></ion-icon></button>
     <ion-fab-list>
-      <button ion-fab color="primary" (click)="addView('blank',fab)"><ion-icon name="add"></ion-icon></button>
+      <button ion-fab color="primary" (click)="addView('blank')"><ion-icon name="add"></ion-icon></button>
       <button ion-fab (click)="addView('canvas')"><ion-icon name="easel"></ion-icon></button>
       <button ion-fab (click)="addView('video')"><ion-icon name="ios-film"></ion-icon></button>
       <button ion-fab (click)="addView('camera')"><ion-icon name="videocam"></ion-icon></button>
@@ -40,9 +40,9 @@
   <!--viewContainer-->
 
   <!--viewOptions-->
-  <ion-row *ngIf="ifViewOptions" center style="height:100%;">
-    <ion-col>
-      <ion-card style="width:250px;align-self: center;">
+  <ion-row *ngIf="ifViewOptions" style="height:100%;">
+    <ion-col center text-center>
+      <ion-card style="width:250px;">
         <ion-card-header>Choose view type..</ion-card-header>
         <ion-list>
           <button ion-item (click)="defineView('canvas')"><ion-icon name="easel" item-left></ion-icon>Blank Canvas</button>

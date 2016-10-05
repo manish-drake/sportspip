@@ -57,7 +57,7 @@ export var EditorPage = (function () {
             this.ifViewVideo = false;
         }
     };
-    EditorPage.prototype.addView = function (typeparam, fab) {
+    EditorPage.prototype.addView = function (typeparam) {
         if (this.views.length <= 7) {
             switch (typeparam) {
                 case 'blank':

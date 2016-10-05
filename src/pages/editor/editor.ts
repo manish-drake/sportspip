@@ -68,7 +68,7 @@ export class EditorPage {
     }
   }
 
-  addView(typeparam: string, fab: FabContainer) {
+  addView(typeparam) {
     if (this.views.length <= 7) {
       switch (typeparam) {
         case 'blank':

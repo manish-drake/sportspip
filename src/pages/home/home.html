@@ -20,7 +20,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content style="background:#f1f1f1;">
 
   <!-- Real floating action button, fixed. It will not scroll with the content -->
   <ion-fab bottom right>
@@ -28,28 +28,75 @@
   </ion-fab>
 
   <div [ngSwitch]="selectedSegment">
-
     <div *ngSwitchCase="'local'">
-      <ion-list>
-        <ion-item-divider>
-          <button ion-button item-right (click)="openCollection()">View All</button>
-        </ion-item-divider>
-        <ion-item-sliding *ngFor='let matrix of localMatrices'>
-          <ion-item (click)="openMatrix(matrix.title)">{{matrix.title}}</ion-item>
-          <ion-item-options>
-            <button light><ion-icon name="copy"></ion-icon></button>
-            <button danger><ion-icon name="trash"></ion-icon></button>
-          </ion-item-options>
-        </ion-item-sliding>
-      </ion-list>
+      <ion-row>
+        <ion-col center></ion-col>
+        <ion-col text-right>
+          <button ion-button clear (click)="openCollection()">View All</button>
+        </ion-col>
+      </ion-row>
+      <div class="items">
+        <div class="item" *ngFor='let matrix of localMatrices | slice: 0:12'>
+          <ion-card (click)="openMatrix(matrix.title)">
+            <img [src]="matrix.image" />
+            <ion-card-content>
+              <ion-card-title style="font-size:18px;flex-wrap: nowrap;">
+                <ion-row>
+                  <ion-col>
+                    <div style="text-overflow:ellipsis;">{{matrix.title}}</div>
+                  </ion-col>
+                  <ion-col center text-right style="width:10px;">
+                    <p>Oct 3</p>
+                  </ion-col>
+                </ion-row>
+              </ion-card-title>
+              <div style="display:block;">
+                <p>Sport/Skill</p>
+                <p>00:00</p>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </div>
+      </div>
     </div>
-
     <div *ngSwitchCase="'server'">
       <ion-item-group *ngFor="let channel of channels">
-        <ion-item-divider>
+        <ion-row>
+          <ion-col center>
+            <ion-title>{{channel.title}}</ion-title>
+          </ion-col>
+          <ion-col text-right>
+            <button ion-button clear (click)="openChannelCollection(channel.title)">View All</button>
+          </ion-col>
+        </ion-row>
+        <div class="items">
+          <div class="item" *ngFor="let matrix of channel.channelMatrices | slice: 0:6">
+            <ion-card (click)="downloadMatrix()">
+              <img [src]="matrix.image" />
+              <ion-card-content>
+                <ion-card-title style="font-size:18px;flex-wrap: nowrap;">
+                  <ion-row>
+                    <ion-col>
+                      <div style="text-overflow:ellipsis;">{{matrix.title}}</div>
+                    </ion-col>
+                    <ion-col center text-right style="width:10px;">
+                      <p>Oct 3</p>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-title>
+                <div style="display:block;">
+                  <p>Sport/Skill</p>
+                  <p>00:00</p>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </div>
+        </div>
+
+        <!--<ion-item-divider>
           {{channel.title}} <button ion-button item-right (click)="openChannelCollection(channel.title)">View All</button>
         </ion-item-divider>
-        <ion-item-sliding *ngFor="let matrix of channel.channelMatrices">
+        <ion-item-sliding *ngFor="let matrix of channel.channelMatrices | slice: 0:6">
           <ion-item (click)="downloadMatrix()">
             {{matrix.title}}
           </ion-item>
@@ -57,9 +104,9 @@
             <button light><ion-icon name="copy"></ion-icon></button>
             <button danger><ion-icon name="trash"></ion-icon></button>
           </ion-item-options>
-        </ion-item-sliding>
+        </ion-item-sliding>-->
       </ion-item-group>
     </div>
-
   </div>
+
 </ion-content>

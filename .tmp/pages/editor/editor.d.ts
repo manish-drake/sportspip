@@ -1,4 +1,4 @@
-import { NavController, NavParams, AlertController, FabContainer } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 export declare class EditorPage {
     navCtrl: NavController;
     private alertCtrl;
@@ -14,7 +14,7 @@ export declare class EditorPage {
     showSegment(viewindex: any): void;
     hideSegment(a: any, b: any): boolean;
     evaluateView(): void;
-    addView(typeparam: string, fab: FabContainer): void;
+    addView(typeparam: any): void;
     defineView(typeparam: any): void;
     addLocalVideo(): void;
     cameraCapture(): void;

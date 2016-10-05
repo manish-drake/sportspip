@@ -22,12 +22,12 @@ export var ChannelCollectionPage = (function () {
         this.alertCtrl = alertCtrl;
         this.firstParam = params.get("firstPassed");
         this.channelMatrices = [
-            { image: 'assets/icon/favicon.ico', title: 'Matrix 1' },
-            { image: 'assets/icon/favicon.ico', title: 'Matrix 2' },
-            { image: 'assets/icon/favicon.ico', title: 'Matrix 3' },
-            { image: 'assets/icon/favicon.ico', title: 'Matrix 4' },
-            { image: 'assets/icon/favicon.ico', title: 'Matrix 5' },
-            { image: 'assets/icon/favicon.ico', title: 'Matrix 6' },
+            { image: 'assets/sample.jpg', title: 'Matrix 1' },
+            { image: 'assets/sample.jpg', title: 'Matrix 2' },
+            { image: 'assets/sample.jpg', title: 'Matrix 3' },
+            { image: 'assets/sample.jpg', title: 'Matrix 4' },
+            { image: 'assets/sample.jpg', title: 'Matrix 5' },
+            { image: 'assets/sample.jpg', title: 'Matrix 6' },
         ];
     }
     ChannelCollectionPage.prototype.downloadMatrix = function () {

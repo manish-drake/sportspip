@@ -29,42 +29,42 @@ export class HomePage {
     this.selectedSegment = "local";
 
     this.localMatrices = [
-      { image: 'assets/icon/favicon.ico', title: 'Matrix 1' },
-      { image: 'assets/icon/favicon.ico', title: 'Matrix 2' },
-      { image: 'assets/icon/favicon.ico', title: 'Matrix 3' },
-      { image: 'assets/icon/favicon.ico', title: 'Matrix 4' },
-      { image: 'assets/icon/favicon.ico', title: 'Matrix 5' },
-      { image: 'assets/icon/favicon.ico', title: 'Matrix 6' },
-      { image: 'assets/icon/favicon.ico', title: 'Matrix 7' },
-      { image: 'assets/icon/favicon.ico', title: 'Matrix 8' },
-      { image: 'assets/icon/favicon.ico', title: 'Matrix 9' },
-      { image: 'assets/icon/favicon.ico', title: 'Matrix 10' },
+      { image: 'assets/sample.jpg', title: 'Matrix 2' },
+      { image: 'assets/sample.jpg', title: 'Matrix 3' },
+      { image: 'assets/sample.jpg', title: 'Matrix 4' },
+      { image: 'assets/sample.jpg', title: 'Matrix 5' },
+      { image: 'assets/sample.jpg', title: 'Matrix 6' },
+      { image: 'assets/sample.jpg', title: 'Matrix 7' },
+      { image: 'assets/sample.jpg', title: 'Matrix 8' },
+      { image: 'assets/sample.jpg', title: 'Matrix 9' },
+      { image: 'assets/sample.jpg', title: 'Matrix 10' },
+      { image: 'assets/sample.jpg', title: 'Matrix 1' },
     ];
 
     this.channels = [
       {
         title: 'Channel 1',
         channelMatrices: [
-          { image: 'assets/icon/favicon.ico', title: 'Matrix 1' },
-          { image: 'assets/icon/favicon.ico', title: 'Matrix 2' },
-          { image: 'assets/icon/favicon.ico', title: 'Matrix 3' },
+          { image: 'assets/sample.jpg', title: 'Matrix 1' },
+          { image: 'assets/sample.jpg', title: 'Matrix 2' },
+          { image: 'assets/sample.jpg', title: 'Matrix 3' },
         ]
       },
       {
         title: 'Channel 2',
         channelMatrices: [
-          { image: 'assets/icon/favicon.ico', title: 'Matrix 1' },
-          { image: 'assets/icon/favicon.ico', title: 'Matrix 2' },
+          { image: 'assets/sample.jpg', title: 'Matrix 1' },
+          { image: 'assets/sample.jpg', title: 'Matrix 2' },
         ]
       },
       {
         title: 'Channel 3',
         channelMatrices: [
-          { image: 'assets/icon/favicon.ico', title: 'Matrix 1' },
-          { image: 'assets/icon/favicon.ico', title: 'Matrix 2' },
-          { image: 'assets/icon/favicon.ico', title: 'Matrix 3' },
-          { image: 'assets/icon/favicon.ico', title: 'Matrix 4' },
-          { image: 'assets/icon/favicon.ico', title: 'Matrix 5' },
+          { image: 'assets/sample.jpg', title: 'Matrix 1' },
+          { image: 'assets/sample.jpg', title: 'Matrix 2' },
+          { image: 'assets/sample.jpg', title: 'Matrix 3' },
+          { image: 'assets/sample.jpg', title: 'Matrix 4' },
+          { image: 'assets/sample.jpg', title: 'Matrix 5' },
         ]
       },
     ];
