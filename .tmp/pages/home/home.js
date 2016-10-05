@@ -80,6 +80,32 @@ export var HomePage = (function () {
             firstPassed: title
         });
     };
+    HomePage.prototype.matrixPressed = function (index, title) {
+        var actionSheet = this.actionSheetCtrl.create({
+            title: title,
+            buttons: [
+                {
+                    text: 'Delete',
+                    role: 'destructive',
+                    handler: function () {
+                        console.log('Destructive clicked');
+                    }
+                }, {
+                    text: 'Save Copy',
+                    handler: function () {
+                        console.log('Copy clicked');
+                    }
+                }, {
+                    text: 'Cancel',
+                    role: 'cancel',
+                    handler: function () {
+                        console.log('Cancel clicked');
+                    }
+                }
+            ]
+        });
+        actionSheet.present();
+    };
     HomePage.prototype.openCollection = function () {
         this.navCtrl.push(CollectionPage);
     };
@@ -88,11 +114,11 @@ export var HomePage = (function () {
             firstPassed: title
         });
     };
-    HomePage.prototype.downloadMatrix = function () {
+    HomePage.prototype.channelMatrixPressed = function (index, title) {
         var _this = this;
         var actionSheet = this.actionSheetCtrl.create({
-            title: 'Confirm!',
-            buttons: [, {
+            title: title,
+            buttons: [{
                     text: 'Download',
                     handler: function () {
                         var alert = _this.alertCtrl.create({
@@ -101,6 +127,12 @@ export var HomePage = (function () {
                             buttons: ['OK']
                         });
                         alert.present();
+                    }
+                }, {
+                    text: 'Delete',
+                    role: 'destructive',
+                    handler: function () {
+                        console.log('Destructive clicked');
                     }
                 }, {
                     text: 'Cancel',

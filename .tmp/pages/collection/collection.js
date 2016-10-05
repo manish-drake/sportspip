@@ -8,7 +8,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, ActionSheetController } from 'ionic-angular';
 import { EditorPage } from '../editor/editor';
 /*
   Generated class for the Collection page.
@@ -17,8 +17,9 @@ import { EditorPage } from '../editor/editor';
   Ionic pages and navigation.
 */
 export var CollectionPage = (function () {
-    function CollectionPage(navCtrl) {
+    function CollectionPage(navCtrl, actionSheetCtrl) {
         this.navCtrl = navCtrl;
+        this.actionSheetCtrl = actionSheetCtrl;
         this.localMatrices = [
             { image: 'assets/sample.jpg', title: 'Matrix 1' },
             { image: 'assets/sample.jpg', title: 'Matrix 2' },
@@ -40,12 +41,38 @@ export var CollectionPage = (function () {
             firstPassed: title
         });
     };
+    CollectionPage.prototype.matrixPressed = function (index, title) {
+        var actionSheet = this.actionSheetCtrl.create({
+            title: title,
+            buttons: [
+                {
+                    text: 'Delete',
+                    role: 'destructive',
+                    handler: function () {
+                        console.log('Destructive clicked');
+                    }
+                }, {
+                    text: 'Save Copy',
+                    handler: function () {
+                        console.log('Copy clicked');
+                    }
+                }, {
+                    text: 'Cancel',
+                    role: 'cancel',
+                    handler: function () {
+                        console.log('Cancel clicked');
+                    }
+                }
+            ]
+        });
+        actionSheet.present();
+    };
     CollectionPage = __decorate([
         Component({
             selector: 'page-collection',
             templateUrl: 'collection.html'
         }), 
-        __metadata('design:paramtypes', [NavController])
+        __metadata('design:paramtypes', [NavController, ActionSheetController])
     ], CollectionPage);
     return CollectionPage;
 }());

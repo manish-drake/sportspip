@@ -6,5 +6,5 @@ export declare class ChannelCollectionPage {
     firstParam: any;
     channelMatrices: any;
     constructor(navCtrl: NavController, params: NavParams, actionSheetCtrl: ActionSheetController, alertCtrl: AlertController);
-    downloadMatrix(): void;
+    channelMatrixPressed(index: any, title: any): void;
 }

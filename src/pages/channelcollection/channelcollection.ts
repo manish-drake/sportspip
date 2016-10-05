@@ -29,10 +29,10 @@ export class ChannelCollectionPage {
     ];
   }
 
-  downloadMatrix() {
+  channelMatrixPressed(index,title) {
     let actionSheet = this.actionSheetCtrl.create({
-      title: 'Confirm!',
-      buttons: [, {
+      title: title,
+      buttons: [{
         text: 'Download',
         handler: () => {
           let alert = this.alertCtrl.create({
@@ -42,7 +42,13 @@ export class ChannelCollectionPage {
           });
           alert.present();
         }
-      }, {
+      },{
+          text: 'Delete',
+          role: 'destructive',
+          handler: () => {
+            console.log('Destructive clicked');
+          }
+        }, {
           text: 'Cancel',
           role: 'cancel',
           handler: () => { }

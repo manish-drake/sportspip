@@ -30,11 +30,11 @@ export var ChannelCollectionPage = (function () {
             { image: 'assets/sample.jpg', title: 'Matrix 6' },
         ];
     }
-    ChannelCollectionPage.prototype.downloadMatrix = function () {
+    ChannelCollectionPage.prototype.channelMatrixPressed = function (index, title) {
         var _this = this;
         var actionSheet = this.actionSheetCtrl.create({
-            title: 'Confirm!',
-            buttons: [, {
+            title: title,
+            buttons: [{
                     text: 'Download',
                     handler: function () {
                         var alert = _this.alertCtrl.create({
@@ -43,6 +43,12 @@ export var ChannelCollectionPage = (function () {
                             buttons: ['OK']
                         });
                         alert.present();
+                    }
+                }, {
+                    text: 'Delete',
+                    role: 'destructive',
+                    handler: function () {
+                        console.log('Destructive clicked');
                     }
                 }, {
                     text: 'Cancel',

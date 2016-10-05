@@ -12,9 +12,10 @@ export declare class HomePage {
     openSettings(): void;
     newMatrix(): void;
     openMatrix(title: any): void;
+    matrixPressed(index: any, title: any): void;
     openCollection(): void;
     openChannelCollection(title: any): void;
-    downloadMatrix(): void;
+    channelMatrixPressed(index: any, title: any): void;
 }
 export declare class PopoverPage {
     viewCtrl: ViewController;

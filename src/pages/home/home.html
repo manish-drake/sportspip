@@ -1,4 +1,4 @@
-<ion-header color="primary">
+<ion-header>
   <ion-navbar no-border-bottom>
     <ion-title start>
       Sports PIP
@@ -10,12 +10,8 @@
   </ion-navbar>
   <ion-toolbar no-border-top>
     <ion-segment [(ngModel)]="selectedSegment">
-      <ion-segment-button value="local">
-        <ion-icon name="albums"></ion-icon> Matrices
-      </ion-segment-button>
-      <ion-segment-button value="server">
-        <ion-icon name="cloud-download"></ion-icon> Channels
-      </ion-segment-button>
+      <ion-segment-button value="local">Matrices</ion-segment-button>
+      <ion-segment-button value="server">Channels</ion-segment-button>
     </ion-segment>
   </ion-toolbar>
 </ion-header>
@@ -30,14 +26,15 @@
   <div [ngSwitch]="selectedSegment">
     <div *ngSwitchCase="'local'">
       <ion-row>
-        <ion-col center></ion-col>
-        <ion-col text-right>
+        <ion-col center>
+        </ion-col>
+        <ion-col center text-right>
           <button ion-button clear (click)="openCollection()">View All</button>
         </ion-col>
       </ion-row>
       <div class="items">
-        <div class="item" *ngFor='let matrix of localMatrices | slice: 0:12'>
-          <ion-card (click)="openMatrix(matrix.title)">
+        <div class="item" *ngFor='let matrix of localMatrices | slice: 0:12; let i = index'>
+          <ion-card (click)="openMatrix(matrix.title)" (press)="matrixPressed(i,matrix.title)">
             <img [src]="matrix.image" />
             <ion-card-content>
               <ion-card-title style="font-size:18px;flex-wrap: nowrap;">
@@ -70,8 +67,8 @@
           </ion-col>
         </ion-row>
         <div class="items">
-          <div class="item" *ngFor="let matrix of channel.channelMatrices | slice: 0:6">
-            <ion-card (click)="downloadMatrix()">
+          <div class="item" *ngFor="let matrix of channel.channelMatrices | slice: 0:6; let i = index">
+            <ion-card (click)="channelMatrixPressed(i,matrix.title)" (press)= "channelMatrixPressed(i,matrix.title)">
               <img [src]="matrix.image" />
               <ion-card-content>
                 <ion-card-title style="font-size:18px;flex-wrap: nowrap;">

@@ -94,6 +94,33 @@ export class HomePage {
     });
   }
 
+  matrixPressed(index,title) {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: title,
+      buttons: [
+        {
+          text: 'Delete',
+          role: 'destructive',
+          handler: () => {
+            console.log('Destructive clicked');
+          }
+        }, {
+          text: 'Save Copy',
+          handler: () => {
+            console.log('Copy clicked');
+          }
+        }, {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    actionSheet.present();
+  }
+
   openCollection() {
     this.navCtrl.push(CollectionPage);
   }
@@ -104,10 +131,10 @@ export class HomePage {
     });
   }
 
-  downloadMatrix() {
+  channelMatrixPressed(index,title) {
     let actionSheet = this.actionSheetCtrl.create({
-      title: 'Confirm!',
-      buttons: [, {
+      title: title,
+      buttons: [{
         text: 'Download',
         handler: () => {
           let alert = this.alertCtrl.create({
@@ -117,7 +144,13 @@ export class HomePage {
           });
           alert.present();
         }
-      }, {
+      },{
+          text: 'Delete',
+          role: 'destructive',
+          handler: () => {
+            console.log('Destructive clicked');
+          }
+        }, {
           text: 'Cancel',
           role: 'cancel',
           handler: () => { }
@@ -152,7 +185,7 @@ export class PopoverPage {
 
     let alert = this.alertCtrl.create({
       title: 'Sports PIP',
-      subTitle: 'version:'+ this.versionNumber,
+      subTitle: 'version:' + this.versionNumber,
       buttons: ['OK']
     });
     alert.present();
