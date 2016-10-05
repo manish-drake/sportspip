@@ -1,13 +1,25 @@
-import { NavController, ActionSheetController, AlertController, PopoverController, ViewController } from 'ionic-angular';
+import { Factory } from '../../Factory/Factory';
+import { Http } from '@angular/http';
+import { NavController, ActionSheetController, AlertController, PopoverController, ViewController, Platform } from 'ionic-angular';
 export declare class HomePage {
+    private http;
+    private platform;
     navCtrl: NavController;
+    private factory;
     private popoverCtrl;
     private actionSheetCtrl;
     private alertCtrl;
     selectedSegment: any;
     localMatrices: any;
-    channels: any;
-    constructor(navCtrl: NavController, popoverCtrl: PopoverController, actionSheetCtrl: ActionSheetController, alertCtrl: AlertController);
+    channels: any[];
+    Header: any[];
+    items: any[];
+    constructor(http: Http, platform: Platform, navCtrl: NavController, factory: Factory, popoverCtrl: PopoverController, actionSheetCtrl: ActionSheetController, alertCtrl: AlertController);
+    GetserverHeader(): void;
+    SerializeServerData(headerData: any): void;
+    SaveDownloadedHeaders(HeaderList: any, Data: any): void;
+    DisplayHeader(): void;
+    DeleteServerHeader(DirName: any, index: any): void;
     presentPopover(myEvent: any): void;
     openSettings(): void;
     newMatrix(): void;
