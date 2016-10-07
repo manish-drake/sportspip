@@ -4,6 +4,8 @@ import { AppVersion } from 'ionic-native';
 
 import { NavController, ActionSheetController, AlertController, PopoverController, ViewController } from 'ionic-angular';
 
+import { Http } from '@angular/http';
+
 import { EditorPage } from '../editor/editor';
 import { SettingsPage } from '../settings/settings'
 import { CollectionPage } from '../collection/collection'
@@ -24,7 +26,8 @@ export class HomePage {
   constructor(public navCtrl: NavController,
     private popoverCtrl: PopoverController,
     private actionSheetCtrl: ActionSheetController,
-    private alertCtrl: AlertController) {
+    private alertCtrl: AlertController,
+    private http: Http) {
 
     this.selectedSegment = "local";
 
@@ -90,11 +93,28 @@ export class HomePage {
 
   openMatrix(title) {
     this.navCtrl.push(EditorPage, {
-      firstPassed: title
-    });
+          firstPassed: title
+        });
+
+    // this.http.get("assets/matrix1.mtx")
+    //   .subscribe(data => {
+    //     var res = JSON.parse(data.text());
+    //     var result = res.Header;
+    //     // var item = {
+    //     //   Title: result.Title, DateCreated: result.DateCreated, Name: "636046147357832115", Channel: result.Channel,
+    //     //   ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
+    //     //   Views: result.Clips
+    //     // };
+
+    //     this.navCtrl.push(EditorPage, {
+    //       firstPassed: result
+    //     });
+    //   })
+
+
   }
 
-  matrixPressed(index,title) {
+  matrixPressed(index, title) {
     let actionSheet = this.actionSheetCtrl.create({
       title: title,
       buttons: [
@@ -131,7 +151,7 @@ export class HomePage {
     });
   }
 
-  channelMatrixPressed(index,title) {
+  channelMatrixPressed(index, title) {
     let actionSheet = this.actionSheetCtrl.create({
       title: title,
       buttons: [{
@@ -144,17 +164,17 @@ export class HomePage {
           });
           alert.present();
         }
-      },{
-          text: 'Delete',
-          role: 'destructive',
-          handler: () => {
-            console.log('Destructive clicked');
-          }
-        }, {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => { }
+      }, {
+        text: 'Delete',
+        role: 'destructive',
+        handler: () => {
+          console.log('Destructive clicked');
         }
+      }, {
+        text: 'Cancel',
+        role: 'cancel',
+        handler: () => { }
+      }
       ]
     });
     actionSheet.present();
