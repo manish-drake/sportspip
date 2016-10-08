@@ -205,8 +205,25 @@ export class HomePage {
 
   openMatrix(title) {
     this.navCtrl.push(EditorPage, {
-      firstPassed: title
-    });
+          firstPassed: title
+        });
+
+    // this.http.get("assets/matrix1.mtx")
+    //   .subscribe(data => {
+    //     var res = JSON.parse(data.text());
+    //     var result = res.Header;
+    //     // var item = {
+    //     //   Title: result.Title, DateCreated: result.DateCreated, Name: "636046147357832115", Channel: result.Channel,
+    //     //   ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
+    //     //   Views: result.Clips
+    //     // };
+
+    //     this.navCtrl.push(EditorPage, {
+    //       firstPassed: result
+    //     });
+    //   })
+
+
   }
 
   matrixPressed(index, title, channel) {

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, FabContainer } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ModalController, ViewController } from 'ionic-angular';
 
 /*
   Generated class for the Editor page.
@@ -16,9 +16,13 @@ export class EditorPage {
   public firstParam: any;
   views: any;
 
+  title: any;
+
   constructor(public navCtrl: NavController, params: NavParams,
-    private alertCtrl: AlertController) {
+    private alertCtrl: AlertController,
+    private modalCtrl: ModalController) {
     this.firstParam = params.get("firstPassed");
+    
     this.views = [{ type: 'blank' }]
   }
 
@@ -32,6 +36,11 @@ export class EditorPage {
   ionViewDidLoad() {
     console.log('Hello Editor Page');
     this.showSegment(0);
+  }
+
+  presentInfoModal() {
+    let modal = this.modalCtrl.create(InfoModalPage);
+    modal.present();
   }
 
   showSegment(viewindex) {
@@ -70,29 +79,8 @@ export class EditorPage {
 
   addView(typeparam) {
     if (this.views.length <= 7) {
-      switch (typeparam) {
-        case 'blank':
-          this.views.push({ type: typeparam });
-          this.showSegment(this.selectedViewIndex + 1);
-          break;
-        case 'canvas':
-          this.views.push({ type: typeparam });
-          this.showSegment(this.selectedViewIndex + 1);
-          break;
-        case 'video':
-          this.views.push({ type: typeparam });
-          this.showSegment(this.selectedViewIndex + 1);
-          this.addLocalVideo();
-          break;
-        case 'camera':
-          this.views.push({ type: 'video' });
-          this.showSegment(this.selectedViewIndex + 1);
-          this.cameraCapture();
-          break;
-        case 'library':
-          this.importFromLibrary();
-          break;
-      }
+      this.views.push({ type: 'blank' });
+      this.showSegment(this.selectedViewIndex + 1);
     }
     else {
       let alert = this.alertCtrl.create({
@@ -187,3 +175,48 @@ export class EditorPage {
     }
   }
 }
+
+@Component({
+  template: `
+    <ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Matrix Info.
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()"><ion-icon name="close"></ion-icon></button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+      <ion-item>
+        <ion-avatar item-left>
+          <img src="assets/sample.jpg">
+        </ion-avatar>
+        <h2>Matrix</h2>
+        <p>Info</p>
+      </ion-item>
+
+      <ion-item>Title<ion-note item-right>{{Matrix.Title}}</ion-note></ion-item>
+      <ion-item>Sport<ion-note item-right>{{Matrix.Sport}}</ion-note></ion-item>
+      <ion-item>Skill<ion-note item-right>{{Matrix.Skill}}</ion-note></ion-item>
+      <ion-item>Location<ion-note item-right>{{Matrix.Location}}</ion-note></ion-item>
+      <ion-item>PIN<ion-note item-right>{{Matrix.PIN}}</ion-note></ion-item>
+      <ion-item>Views<ion-note item-right>{{Matrix.View}}</ion-note></ion-item>
+      <ion-item>Date Created<ion-note item-right>{{Matrix.DateCreated}}</ion-note></ion-item>
+  </ion-list>
+</ion-content>
+  `
+})
+export class InfoModalPage {
+  constructor(private viewCtrl: ViewController) {
+  }
+
+  dismiss() {
+    this.viewCtrl.dismiss();
+
+  }
+}
+
