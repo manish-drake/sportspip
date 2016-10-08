@@ -24,6 +24,11 @@
         },
         "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "com.ionicframework.sportspip439155"
+<<<<<<< HEAD
+        }
+    },
+    "dependent_plugins": {}
+=======
         },
         "cordova-plugin-file": {
             "PACKAGE_NAME": "com.ionicframework.sportspip439155"
@@ -34,4 +39,5 @@
             "PACKAGE_NAME": "com.ionicframework.sportspip439155"
         }
     }
+>>>>>>> 127fd1c3c067d7f5eb669fba4be4b2373e0e396a
 }

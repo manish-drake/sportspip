@@ -1,30 +1,69 @@
 {
-  "Matrix": {
-    "-name": "matrix1",
-    "-Name": "matrix1",
-    "-Title": "Title1",
-    "-Skill": "Serve",
-    "-Location": "Field",
-    "-Duration": "00:00:07.1200000",
-    "-DateCreated": "20161008165545",
-    "-Sport": "Tennis",
-    "-Channel": "DiSports",
-    "Matrix.Children": {
-      "View": {
-        "-name": "View 1",
-        "-Title": "View 1",
-        "-Source": "Local",
-        "Content": {
-          "Capture": {
-            "-name": "a0eeca74a4eb47539474cd50f65a09fa",
-            "-Kernel": "07eea76c-a079-49f4-bce2-1f3c4c3f052e.mp4",
-            "-Title": "View 1",
-            "-Name": "a0eeca74a4eb47539474cd50f65a09fa",
-            "-IsActive": "False",
-            "Marker": { "-name": "0c55241af06f490c9495ff38c58ce7b4" }
-          }
-        }
-      }
-    }
-  }
+   "Matrix": {
+      "Matrix.Children": {
+         "View": [
+            {
+               "Content": {
+                  "Capture": {
+                     "Marker": {
+                        "Marker.Objects": "",
+                        "_name": "d8a1141200cb4674882fc9151b260918"
+                     },
+                     "View.ChronoMarker": "",
+                     "_name": "579c76e6e76c4b4e8e3380a521c58a4a",
+                     "_Kernel": "sample.mp4",
+                     "_Title": "View 1",
+                     "_Name": "579c76e6e76c4b4e8e3380a521c58a4a",
+                     "_IsActive": "False"
+                  }
+               },
+               "_name": "View 1",
+               "_Title": "View 1",
+               "_Source": "Local"
+            },
+            {
+               "Content": {
+                  "PIP": {
+                     "PIP.Objects": "",
+                     "_name": "7d4ca40393694488916f91902003201d",
+                     "_CanvasBackgroundBrush": "#000000",
+                     "_CanvasBackgroundOpacity": "1"
+                  }
+               },
+               "_name": "View 2",
+               "_Title": "View 2",
+               "_Source": "Canvas"
+            },
+            {
+               "Content": {
+                  "Capture": {
+                     "Marker": {
+                        "Marker.Objects": "",
+                        "_name": "0bc12ae178594a7581d3785ceebd340d"
+                     },
+                     "View.ChronoMarker": "",
+                     "_name": "e4164da166d94fde8f82f6b7cbb43ebd",
+                     "_Kernel": "sample.mp4",
+                     "_Title": "View 3",
+                     "_Name": "e4164da166d94fde8f82f6b7cbb43ebd",
+                     "_IsActive": "False"
+                  }
+               },
+               "_name": "View 3",
+               "_Title": "View 3",
+               "_Source": "Local"
+            }
+         ]
+      },
+      "_name": "matrix1 (29)",
+      "_Name": "matrix1 (29)",
+      "_Title": "Title1",
+      "_Skill": "Serve",
+      "_Location": "Field",
+      "_Duration": "00:00:04.9600000",
+      "_DateCreated": "20161008114637",
+      "_Sport": "Tennis",
+      "_Channel": "Local",
+      "_Pin": ""
+   }
 }

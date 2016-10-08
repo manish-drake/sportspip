@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, ModalController, ViewController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 
+
+import { MatrixInfoPage } from '../matrixinfo/matrixinfo'
 /*
   Generated class for the Editor page.
 
@@ -13,37 +15,51 @@ import { NavController, NavParams, AlertController, ModalController, ViewControl
 })
 export class EditorPage {
 
-  public firstParam: any;
+  matrix: any;
+  //views: any = [{ Source: 'Blank' }];
   views: any;
-
-  title: any;
-
-  constructor(public navCtrl: NavController, params: NavParams,
-    private alertCtrl: AlertController,
-    private modalCtrl: ModalController) {
-    this.firstParam = params.get("firstPassed");
-    
-    this.views = [{ type: 'blank' }]
-  }
-
-  selectedViewIndex: any;
+  selectedViewIndex: number = 0;
   selectedView: any;
-
   ifViewOptions: boolean;
   ifViewCanvas: boolean;
   ifViewVideo: boolean;
 
+  //variables for Video Timeline
+  sliderValue: any;
+  volumeValue: number;
+  timelinePosition: any;
+  timelineDuration: any;
+  repeatColor: any;
+
+  constructor(public navCtrl: NavController, params: NavParams,
+    private alertCtrl: AlertController,
+    private modalCtrl: ModalController) {
+    this.matrix = params.get("matrixData");
+    this.views = this.matrix["Matrix.Children"]["View"];
+
+    this.showSegment(this.selectedViewIndex);
+
+
+    // for Video Timeline
+    this.volumeValue = 50;
+    this.playPauseButtonIcon = "play";
+    this.repeatColor = "light"
+    this.volumeButtonIcon = "volume-up";
+    this.timelinePosition = 0;
+  }
+
   ionViewDidLoad() {
     console.log('Hello Editor Page');
-    this.showSegment(0);
   }
 
   presentInfoModal() {
-    let modal = this.modalCtrl.create(InfoModalPage);
+    let modal = this.modalCtrl.create(MatrixInfoPage, {
+      matrixData: this.matrix
+    });
     modal.present();
   }
 
-  showSegment(viewindex) {
+  showSegment(viewindex: number) {
     if (viewindex != this.selectedViewIndex) {
       this.selectedViewIndex = viewindex;
     }
@@ -57,30 +73,38 @@ export class EditorPage {
   }
 
   evaluateView() {
-    if (this.selectedView.type == 'blank') {
+    if (this.selectedView._Source == "(Blank)") {
       this.ifViewOptions = true;
     }
     else {
       this.ifViewOptions = false;
     }
-    if (this.selectedView.type == 'canvas') {
+    if (this.selectedView._Source == 'Canvas') {
       this.ifViewCanvas = true;
     }
     else {
       this.ifViewCanvas = false;
+      if (this.interval != null) {
+        window.clearInterval(this.interval);
+      }
     }
-    if (this.selectedView.type == 'video') {
+    if (this.selectedView._Source == 'Local') {
       this.ifViewVideo = true;
+      this.loadVideo();
     }
     else {
       this.ifViewVideo = false;
     }
   }
 
-  addView(typeparam) {
+  addView() {
     if (this.views.length <= 7) {
-      this.views.push({ type: 'blank' });
-      this.showSegment(this.selectedViewIndex + 1);
+      this.views.push({
+        "_name": "View " + (this.views.length+1),
+        "_Title": "View " + (this.views.length+1),
+        "_Source": "(Blank)"
+      });
+      this.showSegment(this.selectedViewIndex+1);
     }
     else {
       let alert = this.alertCtrl.create({
@@ -95,17 +119,29 @@ export class EditorPage {
   // Define View using view options
   defineView(typeparam) {
     switch (typeparam) {
-      case 'canvas':
-        this.views[this.selectedViewIndex] = { type: typeparam };
+      case 'Canvas':
+        this.views[this.selectedViewIndex] = {
+          "_name": "View " + this.selectedViewIndex,
+          "_Title": "View " + this.selectedViewIndex,
+          "_Source": typeparam
+        };
         this.showSegment(this.selectedViewIndex);
         break;
-      case 'video':
-        this.views[this.selectedViewIndex] = { type: typeparam };
+      case 'Local':
+        this.views[this.selectedViewIndex] = {
+          "_name": "View " + this.selectedViewIndex,
+          "_Title": "View " + this.selectedViewIndex,
+          "_Source": typeparam
+        };
         this.showSegment(this.selectedViewIndex);
-        this.addLocalVideo();
+        //this.addLocalVideo();
         break;
-      case 'camera':
-        this.views[this.selectedViewIndex] = { type: 'video' };
+      case 'Camera':
+        this.views[this.selectedViewIndex] = {
+          "_name": "View " + this.selectedViewIndex,
+          "_Title": "View " + this.selectedViewIndex,
+          "_Source": "Local"
+        };
         this.showSegment(this.selectedViewIndex);
         this.addLocalVideo();
         break;
@@ -154,10 +190,10 @@ export class EditorPage {
             handler: () => {
               this.views.splice(index, 1);
               if (this.selectedViewIndex == 0) {
-                this.showSegment(index)
+                this.showSegment(0)
               }
               else {
-                this.showSegment(index - 1)
+                this.showSegment(index-1)
               }
             }
           }
@@ -174,49 +210,126 @@ export class EditorPage {
       alert.present();
     }
   }
-}
 
-@Component({
-  template: `
-    <ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Matrix Info.
-    </ion-title>
-    <ion-buttons start>
-      <button ion-button (click)="dismiss()"><ion-icon name="close"></ion-icon></button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content>
-  <ion-list>
-      <ion-item>
-        <ion-avatar item-left>
-          <img src="assets/sample.jpg">
-        </ion-avatar>
-        <h2>Matrix</h2>
-        <p>Info</p>
-      </ion-item>
+  //------Start-----Code for Video Timeline
 
-      <ion-item>Title<ion-note item-right>{{Matrix.Title}}</ion-note></ion-item>
-      <ion-item>Sport<ion-note item-right>{{Matrix.Sport}}</ion-note></ion-item>
-      <ion-item>Skill<ion-note item-right>{{Matrix.Skill}}</ion-note></ion-item>
-      <ion-item>Location<ion-note item-right>{{Matrix.Location}}</ion-note></ion-item>
-      <ion-item>PIN<ion-note item-right>{{Matrix.PIN}}</ion-note></ion-item>
-      <ion-item>Views<ion-note item-right>{{Matrix.View}}</ion-note></ion-item>
-      <ion-item>Date Created<ion-note item-right>{{Matrix.DateCreated}}</ion-note></ion-item>
-  </ion-list>
-</ion-content>
-  `
-})
-export class InfoModalPage {
-  constructor(private viewCtrl: ViewController) {
-  }
+  videoPath:string;
 
-  dismiss() {
-    this.viewCtrl.dismiss();
+  interval: any = null;
+
+  loadVideo() {
+    this.videoPath = "assets/"+this.selectedView["Content"]["Capture"]["_Kernel"];
+    window.setTimeout(() => {
+      var video = <HTMLVideoElement>document.getElementById("video");
+      var volFactor = this.volumeValue / 100;
+      video.volume = volFactor;
+
+      video.addEventListener('ended', () => {
+        this.playPauseButtonIcon = 'play';
+      })
+
+      this.interval = window.setInterval(() => {
+        var factor = (100000 / video.duration) * video.currentTime;
+        this.sliderValue = factor;
+        this.timelinePosition = this.formatTime(video.currentTime);
+        this.timelineDuration = this.formatTime(video.duration);
+      }, 1);
+    }, 1)
+
 
   }
-}
 
+  formatTime(time) {
+    var min = Math.floor(time / 60);
+    var minutes = (min >= 10) ? min : "0" + min;
+    var sec = Math.floor(time % 60);
+    var seconds = (sec >= 10) ? sec : "0" + sec;
+    return minutes + ":" + seconds;
+  }
+  playPauseButtonIcon: string;
+  volumeButtonIcon: string;
+
+  captureController(state) {
+    var video = <HTMLVideoElement>document.getElementById("video");
+    switch (state) {
+      case 'sliderValueChange':
+        var factor = video.duration * (this.sliderValue / 100000);
+        video.currentTime = factor;
+        break;
+      case 'playPause':
+        if (video.paused == true) {
+          video.play();
+          this.playPauseButtonIcon = 'pause';
+        } else {
+          video.pause();
+          this.playPauseButtonIcon = 'play';
+        }
+        break;
+      case 'repeatVideo':
+        if (video.loop == true) {
+          video.loop = false;
+          this.repeatColor = 'inactive';
+        } else {
+          video.loop = true;
+          this.repeatColor = 'light';
+        }
+        break;
+      case 'previousVideoFrame':
+        if (video.currentTime >= 0) {
+          video.pause();
+          this.playPauseButtonIcon = 'play';
+          video.currentTime = video.currentTime - 0.1;
+        }
+        break;
+      case 'nextVideoFrame':
+        if (video.currentTime <= video.duration) {
+          video.pause();
+          this.playPauseButtonIcon = 'play';
+          video.currentTime = video.currentTime + 0.1;
+        }
+        break;
+      case 'playbackRateVideo':
+        var speed = video.playbackRate;
+        switch (speed) {
+          case 0.5:
+            speed = speed + 0.5;
+            break;
+          case 1:
+            speed = speed + 0.5;
+            break;
+          case 1.5:
+            speed = speed + 0.5;
+            break;
+          case 2:
+            speed = speed - 1.5;
+            break;
+          default:
+            speed = 1;
+            break;
+        }
+
+        video.playbackRate = speed;
+        break;
+      case 'volumeValueChange':
+        var volFactor = this.volumeValue / 100;
+        video.volume = volFactor;
+        if (volFactor == 0) {
+          this.volumeButtonIcon = "volume-off";
+        } else {
+          this.volumeButtonIcon = "volume-up";
+        }
+        break;
+      case 'MuteVideo':
+        if (video.muted == false) {
+          video.muted = true;
+          this.volumeButtonIcon = "volume-off";
+        } else {
+          video.muted = false;
+          this.volumeButtonIcon = "volume-up";
+        }
+        break;
+    }
+  }
+  //------End-----Code for Video Timeline
+}
