@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { StatusBar } from 'ionic-native';
-import {Factory} from '../Factory/Factory';
+import {StorageFactory} from '../Factory/StorageFactory';
 import {GroupBy} from '../GroupBy/GroupBy';
 import { HomePage } from '../pages/home/home';
 

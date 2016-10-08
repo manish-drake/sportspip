@@ -1,14 +1,14 @@
- {
- "Header": {
-    "Name": "636046147357832109",
+{
+  "Header": {
+    "name": "636050436207800698",
     "Clips": "1",
-    "Duration": "00:00:04.9600000",
+    "Duration": "00:00:00",
     "Title": "Title1",
-    "DateCreated": "20160719163920",
+    "DateCreated": "20160725112648",
     "Skill": "Serve",
     "Sport": "Tennis",
-    "Channel": "Mayfair",
-    "ThumbnailSource": "636046147357832109",
-    "UploadID": "636046147357832109"
+    "Channel": "DiSports",
+    "ThumbnailSource": "636050436207800698",
+    "UploadID": "636050436207800698"
   }
- }
+}

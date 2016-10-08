@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { sportspip } from './app.component';
 import { HomePage,PopoverPage } from '../pages/home/home';
-import {Factory} from '../Factory/Factory';
+import {StorageFactory} from '../Factory/StorageFactory';
 import {GroupBy} from '../GroupBy/GroupBy';
 import { EditorPage } from '../pages/editor/editor';
 import { SettingsPage } from '../pages/settings/settings';

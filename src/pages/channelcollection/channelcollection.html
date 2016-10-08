@@ -19,10 +19,10 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content style="background:#f1f1f1;">
   <div class="items">
-    <div class="item" *ngFor="let matrix of channelMatrices">
-      <ion-card (click)="downloadMatrix()">
+    <div class="item" *ngFor="let matrix of channelMatrices; let i = index">
+      <ion-card (click)="channelMatrixPressed(i,matrix.title)" (press)= "channelMatrixPressed(i,matrix.title)">
         <img [src]="matrix.image" />
         <ion-card-content>
           <ion-card-title style="font-size:18px;flex-wrap: nowrap;">

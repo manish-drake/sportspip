@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController,ActionSheetController } from 'ionic-angular';
 import { EditorPage } from '../editor/editor';
 
 /*
@@ -14,7 +14,7 @@ import { EditorPage } from '../editor/editor';
 })
 export class CollectionPage {
   localMatrices:any;
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController,private actionSheetCtrl:ActionSheetController) {
     this.localMatrices = [
       { image: 'assets/sample.jpg', title: 'Matrix 1' },
       { image: 'assets/sample.jpg', title: 'Matrix 2' },
@@ -37,6 +37,33 @@ export class CollectionPage {
     this.navCtrl.push(EditorPage, {
       firstPassed: title
     });
+  }
+
+  matrixPressed(index,title) {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: title,
+      buttons: [
+        {
+          text: 'Delete',
+          role: 'destructive',
+          handler: () => {
+            console.log('Destructive clicked');
+          }
+        }, {
+          text: 'Save Copy',
+          handler: () => {
+            console.log('Copy clicked');
+          }
+        }, {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    actionSheet.present();
   }
 
 }
