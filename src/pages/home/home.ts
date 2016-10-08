@@ -37,8 +37,8 @@ export class HomePage {
     this.selectedSegment = "local";
 
     this.GetserverHeader();
-    // this.DisplayServerHeader();
-    // this.GetLocalMatrixHeader();
+    this.DisplayServerHeader();
+    this.GetLocalMatrixHeader();
   }
 
   GetLocalMatrixHeader() {
@@ -198,9 +198,19 @@ export class HomePage {
   }
 
   newMatrix() {
-    this.navCtrl.push(EditorPage, {
-      matrixData: 'New Matrix 1'
-    });
+    // this.navCtrl.push(EditorPage, {
+    //   matrixData: 'New Matrix 1'
+    // });
+
+    this.http.get("assets/matrix1.mtx")
+      .subscribe(data => {
+        var res = JSON.parse(data.text());
+        var result = res.Matrix;
+        this.navCtrl.push(EditorPage, {
+          matrixData: result
+        });
+      });
+      
   }
 
   openMatrix(title) {
@@ -209,7 +219,6 @@ export class HomePage {
       .subscribe(data => {
         var res = JSON.parse(data.text());
         var result = res.Matrix;
-
         this.navCtrl.push(EditorPage, {
           matrixData: result
         });
