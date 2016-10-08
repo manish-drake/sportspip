@@ -1,6 +1,6 @@
-import { Injectable, Input } from "@angular/core";
-import { NavController, Platform } from 'ionic-angular';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Injectable } from "@angular/core";
+import { Platform } from 'ionic-angular';
+import { Http } from '@angular/http';
 import { File } from 'ionic-native';
 declare var cordova: any;
 import 'rxjs/Rx';
