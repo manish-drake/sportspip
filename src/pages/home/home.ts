@@ -37,8 +37,8 @@ export class HomePage {
     this.selectedSegment = "local";
 
     this.GetserverHeader();
-    this.DisplayServerHeader();
-    this.GetLocalMatrixHeader();
+    // this.DisplayServerHeader();
+    // this.GetLocalMatrixHeader();
   }
 
   GetLocalMatrixHeader() {
@@ -235,7 +235,7 @@ export class HomePage {
           role: 'destructive',
           handler: () => {
             console.log('Destructive clicked');
-            this.DeleteLocalHeader(title, index, channel);
+            // this.DeleteLocalHeader(title, index, channel);
           }
         }, {
           text: 'Save Copy',
@@ -270,7 +270,7 @@ export class HomePage {
       buttons: [{
         text: 'Download',
         handler: () => {
-          this.DownloadServerHeaderAsync(title, channel, index, value);
+          // this.DownloadServerHeaderAsync(title, channel, index, value);
           // let alert = this.alertCtrl.create({
           //   title: 'Not Downloaded!',
           //   subTitle: 'Download is not possible right now.',
@@ -282,7 +282,7 @@ export class HomePage {
         text: 'Delete',
         role: 'destructive',
         handler: () => {
-          this.DeleteServerHeader(title, index, value, channel);
+          // this.DeleteServerHeader(title, index, value, channel);
         }
       }, {
         text: 'Cancel',

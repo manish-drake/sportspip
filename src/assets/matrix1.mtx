@@ -1,26 +1,28 @@
 {
   "Matrix": {
-    "name": "matrix1",
-    "Name": "matrix1",
-    "Title": "Title1",
-    "Skill": "Serve",
-    "Location": "Field",
-    "Duration": "00:02:42.4940000",
-    "DateCreated": "20160808123416",
-    "Sport": "Tennis",
-    "Channel": "Local",
-    "View": {
-      "name": "View 1",
-      "Title": "View 1",
-      "Source": "Local",
-      "Content": {
-        "Capture": {
-          "name": "685e51aeb6e8496397b0ee48ea6f09c8",
-          "Kernel": "Expert 2.mp4",
-          "Title": "View 1",
-          "Name": "685e51aeb6e8496397b0ee48ea6f09c8",
-          "IsActive": "False",
-          "Marker": { "name": "62c45337e14e45b7937d31ad9900d0e8" }
+    "-name": "matrix1",
+    "-Name": "matrix1",
+    "-Title": "Title1",
+    "-Skill": "Serve",
+    "-Location": "Field",
+    "-Duration": "00:00:07.1200000",
+    "-DateCreated": "20161008165545",
+    "-Sport": "Tennis",
+    "-Channel": "DiSports",
+    "Matrix.Children": {
+      "View": {
+        "-name": "View 1",
+        "-Title": "View 1",
+        "-Source": "Local",
+        "Content": {
+          "Capture": {
+            "-name": "a0eeca74a4eb47539474cd50f65a09fa",
+            "-Kernel": "07eea76c-a079-49f4-bce2-1f3c4c3f052e.mp4",
+            "-Title": "View 1",
+            "-Name": "a0eeca74a4eb47539474cd50f65a09fa",
+            "-IsActive": "False",
+            "Marker": { "-name": "0c55241af06f490c9495ff38c58ce7b4" }
+          }
         }
       }
     }
