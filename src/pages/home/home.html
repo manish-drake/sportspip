@@ -34,22 +34,22 @@
       </ion-row>
       <div class="items">
         <div class="item" *ngFor='let matrix of localMatrices | slice: 0:12; let i = index'>
-          <ion-card (click)="openMatrix(matrix.title)" (press)="matrixPressed(i,matrix.title)">
-            <img [src]="matrix.image" />
+          <ion-card (click)="openMatrix(matrix.title)" (press)="matrixPressed(i,matrix.Name,matrix.Channel)">
+           <img src="assets/sample.jpg" />
             <ion-card-content>
               <ion-card-title style="font-size:18px;flex-wrap: nowrap;">
                 <ion-row>
                   <ion-col>
-                    <div style="text-overflow:ellipsis;">{{matrix.title}}</div>
+                    <div style="text-overflow:ellipsis;">{{matrix.Title}}</div>
                   </ion-col>
                   <ion-col center text-right style="width:10px;">
-                    <p>Oct 3</p>
+                    <p>{{matrix.DateCreated}}</p>
                   </ion-col>
                 </ion-row>
               </ion-card-title>
               <div style="display:block;">
-                <p>Sport/Skill</p>
-                <p>00:00</p>
+                <p>{{matrix.Sport}}/{{matrix.Skill}}</p>
+                <p>{{matrix.Duration}}</p>
               </div>
             </ion-card-content>
           </ion-card>
@@ -57,33 +57,33 @@
       </div>
     </div>
     <div *ngSwitchCase="'server'">
-      <ion-item-group *ngFor="let channel of channels">
+      <ion-item-group *ngFor="let channel of channels|groupBy:'Channel'">
         <ion-row>
           <ion-col center>
-            <ion-title>{{channel.title}}</ion-title>
+            <ion-title>{{channel.key}}</ion-title>
           </ion-col>
           <ion-col text-right>
-            <button ion-button clear (click)="openChannelCollection(channel.title)">View All</button>
+            <button ion-button clear (click)="openChannelCollection(channel.Channel)">View All</button>
           </ion-col>
         </ion-row>
         <div class="items">
-          <div class="item" *ngFor="let matrix of channel.channelMatrices | slice: 0:6; let i = index">
-            <ion-card (click)="channelMatrixPressed(i,matrix.title)" (press)= "channelMatrixPressed(i,matrix.title)">
-              <img [src]="matrix.image" />
+          <div class="item" *ngFor="let matrix of channel.value | slice: 0:6; let i = index">
+            <ion-card (click)="channelMatrixPressed(i,matrix.Name,channel.value,matrix.Channel)" (press)="channelMatrixPressed(i,matrix.Name,channel.value,matrix.Channel)">
+              <img src="assets/sample.jpg" />
               <ion-card-content>
                 <ion-card-title style="font-size:18px;flex-wrap: nowrap;">
                   <ion-row>
                     <ion-col>
-                      <div style="text-overflow:ellipsis;">{{matrix.title}}</div>
+                      <div style="text-overflow:ellipsis;">{{matrix.Title}}</div>
                     </ion-col>
                     <ion-col center text-right style="width:10px;">
-                      <p>Oct 3</p>
+                      <p>{{matrix.DateCreated}}</p>
                     </ion-col>
                   </ion-row>
                 </ion-card-title>
                 <div style="display:block;">
-                  <p>Sport/Skill</p>
-                  <p>00:00</p>
+                  <p>{{matrix.Sport}}/{{matrix.Skill}}</p>
+                  <p>{{matrix.Duration}}</p>
                 </div>
               </ion-card-content>
             </ion-card>
