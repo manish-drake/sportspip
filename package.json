@@ -20,6 +20,15 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "^0.0.23",
+    "del": "^2.2.2",
+    "gulp-watch": "^4.3.10",
+    "ionic-gulp-browserify-typescript": "^2.0.0",
+    "ionic-gulp-fonts-copy": "^1.0.0",
+    "ionic-gulp-html-copy": "^1.0.0",
+    "ionic-gulp-sass-build": "^1.0.0",
+    "ionic-gulp-scripts-copy": "^2.0.1",
+    "ionic-gulp-tslint": "^1.1.0",
+    "run-sequence": "^1.2.2",
     "typescript": "^2.0.3"
   },
   "description": "sportspip: An Ionic project",

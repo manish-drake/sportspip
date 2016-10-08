@@ -87,29 +87,21 @@ export class HomePage {
 
   newMatrix() {
     this.navCtrl.push(EditorPage, {
-      firstPassed: 'New Matrix 1'
+      matrixData: 'New Matrix 1'
     });
   }
 
   openMatrix(title) {
-    this.navCtrl.push(EditorPage, {
-          firstPassed: title
+
+    this.http.get("assets/matrix1.mtx")
+      .subscribe(data => {
+        var res = JSON.parse(data.text());
+        var result = res.Matrix;
+
+        this.navCtrl.push(EditorPage, {
+          matrixData: result
         });
-
-    // this.http.get("assets/matrix1.mtx")
-    //   .subscribe(data => {
-    //     var res = JSON.parse(data.text());
-    //     var result = res.Header;
-    //     // var item = {
-    //     //   Title: result.Title, DateCreated: result.DateCreated, Name: "636046147357832115", Channel: result.Channel,
-    //     //   ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
-    //     //   Views: result.Clips
-    //     // };
-
-    //     this.navCtrl.push(EditorPage, {
-    //       firstPassed: result
-    //     });
-    //   })
+      });
 
 
   }
