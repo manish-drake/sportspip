@@ -218,12 +218,16 @@ export class EditorPage {
 
   interval: any = null;
 
+  viewBoxSize:any;
+
   loadVideo() {
     this.videoPath = "assets/"+this.selectedView["Content"]["Capture"]["_Kernel"];
     window.setTimeout(() => {
       var video = <HTMLVideoElement>document.getElementById("video");
       var volFactor = this.volumeValue / 100;
       video.volume = volFactor;
+
+      this.viewBoxSize = '0 0 '+ video.videoWidth+ ' ' + video.videoHeight;
 
       video.addEventListener('ended', () => {
         this.playPauseButtonIcon = 'play';
