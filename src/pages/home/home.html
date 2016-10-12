@@ -5,7 +5,7 @@
     </ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="openSettings()"><ion-icon name="settings"></ion-icon></button>
-      <button ion-button icon-only (click)="presentPopover($event)"><ion-icon name="more"></ion-icon></button>
+      <button ion-button icon-only (click)="presentPopover()"><ion-icon name="more"></ion-icon></button>
     </ion-buttons>
   </ion-navbar>
   <ion-toolbar no-border-top>
@@ -57,13 +57,13 @@
       </div>
     </div>
     <div *ngSwitchCase="'server'">
-      <ion-item-group *ngFor="let channel of channels|groupBy:'Channel'">
+      <ion-item-group >
         <ion-row>
           <ion-col center>
             <ion-title>{{channel.key}}</ion-title>
           </ion-col>
           <ion-col text-right>
-            <button ion-button clear (click)="openChannelCollection(channel.Channel)">View All</button>
+            <button ion-button clear (click)="openChannelCollection()">View All</button>
           </ion-col>
         </ion-row>
         <div class="items">

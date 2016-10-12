@@ -1,24 +1,25 @@
 import { NgModule } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { sportspip } from './app.component';
-import { HomePage, PopoverPage } from '../pages/home/home';
+import { HomePage, PopoverPage1 } from '../pages/home/home';
 import { EditorPage } from '../pages/editor/editor';
 import { MatrixInfoPage } from '../pages/matrixinfo/matrixinfo'
 import {GroupBy} from '../GroupBy/GroupBy';
 import { SettingsPage } from '../pages/settings/settings';
 import { CollectionPage } from '../pages/collection/collection'
-import { ChannelCollectionPage } from '../pages/channelcollection/channelcollection'
+import { ChannelCollectionPage,PopoverPage2 } from '../pages/channelcollection/channelcollection'
 
 @NgModule({
   declarations: [
     sportspip,
     HomePage,
-    PopoverPage,
+    PopoverPage1,
     EditorPage,
     MatrixInfoPage,
     SettingsPage,
     CollectionPage,
     ChannelCollectionPage,
+    PopoverPage2,
     GroupBy
   ],
   imports: [
@@ -28,12 +29,13 @@ import { ChannelCollectionPage } from '../pages/channelcollection/channelcollect
   entryComponents: [
     sportspip,
     HomePage,
-    PopoverPage,
+    PopoverPage1,
     EditorPage,
     MatrixInfoPage,
     SettingsPage,
     CollectionPage,
-    ChannelCollectionPage
+    ChannelCollectionPage,
+    PopoverPage2
   ],
   providers: []
 })

@@ -186,11 +186,9 @@ export class HomePage {
     })
   }
 
-  presentPopover(myEvent) {
-    let popover = this.popoverCtrl.create(PopoverPage);
-    popover.present({
-      ev: myEvent
-    });
+  presentPopover() {
+    let popover = this.popoverCtrl.create(PopoverPage1);
+    popover.present();
   }
 
   openSettings() {
@@ -306,7 +304,7 @@ export class HomePage {
     </ion-list>
   `
 })
-export class PopoverPage {
+export class PopoverPage1 {
   versionNumber: any;
   constructor(public viewCtrl: ViewController, private alertCtrl: AlertController) {
   }

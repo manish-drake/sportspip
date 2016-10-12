@@ -5,14 +5,14 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <ion-navbar>
+  <ion-navbar no-border-bottom>
     <ion-title>{{matrix._Title}}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only><ion-icon name="cloud-upload"></ion-icon></button>
       <button ion-button icon-only [disabled]="false"><ion-icon name="share"></ion-icon></button>
     </ion-buttons>
   </ion-navbar>
-  <ion-toolbar>
+  <ion-toolbar no-border-top>
     <ion-row>
       <ion-col style="width:50px;flex: 0 0 50px;padding:0;">
         <button ion-button icon-only clear color="primary" (click)="presentInfoModal()"><ion-icon name="list-box"></ion-icon></button>
@@ -33,7 +33,7 @@
 </ion-header>
 
 
-<ion-content scroll="false" style="background:#eee;">
+<ion-content style="background:#eee;overflow:hidden">
 
   <!--viewContainer-->
 
