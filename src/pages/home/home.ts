@@ -186,9 +186,9 @@ export class HomePage {
     })
   }
 
-  presentPopover() {
+  presentPopover(event) {
     let popover = this.popoverCtrl.create(PopoverPage1);
-    popover.present();
+    popover.present({ev:event});
   }
 
   openSettings() {

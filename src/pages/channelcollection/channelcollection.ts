@@ -32,9 +32,9 @@ export class ChannelCollectionPage {
     ];
   }
 
-  presentPopover() {
+  presentPopover(event) {
     let popover = this.popoverCtrl.create(PopoverPage2);
-    popover.present();
+    popover.present({ev:event});
   }
 
   channelMatrixPressed(index, title) {
@@ -65,35 +65,31 @@ export class ChannelCollectionPage {
     });
     actionSheet.present();
   }
-
 }
 
 @Component({
   template: `
-  <ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Sort By
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-    <ion-content>
-    <ion-list radio-group>
-      <ion-list-header>Sort By</ion-list-header>
+    <ion-list radio-group (ionChange)="changeSortBy()">
+      <ion-list-header>
+        Sort By
+      </ion-list-header>
       <ion-item>
         <ion-label>Date</ion-label>
-        <ion-radio value="date"></ion-radio>
+        <ion-radio value="date" checked="true"></ion-radio>
       </ion-item>
       <ion-item>
         <ion-label>Title</ion-label>
         <ion-radio value="title"></ion-radio>
       </ion-item>
     </ion-list>
-    </ion-content>
   `
 })
 export class PopoverPage2 {
   constructor(public viewCtrl: ViewController) {
+  }
+
+  changeSortBy(){
+    this.dismiss();
   }
 
   dismiss() {
