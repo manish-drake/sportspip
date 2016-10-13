@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams,ActionSheetController,AlertController } from 'ionic-angular';
+import { File } from 'ionic-native';
+import { StorageFactory } from '../../Factory/StorageFactory';
+import { Http } from '@angular/http';
+import { NavController, NavParams, ActionSheetController, AlertController, Platform } from 'ionic-angular';
+declare var cordova: any;
 
 /*
   Generated class for the Channelcollection page.
@@ -9,29 +13,56 @@ import { NavController, NavParams,ActionSheetController,AlertController } from '
 */
 @Component({
   selector: 'page-channelcollection',
-  templateUrl: 'channelcollection.html'
+  templateUrl: 'channelcollection.html',
+  providers: [StorageFactory],
 })
 export class ChannelCollectionPage {
-  public firstParam: any;
-  channelMatrices: any;
+  public channel: any;
+  channelMatrices = [];
   constructor(public navCtrl: NavController, params: NavParams,
-  private actionSheetCtrl:ActionSheetController,
-  private alertCtrl:AlertController) {
-    this.firstParam = params.get("firstPassed");
+    private storagefactory: StorageFactory,
+    private actionSheetCtrl: ActionSheetController,
+    private platform: Platform,
+    private alertCtrl: AlertController,
+    private http: Http) {
 
-    this.channelMatrices = [
-      { image: 'assets/sample.jpg', title: 'Matrix 1' },
-      { image: 'assets/sample.jpg', title: 'Matrix 2' },
-      { image: 'assets/sample.jpg', title: 'Matrix 3' },
-      { image: 'assets/sample.jpg', title: 'Matrix 4' },
-      { image: 'assets/sample.jpg', title: 'Matrix 5' },
-      { image: 'assets/sample.jpg', title: 'Matrix 6' },
-    ];
+    this.channel = params.get("firstPassed");
+    this.GetChannelMatrix(this.channel);
   }
 
-  channelMatrixPressed(index,title) {
+  GetChannelMatrix(channel) {
+    this.platform.ready().then(() => {
+      File.listDir(cordova.file.dataDirectory, "Server/" + channel + "/Tennis/Matrices/").then((success) => {
+
+        success.forEach((res) => {
+          this.http.get(cordova.file.dataDirectory + "Server/" + channel + "/Tennis/Matrices/" + res.name + "/Header.xml")
+            .subscribe(data => {
+              //deserialiae server header  
+              var header = JSON.parse(data.text());
+              var result = header.Header;
+              var item = {
+                Title: result.Title, DateCreated: result.DateCreated, Name: result.name, Channel: result.Channel,
+                ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
+                Views: result.Clips
+              };
+              this.channelMatrices.push(item);
+              
+            });
+        });
+
+      });
+    });
+
+  }
+
+  DeleteChannelMatrix(DirName,Channel,index){
+    this.storagefactory.DeleteServerHeader(DirName,Channel);
+    this.channelMatrices.splice(index,1);
+  }
+
+  channelMatrixPressed(index,channel,DirName) {
     let actionSheet = this.actionSheetCtrl.create({
-      title: title,
+      title: DirName,
       buttons: [{
         text: 'Download',
         handler: () => {
@@ -42,17 +73,17 @@ export class ChannelCollectionPage {
           });
           alert.present();
         }
-      },{
-          text: 'Delete',
-          role: 'destructive',
-          handler: () => {
-            console.log('Destructive clicked');
-          }
-        }, {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => { }
+      }, {
+        text: 'Delete',
+        role: 'destructive',
+        handler: () => {
+         this.DeleteChannelMatrix(DirName,channel,index);
         }
+      }, {
+        text: 'Cancel',
+        role: 'cancel',
+        handler: () => { }
+      }
       ]
     });
     actionSheet.present();

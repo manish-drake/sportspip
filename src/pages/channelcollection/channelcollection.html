@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{firstParam}}</ion-title>
+    <ion-title>{{channel}}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only><ion-icon name="funnel"></ion-icon></button>
     </ion-buttons>
@@ -22,22 +22,22 @@
 <ion-content style="background:#f1f1f1;">
   <div class="items">
     <div class="item" *ngFor="let matrix of channelMatrices; let i = index">
-      <ion-card (click)="channelMatrixPressed(i,matrix.title)" (press)= "channelMatrixPressed(i,matrix.title)">
-        <img [src]="matrix.image" />
+      <ion-card (click)="channelMatrixPressed(i,matrix.Channel,matrix.Name)" (press)= "channelMatrixPressed(i,matrix.Channel,matrix.Name)">
+        <img src="assets/sample.jpg" />
         <ion-card-content>
           <ion-card-title style="font-size:18px;flex-wrap: nowrap;">
             <ion-row>
               <ion-col>
-                <div style="text-overflow:ellipsis;">{{matrix.title}}</div>
+                <div style="text-overflow:ellipsis;">{{matrix.Title}}</div>
               </ion-col>
               <ion-col center text-right style="width:10px;">
-                <p>Oct 3</p>
+                <p>{{matrix.DateCreated}}</p>
               </ion-col>
             </ion-row>
           </ion-card-title>
           <div style="display:block;">
-            <p>Sport/Skill</p>
-            <p>00:00</p>
+            <p>{{matrix.Sport}}/{{matrix.Skill}}</p>
+            <p>{{matrix.Duration}}</p>
           </div>
         </ion-card-content>
       </ion-card>

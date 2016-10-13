@@ -34,7 +34,6 @@ export class StorageFactory {
                                 File.createFile(fileLocation, "Header.xml", true).then(() => {
                                     File.writeFile(fileLocation, "Header.xml", content, true)
                                         .then(function (success) {
-                                            
                                         })
 
                                 })
