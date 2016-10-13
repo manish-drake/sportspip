@@ -21,7 +21,7 @@ export class StorageFactory {
             const fs: string = cordova.file.dataDirectory;
 
             //create Server Folder
-            File.createDir(fs, "Server", true).then((success) => {
+          File.createDir(fs, "Server", true).then((success) => {
                 var serverFolder = fs + "Server/";
                 File.createDir(serverFolder, channel, true).then(() => {
                     var channelFolder = serverFolder + channel + "/";

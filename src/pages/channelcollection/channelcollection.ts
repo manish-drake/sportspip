@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { File } from 'ionic-native';
 import { StorageFactory } from '../../Factory/StorageFactory';
 import { Http } from '@angular/http';
-import { NavController, NavParams, ActionSheetController, AlertController, PopoverController, ViewController, Platform } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, AlertController, ViewController, Platform } from 'ionic-angular';
 declare var cordova: any;
 
 /*
