@@ -5,118 +5,134 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <ion-navbar>
-    <ion-title>{{matrix.Title}}</ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only><ion-icon name="cloud-upload"></ion-icon></button>
-      <button ion-button icon-only [disabled]="false"><ion-icon name="share"></ion-icon></button>
-    </ion-buttons>
-  </ion-navbar>
-  <ion-toolbar>
-    <ion-row>
-      <ion-col style="width:50px;flex: 0 0 50px;padding:0;">
-        <button ion-button icon-only clear color="primary" (click)="presentInfoModal()"><ion-icon name="list-box"></ion-icon></button>
-      </ion-col>
-      <ion-col style="width:100%;padding:0;">
-        <ion-segment [(ngModel)]="selectedViewIndex">
-          <ion-segment-button *ngFor="let view of views; let i = index" [value]="i" (click)="showSegment(i)" (press)="deleteView(i)">
-            {{view.Title}}
-          </ion-segment-button>
-        </ion-segment>
-      </ion-col>
-      <ion-col style="width:50px;flex: 0 0 50px;padding:0;">
-        <button ion-button icon-only clear color="primary" (click)="addView()"><ion-icon name="add-circle"></ion-icon></button>
-      </ion-col>
-    </ion-row>
-  </ion-toolbar>
+	<ion-navbar>
+		<ion-title>{{matrix.Title}}</ion-title>
+		<ion-buttons end>
+			<button ion-button icon-only><ion-icon name="cloud-upload"></ion-icon></button>
+			<button ion-button icon-only [disabled]="false"><ion-icon name="share"></ion-icon></button>
+		</ion-buttons>
+	</ion-navbar>
+	<ion-toolbar no-border-top>
+		<ion-row>
+			<ion-col style="width:50px;flex: 0 0 50px;padding:0;">
+				<button ion-button icon-only clear color="primary" (click)="presentInfoModal()"><ion-icon name="list-box"></ion-icon></button>
+			</ion-col>
+			<ion-col style="width:100%;padding:0;">
+				<ion-segment [(ngModel)]="selectedViewIndex">
+					<ion-segment-button *ngFor="let view of views; let i = index" [value]="i" (click)="showSegment(i)" (press)="deleteView(i)">
+						{{view.Title}}
+					</ion-segment-button>
+				</ion-segment>
+			</ion-col>
+			<ion-col style="width:50px;flex: 0 0 50px;padding:0;">
+				<button ion-button icon-only clear color="primary" (click)="addView()"><ion-icon name="add-circle"></ion-icon></button>
+			</ion-col>
+		</ion-row>
+	</ion-toolbar>
 
 </ion-header>
 
 
-<ion-content scroll="false" style="background:#eee;">
+<ion-content style="background:#eee;overflow:hidden">
 
-  <!--viewContainer-->
+	<!--viewContainer-->
 
-  <!--viewOptions-->
-  <ion-row *ngIf="ifViewOptions" style="height:100%;">
-    <ion-col center text-center>
-      <ion-card style="width:100%;">
-        <ion-card-header>Choose view type..</ion-card-header>
-        <ion-list>
-          <button ion-item (click)="defineView('Canvas')"><ion-icon name="easel" item-left></ion-icon>Blank Canvas</button>
-          <button ion-item (click)="defineView('Local')"><ion-icon name="ios-film" item-left></ion-icon>Add Video</button>
-          <button ion-item (click)="defineView('Camera')"><ion-icon name="videocam" item-left></ion-icon>Record Video</button>
-          <button ion-item (click)="importFromLibrary()"><ion-icon name="log-in" item-left></ion-icon>Import from library</button>
-        </ion-list>
-      </ion-card>
-    </ion-col>
-  </ion-row>
-  <!--ViewCanvasTemplate-->
-  <ion-row *ngIf="ifViewCanvas" style="height: 100%;background:#fff;">
-    <ion-col>
-      <svg height="100%" width="100%" style="border:1px solid lightgray;">
-        <ellipse cx="300" cy="300" rx="100" ry="50" style="fill:orange;stroke:black;stroke-width:2;" />
-        <rect x="10" y="20" width="300" height="100" style="fill:orange;stroke-width:2;stroke:black;" />
-        <line x1="10" y1="150" x2="200" y2="200" style="stroke:Orange;stroke-width:2" />
-        <text x="50" y="300" fill="orange">Canvas</text>
-        <defs>
-          <marker id="arrow" markerWidth="10" markerHeight="10" refx="0" refy="3" orient="auto" markerUnits="strokeWidth">
-            <path d="M0,0 L0,6 L9,3 z" fill="orange" />
-          </marker>
-        </defs>
-        <line x1="50" y1="450" x2="250" y2="550" stroke="orange" stroke-width="5" marker-end="url(#arrow)" />
-        <image x="350" y="20" width="300" height="150" xlink:href="assets/sample.jpg"/>
-      </svg>
-    </ion-col>
-  </ion-row>
-  <!--ViewVideoTemplate-->
-  <ion-row *ngIf="ifViewVideo" style="height: 100%;background:#444;">
-    <ion-col style="padding:0px">
-      <ion-grid style="height: 100%;background:#000;padding:0px">
-        <ion-row style="height: 100%;">
-          <video id="video" #video src="{{videoPath}}" width="100%" height="100%" loop="true"></video>
-        </ion-row>
+	<!--viewOptions-->
+	<ion-row *ngIf="ifViewOptions" style="height:100%;">
+		<ion-col center text-center>
+			<ion-card style="width:100%;">
+				<ion-card-header>Choose view type..</ion-card-header>
+				<ion-list>
+					<button ion-item (click)="defineView('Canvas')"><ion-icon name="easel" item-left></ion-icon>Blank Canvas</button>
+					<button ion-item (click)="defineView('Local')"><ion-icon name="ios-film" item-left></ion-icon>Add Video</button>
+					<button ion-item (click)="defineView('Camera')"><ion-icon name="videocam" item-left></ion-icon>Record Video</button>
+					<button ion-item (click)="importFromLibrary()"><ion-icon name="log-in" item-left></ion-icon>Import from library</button>
+				</ion-list>
+			</ion-card>
+		</ion-col>
+	</ion-row>
+	<!--ViewCanvasTemplate-->
+	<ion-row *ngIf="ifViewCanvas" style="height: 100%;">
+		<ion-col>
+			<svg height="100%" width="100%" style="background:#fff;border:1px solid lightgray;" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+				<ellipse cx="300" cy="300" rx="100" ry="50" style="fill:orange;stroke:black;stroke-width:2;" />
+				<rect x="10" y="20" width="300" height="100" style="fill:orange;stroke-width:2;stroke:black;" />
+				<line x1="10" y1="150" x2="200" y2="200" style="stroke:Orange;stroke-width:2" />
+				<text x="50" y="300" fill="orange">Canvas</text>
+				<defs>
+					<marker id="arrow" markerWidth="10" markerHeight="10" refx="0" refy="3" orient="auto" markerUnits="strokeWidth">
+						<path d="M0,0 L0,6 L9,3 z" fill="orange" />
+					</marker>
+				</defs>
+				<line x1="50" y1="450" x2="250" y2="550" stroke="orange" stroke-width="5" marker-end="url(#arrow)" />
+				<image x="350" y="20" width="300" height="150" xlink:href="assets/sample.jpg" />
+				<!--<video width="200" height="150" src="assets/sample.mp4" loop="true" controls autoplay></video>-->
+				<image id="Ink" x="0" y="0" width="100%" height="100%" xlink:href="assets/defe52abcadf4ca085466f9845f666b6.gif" />
+			</svg>
+		</ion-col>
+	</ion-row>
+	<!--ViewVideoTemplate-->
+	<ion-row *ngIf="ifViewVideo" style="height: 100%;background:#444;">
+		<ion-col style="padding:0px">
+			<ion-grid style="height: 100%;background:#000;padding:0px">
+				<ion-row style="height: 100%;">
+					<video id="video" #video src="{{videoPath}}" width="100%" height="100%" loop="true"></video>
+					<svg height="100%" width="100%" style="position: absolute;margin-bottom:100px" viewBox="0 0 1280 720">
+						<ellipse cx="300" cy="300" rx="100" ry="50" style="fill:orange;stroke:black;stroke-width:2;" />
+						<rect x="10" y="20" width="300" height="100" style="fill:orange;stroke-width:2;stroke:black;" />
+						<line x1="10" y1="150" x2="200" y2="200" style="stroke:Orange;stroke-width:2" />
+						<text x="50" y="300" fill="orange">Canvas</text>
+						<defs>
+							<marker id="arrow" markerWidth="10" markerHeight="10" refx="0" refy="3" orient="auto" markerUnits="strokeWidth">
+								<path d="M0,0 L0,6 L9,3 z" fill="orange" />
+							</marker>
+						</defs>
+						<line x1="50" y1="450" x2="250" y2="550" stroke="orange" stroke-width="5" marker-end="url(#arrow)" />
+						<image x="350" y="20" width="300" height="150" xlink:href="assets/sample.jpg" />
+						<image id="Ink" x="0" y="0" width="100%" height="100%" xlink:href="assets/defe52abcadf4ca085466f9845f666b6.gif" />
+					</svg>
+				</ion-row>
 
-        <ion-row style="background:#333; height: 100px; flex: 0 0 100px;">
-          <ion-grid>
-            <ion-row>
-              <ion-col>
-                <ion-range min="0" max="100000" step="0.01" [(ngModel)]="sliderValue" (ionChange)="captureController('sliderValueChange')"></ion-range>
-              </ion-col>
-            </ion-row>
+				<ion-row style="background:#333; height: 100px; flex: 0 0 100px;">
+					<ion-grid>
+						<ion-row>
+							<ion-col>
+								<ion-range min="0" max="100000" step="0.01" [(ngModel)]="sliderValue" (ionChange)="captureController('sliderValueChange')"></ion-range>
+							</ion-col>
+						</ion-row>
 
-            <ion-row>
-              <ion-col center style="width:50px;flex: 0 0 50px;padding:0;">
-                <button ion-button icon-only clear color="light" (click)="captureController('playPause')"><ion-icon name="{{playPauseButtonIcon}}"></ion-icon></button>
-              </ion-col>
-              <ion-col center style="width:50px;flex: 0 0 50px;padding:0;">
-                <button ion-button icon-only clear color="{{repeatColor}}" (click)="captureController('repeatVideo')"><ion-icon name="repeat"></ion-icon></button>
-              </ion-col>
-              <ion-col center width="100%" style="min-width:80px;padding:0;color:white;">
-                {{timelinePosition}} / {{timelineDuration}}
-              </ion-col>
-              <ion-col center style="width:40px;flex: 0 0 40px;padding:0;">
-                <button ion-button icon-only clear small color="light" (click)="captureController('previousVideoFrame')"><ion-icon name="rewind"></ion-icon></button>
-              </ion-col>
-              <ion-col center style="width:40px;flex: 0 0 40px;padding:0;">
-                <button ion-button icon-only clear small color="light" (click)="captureController('nextVideoFrame')"><ion-icon name="fastforward"></ion-icon></button>
-              </ion-col>
-              <ion-col center text-center style="width:50px;flex: 0 0 50px;padding:0;">
-                <button ion-button icon-only clear small color="light" (click)="captureController('playbackRateVideo')" style="width:50px;">{{video.playbackRate}} x</button>
-              </ion-col>
-              <ion-col center style="width:40px;flex: 0 0 40px;padding:0;">
-                <button ion-button icon-only clear small color="light" (click)="captureController('MuteVideo')"> <ion-icon name="{{volumeButtonIcon}}"></ion-icon></button>
-              </ion-col>
-              <ion-col center style="width:100px;flex: 0 0 100px;padding:0;">
-                <ion-range [(ngModel)]="volumeValue" (ionChange)="captureController('volumeValueChange')"></ion-range>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-row>
-      </ion-grid>
+						<ion-row>
+							<ion-col center style="width:50px;flex: 0 0 50px;padding:0;">
+								<button ion-button icon-only clear color="light" (click)="captureController('playPause')"><ion-icon name="{{playPauseButtonIcon}}"></ion-icon></button>
+							</ion-col>
+							<ion-col center style="width:50px;flex: 0 0 50px;padding:0;">
+								<button ion-button icon-only clear color="{{repeatColor}}" (click)="captureController('repeatVideo')"><ion-icon name="repeat"></ion-icon></button>
+							</ion-col>
+							<ion-col center width="100%" style="min-width:80px;padding:0;color:white;">
+								{{timelinePosition}} / {{timelineDuration}}
+							</ion-col>
+							<ion-col center style="width:40px;flex: 0 0 40px;padding:0;">
+								<button ion-button icon-only clear small color="light" (click)="captureController('previousVideoFrame')"><ion-icon name="rewind"></ion-icon></button>
+							</ion-col>
+							<ion-col center style="width:40px;flex: 0 0 40px;padding:0;">
+								<button ion-button icon-only clear small color="light" (click)="captureController('nextVideoFrame')"><ion-icon name="fastforward"></ion-icon></button>
+							</ion-col>
+							<ion-col center text-center style="width:50px;flex: 0 0 50px;padding:0;">
+								<button ion-button icon-only clear small color="light" (click)="captureController('playbackRateVideo')" style="width:50px;">{{video.playbackRate}} x</button>
+							</ion-col>
+							<ion-col center style="width:40px;flex: 0 0 40px;padding:0;">
+								<button ion-button icon-only clear small color="light" (click)="captureController('MuteVideo')"> <ion-icon name="{{volumeButtonIcon}}"></ion-icon></button>
+							</ion-col>
+							<ion-col center style="width:100px;flex: 0 0 100px;padding:0;">
+								<ion-range [(ngModel)]="volumeValue" (ionChange)="captureController('volumeValueChange')"></ion-range>
+							</ion-col>
+						</ion-row>
+					</ion-grid>
+				</ion-row>
+			</ion-grid>
 
-    </ion-col>
-  </ion-row>
+		</ion-col>
+	</ion-row>
 
 </ion-content>
 

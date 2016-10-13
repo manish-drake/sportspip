@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { File } from 'ionic-native';
 import { StorageFactory } from '../../Factory/StorageFactory';
 import { Http } from '@angular/http';
-import { NavController, NavParams, ActionSheetController, AlertController, Platform } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, AlertController, PopoverController, ViewController, Platform } from 'ionic-angular';
 declare var cordova: any;
 
 /*
@@ -17,8 +17,10 @@ declare var cordova: any;
   providers: [StorageFactory],
 })
 export class ChannelCollectionPage {
+
   public channel: any;
   channelMatrices = [];
+
   constructor(public navCtrl: NavController, params: NavParams,
     private storagefactory: StorageFactory,
     private actionSheetCtrl: ActionSheetController,
@@ -46,7 +48,7 @@ export class ChannelCollectionPage {
                 Views: result.Clips
               };
               this.channelMatrices.push(item);
-              
+
             });
         });
 
@@ -55,12 +57,12 @@ export class ChannelCollectionPage {
 
   }
 
-  DeleteChannelMatrix(DirName,Channel,index){
-    this.storagefactory.DeleteServerHeader(DirName,Channel);
-    this.channelMatrices.splice(index,1);
+  DeleteChannelMatrix(DirName, Channel, index) {
+    this.storagefactory.DeleteServerHeader(DirName, Channel);
+    this.channelMatrices.splice(index, 1);
   }
 
-  channelMatrixPressed(index,channel,DirName) {
+  channelMatrixPressed(index, channel, DirName) {
     let actionSheet = this.actionSheetCtrl.create({
       title: DirName,
       buttons: [{
@@ -77,7 +79,7 @@ export class ChannelCollectionPage {
         text: 'Delete',
         role: 'destructive',
         handler: () => {
-         this.DeleteChannelMatrix(DirName,channel,index);
+          this.DeleteChannelMatrix(DirName, channel, index);
         }
       }, {
         text: 'Cancel',
@@ -88,5 +90,34 @@ export class ChannelCollectionPage {
     });
     actionSheet.present();
   }
+}
 
+@Component({
+  template: `
+    <ion-list radio-group (ionChange)="changeSortBy()">
+      <ion-list-header>
+        Sort By
+      </ion-list-header>
+      <ion-item>
+        <ion-label>Date</ion-label>
+        <ion-radio value="date" checked="true"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Title</ion-label>
+        <ion-radio value="title"></ion-radio>
+      </ion-item>
+    </ion-list>
+  `
+})
+export class PopoverPage2 {
+  constructor(public viewCtrl: ViewController) {
+  }
+
+  changeSortBy() {
+    this.dismiss();
+  }
+
+  dismiss() {
+    this.viewCtrl.dismiss();
+  }
 }

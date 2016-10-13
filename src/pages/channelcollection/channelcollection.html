@@ -9,10 +9,10 @@
   <ion-navbar>
     <ion-title>{{channel}}</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only><ion-icon name="funnel"></ion-icon></button>
+      <button ion-button icon-only (click)="presentPopover($event)"><ion-icon name="funnel"></ion-icon></button>
     </ion-buttons>
   </ion-navbar>
-  <ion-toolbar>
+  <ion-toolbar no-border-top>
     <ion-searchbar></ion-searchbar>
   </ion-toolbar>
 

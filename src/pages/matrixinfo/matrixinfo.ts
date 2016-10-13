@@ -15,8 +15,11 @@ export class MatrixInfoPage {
 
   matrixData:any;
 
+  formattedDateCreated:any;
+
   constructor(public viewCtrl: ViewController, navParams: NavParams ) {
     this.matrixData = navParams.get("matrixData");
+    this.formattedDateCreated = (new Date(parseInt(this.matrixData._DateCreated))).toString();
   }
 
   ionViewDidLoad() {

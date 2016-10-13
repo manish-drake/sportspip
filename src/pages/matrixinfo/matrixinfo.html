@@ -6,22 +6,46 @@
 -->
 <ion-header>
   <ion-toolbar>
-    <ion-title>
-      {{matrixData._Title}}
-    </ion-title>
     <ion-buttons start>
-      <button ion-button (click)="dismiss()"><ion-icon name="close"></ion-icon></button>
+      <button ion-button (click)="dismiss()">Cancel</button>
+    </ion-buttons>
+    <ion-title>
+      Matrix Info.
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="dismiss()">Save</button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <ion-list>
-      <ion-item>Title {{matrixData._Title}}</ion-item>
-      <ion-item>Sport {{matrixData._Sport}}</ion-item>
-      <ion-item>Skill {{matrixData._Skill}}</ion-item>
-      <ion-item>Location {{matrixData._Location}}</ion-item>
-      <ion-item>PIN {{matrixData._PIN}}</ion-item>
-      <ion-item>Views {{matrixData["Matrix.Children"]["View"].length}}</ion-item>
-      <ion-item>Date Created {{matrixData._DateCreated}}</ion-item>
+    <ion-item>
+      <ion-label style="width:20%;color:gray">Title*</ion-label>
+      <ion-input value="{{matrixData._Title}}"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label style="width:20%;color:gray">Sports*</ion-label>
+      <ion-input value="{{matrixData._Sport}}"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label style="width:20%;color:gray">Skill</ion-label>
+      <ion-input value="{{matrixData._Skill}}"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label style="width:20%;color:gray">Location</ion-label>
+      <ion-input value="{{matrixData._Location}}"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label style="width:20%;color:gray">PIN</ion-label>
+      <ion-input value="{{matrixData._PIN}}"></ion-input>
+    </ion-item>
+    <ion-item>
+      <label style="padding-right:83px;color:gray">Views</label>
+      <label style="color:gray">{{matrixData["Matrix.Children"]["View"].length}}</label>
+    </ion-item>
+    <ion-item>
+      <label style="padding-right:30px;color:gray">Date Created</label>
+      <label style="color:gray">{{formattedDateCreated | date}}</label>
+    </ion-item>
   </ion-list>
 </ion-content>
