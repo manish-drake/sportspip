@@ -57,7 +57,7 @@
       </div>
     </div>
     <div *ngSwitchCase="'server'">
-      <ion-item-group >
+      <ion-item-group *ngFor="let channel of channels|groupBy:'Channel'">
         <ion-row>
           <ion-col center>
             <ion-title>{{channel.key}}</ion-title>
