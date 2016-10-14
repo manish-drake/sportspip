@@ -15,7 +15,6 @@ export class Package {
 
 
     MoveToLocalCollection() {
-
         var headerPath = cordova.file.dataDirectory + "Temp/matrix1/Header.xml";
         this.http.get(headerPath).subscribe(data => {
             var result = JSON.parse(data.text());

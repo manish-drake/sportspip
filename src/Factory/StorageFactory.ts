@@ -21,7 +21,7 @@ export class StorageFactory {
             const fs: string = cordova.file.dataDirectory;
 
             //create Server Folder
-          File.createDir(fs, "Server", true).then((success) => {
+            File.createDir(fs, "Server", true).then((success) => {
                 var serverFolder = fs + "Server/";
                 File.createDir(serverFolder, channel, true).then(() => {
                     var channelFolder = serverFolder + channel + "/";
@@ -34,6 +34,7 @@ export class StorageFactory {
                                 File.createFile(fileLocation, "Header.xml", true).then(() => {
                                     File.writeFile(fileLocation, "Header.xml", content, true)
                                         .then(function (success) {
+
                                         })
 
                                 })
@@ -65,7 +66,7 @@ export class StorageFactory {
                                 File.createFile(fileLocation, matrixName + ".mtx", true).then(() => {
                                     File.writeFile(fileLocation, matrixName + ".mtx", content, true)
                                         .then(function (success) {
-                                         
+                                            alert("server matrix");
                                         })
                                 })
                             })
@@ -97,7 +98,7 @@ export class StorageFactory {
                                 File.createFile(fileLocation, "Header.xml", true).then(() => {
                                     File.writeFile(fileLocation, "Header.xml", content, true)
                                         .then(function (success) {
-                  
+                                            alert("local headr");
                                         })
                                 })
                             })
@@ -120,9 +121,9 @@ export class StorageFactory {
         })
     }
 
-     DeleteLocalHeader(DirName, channel) {
+    DeleteLocalHeader(DirName, channel) {
         this.platform.ready().then(() => {
-            var headerFolder = cordova.file.dataDirectory + "Local/" + channel + "/Tennis/Matrices/"            
+            var headerFolder = cordova.file.dataDirectory + "Local/" + channel + "/Tennis/Matrices/"
             File.removeRecursively(headerFolder, DirName).then(() => {
                 alert("Deleted");
             })

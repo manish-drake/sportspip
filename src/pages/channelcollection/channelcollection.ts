@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { File } from 'ionic-native';
 import { StorageFactory } from '../../Factory/StorageFactory';
 import { Http } from '@angular/http';
-import { NavController, NavParams, ActionSheetController, AlertController, ViewController, Platform } from 'ionic-angular';
+import { NavController, PopoverController, NavParams, ActionSheetController, AlertController, ViewController, Platform } from 'ionic-angular';
 declare var cordova: any;
 
 /*
@@ -26,6 +26,7 @@ export class ChannelCollectionPage {
     private actionSheetCtrl: ActionSheetController,
     private platform: Platform,
     private alertCtrl: AlertController,
+    private popoverController: PopoverController,
     private http: Http) {
 
     this.channel = params.get("firstPassed");
@@ -55,6 +56,11 @@ export class ChannelCollectionPage {
       });
     });
 
+  }
+
+  presentPopover(event) {
+    let popover = this.popoverController.create(PopoverPage2);
+    popover.present({ ev: event });
   }
 
   DeleteChannelMatrix(DirName, Channel, index) {

@@ -4,7 +4,9 @@ import { ModelFactory } from '../../Factory/ModelFactory';
 import { AppVersion, File } from 'ionic-native';
 import { Package } from '../../pages/Package';
 import { Http } from '@angular/http';
+import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
+import { Observable } from 'rxjs/Rx';
 
 
 import { NavController, ActionSheetController, AlertController, PopoverController, ViewController, ToastController, Platform } from 'ionic-angular';
@@ -27,8 +29,6 @@ export class HomePage {
   localMatrices = [];
   channels = [];
   Header = [];
-
-
   constructor(private http: Http, private platform: Platform, public navCtrl: NavController,
     private storagefactory: StorageFactory,
     private modelfactory: ModelFactory,
@@ -41,10 +41,21 @@ export class HomePage {
 
     this.selectedSegment = "local";
     this.GetserverHeader().then((success) => {
-      this.DisplayServerHeader();
+
+      Observable.interval(1000)
+        .take(1).map((x) => x + 5)
+        .subscribe((x) => {
+          this.DisplayServerHeader();
+        })
+
+      // Observable.interval(5)
+      //   .map((x) => {
+      //     // this.DisplayServerHeader();
+      //     alert(x);
+      //   });
     });
 
-    //this.GetLocalMatrixHeader();
+    this.GetLocalMatrixHeader();
   }
 
   GetLocalMatrixHeader() {
@@ -64,6 +75,7 @@ export class HomePage {
                     Views: result.Clips
                   };
                   this.localMatrices.push(item);
+                  alert("Local Header Display")
                 });
             });
           });
@@ -126,6 +138,7 @@ export class HomePage {
                     Views: result.Clips
                   };
                   this.channels.push(item);
+
                 });
             });
           });
@@ -145,11 +158,32 @@ export class HomePage {
   DownloadServerHeaderAsync(fileName, channelName, index, value) {
     var authenticate = this.AuthenticateUser();
     if (authenticate) {
-      this.packages.DownloadServerHeader(fileName, channelName);
-      this.packages.MoveToLocalCollection();
+      Observable.interval(1000)
+        .take(1).map((x) => x + 5)
+        .subscribe((x) => {
+          this.packages.DownloadServerHeader(fileName, channelName);
+        })
+      Observable.interval(2000)
+        .take(1).map((x) => x + 5)
+        .subscribe((x) => {
+          this.packages.MoveToLocalCollection();
+        })
+
     }
-    //this.DeleteServerHeader(fileName, index, value, channelName);
-    this.GetLocalMatrixHeader();
+    // this.DeleteServerHeader(fileName, index, value, channelName);
+    Observable.interval(3000)
+      .take(1).map((x) => x + 5)
+      .subscribe((x) => {
+        this.localMatrices=[];
+        this.GetLocalMatrixHeader();
+      })
+    Observable.interval(4000)
+      .take(1).map((x) => x + 5)
+      .subscribe((x) => {
+        this.DeleteServerHeader(fileName, index, value, channelName);
+      })
+
+
   }
 
   AuthenticateUser() {
@@ -157,41 +191,44 @@ export class HomePage {
     return true;
   }
 
-  MoveToLocalCollection() {
+  // MoveToLocalCollection() {
 
-    var headerPath = cordova.file.dataDirectory + "Temp/matrix1/Header.xml";
-    this.http.get(headerPath).subscribe(data => {
-      var result = JSON.parse(data.text());
-      this.storagefactory.SaveLocalHeader(data.text(), result.Header.Channel, result.Header.Sport, "matrix1", "Matrices");
-    })
-    var matrixPath = cordova.file.dataDirectory + "Temp/matrix1/matrix1.xml";
-    this.http.get(matrixPath).subscribe(data => {
-      var result = JSON.parse(data.text());
-      this.storagefactory.SaveMatrixAsync(data.text(), result.Matrix.Channel, result.Matrix.Sport, "matrix1", "Matrices");
-    })
-  }
+  //   var headerPath = cordova.file.dataDirectory + "Temp/matrix1/Header.xml";
+  //   this.http.get(headerPath).subscribe(data => {
+  //     var result = JSON.parse(data.text());
+  //     alert("move header");
+  //     this.storagefactory.SaveLocalHeader(data.text(), result.Header.Channel, result.Header.Sport, "matrix1", "Matrices");
+  //   })
+  //   var matrixPath = cordova.file.dataDirectory + "Temp/matrix1/matrix1.xml";
+  //   this.http.get(matrixPath).subscribe(data => {
+  //     var result = JSON.parse(data.text());
+  //     alert("move header");
+  //     this.storagefactory.SaveMatrixAsync(data.text(), result.Matrix.Channel, result.Matrix.Sport, "matrix1", "Matrices");
+  //   })
+  // }
 
-  DownloadServerHeader(fileName, channelName) {
-    this.platform.ready().then(() => {
-      File.createDir(cordova.file.dataDirectory, "Temp", true).then(() => {
-        var NewPath = cordova.file.dataDirectory + "Temp/";
-        File.createDir(NewPath, "matrix1", true).then(() => {
-          var matrixPath = NewPath + "matrix1/";
-          var oldPath = cordova.file.dataDirectory + "Server/" + channelName + "/Tennis/Matrices/" + fileName + "/";
-          File.copyFile(oldPath, "Header.xml", matrixPath, "Header.xml").then(() => {
-            this.http.get("assets/matrix1.mtx")
-              .subscribe(data => {
-                File.createFile(matrixPath, "matrix1.xml", true).then(() => {
-                  File.writeFile(matrixPath, "matrix1.xml", data.text(), true)
-                    .then(function (success) {
-                    })
-                })
-              })
-          })
-        })
-      })
-    })
-  }
+  // DownloadServerHeader(fileName, channelName) {
+  //   this.platform.ready().then(() => {
+  //     File.createDir(cordova.file.dataDirectory, "Temp", true).then(() => {
+  //       var NewPath = cordova.file.dataDirectory + "Temp/";
+  //       File.createDir(NewPath, "matrix1", true).then(() => {
+  //         var matrixPath = NewPath + "matrix1/";
+  //         var oldPath = cordova.file.dataDirectory + "Server/" + channelName + "/Tennis/Matrices/" + fileName + "/";
+  //         File.copyFile(oldPath, "Header.xml", matrixPath, "Header.xml").then(() => {
+  //           this.http.get("assets/matrix1.mtx")
+  //             .subscribe(data => {
+  //               File.createFile(matrixPath, "matrix1.xml", true).then(() => {
+  //                 File.writeFile(matrixPath, "matrix1.xml", data.text(), true)
+  //                   .then(function (success) {
+  //                     alert("Download");
+  //                   })
+  //               })
+  //             })
+  //         })
+  //       })
+  //     })
+  //   })
+  // }
 
   presentPopover(event) {
     let popover = this.popoverCtrl.create(PopoverPage1);

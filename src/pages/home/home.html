@@ -57,13 +57,13 @@
 			</div>
 		</div>
 		<div *ngSwitchCase="'server'">
-			<ion-item-group>
+			<ion-item-group *ngFor="let channel of channels|groupBy:'Channel'">
 				<ion-row>
 					<ion-col center>
 						<ion-title>{{channel.key}}</ion-title>
 					</ion-col>
 					<ion-col text-right>
-						<button ion-button clear (click)="openChannelCollection(channel.key)">View All</button>2
+						<button ion-button clear (click)="openChannelCollection(channel.key)">View All</button>
 					</ion-col>
 				</ion-row>
 				<div class="items">
