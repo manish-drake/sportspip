@@ -1,96 +1,96 @@
 <ion-header>
-  <ion-navbar no-border-bottom>
-    <ion-title start>
-      Sports PIP
-    </ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only (click)="openSettings()"><ion-icon name="settings"></ion-icon></button>
-      <button ion-button icon-only (click)="presentPopover($event)"><ion-icon name="more"></ion-icon></button>
-    </ion-buttons>
-  </ion-navbar>
-  <ion-toolbar no-border-top>
-    <ion-segment [(ngModel)]="selectedSegment">
-      <ion-segment-button value="local">Matrices</ion-segment-button>
-      <ion-segment-button value="server">Channels</ion-segment-button>
-    </ion-segment>
-  </ion-toolbar>
+	<ion-navbar no-border-bottom>
+		<ion-title start>
+			Sports PIP
+		</ion-title>
+		<ion-buttons end>
+			<button ion-button icon-only (click)="openSettings()"><ion-icon name="settings"></ion-icon></button>
+			<button ion-button icon-only (click)="presentPopover($event)"><ion-icon name="more"></ion-icon></button>
+		</ion-buttons>
+	</ion-navbar>
+	<ion-toolbar no-border-top>
+		<ion-segment [(ngModel)]="selectedSegment">
+			<ion-segment-button value="local">Matrices</ion-segment-button>
+			<ion-segment-button value="server">Channels</ion-segment-button>
+		</ion-segment>
+	</ion-toolbar>
 </ion-header>
 
 <ion-content style="background:#f1f1f1;">
 
-  <!-- Real floating action button, fixed. It will not scroll with the content -->
-  <ion-fab bottom right>
-    <button ion-fab (click)="newMatrix()"><ion-icon name="add"></ion-icon></button>
-  </ion-fab>
+	<!-- Real floating action button, fixed. It will not scroll with the content -->
+	<ion-fab bottom right>
+		<button ion-fab (click)="newMatrix()"><ion-icon name="add"></ion-icon></button>
+	</ion-fab>
 
-  <div [ngSwitch]="selectedSegment">
-    <div *ngSwitchCase="'local'">
-      <ion-row>
-        <ion-col center>
-        </ion-col>
-        <ion-col center text-right>
-          <button ion-button clear (click)="openCollection()">View All</button>
-        </ion-col>
-      </ion-row>
-      <div class="items">
-        <div class="item" *ngFor='let matrix of localMatrices | slice: 0:12; let i = index'>
-          <ion-card (click)="openMatrix(matrix.title)" (press)="matrixPressed(i,matrix.Name,matrix.Channel)">
-           <img src="assets/sample.jpg" />
-            <ion-card-content>
-              <ion-card-title style="font-size:18px;flex-wrap: nowrap;">
-                <ion-row>
-                  <ion-col>
-                    <div style="text-overflow:ellipsis;">{{matrix.Title}}</div>
-                  </ion-col>
-                  <ion-col center text-right style="width:10px;">
-                    <p>{{matrix.DateCreated}}</p>
-                  </ion-col>
-                </ion-row>
-              </ion-card-title>
-              <div style="display:block;">
-                <p>{{matrix.Sport}}/{{matrix.Skill}}</p>
-                <p>{{matrix.Duration}}</p>
-              </div>
-            </ion-card-content>
-          </ion-card>
-        </div>
-      </div>
-    </div>
-    <div *ngSwitchCase="'server'">
-      <ion-item-group *ngFor="let channel of channels|groupBy:'Channel'">
-        <ion-row>
-          <ion-col center>
-            <ion-title>{{channel.key}}</ion-title>
-          </ion-col>
-          <ion-col text-right>
-            <button ion-button clear (click)="openChannelCollection()">View All</button>
-          </ion-col>
-        </ion-row>
-        <div class="items">
-          <div class="item" *ngFor="let matrix of channel.value | slice: 0:6; let i = index">
-            <ion-card (click)="channelMatrixPressed(i,matrix.Name,channel.value,matrix.Channel)" (press)="channelMatrixPressed(i,matrix.Name,channel.value,matrix.Channel)">
-              <img src="assets/sample.jpg" />
-              <ion-card-content>
-                <ion-card-title style="font-size:18px;flex-wrap: nowrap;">
-                  <ion-row>
-                    <ion-col>
-                      <div style="text-overflow:ellipsis;">{{matrix.Title}}</div>
-                    </ion-col>
-                    <ion-col center text-right style="width:10px;">
-                      <p>{{matrix.DateCreated}}</p>
-                    </ion-col>
-                  </ion-row>
-                </ion-card-title>
-                <div style="display:block;">
-                  <p>{{matrix.Sport}}/{{matrix.Skill}}</p>
-                  <p>{{matrix.Duration}}</p>
-                </div>
-              </ion-card-content>
-            </ion-card>
-          </div>
-        </div>
-      </ion-item-group>
-    </div>
-  </div>
+	<div [ngSwitch]="selectedSegment">
+		<div *ngSwitchCase="'local'">
+			<ion-row>
+				<ion-col center>
+				</ion-col>
+				<ion-col center text-right>
+					<button ion-button clear (click)="openCollection()">View All</button>
+				</ion-col>
+			</ion-row>
+			<div class="items">
+				<div class="item" *ngFor='let matrix of localMatrices | slice: 0:12; let i = index'>
+					<ion-card (click)="openMatrix(matrix.title)" (press)="matrixPressed(i,matrix.Name,matrix.Channel)">
+						<img src="assets/sample.jpg" />
+						<ion-card-content>
+							<ion-card-title style="font-size:18px;flex-wrap: nowrap;">
+								<ion-row>
+									<ion-col>
+										<div style="text-overflow:ellipsis;">{{matrix.Title}}</div>
+									</ion-col>
+									<ion-col center text-right style="width:10px;">
+										<p>{{matrix.DateCreated}}</p>
+									</ion-col>
+								</ion-row>
+							</ion-card-title>
+							<div style="display:block;">
+								<p>{{matrix.Sport}}/{{matrix.Skill}}</p>
+								<p>{{matrix.Duration}}</p>
+							</div>
+						</ion-card-content>
+					</ion-card>
+				</div>
+			</div>
+		</div>
+		<div *ngSwitchCase="'server'">
+			<ion-item-group *ngFor="let channel of channels|groupBy:'Channel'">
+				<ion-row>
+					<ion-col center>
+						<ion-title>{{channel.key}}</ion-title>
+					</ion-col>
+					<ion-col text-right>
+						<button ion-button clear (click)="openChannelCollection(channel.key)">View All</button>
+					</ion-col>
+				</ion-row>
+				<div class="items">
+					<div class="item" *ngFor="let matrix of channel.value | slice: 0:6; let i = index">
+						<ion-card (click)="channelMatrixPressed(i,matrix.Name,channel.value,matrix.Channel)" (press)="channelMatrixPressed(i,matrix.Name,channel.value,matrix.Channel)">
+							<img src="assets/sample.jpg" />
+							<ion-card-content>
+								<ion-card-title style="font-size:18px;flex-wrap: nowrap;">
+									<ion-row>
+										<ion-col>
+											<div style="text-overflow:ellipsis;">{{matrix.Title}}</div>
+										</ion-col>
+										<ion-col center text-right style="width:10px;">
+											<p>{{matrix.DateCreated}}</p>
+										</ion-col>
+									</ion-row>
+								</ion-card-title>
+								<div style="display:block;">
+									<p>{{matrix.Sport}}/{{matrix.Skill}}</p>
+									<p>{{matrix.Duration}}</p>
+								</div>
+							</ion-card-content>
+						</ion-card>
+					</div>
+				</div>
+			</ion-item-group>
+		</div>
+	</div>
 
 </ion-content>

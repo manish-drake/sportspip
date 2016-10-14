@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController, AlertController, PopoverController, ViewController } from 'ionic-angular';
+import { File } from 'ionic-native';
+import { StorageFactory } from '../../Factory/StorageFactory';
+import { Http } from '@angular/http';
+import { NavController, PopoverController, NavParams, ActionSheetController, AlertController, ViewController, Platform } from 'ionic-angular';
+declare var cordova: any;
 
 /*
   Generated class for the Channelcollection page.
@@ -9,37 +13,64 @@ import { NavController, NavParams, ActionSheetController, AlertController, Popov
 */
 @Component({
   selector: 'page-channelcollection',
-  templateUrl: 'channelcollection.html'
+  templateUrl: 'channelcollection.html',
+  providers: [StorageFactory],
 })
 export class ChannelCollectionPage {
 
-  public firstParam: any;
-  channelMatrices: any;
+  public channel: any;
+  channelMatrices = [];
 
   constructor(public navCtrl: NavController, params: NavParams,
+    private storagefactory: StorageFactory,
     private actionSheetCtrl: ActionSheetController,
+    private platform: Platform,
     private alertCtrl: AlertController,
-    private popoverCtrl: PopoverController) {
-    this.firstParam = params.get("firstPassed");
+    private popoverController: PopoverController,
+    private http: Http) {
 
-    this.channelMatrices = [
-      { image: 'assets/sample.jpg', title: 'Matrix 1' },
-      { image: 'assets/sample.jpg', title: 'Matrix 2' },
-      { image: 'assets/sample.jpg', title: 'Matrix 3' },
-      { image: 'assets/sample.jpg', title: 'Matrix 4' },
-      { image: 'assets/sample.jpg', title: 'Matrix 5' },
-      { image: 'assets/sample.jpg', title: 'Matrix 6' },
-    ];
+    this.channel = params.get("firstPassed");
+    this.GetChannelMatrix(this.channel);
+  }
+
+  GetChannelMatrix(channel) {
+    this.platform.ready().then(() => {
+      File.listDir(cordova.file.dataDirectory, "Server/" + channel + "/Tennis/Matrices/").then((success) => {
+
+        success.forEach((res) => {
+          this.http.get(cordova.file.dataDirectory + "Server/" + channel + "/Tennis/Matrices/" + res.name + "/Header.xml")
+            .subscribe(data => {
+              //deserialiae server header  
+              var header = JSON.parse(data.text());
+              var result = header.Header;
+              var item = {
+                Title: result.Title, DateCreated: result.DateCreated, Name: result.name, Channel: result.Channel,
+                ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
+                Views: result.Clips
+              };
+              this.channelMatrices.push(item);
+
+            });
+        });
+
+      });
+    });
+
   }
 
   presentPopover(event) {
-    let popover = this.popoverCtrl.create(PopoverPage2);
-    popover.present({ev:event});
+    let popover = this.popoverController.create(PopoverPage2);
+    popover.present({ ev: event });
   }
 
-  channelMatrixPressed(index, title) {
+  DeleteChannelMatrix(DirName, Channel, index) {
+    this.storagefactory.DeleteServerHeader(DirName, Channel);
+    this.channelMatrices.splice(index, 1);
+  }
+
+  channelMatrixPressed(index, channel, DirName) {
     let actionSheet = this.actionSheetCtrl.create({
-      title: title,
+      title: DirName,
       buttons: [{
         text: 'Download',
         handler: () => {
@@ -54,7 +85,7 @@ export class ChannelCollectionPage {
         text: 'Delete',
         role: 'destructive',
         handler: () => {
-          console.log('Destructive clicked');
+          this.DeleteChannelMatrix(DirName, channel, index);
         }
       }, {
         text: 'Cancel',
@@ -88,7 +119,7 @@ export class PopoverPage2 {
   constructor(public viewCtrl: ViewController) {
   }
 
-  changeSortBy(){
+  changeSortBy() {
     this.dismiss();
   }
 

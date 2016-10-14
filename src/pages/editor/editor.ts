@@ -73,13 +73,13 @@ export class EditorPage {
   }
 
   evaluateView() {
-    if (this.selectedView._Source == "(Blank)") {
+    if (this.selectedView.Source == "(Blank)") {
       this.ifViewOptions = true;
     }
     else {
       this.ifViewOptions = false;
     }
-    if (this.selectedView._Source == 'Canvas') {
+    if (this.selectedView.Source == 'Canvas') {
       this.ifViewCanvas = true;
     }
     else {
@@ -88,7 +88,7 @@ export class EditorPage {
         window.clearInterval(this.interval);
       }
     }
-    if (this.selectedView._Source == 'Local') {
+    if (this.selectedView.Source == 'Local') {
       this.ifViewVideo = true;
       this.loadVideo();
     }
@@ -100,9 +100,9 @@ export class EditorPage {
   addView() {
     if (this.views.length <= 7) {
       this.views.push({
-        "_name": "View " + (this.views.length+1),
-        "_Title": "View " + (this.views.length+1),
-        "_Source": "(Blank)"
+        "name": "View " + (this.views.length+1),
+        "Title": "View " + (this.views.length+1),
+        "Source": "(Blank)"
       });
       this.showSegment(this.selectedViewIndex+1);
     }
@@ -121,26 +121,26 @@ export class EditorPage {
     switch (typeparam) {
       case 'Canvas':
         this.views[this.selectedViewIndex] = {
-          "_name": "View " + this.selectedViewIndex,
-          "_Title": "View " + this.selectedViewIndex,
-          "_Source": typeparam
+          "name": "View " + this.selectedViewIndex,
+          "Title": "View " + this.selectedViewIndex,
+          "Source": typeparam
         };
         this.showSegment(this.selectedViewIndex);
         break;
       case 'Local':
         this.views[this.selectedViewIndex] = {
-          "_name": "View " + this.selectedViewIndex,
-          "_Title": "View " + this.selectedViewIndex,
-          "_Source": typeparam
+          "name": "View " + this.selectedViewIndex,
+          "Title": "View " + this.selectedViewIndex,
+          "Source": typeparam
         };
         this.showSegment(this.selectedViewIndex);
         //this.addLocalVideo();
         break;
       case 'Camera':
         this.views[this.selectedViewIndex] = {
-          "_name": "View " + this.selectedViewIndex,
-          "_Title": "View " + this.selectedViewIndex,
-          "_Source": "Local"
+          "name": "View " + this.selectedViewIndex,
+          "Title": "View " + this.selectedViewIndex,
+          "Source": "Local"
         };
         this.showSegment(this.selectedViewIndex);
         this.addLocalVideo();

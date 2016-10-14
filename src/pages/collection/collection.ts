@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController,ActionSheetController } from 'ionic-angular';
+import { NavController, ActionSheetController,Platform } from 'ionic-angular';
+import { File } from 'ionic-native';
 import { EditorPage } from '../editor/editor';
+import { Http } from '@angular/http';
+declare var cordova: any;
 
 /*
   Generated class for the Collection page.
@@ -13,20 +16,36 @@ import { EditorPage } from '../editor/editor';
   templateUrl: 'collection.html'
 })
 export class CollectionPage {
-  localMatrices:any;
-  constructor(public navCtrl: NavController,private actionSheetCtrl:ActionSheetController) {
-    this.localMatrices = [
-      { image: 'assets/sample.jpg', title: 'Matrix 1' },
-      { image: 'assets/sample.jpg', title: 'Matrix 2' },
-      { image: 'assets/sample.jpg', title: 'Matrix 3' },
-      { image: 'assets/sample.jpg', title: 'Matrix 4' },
-      { image: 'assets/sample.jpg', title: 'Matrix 5' },
-      { image: 'assets/sample.jpg', title: 'Matrix 6' },
-      { image: 'assets/sample.jpg', title: 'Matrix 7' },
-      { image: 'assets/sample.jpg', title: 'Matrix 8' },
-      { image: 'assets/sample.jpg', title: 'Matrix 9' },
-      { image: 'assets/sample.jpg', title: 'Matrix 10' },
-    ];
+  localMatrices = [];
+  constructor(public navCtrl: NavController, private actionSheetCtrl: ActionSheetController,private platform:Platform,private http:Http) {
+    this.LoadColectionMatrix();
+  }
+
+  LoadColectionMatrix() {
+
+    this.platform.ready().then(() => {
+      File.listDir(cordova.file.dataDirectory, "Local/").then((success) => {
+        success.forEach((channelName) => {
+          File.listDir(cordova.file.dataDirectory, "Local/" + channelName.name + "/Tennis/Matrices/").then((success) => {
+            success.forEach((res) => {
+              this.http.get(cordova.file.dataDirectory + "Local/" + channelName.name + "/Tennis/Matrices/" + res.name + "/Header.xml")
+                .subscribe(data => {
+                  //deserialiae server header  
+                  var header = JSON.parse(data.text());
+                  var result = header.Header;
+                  var item = {
+                    Title: result.Title, DateCreated: result.DateCreated, Name: "matrix1", Channel: result.Channel,
+                    ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
+                    Views: result.Clips
+                  };
+                  this.localMatrices.push(item);
+                });
+            });
+          });
+        })
+      });
+    });
+
   }
 
   ionViewDidLoad() {
@@ -39,7 +58,7 @@ export class CollectionPage {
     });
   }
 
-  matrixPressed(index,title) {
+  matrixPressed(index, title) {
     let actionSheet = this.actionSheetCtrl.create({
       title: title,
       buttons: [

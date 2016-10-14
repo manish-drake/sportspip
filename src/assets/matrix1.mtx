@@ -1,398 +1,119 @@
 {
-   "Matrix": {
-      "Matrix.Children": {
-         "View": [
-            {
-               "Content": {
-                  "Capture": {
-                     "Marker": {
-                        "Marker.Objects": {
-                           "RichTextObject": {
-                              "_name": "a3c15975fb05434995159686289c9e04",
-                              "_FontSize": "20",
-                              "_Foreground": "#FFFF8C00",
-                              "_Title": "Text 1",
-                              "_Background": "#00FFFFFF",
-                              "_BorderBrush": "#FF000000",
-                              "_BorderThickness": "0,0,0,0",
-                              "_Left": "699.629455566406",
-                              "_Opacity": "1",
-                              "_Top": "225.482604980469",
-                              "_Width": "150",
-                              "_Height": "50",
-                              "_Angle": "0",
-                              "_SkewX": "0",
-                              "_SkewY": "0",
-                              "_CenterX": "75",
-                              "_CenterY": "25"
-                           },
-                           "Rectangle": {
-                              "_name": "76a35e1b6fb645fa894a130a9da88645",
-                              "_Fill": "#FFFFA500",
-                              "_Stroke": "#FF000000",
-                              "_StrokeThickness": "2",
-                              "_Title": "Rectangle 1",
-                              "_Background": "",
-                              "_BorderBrush": "",
-                              "_BorderThickness": "0,0,0,0",
-                              "_Left": "420.998016357422",
-                              "_Opacity": "0.8",
-                              "_Top": "68.3474655151367",
-                              "_Width": "223.213470458984",
-                              "_Height": "116.299461364746",
-                              "_Angle": "0",
-                              "_SkewX": "0",
-                              "_SkewY": "0",
-                              "_CenterX": "111.606735229492",
-                              "_CenterY": "58.149730682373"
-                           },
-                           "Ellipse": {
-                              "_name": "38c3cc30b83046f3a81a5c07b2c6e3b2",
-                              "_Fill": "#FFFFA500",
-                              "_Stroke": "#FF000000",
-                              "_StrokeThickness": "2",
-                              "_Title": "Ellipse 1",
-                              "_Background": "",
-                              "_BorderBrush": "",
-                              "_BorderThickness": "0,0,0,0",
-                              "_Left": "248.606109619141",
-                              "_Opacity": "0.8",
-                              "_Top": "197.062042236328",
-                              "_Width": "175.475494384766",
-                              "_Height": "156.262725830078",
-                              "_Angle": "0",
-                              "_SkewX": "0",
-                              "_SkewY": "0",
-                              "_CenterX": "87.737747192383",
-                              "_CenterY": "78.131362915039"
-                           },
-                           "LineObject": {
-                              "_name": "0f1e0aa41b044decb8255c98b47128ea",
-                              "_X1": "455.645111083984",
-                              "_Y1": "224.610168457031",
-                              "_X2": "698.087585449219",
-                              "_Y2": "361.310699462891",
-                              "_Stroke": "#FFFFA500",
-                              "_StrokeThickness": "2",
-                              "_Title": "Line 1",
-                              "_Background": "",
-                              "_BorderBrush": "",
-                              "_BorderThickness": "0,0,0,0",
-                              "_Left": "0",
-                              "_Opacity": "1",
-                              "_Top": "0",
-                              "_Width": "0",
-                              "_Height": "0",
-                              "_Angle": "0",
-                              "_SkewX": "0",
-                              "_SkewY": "0",
-                              "_CenterX": "0",
-                              "_CenterY": "0"
-                           },
-                           "Arrow": {
-                              "_name": "b00d345b80b94c57b626e7a6bf081d1f",
-                              "_X1": "213.958984375",
-                              "_Y1": "81.6685562133789",
-                              "_X2": "344.809265136719",
-                              "_Y2": "142.905288696289",
-                              "_Stroke": "#FFFFA500",
-                              "_StrokeThickness": "10",
-                              "_Title": "Arrow 1",
-                              "_Background": "",
-                              "_BorderBrush": "",
-                              "_BorderThickness": "0,0,0,0",
-                              "_Left": "0",
-                              "_Opacity": "1",
-                              "_Top": "0",
-                              "_Width": "0",
-                              "_Height": "0",
-                              "_Angle": "0",
-                              "_SkewX": "0",
-                              "_SkewY": "0",
-                              "_CenterX": "0",
-                              "_CenterY": "0"
-                           },
-                           "Picture": {
-                              "_name": "4f540c0e113a4c129a0492ae268f60a8",
-                              "_Source": "sample.jpg",
-                              "_IsAutoPlay": "False",
-                              "_IsMuted": "False",
-                              "_Title": "Picture 1",
-                              "_Background": "",
-                              "_BorderBrush": "",
-                              "_BorderThickness": "0,0,0,0",
-                              "_Left": "459.315686532416",
-                              "_Opacity": "1",
-                              "_Top": "393.070220545698",
-                              "_Width": "285.179870605469",
-                              "_Height": "211.723220825195",
-                              "_Angle": "0",
-                              "_SkewX": "0",
-                              "_SkewY": "0",
-                              "_CenterX": "142.589935302734",
-                              "_CenterY": "105.861610412598"
-                           }
-                        },
-                        "_name": "d8a1141200cb4674882fc9151b260918"
-                     },
-                     "View.ChronoMarker": "",
-                     "_name": "579c76e6e76c4b4e8e3380a521c58a4a",
-                     "_Kernel": "sample.mp4",
-                     "_Title": "View 1",
-                     "_Name": "579c76e6e76c4b4e8e3380a521c58a4a",
-                     "_IsActive": "False"
+  "Matrix": {
+    "name": "matrix1",
+    "Name": "matrix1",
+    "Title": "Title1",
+    "Skill": "Serve",
+    "Location": "Field",
+    "Duration": "00:00:04.9600000",
+    "DateCreated": "20161010150719",
+    "Sport": "Tennis",
+    "Channel": "Mayfair",
+    "Matrix.Children": {
+      "View": [
+        {
+          "name": "View 1",
+          "Title": "View 1",
+          "Source": "Local",
+          "Content": {
+            "Capture": {
+              "name": "f0733f4c840044a5b6071e96ef5bd42d",
+              "Kernel": "sample.mp4",
+              "Title": "View 1",
+              "Name": "f0733f4c840044a5b6071e96ef5bd42d",
+              "IsActive": "False",
+              "Marker": {
+                "name": "7963b212a766423c8341622bc47506de",
+                "Marker.Objects": {
+                  "Ellipse": {
+                    "-name": "803033f2b6ec47dc8bea3ed6700eb0a7",
+                    "-Fill": "#FFFFA500",
+                    "-Stroke": "#FF000000",
+                    "-StrokeThickness": "2",
+                    "-Title": "Ellipse 1",
+                    "-BorderThickness": "0,0,0,0",
+                    "-Left": "330.699890136719",
+                    "-Opacity": "0.8",
+                    "-Top": "135.697555541992",
+                    "-Width": "282.071899414063",
+                    "-Height": "338.231750488281",
+                    "-Angle": "0",
+                    "-SkewX": "0",
+                    "-SkewY": "0",
+                    "-CenterX": "141.035949707031",
+                    "-CenterY": "169.115875244141"
+                  },
+                  "Rectangle": {
+                    "-name": "4e03896a49304f60b0174ef0785d7da3",
+                    "-Fill": "#FFFFA500",
+                    "-Stroke": "#FF000000",
+                    "-StrokeThickness": "2",
+                    "-Title": "Rectangle 1",
+                    "-BorderThickness": "0,0,0,0",
+                    "-Left": "85.7534027099609",
+                    "-Opacity": "0.8",
+                    "-Top": "306.822875976563",
+                    "-Width": "221.037857055664",
+                    "-Height": "284.570922851563",
+                    "-Angle": "0",
+                    "-SkewX": "0",
+                    "-SkewY": "0",
+                    "-CenterX": "110.518928527832",
+                    "-CenterY": "142.285461425781"
                   }
-               },
-               "_name": "View 1",
-               "_Title": "View 1",
-               "_Source": "Local"
-            },
-            {
-               "Content": {
-                  "PIP": {
-                     "PIP.Objects": {
-                        "Ink": {
-                           "_name": "defe52abcadf4ca085466f9845f666b6",
-                           "_Title": "Ink 1",
-                           "_Background": "",
-                           "_BorderBrush": "",
-                           "_BorderThickness": "0,0,0,0",
-                           "_Left": "-2.5",
-                           "_Opacity": "1",
-                           "_Top": "-6",
-                           "_Width": "1930.34619140625",
-                           "_Height": "1094.5",
-                           "_Angle": "0",
-                           "_SkewX": "0",
-                           "_SkewY": "0",
-                           "_CenterX": "965.173095703125",
-                           "_CenterY": "547.25"
-                        },
-                        "Arrow": {
-                           "_name": "78aa6b7e90d3404c9ff779261e35b1b4",
-                           "_X1": "1147.58178710938",
-                           "_Y1": "47.8191795349121",
-                           "_X2": "912.077453613281",
-                           "_Y2": "125.143165588379",
-                           "_Stroke": "#FFFFA500",
-                           "_StrokeThickness": "10",
-                           "_Title": "Arrow 1",
-                           "_Background": "",
-                           "_BorderBrush": "",
-                           "_BorderThickness": "0,0,0,0",
-                           "_Left": "0",
-                           "_Opacity": "1",
-                           "_Top": "0",
-                           "_Width": "0",
-                           "_Height": "0",
-                           "_Angle": "0",
-                           "_SkewX": "0",
-                           "_SkewY": "0",
-                           "_CenterX": "0",
-                           "_CenterY": "0"
-                        },
-                        "RichTextObject": {
-                           "_name": "5ce3ee8cc66941df87045114db621bb8",
-                           "_FontSize": "20",
-                           "_Foreground": "#FFFFA500",
-                           "_Title": "Text 1",
-                           "_Background": "#00FFFFFF",
-                           "_BorderBrush": "#FF000000",
-                           "_BorderThickness": "2,2,2,2",
-                           "_Left": "615.351623535156",
-                           "_Opacity": "1",
-                           "_Top": "38.031925201416",
-                           "_Width": "150",
-                           "_Height": "50",
-                           "_Angle": "0",
-                           "_SkewX": "0",
-                           "_SkewY": "0",
-                           "_CenterX": "75",
-                           "_CenterY": "25"
-                        },
-                        "Ellipse": {
-                           "_name": "5b21ea3380344be2ac5b0c31b1d53ab0",
-                           "_Fill": "#FFFFA500",
-                           "_Stroke": "#FF000000",
-                           "_StrokeThickness": "2",
-                           "_Title": "Ellipse 1",
-                           "_Background": "",
-                           "_BorderBrush": "",
-                           "_BorderThickness": "0,0,0,0",
-                           "_Left": "534.537475585938",
-                           "_Opacity": "0.8",
-                           "_Top": "117.814323425293",
-                           "_Width": "220.493469238281",
-                           "_Height": "95.6924819946289",
-                           "_Angle": "0",
-                           "_SkewX": "0",
-                           "_SkewY": "0",
-                           "_CenterX": "110.246734619141",
-                           "_CenterY": "47.8462409973145"
-                        },
-                        "Rectangle": {
-                           "_name": "d1724642926b470aa7b3d28ae4a8b9e2",
-                           "_Fill": "#FFFFA500",
-                           "_Stroke": "#FF000000",
-                           "_StrokeThickness": "2",
-                           "_Title": "Rectangle 1",
-                           "_Background": "",
-                           "_BorderBrush": "",
-                           "_BorderThickness": "0,0,0,0",
-                           "_Left": "803.554382324219",
-                           "_Opacity": "0.8",
-                           "_Top": "175.471008300781",
-                           "_Width": "277.089538574219",
-                           "_Height": "184.1025390625",
-                           "_Angle": "0",
-                           "_SkewX": "0",
-                           "_SkewY": "0",
-                           "_CenterX": "138.544769287109",
-                           "_CenterY": "92.05126953125"
-                        },
-                        "LineObject": {
-                           "_name": "18e7d692958f49d8bf8e951a7cb437e1",
-                           "_X1": "436.399749755859",
-                           "_Y1": "179.181823730469",
-                           "_X2": "742.332824707031",
-                           "_Y2": "358.321136474609",
-                           "_Stroke": "#FFFFA500",
-                           "_StrokeThickness": "2",
-                           "_Title": "Line 1",
-                           "_Background": "",
-                           "_BorderBrush": "",
-                           "_BorderThickness": "0,0,0,0",
-                           "_Left": "0",
-                           "_Opacity": "1",
-                           "_Top": "0",
-                           "_Width": "0",
-                           "_Height": "0",
-                           "_Angle": "0",
-                           "_SkewX": "0",
-                           "_SkewY": "0",
-                           "_CenterX": "0",
-                           "_CenterY": "0"
-                        },
-                        "Picture": {
-                           "_name": "f5640fd9f1764043941a5b384c3677b3",
-                           "_Source": "sample - Copy.jpg",
-                           "_IsAutoPlay": "False",
-                           "_IsMuted": "False",
-                           "_Title": "Picture 1",
-                           "_Background": "",
-                           "_BorderBrush": "",
-                           "_BorderThickness": "0,0,0,0",
-                           "_Left": "415.374871683227",
-                           "_Opacity": "1",
-                           "_Top": "384.153710467508",
-                           "_Width": "1053.51220703125",
-                           "_Height": "597.703002929688",
-                           "_Angle": "0",
-                           "_SkewX": "0",
-                           "_SkewY": "0",
-                           "_CenterX": "526.756103515625",
-                           "_CenterY": "298.851501464844"
-                        },
-                        "Video": {
-                           "Behaviors": {
-                              "Span": {
-                                 "_name": "e0d7650e842e48ffaa9f4c5f6dfe9f47",
-                                 "_WithEasing": "False",
-                                 "_Position": "00:00:00",
-                                 "_Duration": "00:00:04.9600000"
-                              }
-                           },
-                           "_name": "3ca91fb166134d49890c54e00fb86d93",
-                           "_Source": "sample - Copy (4).mp4",
-                           "_IsAutoPlay": "False",
-                           "_IsMuted": "False",
-                           "_Title": "Video 1",
-                           "_Background": "",
-                           "_BorderBrush": "",
-                           "_BorderThickness": "0,0,0,0",
-                           "_Left": "1278.93468717085",
-                           "_Opacity": "1",
-                           "_Top": "63.2174218764849",
-                           "_Width": "419.653442382813",
-                           "_Height": "277.863098144531",
-                           "_Angle": "0",
-                           "_SkewX": "0",
-                           "_SkewY": "0",
-                           "_CenterX": "209.826721191407",
-                           "_CenterY": "138.931549072266"
-                        },
-                        "Audio": {
-                           "Behaviors": {
-                              "Span": {
-                                 "_name": "42e92cf99d764dc982d258302e429795",
-                                 "_WithEasing": "False",
-                                 "_Position": "00:00:00",
-                                 "_Duration": "00:00:12.4081250"
-                              }
-                           },
-                           "_name": "1136b3befe63433a9859b741c6584c8f",
-                           "_Source": "sample.mp3",
-                           "_IsAutoPlay": "False",
-                           "_IsMuted": "False",
-                           "_Title": "Audio 1",
-                           "_Background": "",
-                           "_BorderBrush": "",
-                           "_BorderThickness": "0,0,0,0",
-                           "_Left": "1613.0985680568",
-                           "_Opacity": "1",
-                           "_Top": "508.932571661735",
-                           "_Width": "70",
-                           "_Height": "70",
-                           "_Angle": "0",
-                           "_SkewX": "0",
-                           "_SkewY": "0",
-                           "_CenterX": "35",
-                           "_CenterY": "35"
-                        }
-                     },
-                     "_name": "68a1f9cb5b82489f8654d57d393487bf",
-                     "_CanvasBackgroundBrush": "#FFFFFFFF",
-                     "_CanvasBackgroundOpacity": "1"
-                  }
-               },
-               "_name": "View 2",
-               "_Title": "View 2",
-               "_Source": "Canvas"
-            },
-            {
-               "Content": {
-                  "Capture": {
-                     "Marker": {
-                        "_name": "0bc12ae178594a7581d3785ceebd340d"
-                     },
-                     "View.ChronoMarker": "",
-                     "_name": "e4164da166d94fde8f82f6b7cbb43ebd",
-                     "_Kernel": "sample.mp4",
-                     "_Title": "View 3",
-                     "_Name": "e4164da166d94fde8f82f6b7cbb43ebd",
-                     "_IsActive": "False"
-                  }
-               },
-               "_name": "View 3",
-               "_Title": "View 3",
-               "_Source": "Local"
-            },
-            {
-               "_name": "View 4",
-               "_Title": "View 4",
-               "_Source": "(Blank)"
+                }
+              }
             }
-         ]
-      },
-      "_name": "matrix1 (29)",
-      "_Name": "matrix1 (29)",
-      "_Title": "Title1",
-      "_Skill": "Serve",
-      "_Location": "Field",
-      "_Duration": "00:00:04.9600000",
-      "_DateCreated": "20161008114637",
-      "_Sport": "Tennis",
-      "_Channel": "Local",
-      "_Pin": ""
-   }
+          }
+        },
+        {
+          "name": "View 2",
+          "Title": "View 2",
+          "Source": "Local",
+          "Content": {
+            "Capture": {
+              "name": "5f5f978501c945bdb9e19e2a46121df8",
+              "Kernel": "sample.mp4",
+              "Title": "View 2",
+              "Name": "5f5f978501c945bdb9e19e2a46121df8",
+              "IsActive": "False",
+              "Marker": { "-name": "b8b753010f4a408cbe40120f9115cf32" }
+            }
+          }
+        },
+        {
+          "name": "View 3",
+          "Title": "View 3",
+          "Source": "Canvas",
+          "Content": {
+            "PIP": {
+              "name": "b756081d91ba468bbe202f66ad8ee312",
+              "CanvasBackgroundBrush": "#FFFFFFFF",
+              "CanvasBackgroundOpacity": "1",
+              "PIP.Objects": {
+                "Ellipse": {
+                  "name": "22c5bb0d8ca7429f83626ef4823f7b76",
+                  "Fill": "#FFFFA500",
+                  "Stroke": "#FF000000",
+                  "StrokeThickness": "2",
+                  "Title": "Ellipse 1",
+                  "BorderThickness": "0,0,0,0",
+                  "Left": "499.790405273438",
+                  "Opacity": "0.8",
+                  "Top": "145.348571777344",
+                  "Width": "624.725708007813",
+                  "Height": "569.12158203125",
+                  "Angle": "0",
+                  "SkewX": "0",
+                  "SkewY": "0",
+                  "CenterX": "312.362854003906",
+                  "CenterY": "284.560791015625"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
 }
