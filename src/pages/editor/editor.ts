@@ -77,12 +77,13 @@ export class EditorPage {
 
   addView() {
     if (this.views.length <= 7) {
+      var inum: number = this.views.length + 1;
       this.views.push({
-        "name": "View " + (this.views.length + 1),
-        "Title": "View " + (this.views.length + 1),
+        "name": "View " + inum,
+        "Title": "View " + inum,
         "Source": "(Blank)"
       });
-      this.showSegment(this.selectedViewIndex + 1);
+      this.showSegment(inum-1);
     }
     else {
       let alert = this.alertCtrl.create({
@@ -168,7 +169,7 @@ export class EditorPage {
             handler: () => {
               this.views.splice(index, 1);
               if (this.selectedViewIndex == 0) {
-                this.showSegment(0)
+                this.showSegment(0);
               }
               else {
                 this.showSegment(index - 1)
