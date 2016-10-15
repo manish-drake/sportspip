@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 
 
@@ -23,13 +23,6 @@ export class EditorPage {
   ifViewOptions: boolean;
   ifViewCanvas: boolean;
   ifViewVideo: boolean;
-
-  //variables for Video Timeline
-  sliderValue: any;
-  volumeValue: number;
-  timelinePosition: any;
-  timelineDuration: any;
-  repeatColor: any;
 
   constructor(public navCtrl: NavController, params: NavParams,
     private alertCtrl: AlertController,
@@ -214,11 +207,17 @@ export class EditorPage {
 
   //------Start-----Code for Video Timeline
 
-  videoPath:string;
+  sliderValue: any;
+  volumeValue: number;
+  timelinePosition: any;
+  timelineDuration: any;
+  repeatColor: any;
 
   interval: any = null;
 
   viewBoxSize:any;
+
+  videoPath:string;
 
   loadVideo() {
     this.videoPath = "assets/"+this.selectedView["Content"]["Capture"]["_Kernel"];
@@ -249,7 +248,7 @@ export class EditorPage {
     var minutes = (min >= 10) ? min : "0" + min;
     var sec = Math.floor(time % 60);
     var seconds = (sec >= 10) ? sec : "0" + sec;
-    return minutes + ":" + seconds;
+    return minutes + "." + seconds;
   }
   playPauseButtonIcon: string;
   volumeButtonIcon: string;
@@ -335,5 +334,85 @@ export class EditorPage {
         break;
     }
   }
+  // Code for Markers starts
+  @ViewChild('markersContainer') markersContainer;
+
+  onResize(event) { }
+
+  markers = [];
+  timeline: any;
+
+  evaluateMarkerPosition(pos) {
+    var markersContainerWidth = this.markersContainer.nativeElement.clientWidth;
+    var factor = markersContainerWidth / this.timelineDuration;
+    return pos * factor + 'px';
+  }
+
+  updateSelection(i) {
+    this.markers.forEach((marker, index) => {
+      if (i != index)
+        marker.checked = false;
+      else
+        marker.checked = true;
+    });
+  }
+
+  addMarker() {
+    var currentPosition = this.timelinePosition;
+    var canAddMarker = this.checkPosition(currentPosition);
+    if (canAddMarker) {
+      this.markers.push({ position: currentPosition });
+    }
+    else {
+      let alert = this.alertCtrl.create({
+        title: 'Limit Reached',
+        subTitle: 'Only 4 markers can be added on same position.',
+        buttons: ['OK']
+      });
+      alert.present();
+    }
+  }
+
+  checkPosition(position) {
+    var samePosition: number = 0;
+    if (this.markers.length > 3) {
+      this.markers.forEach((marker) => {
+        if (position == marker.position)
+          samePosition++;
+      });
+      if (samePosition >= 4)
+        return false;
+      else
+        return true;
+    }
+    else
+      return true;
+  }
+
+  deleteMarker(i) {
+    let confirm = this.alertCtrl.create({
+      title: 'Delete Marker!',
+      message: 'Do you realy want to delete marker?',
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => { }
+        },
+        {
+          text: 'Delete',
+          handler: () => {
+            this.markers.forEach((marker, index) => {
+              if (i == index) {
+                this.markers.splice(index, 1);
+              }
+            });
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+  // Code for Markers ends
+
   //------End-----Code for Video Timeline
 }
