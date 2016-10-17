@@ -22,6 +22,10 @@
 	<ion-fab bottom right>
 		<button ion-fab (click)="newMatrix()"><ion-icon name="add"></ion-icon></button>
 	</ion-fab>
+	<!--(For testing only) - Open matrix file placed in assets-->
+	<ion-fab bottom center>
+		<button ion-fab color="light" (click)="testOpenMatrix()">M</button>
+	</ion-fab>
 
 	<div [ngSwitch]="selectedSegment">
 		<div *ngSwitchCase="'local'">
