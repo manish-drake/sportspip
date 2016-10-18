@@ -245,7 +245,7 @@ export class HomePage {
   "Matrix": {
     "name": "matrix1",
     "Name": "New Matrix 1",
-    "Title": "Title1",
+    "Title": "New Matrix 1",
     "Skill": "Serve",
     "Location": "Field",
     "Duration": "00:00:00",

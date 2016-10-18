@@ -12,14 +12,10 @@ import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 
 export class EditorPage {
 
+  selectedViewIndex: number = 0;
+
   matrix: any;
   views: any;
-  selectedViewIndex: number = 0;
-  selectedView: any;
-
-  ifViewOptions: boolean;
-  ifViewCanvas: boolean;
-  ifViewVideo: boolean;
 
   constructor(public navCtrl: NavController, params: NavParams,
     private alertCtrl: AlertController,
@@ -27,7 +23,7 @@ export class EditorPage {
     this.matrix = params.get("matrixData");
     this.views = this.matrix["Matrix.Children"]["View"];
 
-    this.showSegment(this.selectedViewIndex);
+    this.showViewSegment(this.selectedViewIndex);
   }
 
   ionViewDidLoad() {
@@ -41,38 +37,15 @@ export class EditorPage {
     modal.present();
   }
 
-  showSegment(viewindex: number) {
+  showViewSegment(viewindex: number) {
     if (viewindex != this.selectedViewIndex) {
       this.selectedViewIndex = viewindex;
     }
-    this.selectedView = this.views[viewindex];
-    this.evaluateView();
   }
 
-  hideSegment(a, b) {
+  hideViewSegment(a, b) {
     if (a != b)
       return true;
-  }
-
-  evaluateView() {
-    if (this.selectedView.Source == "(Blank)") {
-      this.ifViewOptions = true;
-    }
-    else {
-      this.ifViewOptions = false;
-    }
-    if (this.selectedView.Source == 'Canvas') {
-      this.ifViewCanvas = true;
-    }
-    else {
-      this.ifViewCanvas = false;
-    }
-    if (this.selectedView.Source == 'Local') {
-      this.ifViewVideo = true;
-    }
-    else {
-      this.ifViewVideo = false;
-    }
   }
 
   addView() {
@@ -83,7 +56,7 @@ export class EditorPage {
         "Title": "View " + inum,
         "Source": "(Blank)"
       });
-      this.showSegment(inum-1);
+      this.showViewSegment(inum-1);
     }
     else {
       let alert = this.alertCtrl.create({
@@ -104,7 +77,6 @@ export class EditorPage {
           "Title": "View " + this.selectedViewIndex,
           "Source": typeparam
         };
-        this.showSegment(this.selectedViewIndex);
         break;
       case 'Local':
         this.views[this.selectedViewIndex] = {
@@ -112,7 +84,6 @@ export class EditorPage {
           "Title": "View " + this.selectedViewIndex,
           "Source": typeparam
         };
-        this.showSegment(this.selectedViewIndex);
         //this.addLocalVideo();
         break;
       case 'Camera':
@@ -121,7 +92,6 @@ export class EditorPage {
           "Title": "View " + this.selectedViewIndex,
           "Source": "Local"
         };
-        this.showSegment(this.selectedViewIndex);
         this.addLocalVideo();
         break;
     }

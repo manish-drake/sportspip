@@ -3,23 +3,22 @@
 	<ion-col style="padding:0px">
 		<ion-grid no-padding style="height: 100%;background:#000;">
 			<ion-row style="height: 100%;position: relative;">
-				<video id="video" style="position: absolute;" #video src="assets/sample.mp4" width="100%" height="100%" loop="true"></video>
+				<video id="video" style="position: absolute;" #video src="{{videoPath}}" width="100%" height="100%" loop="true"></video>
 				<svg height="100%" width="100%" style="position: absolute;" viewBox="0 0 1280 720">
 					<ellipse cx="400" cy="400" rx="100" ry="50" fill="orange" stroke="black" stroke-width="2" opacity="0.8" />
 					<rect x="30" y="50" width="300" height="100" fill="orange" stroke="black" stroke-width="2" opacity="0.8" />
-					<line x1="40" y1="170" x2="200" y2="200" stroke="black" stroke-width="2" opacity="0.8" />
+					<line x1="40" y1="170" x2="200" y2="200" stroke="orange" stroke-width="2" opacity="0.8" />
 					<text x="50" y="300" fill="orange" stroke="black" stroke-width="2" opacity="0.8" font-size="22">Canvas</text>
 					<image x="350" y="20" width="300" height="150" xlink:href="assets/sample.jpg" />
 					<defs>
-						<marker id="arrow" markerWidth="10" markerHeight="10" refx="0" refy="3" orient="auto" markerUnits="strokeWidth">
-							<path d="M0,0 L0,6 L9,3 z" fill="orange" />
+						<marker id="arrow" viewBox="0 0 12 12" markerWidth="6" markerHeight="6" refX="2" refY="7" orient="auto">
+							<path d="M2,2 L2,13 L8,7 L2,2" stroke="none" fill="orange"></path>
 						</marker>
 					</defs>
-					<line #arrow x1="50" y1="450" x2="250" y2="550" stroke="orange" stroke-width="5" marker-end="url(#arrow)" />
+					<line #arrow x1="120" y1="550" x2="250" y2="600" stroke="orange" stroke-width="8" marker-end="url(#arrow)" />
 					<image #Ink x="0" y="0" width="100%" height="100%" xlink:href="assets/defe52abcadf4ca085466f9845f666b6.gif" />
 				</svg>
 			</ion-row>
-
 			<ion-row padding-left padding-right padding-bottom style="background:#333; height: auto; flex: 0 0 auto;">
 				<ion-col no-padding>
 					<ion-grid no-padding>
@@ -38,10 +37,10 @@
 							</ion-col>
 						</ion-row>
 						<ion-row no-padding>
-							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
+							<ion-col padding-right center style="width:auto;flex: 0 0 auto;">
 								<button no-margin ion-button icon-only clear small color="light" (click)="captureController('playPause')"><ion-icon name="{{playPauseButtonIcon}}"></ion-icon></button>
 							</ion-col>
-							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
+							<ion-col padding-right center style="width:auto;flex: 0 0 auto;">
 								<button no-margin ion-button icon-only clear small color="{{repeatColor}}" (click)="captureController('repeatVideo')"><ion-icon name="repeat"></ion-icon></button>
 							</ion-col>
 							<ion-col no-padding center width="100%" style="min-width:100px;color:white;">

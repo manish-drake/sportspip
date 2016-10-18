@@ -1,9 +1,3 @@
-<!--
-  Generated template for the Editor page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 	<ion-navbar color="primary" no-border-bottom>
 		<ion-title>{{matrix.Title}}</ion-title>
@@ -19,7 +13,7 @@
 			</ion-col>
 			<ion-col no-padding style="width:100%;">
 				<ion-segment color="light" [(ngModel)]="selectedViewIndex">
-					<ion-segment-button *ngFor="let view of views; let i = index" [value]="i" (click)="showSegment(i)" (press)="deleteView(i)">
+					<ion-segment-button *ngFor="let view of views; let i = index" [value]="i" (click)="showViewSegment(i)" (press)="deleteView(i)">
 						View {{i+1}}
 					</ion-segment-button>
 				</ion-segment>
@@ -31,36 +25,34 @@
 	</ion-toolbar>
 </ion-header>
 
-
-<ion-content style="background:#eee;">
-
-	<!--viewContainer-->
-
-	<!--viewOptions-->
-	<ion-row *ngIf="ifViewOptions">
-		<ion-col center text-center>
-			<ion-card style="width:100%;">
-				<ion-card-header>Choose view type..</ion-card-header>
-				<ion-list>
-					<button ion-item (click)="defineView('Canvas')"><ion-icon name="easel" item-left></ion-icon>Blank Canvas</button>
-					<button ion-item (click)="defineView('Local')"><ion-icon name="ios-film" item-left></ion-icon>Add Video</button>
-					<button ion-item (click)="defineView('Camera')"><ion-icon name="videocam" item-left></ion-icon>Record Video</button>
-					<button ion-item (click)="importFromLibrary()"><ion-icon name="log-in" item-left></ion-icon>Import from library</button>
-				</ion-list>
-			</ion-card>
+<ion-content style="background:#eee;" [ngSwitch]="selectedViewIndex">
+	<ion-row style="height:100%;" *ngFor="let view of views; let i = index" [hidden]="hideViewSegment(selectedViewIndex,i)">
+		<ion-col [ngSwitch]="view.Source">
+			<!--viewOptions-->
+			<ion-row *ngSwitchCase="'(Blank)'">
+				<ion-col center text-center>
+					<ion-card style="width:100%;">
+						<ion-card-header>Choose view type..</ion-card-header>
+						<ion-list>
+							<button ion-item (click)="defineView('Canvas')"><ion-icon name="easel" item-left></ion-icon>Blank Canvas</button>
+							<button ion-item (click)="defineView('Local')"><ion-icon name="ios-film" item-left></ion-icon>Add Video</button>
+							<button ion-item (click)="defineView('Camera')"><ion-icon name="videocam" item-left></ion-icon>Record Video</button>
+							<button ion-item (click)="importFromLibrary()"><ion-icon name="log-in" item-left></ion-icon>Import from library</button>
+						</ion-list>
+					</ion-card>
+				</ion-col>
+			</ion-row>
+			<!--ViewCanvasTemplate-->
+			<canvas-component *ngSwitchCase="'Canvas'" [data]="view"></canvas-component>
+			<!--ViewVideoTemplate-->
+			<video-component *ngSwitchCase="'Local'" [data]="view"></video-component>
 		</ion-col>
 	</ion-row>
-
-	<!--ViewCanvasTemplate-->
-	<canvas-component *ngIf="ifViewCanvas"></canvas-component>
-	
-	<!--ViewVideoTemplate-->
-	<video-component *ngIf="ifViewVideo"></video-component>
 </ion-content>
 
 
-<!--<ion-footer>
-  <ion-toolbar>
+<ion-footer>
+	<ion-toolbar>
 
-  </ion-toolbar>
-</ion-footer>-->
+	</ion-toolbar>
+</ion-footer>

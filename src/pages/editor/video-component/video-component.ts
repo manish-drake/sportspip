@@ -1,4 +1,4 @@
-import { Component, Directive, ViewChild } from '@angular/core';
+import { Component, Directive, ViewChild, Input } from '@angular/core';
 import { AlertController, ModalController } from 'ionic-angular';
 
 @Component({
@@ -8,16 +8,9 @@ import { AlertController, ModalController } from 'ionic-angular';
 
 export class VideoComponent {
 
-    constructor(private alertCtrl: AlertController, private modalCtrl: ModalController) {
+    @Input() data:string;
 
-        this.volumeValue = 50;
-        this.playPauseButtonIcon = "play";
-        this.repeatColor = "light"
-        this.volumeButtonIcon = "volume-up";
-        this.timelinePosition = 0;
-
-        this.loadVideo();
-    }
+    videoPath:string="assets/sample.mp4";
 
     sliderValue: any=0;
     volumeValue: number;
@@ -29,12 +22,26 @@ export class VideoComponent {
 
     viewBoxSize: any;
 
+    constructor(private alertCtrl: AlertController, private modalCtrl: ModalController) {
+
+        this.volumeValue = 50;
+        this.playPauseButtonIcon = "play";
+        this.repeatColor = "light"
+        this.volumeButtonIcon = "volume-up";
+        this.timelinePosition = 0;
+        
+        this.loadVideo();
+    }
+
     loadVideo() {
         window.setTimeout(() => {
+            console.log(this.data);
+            this.videoPath = 'assets/'+this.data['Content']['Capture']['Kernel'];
+            
             var video = <HTMLVideoElement>document.getElementById("video");
             var volFactor = this.volumeValue / 100;
             video.volume = volFactor;
-
+            
             this.viewBoxSize = '0 0 ' + video.videoWidth + ' ' + video.videoHeight;
 
             video.addEventListener('ended', () => {
@@ -47,8 +54,7 @@ export class VideoComponent {
                 this.timelinePosition = this.formatTime(video.currentTime);
                 this.timelineDuration = this.formatTime(video.duration);
             }, 1);
-        }, 1)
-
+        }, 1);
 
     }
 
