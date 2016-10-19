@@ -192,20 +192,53 @@ export class HomePage {
   }
 
   newMatrix() {
+    let data =
+      `{
+  "Matrix": {
+    "name": "matrix1",
+    "Name": "New Matrix 1",
+    "Title": "New Matrix 1",
+    "Skill": "Serve",
+    "Location": "Field",
+    "Duration": "00:00:00",
+    "DateCreated": "20161010150719",
+    "Sport": "Tennis",
+    "Channel": "Local",
+    "Matrix.Children": {
+      "View": [
+        {
+          "name": "View 1",
+          "Title": "View 1",
+          "Source": "(Blank)",
+          "Content": {}
+        }
+      ]
+    }
+  }
+}`;
+    var res = JSON.parse(data);
+    var result = res.Matrix;
+
+    console.log(result);
 
     this.navCtrl.push(EditorPage, {
-      matrixData: 'New Matrix 1'
+      matrixData: result
     });
+  }
 
-    // this.http.get("assets/matrix1.mtx")
-    //   .subscribe(data => {
-    //     var res = JSON.parse(data.text());
-    //     var result = res.Matrix;
-    //     this.navCtrl.push(EditorPage, {
-    //       matrixData: result
-    //     });
-    //   });
+  // For testing only
+  testOpenMatrix() {
+    this.http.get("assets/matrix1.mtx")
+      .subscribe(data => {
+        var res = JSON.parse(data.text());
+        var result = res.Matrix;
 
+        console.log(result);
+
+        this.navCtrl.push(EditorPage, {
+          matrixData: result
+        });
+      });
   }
 
   openMatrix(matrixName, Channel) {

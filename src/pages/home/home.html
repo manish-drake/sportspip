@@ -1,5 +1,5 @@
 <ion-header>
-	<ion-navbar no-border-bottom>
+	<ion-navbar color="primary" no-border-bottom>
 		<ion-title start>
 			Sports PIP
 		</ion-title>
@@ -8,8 +8,8 @@
 			<button ion-button icon-only (click)="presentPopover($event)"><ion-icon name="more"></ion-icon></button>
 		</ion-buttons>
 	</ion-navbar>
-	<ion-toolbar no-border-top>
-		<ion-segment [(ngModel)]="selectedSegment">
+	<ion-toolbar color="primary" no-border-top>
+		<ion-segment [(ngModel)]="selectedSegment" color="light">
 			<ion-segment-button value="local">Matrices</ion-segment-button>
 			<ion-segment-button value="server">Channels</ion-segment-button>
 		</ion-segment>
@@ -21,6 +21,10 @@
 	<!-- Real floating action button, fixed. It will not scroll with the content -->
 	<ion-fab bottom right>
 		<button ion-fab (click)="newMatrix()"><ion-icon name="add"></ion-icon></button>
+	</ion-fab>
+	<!--(For testing only) - Open matrix file placed in assets-->
+	<ion-fab bottom center>
+		<button ion-fab color="light" (click)="testOpenMatrix()">M</button>
 	</ion-fab>
 
 	<div [ngSwitch]="selectedSegment">
