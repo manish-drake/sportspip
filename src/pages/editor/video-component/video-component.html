@@ -4,19 +4,25 @@
 		<ion-grid no-padding style="height: 100%;background:#000;">
 			<ion-row style="height: 100%;position: relative;">
 				<video id="video" style="position: absolute;" #video src="{{videoPath}}" width="100%" height="100%" loop="true"></video>
-				<svg height="100%" width="100%" style="position: absolute;" viewBox="0 0 1280 720">
-					<ellipse cx="400" cy="400" rx="100" ry="50" fill="orange" stroke="black" stroke-width="2" opacity="0.8" />
-					<rect x="30" y="50" width="300" height="100" fill="orange" stroke="black" stroke-width="2" opacity="0.8" />
-					<line x1="40" y1="170" x2="200" y2="200" stroke="orange" stroke-width="2" opacity="0.8" />
-					<text x="50" y="300" fill="orange" stroke="black" stroke-width="2" opacity="0.8" font-size="22">Canvas</text>
-					<image x="350" y="20" width="300" height="150" xlink:href="assets/sample.jpg" />
-					<defs>
-						<marker id="arrow" viewBox="0 0 12 12" markerWidth="6" markerHeight="6" refX="2" refY="7" orient="auto">
-							<path d="M2,2 L2,13 L8,7 L2,2" stroke="none" fill="orange"></path>
+				<svg *ngFor="let obj of objects;" [ngSwitch]="obj.key" [attr.viewBox]="viewBoxSize" height="100%" width="100%" style="position:absolute">
+					<rect *ngSwitchCase="'Rectangle'" [attr.x]="obj.val.Left" [attr.y]="obj.val.Top" [attr.width]="obj.val.Width" [attr.height]="obj.val.Height"
+						[attr.fill]="clrCvt(obj.val.Fill)" [attr.stroke]="clrCvt(obj.val.Stroke)" [attr.stroke-width]="obj.val.StrokeThickness" [attr.opacity]="obj.val.Opacity" />
+					<ellipse *ngSwitchCase="'Ellipse'" [attr.cx]="sum(obj.val.Left, obj.val.CenterX)" [attr.cy]="sum(obj.val.Top, obj.val.CenterY)"
+						[attr.rx]="obj.val.Width/2" [attr.ry]="obj.val.Height/2" [attr.fill]="clrCvt(obj.val.Fill)" [attr.stroke]="clrCvt(obj.val.Stroke)" [attr.stroke-width]="obj.val.StrokeThickness" [attr.opacity]="obj.val.Opacity" />
+					<line *ngSwitchCase="'LineObject'" [attr.x1]="obj.val.X1" [attr.y1]="obj.val.Y1" [attr.x2]="obj.val.X2" [attr.y2]="obj.val.Y2"
+						[attr.stroke]="clrCvt(obj.val.Stroke)" [attr.stroke-width]="obj.val.StrokeThickness" [attr.opacity]="obj.val.Opacity"/>
+					<text *ngSwitchCase="'RichTextObject'" [attr.x]="obj.val.Left" [attr.y]="obj.val.Top" [attr.font-size]="obj.val.FontSize"
+						[attr.fill]="clrCvt(obj.val.Foreground)" [attr.opacity]="obj.val.Opacity">Video</text>
+					<image *ngSwitchCase="'Picture'" [attr.x]="obj.val.Left" [attr.y]="obj.val.Top" [attr.width]="obj.val.Width" [attr.height]="obj.val.Height"
+						xlink:href="assets/sample.jpg" />
+					<defs *ngSwitchCase="'Arrow'">
+						<marker id="arrow" viewBox="0 0 16 16" markerWidth="6" markerHeight="6" refX="6" refY="6" orient="auto">
+							<path d="M0,0 L0,12 L16,6 L0,0" [attr.fill]="clrCvt(obj.val.Stroke)"></path>
 						</marker>
 					</defs>
-					<line #arrow x1="120" y1="550" x2="250" y2="600" stroke="orange" stroke-width="8" marker-end="url(#arrow)" />
-					<image #Ink x="0" y="0" width="100%" height="100%" xlink:href="assets/defe52abcadf4ca085466f9845f666b6.gif" />
+					<line *ngSwitchCase="'Arrow'" #arrow marker-end="url(#arrow)" [attr.x1]="obj.val.X1" [attr.y1]="obj.val.Y1" [attr.x2]="obj.val.X2"
+						[attr.y2]="obj.val.Y2" [attr.stroke]="clrCvt(obj.val.Stroke)" [attr.stroke-width]="obj.val.StrokeThickness" [attr.opacity]="obj.val.Opacity"/>
+					<image *ngSwitchCase="'Ink'" #Ink x="0" y="0" width="100%" height="100%" xlink:href="assets/inksample.gif"/>
 				</svg>
 			</ion-row>
 			<ion-row padding-left padding-right padding-bottom style="background:#333; height: auto; flex: 0 0 auto;">
@@ -25,7 +31,7 @@
 						<ion-row no-padding>
 							<ion-col #markersContainer no-padding (window:resize)="onResize($event)" style="height:28px;">
 								<button ion-button icon-only clear [class.markerselected]="marker.checked" color="light" *ngFor="let marker of markers;let i = index"
-									[style.left]="evaluateMarkerPosition(marker.position)" style="width:18px;height:26px;margin:0 -9px;" (click)="updateSelection(i)"
+									[style.left]="evaluateMarkerPosition(marker.Position)" style="width:18px;height:26px;margin:0 -9px;" (click)="updateSelection(i)"
 									(press)="deleteMarker(i)">
 										<ion-icon name="pin"></ion-icon>
 										</button>

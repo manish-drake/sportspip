@@ -1,4 +1,4 @@
-import { Component, ViewChild, NgModule } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 
@@ -139,10 +139,10 @@ export class EditorPage {
             handler: () => {
               this.views.splice(index, 1);
               if (this.selectedViewIndex == 0) {
-                this.showSegment(0);
+                this.showViewSegment(0);
               }
               else {
-                this.showSegment(index - 1)
+                this.showViewSegment(index - 1)
               }
             }
           }

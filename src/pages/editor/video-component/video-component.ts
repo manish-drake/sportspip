@@ -1,4 +1,4 @@
-import { Component, Directive, ViewChild, Input } from '@angular/core';
+import { Component, ViewChild, Input } from '@angular/core';
 import { AlertController, ModalController } from 'ionic-angular';
 
 @Component({
@@ -8,11 +8,13 @@ import { AlertController, ModalController } from 'ionic-angular';
 
 export class VideoComponent {
 
-    @Input() data:string;
+    @Input() data: string;
 
-    videoPath:string="assets/sample.mp4";
+    objects = [];
 
-    sliderValue: any=0;
+    videoPath: string = "assets/sample.mp4";
+
+    sliderValue: any = 0;
     volumeValue: number;
     timelinePosition: any;
     timelineDuration: any;
@@ -29,20 +31,55 @@ export class VideoComponent {
         this.repeatColor = "light"
         this.volumeButtonIcon = "volume-up";
         this.timelinePosition = 0;
-        
+
         this.loadVideo();
+
+        //Code for objects starts
+        window.setTimeout(() => {
+            console.log(this.data);
+
+            this.markers = this.data["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
+            console.log(this.markers);
+
+            var objs = this.data["Content"]["Capture"]["Marker"]["Marker.Objects"];
+
+            for (var key in objs) {
+                // skip loop if the property is from prototype
+                if (!objs.hasOwnProperty(key)) continue;
+                var val = objs[key];
+
+                if (val instanceof Array) {
+                    val.forEach(val => {
+                        this.objects.push({ key, val });
+                    });
+                }
+                else {
+                    this.objects.push({ key, val });
+                }
+            }
+            console.log(this.objects);
+        
+        }, 1);
+        //Code for objects end
     }
+
+    //Code for objects starts
+    clrCvt(color) {
+        return '#' + color.slice(3, 9);
+    }
+
+    sum(a, b) {
+        return Number(a) + Number(b);
+    }
+    //Code for objects end
 
     loadVideo() {
         window.setTimeout(() => {
-            console.log(this.data);
-            this.videoPath = 'assets/'+this.data['Content']['Capture']['Kernel'];
-            
+            this.videoPath = 'assets/' + this.data['Content']['Capture']['Kernel'];
+
             var video = <HTMLVideoElement>document.getElementById("video");
             var volFactor = this.volumeValue / 100;
             video.volume = volFactor;
-            
-            this.viewBoxSize = '0 0 ' + video.videoWidth + ' ' + video.videoHeight;
 
             video.addEventListener('ended', () => {
                 this.playPauseButtonIcon = 'play';
@@ -53,6 +90,8 @@ export class VideoComponent {
                 this.sliderValue = factor;
                 this.timelinePosition = this.formatTime(video.currentTime);
                 this.timelineDuration = this.formatTime(video.duration);
+
+                this.viewBoxSize = '0 0 ' + video.videoWidth + ' ' + video.videoHeight;
             }, 1);
         }, 1);
 
@@ -156,7 +195,6 @@ export class VideoComponent {
     onResize(event) { }
 
     markers = [];
-    timeline: any;
 
     evaluateMarkerPosition(pos) {
         var markersContainerWidth = this.markersContainer.nativeElement.clientWidth;
@@ -177,7 +215,7 @@ export class VideoComponent {
         var currentPosition = this.timelinePosition;
         var canAddMarker = this.checkPosition(currentPosition);
         if (canAddMarker) {
-            this.markers.push({ position: currentPosition });
+            this.markers.push({ Position: currentPosition });
         }
         else {
             let alert = this.alertCtrl.create({
