@@ -4,6 +4,7 @@ import { sportspip } from './app.component';
 import { HomePage, PopoverPage1 } from '../pages/home/home';
 import { EditorPage } from '../pages/editor/editor';
 import { MatrixInfoPage } from '../pages/matrixinfo/matrixinfo'
+import {SortPipe} from '../GroupBy/OrderBy';
 import {GroupBy} from '../GroupBy/GroupBy';
 import { SettingsPage } from '../pages/settings/settings';
 import { CollectionPage } from '../pages/collection/collection'
@@ -20,7 +21,8 @@ import { ChannelCollectionPage,PopoverPage2 } from '../pages/channelcollection/c
     CollectionPage,
     ChannelCollectionPage,
     PopoverPage2,
-    GroupBy
+    GroupBy,
+    SortPipe
   ],
   imports: [
     IonicModule.forRoot(sportspip)

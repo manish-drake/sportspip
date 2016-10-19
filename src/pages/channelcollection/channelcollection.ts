@@ -2,7 +2,10 @@ import { Component } from '@angular/core';
 import { File } from 'ionic-native';
 import { StorageFactory } from '../../Factory/StorageFactory';
 import { Http } from '@angular/http';
+import { Package } from '../../pages/Package';
+import { Observable } from 'rxjs/Rx';
 import { NavController, PopoverController, NavParams, ActionSheetController, AlertController, ViewController, Platform } from 'ionic-angular';
+import { FormGroup, FormControl } from '@angular/forms';
 declare var cordova: any;
 
 /*
@@ -14,7 +17,7 @@ declare var cordova: any;
 @Component({
   selector: 'page-channelcollection',
   templateUrl: 'channelcollection.html',
-  providers: [StorageFactory],
+  providers: [StorageFactory, Package],
 })
 export class ChannelCollectionPage {
 
@@ -27,6 +30,7 @@ export class ChannelCollectionPage {
     private platform: Platform,
     private alertCtrl: AlertController,
     private popoverController: PopoverController,
+    private packages: Package,
     private http: Http) {
 
     this.channel = params.get("firstPassed");
@@ -61,11 +65,44 @@ export class ChannelCollectionPage {
   presentPopover(event) {
     let popover = this.popoverController.create(PopoverPage2);
     popover.present({ ev: event });
+    alert("Sss");
   }
 
   DeleteChannelMatrix(DirName, Channel, index) {
     this.storagefactory.DeleteServerHeader(DirName, Channel);
     this.channelMatrices.splice(index, 1);
+  }
+
+  DownloadServerHeaderAsync(fileName, channelName, index) {
+    var authenticate = this.AuthenticateUser();
+    if (authenticate) {
+      Observable.interval(1000)
+        .take(1).map((x) => x + 5)
+        .subscribe((x) => {
+          this.packages.DownloadServerHeader(fileName, channelName);
+        })
+      Observable.interval(2000)
+        .take(1).map((x) => x + 5)
+        .subscribe((x) => {
+          this.packages.MoveToLocalCollection();
+        })
+    }
+    Observable.interval(3000)
+      .take(1).map((x) => x + 5)
+      .subscribe((x) => {
+      })
+    Observable.interval(4000)
+      .take(1).map((x) => x + 5)
+      .subscribe((x) => {
+        this.DeleteChannelMatrix(fileName, channelName, index);
+      })
+
+
+  }
+
+  AuthenticateUser() {
+    alert("Authenticatnig user");
+    return true;
   }
 
   channelMatrixPressed(index, channel, DirName) {
@@ -74,12 +111,13 @@ export class ChannelCollectionPage {
       buttons: [{
         text: 'Download',
         handler: () => {
-          let alert = this.alertCtrl.create({
-            title: 'Not Downloaded!',
-            subTitle: 'Download is not possible right now.',
-            buttons: ['OK']
-          });
-          alert.present();
+          this.DownloadServerHeaderAsync(DirName, channel, index);
+          // let alert = this.alertCtrl.create({
+          //   title: 'Not Downloaded!',
+          //   subTitle: 'Download is not possible right now.',
+          //   buttons: ['OK']
+          // });
+          // alert.present();
         }
       }, {
         text: 'Delete',
@@ -100,7 +138,7 @@ export class ChannelCollectionPage {
 
 @Component({
   template: `
-    <ion-list radio-group (ionChange)="changeSortBy()">
+    <ion-list radio-group (ionChange)="changeSortBy($event)">
       <ion-list-header>
         Sort By
       </ion-list-header>
@@ -113,13 +151,17 @@ export class ChannelCollectionPage {
         <ion-radio value="title"></ion-radio>
       </ion-item>
     </ion-list>
-  `
+  `,
+  selector: 'page-popover'
 })
+
 export class PopoverPage2 {
+
   constructor(public viewCtrl: ViewController) {
+
   }
 
-  changeSortBy() {
+  changeSortBy(event) {
     this.dismiss();
   }
 

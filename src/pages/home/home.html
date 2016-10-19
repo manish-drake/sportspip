@@ -34,7 +34,7 @@
 			</ion-row>
 			<div class="items">
 				<div class="item" *ngFor='let matrix of localMatrices | slice: 0:12; let i = index'>
-					<ion-card (click)="openMatrix(matrix.title)" (press)="matrixPressed(i,matrix.Name,matrix.Channel)">
+					<ion-card (click)="openMatrix(matrix.Name,matrix.Channel)" (press)="matrixPressed(i,matrix.Name,matrix.Channel)">
 						<img src="assets/sample.jpg" />
 						<ion-card-content>
 							<ion-card-title style="font-size:18px;flex-wrap: nowrap;">

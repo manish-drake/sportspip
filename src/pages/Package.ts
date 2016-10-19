@@ -9,7 +9,7 @@ import 'rxjs/Rx';
 @Injectable()
 export class Package {
 
-    constructor(private http: Http, private platform: Platform,private storagefactory:StorageFactory) {
+    constructor(private http: Http, private platform: Platform, private storagefactory: StorageFactory) {
     }
 
 
@@ -18,14 +18,12 @@ export class Package {
         var headerPath = cordova.file.dataDirectory + "Temp/matrix1/Header.xml";
         this.http.get(headerPath).subscribe(data => {
             var result = JSON.parse(data.text());
-            alert("Move Header");
-            this.storagefactory.SaveLocalHeader(data.text(), result.Header.Channel, result.Header.Sport, "matrix1", "Matrices");
+            this.storagefactory.SaveLocalHeader(data.text(), result.Header.Channel, result.Header.Sport, result.Header.name, "Matrices");
         })
         var matrixPath = cordova.file.dataDirectory + "Temp/matrix1/matrix1.xml";
         this.http.get(matrixPath).subscribe(data => {
             var result = JSON.parse(data.text());
-             alert("Move Matrix");
-            this.storagefactory.SaveMatrixAsync(data.text(), result.Matrix.Channel, result.Matrix.Sport, "matrix1", "Matrices");
+            this.storagefactory.SaveMatrixAsync(data.text(), result.Matrix.Channel, result.Matrix.Sport, result.Matrix.name, "Matrices");
         })
     }
 
