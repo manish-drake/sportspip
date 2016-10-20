@@ -1,4 +1,6 @@
 page-editor {
-    
+    ::-webkit-scrollbar,
+    *::-webkit-scrollbar {
+    display: none;
 }
-
+}
