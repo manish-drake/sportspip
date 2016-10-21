@@ -8,6 +8,8 @@ import { AlertController, ModalController } from 'ionic-angular';
 
 export class VideoComponent {
 
+    @ViewChild('video') video;
+
     @Input() data: string;
 
     objects = [];
@@ -58,7 +60,7 @@ export class VideoComponent {
                 }
             }
             console.log(this.objects);
-        
+
         }, 1);
         //Code for objects end
     }
@@ -77,9 +79,13 @@ export class VideoComponent {
         window.setTimeout(() => {
             this.videoPath = 'assets/' + this.data['Content']['Capture']['Kernel'];
 
-            var video = <HTMLVideoElement>document.getElementById("video");
+            // var video = <HTMLVideoElement>document.getElementById("video");
+            var video = this.video.nativeElement;
+
+            this.timelineDuration = this.formatTime(video.duration);
             var volFactor = this.volumeValue / 100;
             video.volume = volFactor;
+            this.viewBoxSize = '0 0 ' + video.videoWidth + ' ' + video.videoHeight;
 
             video.addEventListener('ended', () => {
                 this.playPauseButtonIcon = 'play';
@@ -89,20 +95,22 @@ export class VideoComponent {
                 var factor = (100000 / video.duration) * video.currentTime;
                 this.sliderValue = factor;
                 this.timelinePosition = this.formatTime(video.currentTime);
-                this.timelineDuration = this.formatTime(video.duration);
 
-                this.viewBoxSize = '0 0 ' + video.videoWidth + ' ' + video.videoHeight;
+                this.evaluateMarkerPosition();
             }, 1);
-        }, 1);
+        }, 500);
 
     }
 
     formatTime(time) {
+        var hrs = Math.floor(time / 3600);
+        var hours = (hrs >= 10) ? hrs : "0" + hrs;
         var min = Math.floor(time / 60);
         var minutes = (min >= 10) ? min : "0" + min;
         var sec = Math.floor(time % 60);
         var seconds = (sec >= 10) ? sec : "0" + sec;
-        return minutes + "." + seconds;
+        var milliseconds = time.toFixed(2).substr(-2);
+        return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
     }
     playPauseButtonIcon: string;
     volumeButtonIcon: string;
@@ -192,14 +200,22 @@ export class VideoComponent {
     // Code for Markers starts
     @ViewChild('markersContainer') markersContainer;
 
-    onResize(event) { }
+    onResize(event) { this.evaluateMarkerPosition(); }
 
     markers = [];
 
-    evaluateMarkerPosition(pos) {
+    evaluateMarkerPosition() {
         var markersContainerWidth = this.markersContainer.nativeElement.clientWidth;
-        var factor = markersContainerWidth / this.timelineDuration;
-        return pos * factor + 'px';
+        var durationInMilliseconds = Number(this.timelineDuration.slice(1, 2)) * 36000000000 + Number(this.timelineDuration.slice(4, 5)) * 60000000 + Number(this.timelineDuration.slice(7, 8)) * 10000000 + Number(this.timelineDuration.substr(-2)) * 100000;
+        var factor = markersContainerWidth / durationInMilliseconds;
+
+        this.markers.forEach(marker => {
+            var pos = marker.Position;
+            var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 600000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
+            marker.Left = positionInMilliseconds * factor + 'px';
+        });
+
+        // return positionInMilliseconds * factor + 'px';
     }
 
     updateSelection(i) {
@@ -212,10 +228,13 @@ export class VideoComponent {
     }
 
     addMarker() {
-        var currentPosition = this.timelinePosition;
+        var currentPosition = this.timelinePosition + '00000';
         var canAddMarker = this.checkPosition(currentPosition);
         if (canAddMarker) {
-            this.markers.push({ Position: currentPosition });
+            var name = 'Marker ' + (this.markers.length + 1);
+            this.markers.push({ Duration: '00:00:03', Name: name, Position: currentPosition, Speed: 1, name: name });
+            this.evaluateMarkerPosition();
+            console.log(this.markers);
         }
         else {
             let alert = this.alertCtrl.create({
@@ -231,7 +250,7 @@ export class VideoComponent {
         var samePosition: number = 0;
         if (this.markers.length > 3) {
             this.markers.forEach((marker) => {
-                if (position == marker.position)
+                if (position == marker.Position)
                     samePosition++;
             });
             if (samePosition >= 4)

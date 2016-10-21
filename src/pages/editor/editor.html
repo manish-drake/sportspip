@@ -28,28 +28,66 @@
 <ion-content style="background:#eee;" [ngSwitch]="selectedViewIndex">
 	<ion-row style="height:100%;" *ngFor="let view of views; let i = index" [hidden]="hideViewSegment(selectedViewIndex,i)">
 		<ion-col [ngSwitch]="view.Source">
-			<!--viewOptions-->
-			<ion-row *ngSwitchCase="'(Blank)'">
-				<ion-col center text-center>
-					<ion-card style="width:100%;">
-						<ion-card-header>Choose view type..</ion-card-header>
-						<ion-list>
-							<button ion-item (click)="defineView('Canvas')"><ion-icon name="easel" item-left></ion-icon>Blank Canvas</button>
-							<button ion-item (click)="defineView('Local')"><ion-icon name="ios-film" item-left></ion-icon>Add Video</button>
-							<button ion-item (click)="defineView('Camera')"><ion-icon name="videocam" item-left></ion-icon>Record Video</button>
-							<button ion-item (click)="importFromLibrary()"><ion-icon name="log-in" item-left></ion-icon>Import from library</button>
-						</ion-list>
-					</ion-card>
-				</ion-col>
-			</ion-row>
 			<!--ViewCanvasTemplate-->
 			<canvas-component *ngSwitchCase="'Canvas'" [data]="view"></canvas-component>
 			<!--ViewVideoTemplate-->
 			<video-component *ngSwitchCase="'Local'" [data]="view"></video-component>
+			<!--viewOptions-->
+			<ion-row *ngSwitchCase="'(Blank)'" style="height:100%;">
+				<ion-col no-padding center text-center>
+
+					<ion-grid no-padding style="max-width:500px ;margin-left: auto;margin-right: auto;">
+						<ion-row no-padding>
+							<ion-col no-padding width-50>
+								<ion-card (click)="defineView('Canvas')">
+									<ion-item>
+										<ion-avatar item-left>
+											<ion-icon name="easel" item-left></ion-icon>
+										</ion-avatar>
+										<h2>Blank Canvas</h2>
+									</ion-item>
+								</ion-card>
+							</ion-col>
+							<ion-col no-padding width-50>
+								<ion-card (click)="defineView('Local')">
+									<ion-item>
+										<ion-avatar item-left>
+											<ion-icon name="ios-film" item-left></ion-icon>
+										</ion-avatar>
+										<h2>Add Video</h2>
+									</ion-item>
+								</ion-card>
+							</ion-col>
+						</ion-row>
+						<ion-row no-padding>
+							<ion-col no-padding width-50>
+								<ion-card (click)="importFromLibrary()">
+									<ion-item>
+										<ion-avatar item-left>
+											<ion-icon name="log-in" item-left></ion-icon>
+										</ion-avatar>
+										<h2>Import</h2>
+									</ion-item>
+								</ion-card>
+							</ion-col>
+							<ion-col no-padding width-50>
+								<ion-card (click)="defineView('Camera')">
+									<ion-item>
+										<ion-avatar item-left>
+											<ion-icon name="videocam" item-left></ion-icon>
+										</ion-avatar>
+										<h2>Record Video</h2>
+									</ion-item>
+								</ion-card>
+							</ion-col>
+						</ion-row>
+					</ion-grid>
+
+				</ion-col>
+			</ion-row>
 		</ion-col>
 	</ion-row>
 </ion-content>
-
 
 <ion-footer>
 	<ion-toolbar>
