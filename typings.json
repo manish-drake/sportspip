@@ -1,5 +1,9 @@
 {
   "globalDependencies": {
+    "lodash": "registry:dt/lodash#4.14.0+20161004174455",
     "xml2js": "registry:dt/xml2js#0.0.0+20160317120654"
+  },
+  "dependencies": {
+    "debug": "registry:npm/debug#2.0.0+20160723033700"
   }
 }

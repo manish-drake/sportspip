@@ -3,7 +3,7 @@ import { StorageFactory } from '../../Factory/StorageFactory';
 import { ModelFactory } from '../../Factory/ModelFactory';
 import { AppVersion, File } from 'ionic-native';
 import { Package } from '../../pages/Package';
-import { Http } from '@angular/http';
+import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';

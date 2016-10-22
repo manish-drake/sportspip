@@ -1,6 +1,6 @@
 <ion-row style="height: 100%;position: relative;">
 	<svg viewBox="0 0 1920 1080" height="100%" width="100%" style="position:absolute">
-		<rect #canvasappearence x="0" y="0" width="1920" height="1080" fill="White" stroke="lightgray" stroke-width="1" />
+		<rect #canvasappearence x="0" y="0" width="1920" height="1080" fill="White" stroke="lightgray" stroke-width="1"/>
 	</svg>
 	<svg *ngFor="let obj of objects;" [ngSwitch]="obj.key" viewBox="0 0 1920 1080" height="100%" width="100%" style="position:absolute">
 		<rect *ngSwitchCase="'Rectangle'" [attr.x]="obj.val.Left" [attr.y]="obj.val.Top" [attr.width]="obj.val.Width" [attr.height]="obj.val.Height"

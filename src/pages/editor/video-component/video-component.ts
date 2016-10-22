@@ -14,7 +14,7 @@ export class VideoComponent {
 
     objects = [];
 
-    videoPath: string = "assets/sample.mp4";
+    markersObjects = []
 
     sliderValue: any = 0;
     volumeValue: number;
@@ -41,7 +41,31 @@ export class VideoComponent {
             console.log(this.data);
 
             this.markers = this.data["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
-            console.log(this.markers);
+
+            this.markers.forEach(data => {
+                var objs = data['Marker.Objects'];
+
+                var objects = [];
+
+                for (var key in objs) {
+                    // skip loop if the property is from prototype
+                    if (!objs.hasOwnProperty(key)) continue;
+                    var val = objs[key];
+
+                    if (val instanceof Array) {
+                        val.forEach(val => {
+                            objects.push({ key, val });
+                        });
+                    }
+                    else {
+                        objects.push({ key, val });
+                    }
+                }
+
+                this.markersObjects.push({ data, objects })
+
+            });
+            console.log(this.markersObjects);
 
             var objs = this.data["Content"]["Capture"]["Marker"]["Marker.Objects"];
 
@@ -75,9 +99,12 @@ export class VideoComponent {
     }
     //Code for objects end
 
+    returnVidPath(filename) {
+        return 'assets/' + filename;
+    }
+
     loadVideo() {
         window.setTimeout(() => {
-            this.videoPath = 'assets/' + this.data['Content']['Capture']['Kernel'];
 
             // var video = <HTMLVideoElement>document.getElementById("video");
             var video = this.video.nativeElement;
@@ -98,7 +125,7 @@ export class VideoComponent {
 
                 this.evaluateMarkerPosition();
             }, 1);
-        }, 500);
+        }, 100);
 
     }
 
@@ -206,16 +233,20 @@ export class VideoComponent {
 
     evaluateMarkerPosition() {
         var markersContainerWidth = this.markersContainer.nativeElement.clientWidth;
-        var durationInMilliseconds = Number(this.timelineDuration.slice(1, 2)) * 36000000000 + Number(this.timelineDuration.slice(4, 5)) * 60000000 + Number(this.timelineDuration.slice(7, 8)) * 10000000 + Number(this.timelineDuration.substr(-2)) * 100000;
+        var durationInMilliseconds = this.stringToMilliseconds(this.timelineDuration);
         var factor = markersContainerWidth / durationInMilliseconds;
 
         this.markers.forEach(marker => {
             var pos = marker.Position;
-            var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 600000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
+            var positionInMilliseconds = this.stringToMilliseconds(pos);
             marker.Left = positionInMilliseconds * factor + 'px';
         });
 
         // return positionInMilliseconds * factor + 'px';
+    }
+
+    stringToMilliseconds(str) {
+        return Number(str.slice(1, 2)) * 36000000000 + Number(str.slice(4, 5)) * 60000000 + Number(str.slice(7, 8)) * 10000000 + Number(str.substr(-2)) * 100000;
     }
 
     updateSelection(i) {
