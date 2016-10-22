@@ -5,7 +5,6 @@ import { Http } from '@angular/http';
 import { Package } from '../../pages/Package';
 import { Observable } from 'rxjs/Rx';
 import { NavController, PopoverController, NavParams, ActionSheetController, AlertController, ViewController, Platform } from 'ionic-angular';
-import { FormGroup, FormControl } from '@angular/forms';
 declare var cordova: any;
 
 /*

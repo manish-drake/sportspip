@@ -2,9 +2,8 @@ import { NgModule } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { sportspip } from './app.component';
 import { HomePage, PopoverPage1 } from '../pages/home/home';
-
 import { EditorPage } from '../pages/editor/editor';
-import {SortPipe} from '../GroupBy/OrderBy';
+import {OrderBy} from '../GroupBy/OrderBy';
 import { MatrixInfoPage } from '../pages/editor/matrixinfo/matrixinfo';
 import { VideoComponent } from '../pages/editor/video-component/video-component'
 import { CanvasComponent } from '../pages/editor/canvas-component/canvas-component'
@@ -29,7 +28,7 @@ import { ChannelCollectionPage,PopoverPage2 } from '../pages/channelcollection/c
     ChannelCollectionPage,
     PopoverPage2,
     GroupBy,
-    SortPipe
+    OrderBy
   ],
   imports: [
     IonicModule.forRoot(sportspip)

@@ -14,15 +14,21 @@
   },
   "dependencies": {
     "@ionic/storage": "^1.0.3",
+    "@angular/http": "^2.0.0",
+    "angular2": "^2.0.0-beta.0",
     "ionic-angular": "^2.0.0-rc.0",
     "ionic-native": "^2.0.3",
     "ionicons": "^3.0.0",
+    "live-server": "^1.1.0",
+    "rxjs": "^5.0.0-beta.0",
+    "systemjs": "^0.19.39",
+    "typescript": "^2.0.3",
     "xml2js": "^0.4.17"
-     
   },
   "devDependencies": {
     "@ionic/app-scripts": "^0.0.23",
     "del": "^2.2.2",
+    "gulp-require-angular": "^0.7.1",
     "gulp-watch": "^4.3.10",
     "ionic-gulp-browserify-typescript": "^2.0.0",
     "ionic-gulp-fonts-copy": "^1.0.0",
@@ -31,8 +37,7 @@
     "ionic-gulp-scripts-copy": "^2.0.1",
     "ionic-gulp-tslint": "^1.1.0",
     "run-sequence": "^1.2.2",
-    "typescript": "^2.0.3",
-    "target": "es6"
+    "typescript": "^2.0.3"
   },
   "description": "sportspip: An Ionic project",
   "cordovaPlugins": [

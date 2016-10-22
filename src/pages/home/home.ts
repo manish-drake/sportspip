@@ -40,8 +40,10 @@ export class HomePage {
   ) {
 
     this.selectedSegment = "local";
-    this.GetserverHeader().then((success) => {
 
+    //for local url
+
+    this.GetserverHeader().then((success) => {
       Observable.interval(1000)
         .take(1).map((x) => x + 5)
         .subscribe((x) => {
@@ -49,7 +51,87 @@ export class HomePage {
         })
     });
 
-    this.GetLocalMatrixHeader();
+    //for server url
+
+    // this.GetserverHeader().then(success => {
+    //   Observable.interval(1000)
+    //     .take(1).map((x) => x + 5)
+    //     .subscribe((x) => {
+    //       this.SaveServerHeaders();
+    //     })
+    //      Observable.interval(2000)
+    //     .take(1).map((x) => x + 5)
+    //     .subscribe((x) => {
+    //       this.DisplayServerHeader();
+    //     })    
+    // });
+
+    // this.GetLocalMatrixHeader();
+  }
+
+  GetserverHeader() {
+    return this.http.get("assets/Header.xml")
+      .map(res => {
+        return this.SerializeServerData(res);
+      }).toPromise()
+
+    // return this.http.get("http://sportspip.cloudapp.net:10101/IStorageService/getmtxhdrs")
+    //   .map(res => {
+    //     var headerData = JSON.parse(res.text());
+    //     this.Save(headerData, "header.xml");
+    //   }).toPromise();
+  }
+
+  Save(blob, filename) {
+    File.createFile(cordova.file.dataDirectory, filename, true).then(() => {
+      File.writeFile(cordova.file.dataDirectory, filename, blob, true).then(() => {
+
+      })
+    })
+  }
+
+  SaveServerHeaders() {
+    this.http.get("file:/storage/emulated/0/DCIM/matrix/matrix.xml").subscribe(data => {
+      var headerList = JSON.parse(data.text());
+      headerList.forEach(header => {
+        var result = header;
+        var item = {
+          Title: result.Title, DateCreated: result.DateCreated, Name: result.UploadIndex.toString(), Channel: result.ChannelName,
+          ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadIndex, Duration: result.Duration,
+          Views: result.Views
+        };
+        this.Header.push(item);
+      });
+      this.SaveDownloadedHeaders(this.Header);
+    })
+  }
+
+  SerializeServerData(headerData) {
+
+    var res = JSON.parse(headerData.text());
+    var result = res.Header;
+    var item = {
+      Title: result.Title, DateCreated: result.DateCreated, Name: result.name, Channel: result.Channel,
+      ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
+      Views: result.Clips
+    };
+    this.Header.push(item);
+    this.SaveDownloadedHeaders(this.Header);
+
+  }
+
+  //Save Downloaded Header
+  SaveDownloadedHeaders(HeaderList) {
+    HeaderList.forEach((res) => {
+      Observable.interval(2000)
+        .take(1).map((x) => x + 5)
+        .subscribe((x) => {
+          this.storagefactory.SaveRoamingHeader(res, res.Channel, res.Sport, res.Name);
+        })
+
+    })
+    // this.storagefactory.SaveRoamingHeader(Data, HeaderList.Channel, HeaderList.Sport, HeaderList.name);
+
   }
 
   GetLocalMatrixHeader() {
@@ -82,37 +164,6 @@ export class HomePage {
     this.localMatrices.splice(index, 1);
   }
 
-  GetserverHeader() {
-    return this.http.get("assets/Header.xml")
-      .map(res => {
-        return this.SerializeServerData(res);
-      }).toPromise()
-  }
-
-  SerializeServerData(headerData) {
-
-    var res = JSON.parse(headerData.text());
-    var result = res.Header;
-    //  var item = {
-    //       Title: result.Title, DateCreated: result.DateCreated, Name: result.name, Channel: result.Channel,
-    //       ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
-    //       Views: result.Clips
-    //     };
-    //     this.Header.push(item);
-    this.SaveDownloadedHeaders(result, headerData.text());
-
-  }
-
-  //Save Downloaded Header
-  SaveDownloadedHeaders(HeaderList, Data) {
-
-    // HeaderList.forEach((res) => {
-    //   this.storagefactory.SaveRoamingHeader(res, res.Channel, res.Sport, res.Name);
-    // })
-    this.storagefactory.SaveRoamingHeader(Data, HeaderList.Channel, HeaderList.Sport, HeaderList.name);
-
-  }
-
   //Display Server Header
   DisplayServerHeader() {
     this.platform.ready().then(() => {
@@ -122,11 +173,10 @@ export class HomePage {
             success.forEach((res) => {
               this.http.get(cordova.file.dataDirectory + "Server/" + channelName.name + "/Tennis/Matrices/" + res.name + "/Header.xml")
                 .subscribe(data => {
-                  //deserialiae server header  
-                  var header = JSON.parse(data.text());
-                  var result = header.Header;
+                  // deserialiae server header  
+                  var result = JSON.parse(data.text());
                   var item = {
-                    Title: result.Title, DateCreated: result.DateCreated, Name: result.name, Channel: result.Channel,
+                    Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
                     ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
                     Views: result.Clips
                   };
@@ -150,28 +200,36 @@ export class HomePage {
   DownloadServerHeaderAsync(fileName, channelName, index, value) {
     var authenticate = this.AuthenticateUser();
     if (authenticate) {
-      Observable.interval(1000)
-        .take(1).map((x) => x + 5)
-        .subscribe((x) => {
-          this.packages.DownloadServerHeader(fileName, channelName);
-        })
-      Observable.interval(2000)
+
+      // Observable.interval(1000)
+      //   .take(1).map((x) => x + 5)
+      //   .subscribe((x) => {
+      //     this.packages.DownloadServerHeader(fileName, channelName);
+      //   })
+
+      // Observable.interval(2000)
+      // .take(1).map((x) => x + 5)
+      // .subscribe((x) => {
+      //   this.packages.unzipPackage();
+      // })
+
+      Observable.interval(500)
         .take(1).map((x) => x + 5)
         .subscribe((x) => {
           this.packages.MoveToLocalCollection();
         })
     }
-    Observable.interval(3000)
-      .take(1).map((x) => x + 5)
-      .subscribe((x) => {
-        this.localMatrices = [];
-        this.GetLocalMatrixHeader();
-      })
-    Observable.interval(4000)
-      .take(1).map((x) => x + 5)
-      .subscribe((x) => {
-        this.DeleteServerHeader(fileName, index, value, channelName);
-      })
+    // Observable.interval(3000)
+    //   .take(1).map((x) => x + 5)
+    //   .subscribe((x) => {
+    //     this.localMatrices = [];
+    //     this.GetLocalMatrixHeader();
+    //   })
+    // Observable.interval(4000)
+    //   .take(1).map((x) => x + 5)
+    //   .subscribe((x) => {
+    //     this.DeleteServerHeader(fileName, index, value, channelName);
+    //   })
 
 
   }

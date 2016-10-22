@@ -27,6 +27,15 @@
         },
         "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "com.ionicframework.sportspip439155"
+        },
+        "com.jjdltc.cordova.plugin.zip": {
+            "PACKAGE_NAME": "com.ionicframework.sportspip439155"
+        },
+        "cordova-plugin-file-transfer": {
+            "PACKAGE_NAME": "com.ionicframework.sportspip439155"
+        },
+        "cordova-plugin-zip": {
+            "PACKAGE_NAME": "com.ionicframework.sportspip439155"
         }
     },
     "dependent_plugins": {
