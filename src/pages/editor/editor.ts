@@ -56,7 +56,7 @@ export class EditorPage {
         "Title": "View " + inum,
         "Source": "(Blank)"
       });
-      this.showViewSegment(inum-1);
+      this.showViewSegment(inum - 1);
     }
     else {
       let alert = this.alertCtrl.create({
@@ -66,62 +66,6 @@ export class EditorPage {
       });
       alert.present();
     }
-  }
-
-  // Define View using view options
-  defineView(typeparam) {
-    switch (typeparam) {
-      case 'Canvas':
-        this.views[this.selectedViewIndex] = {
-          "name": "View " + this.selectedViewIndex,
-          "Title": "View " + this.selectedViewIndex,
-          "Source": typeparam
-        };
-        break;
-      case 'Local':
-        this.views[this.selectedViewIndex] = {
-          "name": "View " + this.selectedViewIndex,
-          "Title": "View " + this.selectedViewIndex,
-          "Source": typeparam
-        };
-        //this.addLocalVideo();
-        break;
-      case 'Camera':
-        this.views[this.selectedViewIndex] = {
-          "name": "View " + this.selectedViewIndex,
-          "Title": "View " + this.selectedViewIndex,
-          "Source": "Local"
-        };
-        this.addLocalVideo();
-        break;
-    }
-  }
-
-  addLocalVideo() {
-    let alert = this.alertCtrl.create({
-      title: 'Under Progress!',
-      subTitle: 'You cannot add local video.',
-      buttons: ['OK']
-    });
-    alert.present();
-  }
-
-  cameraCapture() {
-    let alert = this.alertCtrl.create({
-      title: 'Under Progress!',
-      subTitle: 'You cannot record video.',
-      buttons: ['OK']
-    });
-    alert.present();
-  }
-
-  importFromLibrary() {
-    let alert = this.alertCtrl.create({
-      title: 'Unavailable!',
-      subTitle: 'View library not available currently.',
-      buttons: ['OK']
-    });
-    alert.present();
   }
 
   deleteView(index) {
@@ -159,4 +103,56 @@ export class EditorPage {
       alert.present();
     }
   }
+
+  //Code for ViewOptions start
+  addBlankCanvas() {
+    var canvasView = {
+      "name": "View " + this.selectedViewIndex,
+      "Title": "View " + this.selectedViewIndex,
+      "Source": 'Canvas'
+    }
+    this.views[this.selectedViewIndex] = canvasView;
+  }
+
+  addVideo(i) {
+    var localView = {
+      "Content": {
+        "Capture": {
+          "Marker": {
+            "Marker.Objects": "",
+            "name": "c379224ff2704c5ea5ad1f10275a28c1"
+          },
+          "View.ChronoMarker": "",
+          "name": "ba160173f284474c9412192dcd77cb1c",
+          "Kernel": "sample.mp4",
+          "Title": "View " + this.selectedViewIndex,
+          "Name": "ba160173f284474c9412192dcd77cb1c",
+          "IsActive": "False"
+        }
+      },
+      "name": "View " + this.selectedViewIndex,
+      "Title": "View " + this.selectedViewIndex,
+      "Source": "Local"
+    }
+    this.views[this.selectedViewIndex] = localView;
+  }
+
+  recordVideo() {
+    let alert = this.alertCtrl.create({
+      title: 'Under Progress!',
+      subTitle: 'You cannot record video.',
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
+  import() {
+    let alert = this.alertCtrl.create({
+      title: 'Unavailable!',
+      subTitle: 'View library not available currently.',
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+  //Code for ViewOptions end
 }

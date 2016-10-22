@@ -464,21 +464,204 @@
                               "Name": "Marker 1",
                               "Duration": "00:00:03",
                               "Position": "00:00:00.4190000",
-                              "Speed": "1"
+                              "Speed": "1",
+                              "Marker.Objects": {
+                                 "Rectangle": [
+                                    {
+                                       "name": "15f57b3dd582427d861686338bb9f3d5",
+                                       "Fill": "#FF3446DE",
+                                       "Stroke": "#FF1AEC32",
+                                       "StrokeThickness": "2",
+                                       "Title": "Rectangle 1",
+                                       "Background": "",
+                                       "BorderBrush": "",
+                                       "BorderThickness": "0,0,0,0",
+                                       "Left": "537.429443359375",
+                                       "Opacity": "0.8",
+                                       "Top": "642.378601074219",
+                                       "Width": "538.799194335938",
+                                       "Height": "20.016357421875",
+                                       "Angle": "0",
+                                       "SkewX": "0",
+                                       "SkewY": "0",
+                                       "CenterX": "269.399597167969",
+                                       "CenterY": "10.0081787109375"
+                                    }
+                                 ]
+                              }
                            },
                            {
                               "name": "Marker 2",
                               "Name": "Marker 2",
                               "Duration": "00:00:03",
                               "Position": "00:00:00",
-                              "Speed": "1"
+                              "Speed": "1",
+                              "Marker.Objects": {
+                                 "Ellipse": [
+                                    {
+                                       "name": "0484543d695a419bb2b6c6a5100948ed",
+                                       "Fill": "#FFFFA500",
+                                       "Stroke": "#FF000000",
+                                       "StrokeThickness": "2",
+                                       "Title": "Ellipse 1",
+                                       "Background": "",
+                                       "BorderBrush": "",
+                                       "BorderThickness": "0,0,0,0",
+                                       "Left": "1040.66870117188",
+                                       "Opacity": "0.8",
+                                       "Top": "10.3811025619507",
+                                       "Width": "20.519287109375",
+                                       "Height": "20.8025207519531",
+                                       "Angle": "0",
+                                       "SkewX": "0",
+                                       "SkewY": "0",
+                                       "CenterX": "10.2596435546875",
+                                       "CenterY": "10.4012603759766"
+                                    }
+                                 ],
+                                 "Rectangle": [
+                                    {
+                                       "name": "1c612cccee2f4b41b2d20f896842e6f7",
+                                       "Fill": "#FFFFA500",
+                                       "Stroke": "#FF000000",
+                                       "StrokeThickness": "2",
+                                       "Title": "Rectangle 1",
+                                       "Background": "",
+                                       "BorderBrush": "",
+                                       "BorderThickness": "0,0,0,0",
+                                       "Left": "860.155883789063",
+                                       "Opacity": "0.8",
+                                       "Top": "14.3722829818726",
+                                       "Width": "36.2317504882813",
+                                       "Height": "24.8239326477051",
+                                       "Angle": "0",
+                                       "SkewX": "0",
+                                       "SkewY": "0",
+                                       "CenterX": "18.1158752441406",
+                                       "CenterY": "12.4119663238525"
+                                    }
+                                 ],
+                                 "LineObject": [
+                                    {
+                                       "name": "0cc0fff3ca6e496d9f6677699804a9a9",
+                                       "X1": "765.105590820313",
+                                       "Y1": "707.1748046875",
+                                       "X2": "811.622863769531",
+                                       "Y2": "691.179870605469",
+                                       "Stroke": "#FFFFA500",
+                                       "StrokeThickness": "2",
+                                       "Title": "Line 1",
+                                       "Background": "",
+                                       "BorderBrush": "",
+                                       "BorderThickness": "0,0,0,0",
+                                       "Left": "0",
+                                       "Opacity": "1",
+                                       "Top": "0",
+                                       "Width": "0",
+                                       "Height": "0",
+                                       "Angle": "0",
+                                       "SkewX": "0",
+                                       "SkewY": "0",
+                                       "CenterX": "0",
+                                       "CenterY": "0"
+                                    }
+                                 ],
+                                 "Arrow": {
+                                    "name": "d806b256582345dd9b26a24e794b2286",
+                                    "X1": "991.437927246094",
+                                    "Y1": "704",
+                                    "X2": "1269.04272460938",
+                                    "Y2": "700.794982910156",
+                                    "Stroke": "#FFFFA500",
+                                    "StrokeThickness": "10",
+                                    "Title": "Arrow 1",
+                                    "Background": "",
+                                    "BorderBrush": "",
+                                    "BorderThickness": "0,0,0,0",
+                                    "Left": "0",
+                                    "Opacity": "1",
+                                    "Top": "0",
+                                    "Width": "0",
+                                    "Height": "0",
+                                    "Angle": "0",
+                                    "SkewX": "0",
+                                    "SkewY": "0",
+                                    "CenterX": "0",
+                                    "CenterY": "0"
+                                 },
+                                 "RichTextObject": {
+                                    "name": "d450380c12de40a99aa065c35d0d20be",
+                                    "FontSize": "12",
+                                    "Foreground": "#FFFF8C00",
+                                    "Title": "Text 1",
+                                    "Background": "#00FFFFFF",
+                                    "BorderBrush": "#FF000000",
+                                    "BorderThickness": "0,0,0,0",
+                                    "Left": "29.3834037780762",
+                                    "Opacity": "1",
+                                    "Top": "698.376098632813",
+                                    "Width": "150",
+                                    "Height": "50",
+                                    "Angle": "0",
+                                    "SkewX": "0",
+                                    "SkewY": "0",
+                                    "CenterX": "75",
+                                    "CenterY": "25"
+                                 },
+                                 "Picture": [
+                                    {
+                                       "name": "6a89234e275b4b8d93c0db5b452d6fe4",
+                                       "Source": "sample - Copy (5).jpg",
+                                       "IsAutoPlay": "False",
+                                       "IsMuted": "False",
+                                       "Title": "Picture 1",
+                                       "Background": "",
+                                       "BorderBrush": "",
+                                       "BorderThickness": "0,0,0,0",
+                                       "Left": "1128.88141057407",
+                                       "Opacity": "1",
+                                       "Top": "76.047811127542",
+                                       "Width": "121.022186279297",
+                                       "Height": "101.631507873535",
+                                       "Angle": "0",
+                                       "SkewX": "0",
+                                       "SkewY": "0",
+                                       "CenterX": "60.5110931396484",
+                                       "CenterY": "50.8157539367676"
+                                    }
+                                 ]
+                              }
                            },
                            {
                               "name": "Marker 3",
                               "Name": "Marker 3",
                               "Duration": "00:00:03",
                               "Position": "00:00:01.4700000",
-                              "Speed": "1"
+                              "Speed": "1",
+                              "Marker.Objects": {
+                                 "Ellipse": [
+                                    {
+                                       "name": "b9a048d06ebe460bb33521762f31c9be",
+                                       "Fill": "#FFB479F1",
+                                       "Stroke": "#FFD6FA71",
+                                       "StrokeThickness": "2",
+                                       "Title": "Ellipse 1",
+                                       "Background": "",
+                                       "BorderBrush": "",
+                                       "BorderThickness": "0,0,0,0",
+                                       "Left": "979.808638861738",
+                                       "Opacity": "0.8",
+                                       "Top": "507.978563342502",
+                                       "Width": "45.1475372314453",
+                                       "Height": "97.6025543212891",
+                                       "Angle": "0",
+                                       "SkewX": "0",
+                                       "SkewY": "0",
+                                       "CenterX": "22.5737686157227",
+                                       "CenterY": "48.8012771606445"
+                                    }
+                                 ]
+                              }
                            },
                            {
                               "name": "Marker 4",
@@ -523,7 +706,7 @@
                      },
                      "View.ChronoMarker": "",
                      "name": "ba160173f284474c9412192dcd77cb1c",
-                     "Kernel": "sample.mp4",
+                     "Kernel": "sample2.mp4",
                      "Title": "View 3",
                      "Name": "ba160173f284474c9412192dcd77cb1c",
                      "IsActive": "False"
