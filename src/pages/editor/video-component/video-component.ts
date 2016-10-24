@@ -17,52 +17,49 @@ export class VideoComponent {
     timelinePosition: any;
     timelineDuration: any;
     repeatColor: any;
-
+    playPauseButtonIcon: string;
+    volumeButtonIcon: string;
     interval: any = null;
-
     viewBoxSize: any;
 
     constructor(private alertCtrl: AlertController, private modalCtrl: ModalController) {
-
-    }
-
-    ngAfterContentInit() {
-        console.log(this.data);
-        
         this.volumeValue = 50;
         this.playPauseButtonIcon = "play";
         this.repeatColor = "inactive"
         this.volumeButtonIcon = "volume-up";
         this.timelinePosition = 0;
+    }
 
-        this.loadVideo();
-
+    ngOnInit() {
+        console.log(this.data);
+        this.markers = this.data["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
         this.loadObjects();
+        this.loadMarkerObjects();
+
+        var volFactor = this.volumeValue / 100;
+        this.video.nativeElement.volume = volFactor;
+
+        this.video.nativeElement.addEventListener('ended', () => {
+            this.playPauseButtonIcon = 'play';
+        })
+
+        this.timelineInterval();
     }
 
     returnVidPath(filename) {
         return 'assets/' + filename;
     }
 
-    loadVideo() {
-        // var video = <HTMLVideoElement>document.getElementById("video");
-        var video = this.video.nativeElement;
-        var volFactor = this.volumeValue / 100;
-        video.volume = volFactor;
-        this.viewBoxSize = '0 0 ' + video.videoWidth + ' ' + video.videoHeight;
-
-        video.addEventListener('ended', () => {
-            this.playPauseButtonIcon = 'play';
-        })
-
+    timelineInterval() {
         this.interval = window.setInterval(() => {
-            var factor = (100000 / video.duration) * video.currentTime;
+            this.viewBoxSize = '0 0 ' + this.video.nativeElement.videoWidth + ' ' + this.video.nativeElement.videoHeight;
+
+            var factor = (100000 / this.video.nativeElement.duration) * this.video.nativeElement.currentTime;
             this.sliderValue = factor;
-            this.timelinePosition = this.formatTime(video.currentTime);
-            this.timelineDuration = this.formatTime(video.duration);
+            this.timelinePosition = this.formatTime(this.video.nativeElement.currentTime);
+            this.timelineDuration = this.formatTime(this.video.nativeElement.duration);
             this.evaluateMarkerPosition();
         }, 1);
-
     }
 
     formatTime(time) {
@@ -75,8 +72,6 @@ export class VideoComponent {
         var milliseconds = time.toFixed(2).substr(-2);
         return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
     }
-    playPauseButtonIcon: string;
-    volumeButtonIcon: string;
 
     captureController(state) {
         var video = <HTMLVideoElement>document.getElementById("video");
@@ -251,10 +246,6 @@ export class VideoComponent {
     // Code for Markers ends
 
     //Code for objects starts
-    objects = [];
-
-    markersObjects = []
-
     clrCvt(color) {
         return '#' + color.slice(3, 9);
     }
@@ -263,54 +254,62 @@ export class VideoComponent {
         return Number(a) + Number(b);
     }
 
+    objects = [];
+
     loadObjects() {
-        window.setTimeout(() => {
-            this.markers = this.data["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
+        var objs = this.data["Content"]["Capture"]["Marker"]["Marker.Objects"];
 
-            this.markers.forEach(data => {
-                var objs = data['Marker.Objects'];
+        for (var key in objs) {
+            // skip loop if the property is from prototype
+            if (!objs.hasOwnProperty(key)) continue;
+            var val = objs[key];
 
-                var objects = [];
-
-                for (var key in objs) {
-                    // skip loop if the property is from prototype
-                    if (!objs.hasOwnProperty(key)) continue;
-                    var val = objs[key];
-
-                    if (val instanceof Array) {
-                        val.forEach(val => {
-                            objects.push({ key, val });
-                        });
-                    }
-                    else {
-                        objects.push({ key, val });
-                    }
-                }
-
-                this.markersObjects.push({ data, objects })
-
-            });
-            console.log(this.markersObjects);
-
-            var objs = this.data["Content"]["Capture"]["Marker"]["Marker.Objects"];
-
-            for (var key in objs) {
-                // skip loop if the property is from prototype
-                if (!objs.hasOwnProperty(key)) continue;
-                var val = objs[key];
-
-                if (val instanceof Array) {
-                    val.forEach(val => {
-                        this.objects.push({ key, val });
-                    });
-                }
-                else {
+            if (val instanceof Array) {
+                val.forEach(val => {
                     this.objects.push({ key, val });
-                }
+                });
             }
-            console.log(this.objects);
+            else {
+                this.objects.push({ key, val });
+            }
+        }
+        console.log(this.objects);
+    }
 
-        }, 500);
+    markersObjects = []
+
+    loadMarkerObjects() {
+        var interval = window.setInterval(() => {
+            if (this.markers != undefined) {
+
+                window.clearInterval(interval);
+
+                this.markers.forEach(data => {
+                    var objs = data['Marker.Objects'];
+
+                    var objects = [];
+
+                    for (var key in objs) {
+                        // skip loop if the property is from prototype
+                        if (!objs.hasOwnProperty(key)) continue;
+                        var val = objs[key];
+
+                        if (val instanceof Array) {
+                            val.forEach(val => {
+                                objects.push({ key, val });
+                            });
+                        }
+                        else {
+                            objects.push({ key, val });
+                        }
+                    }
+
+                    this.markersObjects.push({ data, objects })
+
+                });
+                console.log(this.markersObjects);
+            }
+        }, 1);
     }
     //Code for objects end
 }

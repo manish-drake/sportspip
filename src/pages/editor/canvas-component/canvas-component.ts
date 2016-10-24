@@ -7,15 +7,13 @@ import { Component, Input } from '@angular/core';
 
 export class CanvasComponent {
 
-  @Input() data: string;
+  @Input() data: any;
 
-  constructor() {
-
-  }
+  constructor() {}
 
   objects = [];
-  
-  ngAfterContentInit() {
+
+  ngOnInit() {
     console.log(this.data);
 
     var objs = this.data["Content"]["PIP"]["PIP.Objects"];
