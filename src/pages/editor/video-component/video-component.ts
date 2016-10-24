@@ -10,7 +10,7 @@ export class VideoComponent {
 
     @ViewChild('video') video;
 
-    @Input() data: string;
+    @Input() data: any;
 
     objects = [];
 
