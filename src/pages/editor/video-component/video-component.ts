@@ -24,9 +24,14 @@ export class VideoComponent {
 
     constructor(private alertCtrl: AlertController, private modalCtrl: ModalController) {
 
+    }
+
+    ngAfterContentInit() {
+        console.log(this.data);
+        
         this.volumeValue = 50;
         this.playPauseButtonIcon = "play";
-        this.repeatColor = "light"
+        this.repeatColor = "inactive"
         this.volumeButtonIcon = "volume-up";
         this.timelinePosition = 0;
 
@@ -40,26 +45,23 @@ export class VideoComponent {
     }
 
     loadVideo() {
-        window.setTimeout(() => {
+        // var video = <HTMLVideoElement>document.getElementById("video");
+        var video = this.video.nativeElement;
+        var volFactor = this.volumeValue / 100;
+        video.volume = volFactor;
+        this.viewBoxSize = '0 0 ' + video.videoWidth + ' ' + video.videoHeight;
 
-            // var video = <HTMLVideoElement>document.getElementById("video");
-            var video = this.video.nativeElement;
-            var volFactor = this.volumeValue / 100;
-            video.volume = volFactor;
-            this.viewBoxSize = '0 0 ' + video.videoWidth + ' ' + video.videoHeight;
+        video.addEventListener('ended', () => {
+            this.playPauseButtonIcon = 'play';
+        })
 
-            video.addEventListener('ended', () => {
-                this.playPauseButtonIcon = 'play';
-            })
-
-            this.interval = window.setInterval(() => {
-                var factor = (100000 / video.duration) * video.currentTime;
-                this.sliderValue = factor;
-                this.timelinePosition = this.formatTime(video.currentTime);
-                this.timelineDuration = this.formatTime(video.duration);
-                this.evaluateMarkerPosition();
-            }, 1);
-        }, 100);
+        this.interval = window.setInterval(() => {
+            var factor = (100000 / video.duration) * video.currentTime;
+            this.sliderValue = factor;
+            this.timelinePosition = this.formatTime(video.currentTime);
+            this.timelineDuration = this.formatTime(video.duration);
+            this.evaluateMarkerPosition();
+        }, 1);
 
     }
 
@@ -93,12 +95,12 @@ export class VideoComponent {
                 }
                 break;
             case 'repeatVideo':
-                if (video.loop == true) {
-                    video.loop = false;
-                    this.repeatColor = 'inactive';
-                } else {
+                if (video.loop == false) {
                     video.loop = true;
                     this.repeatColor = 'light';
+                } else {
+                    video.loop = false;
+                    this.repeatColor = 'inactive';
                 }
                 break;
             case 'previousVideoFrame':
@@ -178,7 +180,7 @@ export class VideoComponent {
 
         // return positionInMilliseconds * factor + 'px';
     }
-    
+
     updateSelection(i) {
         this.markers.forEach((marker, index) => {
             if (i != index)
@@ -261,10 +263,8 @@ export class VideoComponent {
         return Number(a) + Number(b);
     }
 
-    loadObjects(){
+    loadObjects() {
         window.setTimeout(() => {
-            console.log(this.data);
-
             this.markers = this.data["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
 
             this.markers.forEach(data => {

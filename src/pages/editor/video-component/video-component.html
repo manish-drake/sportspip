@@ -4,7 +4,7 @@
 		<ion-grid no-padding style="height: 100%;background:#000;">
 			<ion-row style="height: 100%;position: relative;">
 				<video #video id="video" style="position: absolute;" #video [attr.src]="returnVidPath(data.Content.Capture.Kernel)" width="100%"
-					height="100%" loop="true"></video>
+					height="100%"></video>
 				<svg *ngFor="let obj of objects;" [ngSwitch]="obj.key" [attr.viewBox]="viewBoxSize" height="100%" width="100%" style="position:absolute">
 					<rect *ngSwitchCase="'Rectangle'" [attr.x]="obj.val.Left" [attr.y]="obj.val.Top" [attr.width]="obj.val.Width" [attr.height]="obj.val.Height"
 						[attr.fill]="clrCvt(obj.val.Fill)" [attr.stroke]="clrCvt(obj.val.Stroke)" [attr.stroke-width]="obj.val.StrokeThickness"

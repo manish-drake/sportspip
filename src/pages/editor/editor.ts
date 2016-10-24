@@ -20,14 +20,16 @@ export class EditorPage {
   constructor(public navCtrl: NavController, params: NavParams,
     private alertCtrl: AlertController,
     private modalCtrl: ModalController) {
-    this.matrix = params.get("matrixData");
-    this.views = this.matrix["Matrix.Children"]["View"];
-
-    this.showViewSegment(this.selectedViewIndex);
+      this.matrix = params.get("matrixData");
   }
 
   ionViewDidLoad() {
-    console.log('Hello Editor Page');
+    
+  }
+
+  ngOnInit() {
+    this.views = this.matrix["Matrix.Children"]["View"];
+    this.showViewSegment(this.selectedViewIndex);
   }
 
   presentInfoModal() {
