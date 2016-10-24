@@ -12,10 +12,6 @@ export class VideoComponent {
 
     @Input() data: any;
 
-    objects = [];
-
-    markersObjects = []
-
     sliderValue: any = 0;
     volumeValue: number;
     timelinePosition: any;
@@ -36,68 +32,8 @@ export class VideoComponent {
 
         this.loadVideo();
 
-        //Code for objects starts
-        window.setTimeout(() => {
-            console.log(this.data);
-
-            this.markers = this.data["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
-
-            this.markers.forEach(data => {
-                var objs = data['Marker.Objects'];
-
-                var objects = [];
-
-                for (var key in objs) {
-                    // skip loop if the property is from prototype
-                    if (!objs.hasOwnProperty(key)) continue;
-                    var val = objs[key];
-
-                    if (val instanceof Array) {
-                        val.forEach(val => {
-                            objects.push({ key, val });
-                        });
-                    }
-                    else {
-                        objects.push({ key, val });
-                    }
-                }
-
-                this.markersObjects.push({ data, objects })
-
-            });
-            console.log(this.markersObjects);
-
-            var objs = this.data["Content"]["Capture"]["Marker"]["Marker.Objects"];
-
-            for (var key in objs) {
-                // skip loop if the property is from prototype
-                if (!objs.hasOwnProperty(key)) continue;
-                var val = objs[key];
-
-                if (val instanceof Array) {
-                    val.forEach(val => {
-                        this.objects.push({ key, val });
-                    });
-                }
-                else {
-                    this.objects.push({ key, val });
-                }
-            }
-            console.log(this.objects);
-
-        }, 1);
-        //Code for objects end
+        this.loadObjects();
     }
-
-    //Code for objects starts
-    clrCvt(color) {
-        return '#' + color.slice(3, 9);
-    }
-
-    sum(a, b) {
-        return Number(a) + Number(b);
-    }
-    //Code for objects end
 
     returnVidPath(filename) {
         return 'assets/' + filename;
@@ -223,30 +159,26 @@ export class VideoComponent {
     }
 
     // Code for Markers starts
+    markers = [];
+
     @ViewChild('markersContainer') markersContainer;
 
     onResize(event) { this.evaluateMarkerPosition(); }
 
-    markers = [];
-
     evaluateMarkerPosition() {
         var markersContainerWidth = this.markersContainer.nativeElement.clientWidth;
-        var durationInMilliseconds = this.stringToMilliseconds(this.timelineDuration);
+        var durationInMilliseconds = Number(this.timelineDuration.slice(1, 2)) * 36000000000 + Number(this.timelineDuration.slice(4, 5)) * 60000000 + Number(this.timelineDuration.slice(7, 8)) * 10000000 + Number(this.timelineDuration.substr(-2)) * 100000;
         var factor = markersContainerWidth / durationInMilliseconds;
 
         this.markers.forEach(marker => {
             var pos = marker.Position;
-            var positionInMilliseconds = this.stringToMilliseconds(pos);
+            var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
             marker.Left = positionInMilliseconds * factor + 'px';
         });
 
         // return positionInMilliseconds * factor + 'px';
     }
-
-    stringToMilliseconds(str) {
-        return Number(str.slice(1, 2)) * 36000000000 + Number(str.slice(4, 5)) * 60000000 + Number(str.slice(7, 8)) * 10000000 + Number(str.substr(-2)) * 100000;
-    }
-
+    
     updateSelection(i) {
         this.markers.forEach((marker, index) => {
             if (i != index)
@@ -315,4 +247,70 @@ export class VideoComponent {
         confirm.present();
     }
     // Code for Markers ends
+
+    //Code for objects starts
+    objects = [];
+
+    markersObjects = []
+
+    clrCvt(color) {
+        return '#' + color.slice(3, 9);
+    }
+
+    sum(a, b) {
+        return Number(a) + Number(b);
+    }
+
+    loadObjects(){
+        window.setTimeout(() => {
+            console.log(this.data);
+
+            this.markers = this.data["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
+
+            this.markers.forEach(data => {
+                var objs = data['Marker.Objects'];
+
+                var objects = [];
+
+                for (var key in objs) {
+                    // skip loop if the property is from prototype
+                    if (!objs.hasOwnProperty(key)) continue;
+                    var val = objs[key];
+
+                    if (val instanceof Array) {
+                        val.forEach(val => {
+                            objects.push({ key, val });
+                        });
+                    }
+                    else {
+                        objects.push({ key, val });
+                    }
+                }
+
+                this.markersObjects.push({ data, objects })
+
+            });
+            console.log(this.markersObjects);
+
+            var objs = this.data["Content"]["Capture"]["Marker"]["Marker.Objects"];
+
+            for (var key in objs) {
+                // skip loop if the property is from prototype
+                if (!objs.hasOwnProperty(key)) continue;
+                var val = objs[key];
+
+                if (val instanceof Array) {
+                    val.forEach(val => {
+                        this.objects.push({ key, val });
+                    });
+                }
+                else {
+                    this.objects.push({ key, val });
+                }
+            }
+            console.log(this.objects);
+
+        }, 500);
+    }
+    //Code for objects end
 }
