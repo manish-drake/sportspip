@@ -108,8 +108,6 @@ export class VideoComponent {
 
             // var video = <HTMLVideoElement>document.getElementById("video");
             var video = this.video.nativeElement;
-
-            this.timelineDuration = this.formatTime(video.duration);
             var volFactor = this.volumeValue / 100;
             video.volume = volFactor;
             this.viewBoxSize = '0 0 ' + video.videoWidth + ' ' + video.videoHeight;
@@ -122,7 +120,7 @@ export class VideoComponent {
                 var factor = (100000 / video.duration) * video.currentTime;
                 this.sliderValue = factor;
                 this.timelinePosition = this.formatTime(video.currentTime);
-
+                this.timelineDuration = this.formatTime(video.duration);
                 this.evaluateMarkerPosition();
             }, 1);
         }, 100);
