@@ -15,20 +15,29 @@ export class EditorPage {
   selectedViewIndex: number = 0;
 
   matrix: any;
-  views: any;
+  views = [];
 
   constructor(public navCtrl: NavController, params: NavParams,
     private alertCtrl: AlertController,
     private modalCtrl: ModalController) {
-      this.matrix = params.get("matrixData");
+    this.matrix = params.get("matrixData");
   }
 
   ionViewDidLoad() {
-    
+
   }
 
   ngOnInit() {
-    this.views = this.matrix["Matrix.Children"]["View"];
+
+    if (this.matrix["Matrix.Children"]["View"] instanceof Array) {
+      console.log("array");
+      this.views = this.matrix["Matrix.Children"]["View"]
+    }
+    else {
+      console.log("Object");
+      this.views.push(this.matrix["Matrix.Children"]["View"]);
+    }
+
     this.showViewSegment(this.selectedViewIndex);
   }
 

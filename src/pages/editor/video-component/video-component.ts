@@ -1,5 +1,6 @@
 import { Component, ViewChild, Input } from '@angular/core';
 import { AlertController, ModalController } from 'ionic-angular';
+declare var cordova: any;
 
 @Component({
     selector: 'video-component',
@@ -47,7 +48,8 @@ export class VideoComponent {
     }
 
     returnVidPath(filename) {
-        return 'file:/storage/emulated/0/DCIM/' + filename;
+        
+        return cordova.file.applicationStorageDirectory + filename;
     }
 
     timelineInterval() {
