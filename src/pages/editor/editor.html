@@ -1,6 +1,7 @@
-<ion-header no-shadow>
-	<ion-navbar color="primary">
-		<ion-title>{{matrix.Title}}</ion-title>
+
+<ion-header>
+	<ion-navbar color="primary" no-border-bottom>
+		<ion-title>{{matrix._Title}}</ion-title>
 		<ion-buttons end>
 			<!--<button ion-button icon-only><ion-icon name="cloud-upload"></ion-icon></button>
 			<button ion-button icon-only [disabled]="false"><ion-icon name="share"></ion-icon></button>-->
@@ -25,7 +26,7 @@
 
 <ion-content style="background:#eee;" [ngSwitch]="selectedViewIndex">
 	<ion-row style="height:100%;" *ngFor="let view of views; let i = index" [hidden]="hideViewSegment(selectedViewIndex,i)">
-		<ion-col [ngSwitch]="view.Source">
+		<ion-col [ngSwitch]="view._Source">
 			<!--ViewCanvasTemplate-->
 			<canvas-component *ngSwitchCase="'Canvas'" [data]="view"></canvas-component>
 			<!--ViewVideoTemplate-->

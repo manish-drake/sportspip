@@ -10,10 +10,34 @@
         "cordova-plugin-app-version": {
             "PACKAGE_NAME": "com.ionicframework.sportspip439155"
         },
-        "cordova-plugin-file": {
+        "com.jjdltc.cordova.plugin.zip": {
+            "PACKAGE_NAME": "com.ionicframework.sportspip439155"
+        },
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "com.ionicframework.sportspip439155"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.ionicframework.sportspip439155"
+        },
+        "cordova-plugin-splashscreen": {
             "PACKAGE_NAME": "com.ionicframework.sportspip439155"
         },
         "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "com.ionicframework.sportspip439155"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.ionicframework.sportspip439155"
+        },
+        "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "com.ionicframework.sportspip439155"
+        },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "com.ionicframework.sportspip439155"
+        },
+        "cordova-plugin-file-transfer": {
+            "PACKAGE_NAME": "com.ionicframework.sportspip439155"
+        },
+        "cordova-plugin-zip": {
             "PACKAGE_NAME": "com.ionicframework.sportspip439155"
         }
     },

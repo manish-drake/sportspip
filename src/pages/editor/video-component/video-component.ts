@@ -47,7 +47,7 @@ export class VideoComponent {
     }
 
     returnVidPath(filename) {
-        return 'assets/' + filename;
+        return 'file:/storage/emulated/0/DCIM/' + filename;
     }
 
     timelineInterval() {
