@@ -236,7 +236,11 @@ export class HomePage {
   }
 
   AuthenticateUser() {
-    alert("Authenticatnig user");
+    let toast = this.toastCtrl.create({
+      message: 'Authenticatnig user..',
+      duration: 2000,
+    });
+    toast.present();
     return true;
   }
 
@@ -394,20 +398,22 @@ export class HomePage {
 })
 export class PopoverPage1 {
 
-  constructor(public viewCtrl: ViewController, private alertCtrl: AlertController) {
+  versionNumber: any;
 
+  constructor(public viewCtrl: ViewController, private alertCtrl: AlertController, private platform: Platform, ) {
+    if (this.platform.is('cordova')) {
+      AppVersion.getVersionNumber().then((s) => {
+        this.versionNumber = s;
+      })
+    }
   }
 
   onAbout() {
     this.viewCtrl.dismiss();
-    var versionNumber:any;
-    AppVersion.getVersionNumber().then((s) => {
-      versionNumber = s;
-    })
 
     let alert = this.alertCtrl.create({
       title: 'Sports PIP',
-      subTitle: 'version:' + versionNumber,
+      subTitle: 'version ' + this.versionNumber,
       buttons: ['OK']
     });
     alert.present();

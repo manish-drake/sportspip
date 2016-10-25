@@ -7,6 +7,9 @@
         "files": {}
     },
     "installed_plugins": {
+        "cordova-plugin-app-version": {
+            "PACKAGE_NAME": "com.ionicframework.sportspip439155"
+        },
         "com.jjdltc.cordova.plugin.zip": {
             "PACKAGE_NAME": "com.ionicframework.sportspip439155"
         },
