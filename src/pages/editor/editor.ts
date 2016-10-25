@@ -29,16 +29,12 @@ export class EditorPage {
   }
 
   ngOnInit() {
-
     if (this.matrix["Matrix.Children"]["View"] instanceof Array) {
-      console.log("array");
       this.views = this.matrix["Matrix.Children"]["View"]
     }
     else {
-      console.log("Object");
       this.views.push(this.matrix["Matrix.Children"]["View"]);
     }
-
     this.showViewSegment(this.selectedViewIndex);
   }
 

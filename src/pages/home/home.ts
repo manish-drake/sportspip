@@ -268,14 +268,13 @@ export class HomePage {
     "_Sport": "Tennis",
     "_Channel": "Local",
     "Matrix.Children": {
-      "View": [
+      "View":
         {
           "_name": "View 1",
           "_Title": "View 1",
           "_Source": "(Blank)",
           "_Content": {}
         }
-      ]
     }
   }
 }`;
