@@ -66,7 +66,7 @@ export class HomePage {
     //     })    
     // });
 
-    //this.GetLocalMatrixHeader();
+    this.GetLocalMatrixHeader();
   }
 
   GetserverHeader() {
@@ -211,24 +211,24 @@ export class HomePage {
         })
 
       Observable.interval(2000)
-        .take(1).map((x) => x + 5)
+        .take(2).map((x) => x + 5)
         .subscribe((x) => {
           this.packages.unzipPackage();
         })
 
-      Observable.interval(3000)
+      Observable.interval(4000)
         .take(1).map((x) => x + 5)
         .subscribe((x) => {
           this.packages.MoveToLocalCollection();
         })
     }
-    Observable.interval(4000)
+    Observable.interval(5000)
       .take(1).map((x) => x + 5)
       .subscribe((x) => {
         this.localMatrices = [];
         this.GetLocalMatrixHeader();
       })
-    // Observable.interval(2500)
+    // Observable.interval(6000)
     //   .take(1).map((x) => x + 5)
     //   .subscribe((x) => {
     //     this.DeleteServerHeader(fileName, index, value, channelName);
@@ -306,6 +306,7 @@ export class HomePage {
     this.platform.ready().then(() => {
       this.http.get(cordova.file.dataDirectory + "Local/" + Channel + "/Tennis/matrices/" + matrixName + "/" + matrixName + ".mtx")
         .subscribe(data => {
+          console.log("open matrix");
           var res = JSON.parse(data.text());
           this.navCtrl.push(EditorPage, {
             matrixData: res
