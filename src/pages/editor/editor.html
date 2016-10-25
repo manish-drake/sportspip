@@ -1,4 +1,3 @@
-
 <ion-header>
 	<ion-navbar color="primary" no-border-bottom>
 		<ion-title>{{matrix._Title}}</ion-title>
@@ -9,18 +8,14 @@
 		</ion-buttons>
 	</ion-navbar>
 	<ion-toolbar style="min-height:auto" no-border-bottom>
-		<ion-row>
-			<ion-col no-padding style="width:auto">
-				<ion-segment no-margin [(ngModel)]="selectedViewIndex">
-					<ion-segment-button *ngFor="let view of views; let i = index" [value]="i" (click)="showViewSegment(i)" (press)="deleteView(i)">
-						View {{i+1}}
-					</ion-segment-button>
-				</ion-segment>
-			</ion-col>
-			<ion-col no-padding style="width:auto;flex: 0 0 auto;">
-				<button ion-button icon-only clear (click)="addView()"><ion-icon name="add-circle"></ion-icon></button>
-			</ion-col>
-		</ion-row>
+		<ion-segment no-margin [(ngModel)]="selectedViewIndex">
+			<ion-segment-button *ngFor="let view of views; let i = index" [value]="i" (click)="showViewSegment(i)" (press)="deleteView(i)">
+				View {{i+1}}
+			</ion-segment-button>
+		</ion-segment>
+		<ion-buttons end>
+			<button ion-button icon-only clear (click)="addView()"><ion-icon name="add-circle"></ion-icon></button>
+		</ion-buttons>
 	</ion-toolbar>
 </ion-header>
 

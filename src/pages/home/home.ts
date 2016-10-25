@@ -270,31 +270,28 @@ export class HomePage {
     let data =
       `{
   "Matrix": {
-    "name": "matrix1",
-    "Name": "New Matrix 1",
-    "Title": "New Matrix 1",
-    "Skill": "Serve",
-    "Location": "Field",
-    "Duration": "00:00:00",
-    "DateCreated": "20161010150719",
-    "Sport": "Tennis",
-    "Channel": "Local",
+    "_name": "matrix1",
+    "_Name": "New Matrix 1",
+    "_Title": "New Matrix 1",
+    "_Skill": "Serve",
+    "_Location": "Field",
+    "_Duration": "00:00:00",
+    "_DateCreated": "20161010150719",
+    "_Sport": "Tennis",
+    "_Channel": "Local",
     "Matrix.Children": {
-      "View": [
+      "View":
         {
-          "name": "View 1",
-          "Title": "View 1",
-          "Source": "(Blank)",
-          "Content": {}
+          "_name": "View 1",
+          "_Title": "View 1",
+          "_Source": "(Blank)",
+          "_Content": {}
         }
-      ]
     }
   }
 }`;
     var res = JSON.parse(data);
     var result = res.Matrix;
-
-    console.log(result);
 
     this.navCtrl.push(EditorPage, {
       matrixData: result

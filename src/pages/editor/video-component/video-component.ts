@@ -1,5 +1,6 @@
 import { Component, ViewChild, Input } from '@angular/core';
-import { AlertController, ModalController } from 'ionic-angular';
+
+import { AlertController, ModalController,Platform } from 'ionic-angular';
 declare var cordova: any;
 
 @Component({
@@ -23,7 +24,7 @@ export class VideoComponent {
     interval: any = null;
     viewBoxSize: any;
 
-    constructor(private alertCtrl: AlertController, private modalCtrl: ModalController) {
+    constructor(private alertCtrl: AlertController, private modalCtrl: ModalController, private platform: Platform) {
         this.volumeValue = 50;
         this.playPauseButtonIcon = "play";
         this.repeatColor = "inactive"
@@ -48,8 +49,12 @@ export class VideoComponent {
     }
 
     returnVidPath(filename) {
-        
-        return cordova.file.applicationStorageDirectory + filename;
+        if (this.platform.is('cordova')) {
+            return cordova.file.applicationStorageDirectory + filename;
+        }
+        else{
+            return 'assets/' + filename;
+        }
     }
 
     timelineInterval() {
@@ -170,7 +175,7 @@ export class VideoComponent {
         var factor = markersContainerWidth / durationInMilliseconds;
 
         this.markers.forEach(marker => {
-            var pos = marker.Position;
+            var pos = marker._Position;
             var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
             marker.Left = positionInMilliseconds * factor + 'px';
         });
@@ -192,7 +197,7 @@ export class VideoComponent {
         var canAddMarker = this.checkPosition(currentPosition);
         if (canAddMarker) {
             var name = 'Marker ' + (this.markers.length + 1);
-            this.markers.push({ Duration: '00:00:03', Name: name, Position: currentPosition, Speed: 1, name: name });
+            this.markers.push({ _Duration: '00:00:03', _Name: name, _Position: currentPosition, _Speed: 1, _name: name });
             this.evaluateMarkerPosition();
             console.log(this.markers);
         }
@@ -210,7 +215,7 @@ export class VideoComponent {
         var samePosition: number = 0;
         if (this.markers.length > 3) {
             this.markers.forEach((marker) => {
-                if (position == marker.Position)
+                if (position == marker._Position)
                     samePosition++;
             });
             if (samePosition >= 4)

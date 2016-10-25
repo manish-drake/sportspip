@@ -20,7 +20,8 @@ export class EditorPage {
   constructor(public navCtrl: NavController, params: NavParams,
     private alertCtrl: AlertController,
     private modalCtrl: ModalController) {
-    this.matrix = params.get("matrixData");
+      this.matrix = params.get("matrixData");
+      console.log(this.matrix);
   }
 
   ionViewDidLoad() {
@@ -28,16 +29,12 @@ export class EditorPage {
   }
 
   ngOnInit() {
-
     if (this.matrix["Matrix.Children"]["View"] instanceof Array) {
-      console.log("array");
       this.views = this.matrix["Matrix.Children"]["View"]
     }
     else {
-      console.log("Object");
       this.views.push(this.matrix["Matrix.Children"]["View"]);
     }
-
     this.showViewSegment(this.selectedViewIndex);
   }
 
@@ -63,9 +60,9 @@ export class EditorPage {
     if (this.views.length <= 7) {
       var inum: number = this.views.length + 1;
       this.views.push({
-        "name": "View " + inum,
-        "Title": "View " + inum,
-        "Source": "(Blank)"
+        "_name": "View " + inum,
+        "_Title": "View " + inum,
+        "_Source": "(Blank)"
       });
       this.showViewSegment(inum - 1);
     }
@@ -118,9 +115,9 @@ export class EditorPage {
   //Code for ViewOptions start
   addBlankCanvas() {
     var canvasView = {
-      "name": "View " + this.selectedViewIndex,
-      "Title": "View " + this.selectedViewIndex,
-      "Source": 'Canvas'
+      "_name": "View " + this.selectedViewIndex,
+      "_Title": "View " + this.selectedViewIndex,
+      "_Source": 'Canvas'
     }
     this.views[this.selectedViewIndex] = canvasView;
   }
@@ -131,19 +128,19 @@ export class EditorPage {
         "Capture": {
           "Marker": {
             "Marker.Objects": "",
-            "name": "c379224ff2704c5ea5ad1f10275a28c1"
+            "_name": "c379224ff2704c5ea5ad1f10275a28c1"
           },
           "View.ChronoMarker": "",
-          "name": "ba160173f284474c9412192dcd77cb1c",
-          "Kernel": "sample.mp4",
-          "Title": "View " + this.selectedViewIndex,
-          "Name": "ba160173f284474c9412192dcd77cb1c",
-          "IsActive": "False"
+          "_name": "ba160173f284474c9412192dcd77cb1c",
+          "_Kernel": "sample.mp4",
+          "_Title": "View " + this.selectedViewIndex,
+          "_Name": "ba160173f284474c9412192dcd77cb1c",
+          "_IsActive": "False"
         }
       },
-      "name": "View " + this.selectedViewIndex,
-      "Title": "View " + this.selectedViewIndex,
-      "Source": "Local"
+      "_name": "View " + this.selectedViewIndex,
+      "_Title": "View " + this.selectedViewIndex,
+      "_Source": "Local"
     }
     this.views[this.selectedViewIndex] = localView;
   }
