@@ -211,7 +211,7 @@ export class HomePage {
         })
 
       Observable.interval(2000)
-        .take(2).map((x) => x + 5)
+        .take(3).map((x) => x + 5)
         .subscribe((x) => {
           this.packages.unzipPackage();
         })
@@ -227,12 +227,24 @@ export class HomePage {
       .subscribe((x) => {
         this.localMatrices = [];
         this.GetLocalMatrixHeader();
+
       })
-    // Observable.interval(6000)
-    //   .take(1).map((x) => x + 5)
-    //   .subscribe((x) => {
-    //     this.DeleteServerHeader(fileName, index, value, channelName);
-    //   })
+    Observable.interval(6000)
+      .take(1).map((x) => x + 5)
+      .subscribe((x) => {
+        this.DeleteServerHeader(fileName, index, value, channelName);
+      })
+
+    Observable.interval(7000)
+      .take(1).map((x) => x + 5)
+      .subscribe((x) => {
+        this.platform.ready().then(() => {
+          File.removeRecursively("file:/storage/emulated/0/DCIM/", "Temp").then(() => {
+            console.log("delete temp");
+          });
+        })
+      })
+
   }
 
   AuthenticateUser() {
