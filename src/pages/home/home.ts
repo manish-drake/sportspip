@@ -210,37 +210,29 @@ export class HomePage {
           this.packages.DownloadServerHeader(fileName, channelName);
         })
 
-      // Observable.interval(2000)
-      //   .take(1).map((x) => x + 5)
-      //   .subscribe((x) => {
-      //     this.packages.unzipPackage();
-      //   })
+      Observable.interval(2000)
+        .take(1).map((x) => x + 5)
+        .subscribe((x) => {
+          this.packages.unzipPackage();
+        })
 
-      // Observable.interval(3000)
-      //   .take(1).map((x) => x + 5)
-      //   .subscribe((x) => {
-      //     this.packages.MoveToLocalCollection();
-      //   })
+      Observable.interval(3000)
+        .take(1).map((x) => x + 5)
+        .subscribe((x) => {
+          this.packages.MoveToLocalCollection();
+        })
     }
-    // Observable.interval(4000)
-    //   .take(1).map((x) => x + 5)
-    //   .subscribe((x) => {
-    //     this.localMatrices = [];
-    //     this.GetLocalMatrixHeader();
-    //   })
+    Observable.interval(4000)
+      .take(1).map((x) => x + 5)
+      .subscribe((x) => {
+        this.localMatrices = [];
+        this.GetLocalMatrixHeader();
+      })
     // Observable.interval(2500)
     //   .take(1).map((x) => x + 5)
     //   .subscribe((x) => {
     //     this.DeleteServerHeader(fileName, index, value, channelName);
     //   })
-
-    // Observable.interval(3000)
-    //   .take(1).map((x) => x + 5)
-    //   .subscribe((x) => {
-    //     this.DeleteServerHeader(fileName, index, value, channelName);
-    //   })
-
-
   }
 
   AuthenticateUser() {
@@ -400,20 +392,21 @@ export class HomePage {
   `
 })
 export class PopoverPage1 {
-  versionNumber: any;
+
   constructor(public viewCtrl: ViewController, private alertCtrl: AlertController) {
+
   }
 
   onAbout() {
     this.viewCtrl.dismiss();
-
+    var versionNumber:any;
     AppVersion.getVersionNumber().then((s) => {
-      this.versionNumber = s;
+      versionNumber = s;
     })
 
     let alert = this.alertCtrl.create({
       title: 'Sports PIP',
-      subTitle: 'version:' + this.versionNumber,
+      subTitle: 'version:' + versionNumber,
       buttons: ['OK']
     });
     alert.present();
