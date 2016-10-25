@@ -1,5 +1,5 @@
 import { Component, ViewChild, Input } from '@angular/core';
-import { AlertController, ModalController } from 'ionic-angular';
+import { AlertController, ModalController,Platform } from 'ionic-angular';
 
 @Component({
     selector: 'video-component',
@@ -22,7 +22,7 @@ export class VideoComponent {
     interval: any = null;
     viewBoxSize: any;
 
-    constructor(private alertCtrl: AlertController, private modalCtrl: ModalController) {
+    constructor(private alertCtrl: AlertController, private modalCtrl: ModalController, private platform: Platform) {
         this.volumeValue = 50;
         this.playPauseButtonIcon = "play";
         this.repeatColor = "inactive"
@@ -47,7 +47,12 @@ export class VideoComponent {
     }
 
     returnVidPath(filename) {
-        return 'file:/storage/emulated/0/DCIM/' + filename;
+        if (this.platform.is('cordova')) {
+            return 'file:/storage/emulated/0/DCIM/' + filename;
+        }
+        else{
+            return 'assets/' + filename;
+        }
     }
 
     timelineInterval() {

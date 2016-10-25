@@ -9,30 +9,31 @@ export class CanvasComponent {
 
   @Input() data: any;
 
-  constructor() {}
+  constructor() { }
 
   objects = [];
 
   ngOnInit() {
     console.log(this.data);
 
-    var objs = this.data["Content"]["PIP"]["PIP.Objects"];
+    console.log(this.data["Content"]["PIP"]["PIP.Objects"]);
 
-    for (var key in objs) {
-      // skip loop if the property is from prototype
-      if (!objs.hasOwnProperty(key)) continue;
-      var val = objs[key];
+    // var objs = this.data["Content"]["PIP"]["PIP.Objects"];
+    // for (var key in objs) {
+    //   // skip loop if the property is from prototype
+    //   if (!objs.hasOwnProperty(key)) continue;
+    //   var val = objs[key];
 
-      if (val instanceof Array) {
-        val.forEach(val => {
-          this.objects.push({ key, val });
-        });
-      }
-      else {
-        this.objects.push({ key, val });
-      }
-    }
-    console.log(this.objects);
+    //   if (val instanceof Array) {
+    //     val.forEach(val => {
+    //       this.objects.push({ key, val });
+    //     });
+    //   }
+    //   else {
+    //     this.objects.push({ key, val });
+    //   }
+    // }
+    // console.log(this.objects);
   }
 
   clrCvt(color) {

@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Platform } from 'ionic-angular';
 import { StorageFactory } from '../Factory/StorageFactory';
 import { Http } from '@angular/http';
-import { File, Transfer } from 'ionic-native';
+import { File } from 'ionic-native';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/Rx';
