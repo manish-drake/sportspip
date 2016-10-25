@@ -3,7 +3,7 @@ import { StorageFactory } from '../../Factory/StorageFactory';
 import { ModelFactory } from '../../Factory/ModelFactory';
 import { AppVersion, File } from 'ionic-native';
 import { Package } from '../../pages/Package';
-import {Http} from '@angular/http';
+import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
@@ -66,15 +66,18 @@ export class HomePage {
     //     })    
     // });
 
-    // this.GetLocalMatrixHeader();
+    //this.GetLocalMatrixHeader();
   }
 
   GetserverHeader() {
+
+    //local
     return this.http.get("assets/Header.xml")
       .map(res => {
         return this.SerializeServerData(res);
       }).toPromise()
 
+    //server
     // return this.http.get("http://sportspip.cloudapp.net:10101/IStorageService/getmtxhdrs")
     //   .map(res => {
     //     var headerData = JSON.parse(res.text());
@@ -143,10 +146,10 @@ export class HomePage {
               this.http.get(cordova.file.dataDirectory + "Local/" + channelName.name + "/Tennis/Matrices/" + res.name + "/Header.xml")
                 .subscribe(data => {
                   //deserialiae server header  
-                  var header = JSON.parse(data.text());
-                  var result = header.Header;
+                  var result = JSON.parse(data.text());
+                  // var result = header.Header;
                   var item = {
-                    Title: result.Title, DateCreated: result.DateCreated, Name: result.name, Channel: result.Channel,
+                    Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
                     ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
                     Views: result.Clips
                   };
@@ -201,31 +204,37 @@ export class HomePage {
     var authenticate = this.AuthenticateUser();
     if (authenticate) {
 
-      // Observable.interval(1000)
-      //   .take(1).map((x) => x + 5)
-      //   .subscribe((x) => {
-      //     this.packages.DownloadServerHeader(fileName, channelName);
-      //   })
-
-      // Observable.interval(2000)
-      // .take(1).map((x) => x + 5)
-      // .subscribe((x) => {
-      //   this.packages.unzipPackage();
-      // })
-
-      Observable.interval(500)
+      Observable.interval(1000)
         .take(1).map((x) => x + 5)
         .subscribe((x) => {
-          this.packages.MoveToLocalCollection();
+          this.packages.DownloadServerHeader(fileName, channelName);
         })
+
+      // Observable.interval(2000)
+      //   .take(1).map((x) => x + 5)
+      //   .subscribe((x) => {
+      //     this.packages.unzipPackage();
+      //   })
+
+      // Observable.interval(3000)
+      //   .take(1).map((x) => x + 5)
+      //   .subscribe((x) => {
+      //     this.packages.MoveToLocalCollection();
+      //   })
     }
-    // Observable.interval(3000)
+    // Observable.interval(4000)
     //   .take(1).map((x) => x + 5)
     //   .subscribe((x) => {
     //     this.localMatrices = [];
     //     this.GetLocalMatrixHeader();
     //   })
-    // Observable.interval(4000)
+    // Observable.interval(2500)
+    //   .take(1).map((x) => x + 5)
+    //   .subscribe((x) => {
+    //     this.DeleteServerHeader(fileName, index, value, channelName);
+    //   })
+
+    // Observable.interval(3000)
     //   .take(1).map((x) => x + 5)
     //   .subscribe((x) => {
     //     this.DeleteServerHeader(fileName, index, value, channelName);
@@ -301,12 +310,11 @@ export class HomePage {
 
   openMatrix(matrixName, Channel) {
     this.platform.ready().then(() => {
-      this.http.get(cordova.file.dataDirectory + "Local/" + Channel + "/Tennis/Matrices/" + matrixName + "/" + matrixName + ".mtx")
+      this.http.get(cordova.file.dataDirectory + "Local/" + Channel + "/Tennis/matrices/" + matrixName + "/" + matrixName + ".mtx")
         .subscribe(data => {
           var res = JSON.parse(data.text());
-          var result = res.Matrix;
           this.navCtrl.push(EditorPage, {
-            matrixData: result
+            matrixData: res
           });
         });
     });
