@@ -11,15 +11,19 @@ import { ViewController, NavParams } from 'ionic-angular';
   selector: 'page-matrixinfo',
   templateUrl: 'matrixinfo.html'
 })
+
 export class MatrixInfoPage {
 
-  matrixData:any;
+  matrixData: any;
 
-  formattedDateCreated:any;
+  formattedDateCreated: any;
 
-  constructor(private viewCtrl: ViewController, navParams: NavParams ) {
+  constructor(private viewCtrl: ViewController, navParams: NavParams) {
     this.matrixData = navParams.get("matrixData");
-    this.formattedDateCreated = (new Date(parseInt(this.matrixData.DateCreated))).toString();
+  }
+
+  getDateFromString(datestring) {
+    return (new Date(parseInt(datestring))).toISOString();
   }
 
   ionViewDidLoad() {

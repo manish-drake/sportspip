@@ -392,20 +392,21 @@ export class HomePage {
   `
 })
 export class PopoverPage1 {
-  versionNumber: any;
+
   constructor(public viewCtrl: ViewController, private alertCtrl: AlertController) {
+
   }
 
   onAbout() {
     this.viewCtrl.dismiss();
-
+    var versionNumber:any;
     AppVersion.getVersionNumber().then((s) => {
-      this.versionNumber = s;
+      versionNumber = s;
     })
 
     let alert = this.alertCtrl.create({
       title: 'Sports PIP',
-      subTitle: 'version:' + this.versionNumber,
+      subTitle: 'version:' + versionNumber,
       buttons: ['OK']
     });
     alert.present();
