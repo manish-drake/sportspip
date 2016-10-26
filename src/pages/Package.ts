@@ -24,7 +24,6 @@ export class Package {
     MoveToLocalCollection() {
 
         this.platform.ready().then(() => {
-            console.log(cordova.file.applicationStorageDirectory);
             this.http.get("file:/storage/emulated/0/DCIM" + "/Temp/matrix1/Header.xml").subscribe((result => {
                 var header = JSON.parse(result.text());
                 this.fileName = header.Name;
@@ -43,7 +42,7 @@ export class Package {
                                 var matrix = jsonObj.Matrix;
                                 matrix._Name = this.fileName;
                                 matrix.Channel = this.channelName;
-                                this.save();
+                                //this.save();
                                 this.storagefactory.SaveMatrixAsync(matrix, matrix.Channel, matrix._Sport, matrix._Name, "matrices");
                                 console.log("mtx move");
                             })
@@ -61,9 +60,7 @@ export class Package {
                             break;
                         default:
                     }
-                });
-
-                File.removeDir("file:/storage/emulated/0/DCIM", "Temp");
+                });              
             })
 
         })
