@@ -16,8 +16,6 @@ export class CanvasComponent {
   ngOnInit() {
     console.log(this.data);
 
-    console.log(this.data["Content"]["PIP"]["PIP.Objects"]);
-
     var objs = this.data["Content"]["PIP"]["PIP.Objects"];
     
     for (var key in objs) {

@@ -20,8 +20,8 @@ export class EditorPage {
   constructor(public navCtrl: NavController, params: NavParams,
     private alertCtrl: AlertController,
     private modalCtrl: ModalController) {
-      this.matrix = params.get("matrixData");
-      console.log(this.matrix);
+    this.matrix = params.get("matrixData");
+    console.log(this.matrix);
   }
 
   ionViewDidLoad() {
@@ -117,6 +117,14 @@ export class EditorPage {
   //Code for ViewOptions start
   addBlankCanvas() {
     var canvasView = {
+      "Content": {
+        "PIP": {
+          "PIP.Objects": "",
+          "_name": "d002b8ed5fe24f57aab501f05398262c",
+          "_CanvasBackgroundBrush": "#FFFFFFFF",
+          "_CanvasBackgroundOpacity": "1"
+        }
+      },
       "_name": "View " + this.selectedViewIndex,
       "_Title": "View " + this.selectedViewIndex,
       "_Source": 'Canvas'
