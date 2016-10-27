@@ -4,7 +4,7 @@ import { ModelFactory } from '../../Factory/ModelFactory';
 import { AppVersion, File } from 'ionic-native';
 import { Package } from '../../pages/Package';
 import { DeleteHeader } from '../../Action/DeleteHeader';
-import { OpenMatrix } from '../../Action/openMatrix';
+import { OpenMatrix } from '../../Action/OpenMatrix';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';

@@ -60,12 +60,12 @@ export class VideoComponent {
     }
 
     returnVidPath(filename) {
-        if (this.platform.is('cordova')) {
-            return cordova.file.applicationStorageDirectory + filename;
-        }
-        else {
+        // if (this.platform.is('cordova')) {
+        //     return cordova.file.applicationStorageDirectory + filename;
+        // }
+        // else {
             return 'assets/' + filename;
-        }
+        // }
     }
 
     interval: any = null;
