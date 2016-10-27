@@ -36,6 +36,8 @@ export class VideoComponent {
     @ViewChild('videoElement') videoElement: ElementRef;
     video: HTMLVideoElement;
 
+    timelineInterval: any = null;
+
     ngAfterViewInit() {
         console.log(this.data);
         this.markers = this.data["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
@@ -46,10 +48,10 @@ export class VideoComponent {
 
         this.video.addEventListener('ended', () => {
             this.playPauseButtonIcon = 'play';
-            window.clearInterval(this.interval);
+            window.clearInterval(this.timelineInterval);
         })
 
-        var interval = window.setInterval(() => {
+        window.setInterval(() => {
             this.timelineDuration = this.formatTime(this.video.duration);
             this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
             this.evaluateMarkerPosition();
@@ -67,8 +69,6 @@ export class VideoComponent {
             return 'assets/' + filename;
         // }
     }
-
-    interval: any = null;
 
     formatTime(time) {
         var hrs = Math.floor(time / 3600);
@@ -91,7 +91,7 @@ export class VideoComponent {
         if (this.video.paused == true) {
             this.video.play();
             this.playPauseButtonIcon = 'pause';
-            this.interval = window.setInterval(() => {
+            this.timelineInterval = window.setInterval(() => {
 
                 var factor = (100000 / this.video.duration) * this.video.currentTime;
                 this.sliderValue = factor;
@@ -100,7 +100,7 @@ export class VideoComponent {
         } else {
             this.video.pause();
             this.playPauseButtonIcon = 'play';
-            window.clearInterval(this.interval);
+            window.clearInterval(this.timelineInterval);
         }
     }
 
