@@ -3,14 +3,13 @@ import { StorageFactory } from '../../Factory/StorageFactory';
 import { ModelFactory } from '../../Factory/ModelFactory';
 import { AppVersion, File } from 'ionic-native';
 import { Package } from '../../pages/Package';
+import { DeleteHeader } from '../../Action/DeleteHeader';
+import { OpenMatrix } from '../../Action/openMatrix';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
-
-
 import { NavController, ActionSheetController, AlertController, PopoverController, ViewController, ToastController, Platform } from 'ionic-angular';
-
 import { EditorPage } from '../editor/editor';
 import { SettingsPage } from '../settings/settings';
 import { CollectionPage } from '../collection/collection';
@@ -21,7 +20,7 @@ declare var cordova: any;
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
-  providers: [StorageFactory, ModelFactory, Package],
+  providers: [StorageFactory, ModelFactory, DeleteHeader, Package,OpenMatrix],
 })
 export class HomePage {
 
@@ -32,12 +31,15 @@ export class HomePage {
   constructor(private http: Http, private platform: Platform, public navCtrl: NavController,
     private storagefactory: StorageFactory,
     private modelfactory: ModelFactory,
+    private deleteHeader: DeleteHeader,
+    private openmatrix:OpenMatrix,
     private popoverCtrl: PopoverController,
     private actionSheetCtrl: ActionSheetController,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     private packages: Package
   ) {
+    console.log("main page");
 
     this.selectedSegment = "local";
 
@@ -68,6 +70,34 @@ export class HomePage {
 
     this.GetLocalMatrixHeader();
   }
+
+
+  DuplicateMatrix(channelName, matrixname) {
+    var name = Date.now().toString();
+    this.platform.ready().then(() => {
+      this.http.get(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/Matrices/" + matrixname + "/Header.xml")
+        .subscribe(res => {
+          var header = JSON.parse(res.text());
+          alert(res.text());
+          header.Name = name;
+          this.storagefactory.SaveLocalHeader(header, channelName, header.Sport, name, "Matrices");
+        })
+      this.http.get(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/matrices/" + matrixname + "/" + matrixname + ".mtx")
+        .subscribe(res => {
+          var matrix = JSON.parse(res.text());
+          matrix.Matrix._Name = name;
+          this.storagefactory.SaveMatrixAsync(matrix, channelName, matrix.Matrix._Sport, name, "Matrices");
+        })
+      Observable.interval(1000)
+        .take(1).map((x) => x + 5)
+        .subscribe((x) => {
+          this.localMatrices = [];
+          this.GetLocalMatrixHeader();
+        })
+    })
+  }
+
+
 
   GetserverHeader() {
 
@@ -162,11 +192,6 @@ export class HomePage {
     });
   }
 
-  DeleteLocalHeader(DirName, index, channel) {
-    this.storagefactory.DeleteLocalHeader(DirName, channel);
-    this.localMatrices.splice(index, 1);
-  }
-
   //Display Server Header
   DisplayServerHeader() {
     this.platform.ready().then(() => {
@@ -192,14 +217,6 @@ export class HomePage {
     });
   }
 
-  //Deleted Server Header
-  DeleteServerHeader(DirName, index, value, channel) {
-    this.storagefactory.DeleteServerHeader(DirName, channel);
-    value.splice(index, 1);
-    this.channels.splice(index, 1);
-  }
-
-
   DownloadServerHeaderAsync(fileName, channelName, index, value) {
     var authenticate = this.AuthenticateUser();
     if (authenticate) {
@@ -208,18 +225,21 @@ export class HomePage {
         .take(1).map((x) => x + 5)
         .subscribe((x) => {
           this.packages.DownloadServerHeader(fileName, channelName);
+          console.log("Download");
         })
 
       Observable.interval(2000)
         .take(3).map((x) => x + 5)
         .subscribe((x) => {
           this.packages.unzipPackage();
+          console.log("unzip");
         })
 
       Observable.interval(4000)
         .take(1).map((x) => x + 5)
         .subscribe((x) => {
-          this.packages.MoveToLocalCollection();
+          this.packages.MoveToLocalCollection(channelName);
+          console.log("matrix moved");
         })
     }
     Observable.interval(5000)
@@ -227,24 +247,23 @@ export class HomePage {
       .subscribe((x) => {
         this.localMatrices = [];
         this.GetLocalMatrixHeader();
-
+        console.log("local header");
       })
-    Observable.interval(6000)
-      .take(1).map((x) => x + 5)
-      .subscribe((x) => {
-        this.DeleteServerHeader(fileName, index, value, channelName);
-      })
-
+    // Observable.interval(6000)
+    //   .take(1).map((x) => x + 5)
+    //   .subscribe((x) => {
+    //     this.deleteHeader.DeleteServerHeader(fileName, index, value, channelName);
+    //     console.log("delete server header");
+    //   })
     Observable.interval(7000)
       .take(1).map((x) => x + 5)
       .subscribe((x) => {
         this.platform.ready().then(() => {
-          File.removeRecursively("file:/storage/emulated/0/DCIM/", "Temp").then(() => {
+          File.removeRecursively(cordova.file.dataDirectory, "Temp").then(() => {
             console.log("delete temp");
           });
         })
       })
-
   }
 
   AuthenticateUser() {
@@ -302,28 +321,17 @@ export class HomePage {
   testOpenMatrix() {
     this.http.get("assets/matrix1.mtx")
       .subscribe(data => {
+        console.log(data.text());
+        console.log(data['_data']);
         var res = JSON.parse(data.text());
-        var result = res.Matrix;
-
-        console.log(result);
-
         this.navCtrl.push(EditorPage, {
-          matrixData: result
+          matrixData: res.Matrix
         });
       });
   }
 
   openMatrix(matrixName, Channel) {
-    this.platform.ready().then(() => {
-      this.http.get(cordova.file.dataDirectory + "Local/" + Channel + "/Tennis/matrices/" + matrixName + "/" + matrixName + ".mtx")
-        .subscribe(data => {
-          console.log("open matrix");
-          var res = JSON.parse(data.text());
-          this.navCtrl.push(EditorPage, {
-            matrixData: res
-          });
-        });
-    });
+    this.openmatrix.run(matrixName,Channel);
   }
 
   matrixPressed(index, DirName, channel) {
@@ -335,12 +343,14 @@ export class HomePage {
           role: 'destructive',
           handler: () => {
             console.log('Destructive clicked');
-            this.DeleteLocalHeader(DirName, index, channel);
+            this.deleteHeader.DeleteLocalHeader(DirName, index, channel);
+            this.localMatrices.splice(index, 1);
           }
         }, {
           text: 'Save Copy',
           handler: () => {
             console.log('Copy clicked');
+            this.DuplicateMatrix(channel, DirName);
           }
         }, {
           text: 'Cancel',
@@ -360,6 +370,7 @@ export class HomePage {
 
 
   openChannelCollection(channel) {
+    console.log(channel);
     this.navCtrl.push(ChannelCollectionPage, {
       firstPassed: channel
     });
@@ -371,18 +382,14 @@ export class HomePage {
         text: 'Download',
         handler: () => {
           this.DownloadServerHeaderAsync(title, channel, index, value);
-          // let alert = this.alertCtrl.create({
-          //   title: 'Not Downloaded!',
-          //   subTitle: 'Download is not possible right now.',
-          //   buttons: ['OK']
-          // });
-          // alert.present();
         }
       }, {
         text: 'Delete',
         role: 'destructive',
         handler: () => {
-          this.DeleteServerHeader(title, index, value, channel);
+          this.deleteHeader.DeleteServerHeader(title, index, value, channel);
+          value.splice(index, 1);
+          this.channels.splice(index, 1);
         }
       }, {
         text: 'Cancel',

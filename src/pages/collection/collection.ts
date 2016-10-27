@@ -31,8 +31,8 @@ export class CollectionPage {
               this.http.get(cordova.file.dataDirectory + "Local/" + channelName.name + "/Tennis/Matrices/" + res.name + "/Header.xml")
                 .subscribe(data => {
                   //deserialiae server header  
-                  var header = JSON.parse(data.text());
-                  var result = header.Header;
+                  var result = JSON.parse(data.text());
+                  // var result = header.Header;
                   var item = {
                     Title: result.Title, DateCreated: result.DateCreated, Name: "matrix1", Channel: result.Channel,
                     ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,

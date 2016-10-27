@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Platform } from 'ionic-angular';
+import { Platform, ToastController } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { File } from 'ionic-native';
 declare var cordova: any;
@@ -8,7 +8,7 @@ import 'rxjs/Rx';
 @Injectable()
 export class StorageFactory {
 
-    constructor(private http: Http, private platform: Platform) {
+    constructor(private http: Http, private platform: Platform, private toastCtrl: ToastController, ) {
     }
 
     SaveRoamingHeader(content, channel, sport, matrixName) {
@@ -66,7 +66,6 @@ export class StorageFactory {
                                 File.createFile(fileLocation, matrixName + ".mtx", true).then(() => {
                                     File.writeFile(fileLocation, matrixName + ".mtx", content, true)
                                         .then(function (success) {
-                                            alert("server matrix");
                                         })
                                 })
                             })
@@ -98,7 +97,7 @@ export class StorageFactory {
                                 File.createFile(fileLocation, "Header.xml", true).then(() => {
                                     File.writeFile(fileLocation, "Header.xml", content, true)
                                         .then(function (success) {
-                                            alert("local headr");
+
                                         })
                                 })
                             })
@@ -116,7 +115,11 @@ export class StorageFactory {
         this.platform.ready().then(() => {
             var headerFolder = cordova.file.dataDirectory + "Server/" + channel + "/Tennis/Matrices/"
             File.removeRecursively(headerFolder, DirName).then(() => {
-                alert("Deleted");
+                let toast = this.toastCtrl.create({
+                    message: 'Deleted Successfully..',
+                    duration: 2000,
+                });
+                toast.present();
             })
         })
     }
@@ -125,7 +128,11 @@ export class StorageFactory {
         this.platform.ready().then(() => {
             var headerFolder = cordova.file.dataDirectory + "Local/" + channel + "/Tennis/Matrices/"
             File.removeRecursively(headerFolder, DirName).then(() => {
-                alert("Deleted");
+                let toast = this.toastCtrl.create({
+                    message: 'Deleted Successfully..',
+                    duration: 2000,
+                });
+                toast.present();
             })
         })
     }

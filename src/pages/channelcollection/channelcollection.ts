@@ -44,8 +44,8 @@ export class ChannelCollectionPage {
           this.http.get(cordova.file.dataDirectory + "Server/" + channel + "/Tennis/Matrices/" + res.name + "/Header.xml")
             .subscribe(data => {
               //deserialiae server header  
-              var header = JSON.parse(data.text());
-              var result = header.Header;
+              var result = JSON.parse(data.text());
+              // var result = header.Header;
               var item = {
                 Title: result.Title, DateCreated: result.DateCreated, Name: result.name, Channel: result.Channel,
                 ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
@@ -75,28 +75,44 @@ export class ChannelCollectionPage {
   DownloadServerHeaderAsync(fileName, channelName, index) {
     var authenticate = this.AuthenticateUser();
     if (authenticate) {
+
       Observable.interval(1000)
         .take(1).map((x) => x + 5)
         .subscribe((x) => {
           this.packages.DownloadServerHeader(fileName, channelName);
+          console.log("Download");
         })
+
       Observable.interval(2000)
+        .take(3).map((x) => x + 5)
+        .subscribe((x) => {
+          this.packages.unzipPackage();
+          console.log("unzip");
+        })
+
+      Observable.interval(4000)
         .take(1).map((x) => x + 5)
         .subscribe((x) => {
-          this.packages.MoveToLocalCollection();
+          this.packages.MoveToLocalCollection(channelName);
+          console.log("matrix moved");
         })
     }
-    Observable.interval(3000)
+    Observable.interval(6000)
       .take(1).map((x) => x + 5)
       .subscribe((x) => {
+        this.DeleteChannelMatrix(fileName,channelName, index);
+        console.log("delete server header");
       })
-    Observable.interval(4000)
+
+    Observable.interval(7000)
       .take(1).map((x) => x + 5)
       .subscribe((x) => {
-        this.DeleteChannelMatrix(fileName, channelName, index);
+        this.platform.ready().then(() => {
+          File.removeRecursively("file:/storage/emulated/0/DCIM/", "Temp").then(() => {
+            console.log("delete temp");
+          });
+        })
       })
-
-
   }
 
   AuthenticateUser() {
