@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Platform,ToastController } from 'ionic-angular';
+import { Platform, ToastController } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { File } from 'ionic-native';
 declare var cordova: any;
@@ -8,7 +8,7 @@ import 'rxjs/Rx';
 @Injectable()
 export class StorageFactory {
 
-    constructor(private http: Http, private platform: Platform,private toastCtrl: ToastController,) {
+    constructor(private http: Http, private platform: Platform, private toastCtrl: ToastController, ) {
     }
 
     SaveRoamingHeader(content, channel, sport, matrixName) {
@@ -129,7 +129,7 @@ export class StorageFactory {
             var headerFolder = cordova.file.dataDirectory + "Local/" + channel + "/Tennis/Matrices/"
             File.removeRecursively(headerFolder, DirName).then(() => {
                 let toast = this.toastCtrl.create({
-                   message: 'Deleted Successfully..',
+                    message: 'Deleted Successfully..',
                     duration: 2000,
                 });
                 toast.present();

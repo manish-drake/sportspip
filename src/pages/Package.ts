@@ -5,7 +5,7 @@ import { Http } from '@angular/http';
 import { File } from 'ionic-native';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
-import { Observable } from 'rxjs/Rx';
+import 'rxjs/Rx';
 import X2JS from 'x2js';
 declare var cordova: any;
 declare var zip: any;
@@ -56,7 +56,7 @@ export class Package {
                         case '.mp4':
                             console.log("video moving...");
                             File.copyFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.applicationStorageDirectory, file.name);
-                            this.CreateThumbnail(file.name);
+                            // this.CreateThumbnail(file.name);
                             console.log("video moved");
                             break;
                         case ".gif":
@@ -113,19 +113,20 @@ export class Package {
     }
 
 
-    CreateThumbnail(name) {
-        var sliced = name.slice(0, -4);
-        console.log(sliced);
-        var sourcePath = cordova.file.applicationStorageDirectory + name;
-        console.log(sliced);
-        var targetPath = cordova.file.applicationStorageDirectory + sliced + ".jpg";
-        console.log(sliced);
-        window.PKVideoThumbnail.createThumbnail(sourcePath, targetPath, function (prevSucc) {
-            alert("thumb success");
-        }, this.fail);
-    }
-    fail(error) {
-        alert(error);
-    }
+    // CreateThumbnail(name) {
+    //     var sliced = name.slice(0, -4);
+    //     console.log(sliced);
+    //     var sourcePath = cordova.file.applicationStorageDirectory + name;
+    //     console.log(sourcePath);
+    //     var targetPath = cordova.file.applicationStorageDirectory + sliced + ".jpg";
+    //     console.log(targetPath);
+    //     $window.PKVideoThumbnail.createThumbnail(sourcePath, targetPath, function (prevSucc) {
+    //         console.log("thumb success");
+    //         console.log(prevSucc);
+    //     }, this.fail);
+    // }
+    // fail(error) {
+    //     alert(error);
+    // }
 
 }

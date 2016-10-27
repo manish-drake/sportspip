@@ -6,10 +6,6 @@
     "config_munge": {
         "files": {}
     },
-<<<<<<< HEAD
-    "installed_plugins": {},
-    "dependent_plugins": {}
-=======
     "installed_plugins": {
         "cordova-plugin-file": {
             "PACKAGE_NAME": "com.ionicframework.sportspip439155"
@@ -26,5 +22,4 @@
             "PACKAGE_NAME": "com.ionicframework.sportspip439155"
         }
     }
->>>>>>> 3e90aa415830c44bdb8dc36788d757c27ba6c8f4
 }
