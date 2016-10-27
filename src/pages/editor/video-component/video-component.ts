@@ -1,6 +1,6 @@
-import { Component, ViewChild, Input } from '@angular/core';
+import { Component, ViewChild, Input, ElementRef } from '@angular/core';
 
-import { AlertController, ModalController,Platform } from 'ionic-angular';
+import { AlertController, ModalController, Platform } from 'ionic-angular';
 declare var cordova: any;
 
 @Component({
@@ -10,60 +10,65 @@ declare var cordova: any;
 
 export class VideoComponent {
 
-    @ViewChild('video') video;
-
     @Input() data: any;
 
     sliderValue: any = 0;
-    volumeValue: number;
     timelinePosition: any;
     timelineDuration: any;
     repeatColor: any;
     playPauseButtonIcon: string;
     volumeButtonIcon: string;
-    interval: any = null;
+    // volumeValue: number;
+
     viewBoxSize: any;
 
     constructor(private alertCtrl: AlertController, private modalCtrl: ModalController, private platform: Platform) {
-        this.volumeValue = 50;
+
         this.playPauseButtonIcon = "play";
         this.repeatColor = "inactive"
+        this.timelinePosition = '00:00:00.00';
+        // this.volumeValue = 50;
         this.volumeButtonIcon = "volume-up";
-        this.timelinePosition = 0;
     }
 
-    ngOnInit() {
+    ngOnInit() { }
+
+    @ViewChild('videoElement') videoElement: ElementRef;
+    video: HTMLVideoElement;
+
+    ngAfterViewInit() {
         console.log(this.data);
         this.markers = this.data["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
         this.loadObjects();
         this.loadMarkerObjects();
 
-        var volFactor = this.volumeValue / 100;
-        this.video.nativeElement.volume = volFactor;
+        this.video = this.videoElement.nativeElement;
 
-        this.video.nativeElement.addEventListener('ended', () => {
+        this.video.addEventListener('ended', () => {
             this.playPauseButtonIcon = 'play';
+            window.clearInterval(this.interval);
         })
 
-        this.timelineInterval();
+        var interval = window.setInterval(() => {
+            this.timelineDuration = this.formatTime(this.video.duration);
+            this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
+            this.evaluateMarkerPosition();
+        }, 1);
+
+        // var volFactor = this.volumeValue / 100;
+        // this.video.nativeElement.volume = volFactor;
     }
 
     returnVidPath(filename) {
-             return cordova.file.applicationStorageDirectory + filename;
-            //return 'assets/' + filename;
+        if (this.platform.is('cordova')) {
+            return cordova.file.applicationStorageDirectory + filename;
+        }
+        else {
+            return 'assets/' + filename;
+        }
     }
 
-    timelineInterval() {
-        this.interval = window.setInterval(() => {
-            this.viewBoxSize = '0 0 ' + this.video.nativeElement.videoWidth + ' ' + this.video.nativeElement.videoHeight;
-
-            var factor = (100000 / this.video.nativeElement.duration) * this.video.nativeElement.currentTime;
-            this.sliderValue = factor;
-            this.timelinePosition = this.formatTime(this.video.nativeElement.currentTime);
-            this.timelineDuration = this.formatTime(this.video.nativeElement.duration);
-            this.evaluateMarkerPosition();
-        }, 1);
-    }
+    interval: any = null;
 
     formatTime(time) {
         var hrs = Math.floor(time / 3600);
@@ -76,87 +81,96 @@ export class VideoComponent {
         return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
     }
 
-    captureController(state) {
-        var video = <HTMLVideoElement>document.getElementById("video");
-        switch (state) {
-            case 'sliderValueChange':
-                var factor = video.duration * (this.sliderValue / 100000);
-                video.currentTime = factor;
-                break;
-            case 'playPause':
-                if (video.paused == true) {
-                    video.play();
-                    this.playPauseButtonIcon = 'pause';
-                } else {
-                    video.pause();
-                    this.playPauseButtonIcon = 'play';
-                }
-                break;
-            case 'repeatVideo':
-                if (video.loop == false) {
-                    video.loop = true;
-                    this.repeatColor = 'light';
-                } else {
-                    video.loop = false;
-                    this.repeatColor = 'inactive';
-                }
-                break;
-            case 'previousVideoFrame':
-                if (video.currentTime >= 0) {
-                    video.pause();
-                    this.playPauseButtonIcon = 'play';
-                    video.currentTime = video.currentTime - 0.1;
-                }
-                break;
-            case 'nextVideoFrame':
-                if (video.currentTime <= video.duration) {
-                    video.pause();
-                    this.playPauseButtonIcon = 'play';
-                    video.currentTime = video.currentTime + 0.1;
-                }
-                break;
-            case 'playbackRateVideo':
-                var speed = video.playbackRate;
-                switch (speed) {
-                    case 0.5:
-                        speed = speed + 0.5;
-                        break;
-                    case 1:
-                        speed = speed + 0.5;
-                        break;
-                    case 1.5:
-                        speed = speed + 0.5;
-                        break;
-                    case 2:
-                        speed = speed - 1.5;
-                        break;
-                    default:
-                        speed = 1;
-                        break;
-                }
+    sliderValueChange() {
+        this.timelinePosition = this.formatTime(this.video.currentTime);
+        var factor = this.video.duration * (this.sliderValue / 100000);
+        this.video.currentTime = factor;
+    }
 
-                video.playbackRate = speed;
-                break;
-            case 'volumeValueChange':
-                var volFactor = this.volumeValue / 100;
-                video.volume = volFactor;
-                if (volFactor == 0) {
-                    this.volumeButtonIcon = "volume-off";
-                } else {
-                    this.volumeButtonIcon = "volume-up";
-                }
-                break;
-            case 'MuteVideo':
-                if (video.muted == false) {
-                    video.muted = true;
-                    this.volumeButtonIcon = "volume-off";
-                } else {
-                    video.muted = false;
-                    this.volumeButtonIcon = "volume-up";
-                }
-                break;
+    playPause() {
+        if (this.video.paused == true) {
+            this.video.play();
+            this.playPauseButtonIcon = 'pause';
+            this.interval = window.setInterval(() => {
+
+                var factor = (100000 / this.video.duration) * this.video.currentTime;
+                this.sliderValue = factor;
+                this.timelinePosition = this.formatTime(this.video.currentTime);
+            }, 1);
+        } else {
+            this.video.pause();
+            this.playPauseButtonIcon = 'play';
+            window.clearInterval(this.interval);
         }
     }
+
+    repeatVideo() {
+        if (this.video.loop == false) {
+            this.video.loop = true;
+            this.repeatColor = 'primary';
+        } else {
+            this.video.loop = false;
+            this.repeatColor = 'inactive';
+        }
+    }
+
+    previousVideoFrame() {
+        if (this.video.currentTime >= 0) {
+            this.video.pause();
+            this.playPauseButtonIcon = 'play';
+            this.video.currentTime = this.video.currentTime - 0.1;
+        }
+    }
+
+    nextVideoFrame() {
+        if (this.video.currentTime <= this.video.duration) {
+            this.video.pause();
+            this.playPauseButtonIcon = 'play';
+            this.video.currentTime = this.video.currentTime + 0.1;
+        }
+    }
+
+    playbackRateVideo() {
+        var speed = this.video.playbackRate;
+        switch (speed) {
+            case 0.5:
+                speed = speed + 0.5;
+                break;
+            case 1:
+                speed = speed + 0.5;
+                break;
+            case 1.5:
+                speed = speed + 0.5;
+                break;
+            case 2:
+                speed = speed - 1.5;
+                break;
+            default:
+                speed = 1;
+                break;
+        }
+        this.video.playbackRate = speed;
+    }
+
+    MuteVideo() {
+        if (this.video.muted == false) {
+            this.video.muted = true;
+            this.volumeButtonIcon = "volume-off";
+        } else {
+            this.video.muted = false;
+            this.volumeButtonIcon = "volume-up";
+        }
+    }
+
+    // volumeValueChange(){
+    //      var volFactor = this.volumeValue / 100;
+    //      this.video.volume = volFactor;
+    //      if (volFactor == 0) {
+    //          this.volumeButtonIcon = "volume-off";
+    //      } else {
+    //          this.volumeButtonIcon = "volume-up";
+    //      }
+    // }
 
     // Code for Markers starts
     markers = [];
