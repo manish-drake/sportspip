@@ -1,6 +1,6 @@
 import { Component, ViewChild, Input } from '@angular/core';
 
-import { AlertController, ModalController,Platform } from 'ionic-angular';
+import { AlertController, ModalController, Platform } from 'ionic-angular';
 declare var cordova: any;
 
 @Component({
@@ -49,12 +49,10 @@ export class VideoComponent {
     }
 
     returnVidPath(filename) {
-        if (this.platform.is('cordova')) {
-            return cordova.file.applicationStorageDirectory + filename;
-        }
-        else{
-            return 'assets/' + filename;
-        }
+        var path = cordova.file.applicationStorageDirectory + filename;
+   
+
+        return path
     }
 
     timelineInterval() {

@@ -5,94 +5,79 @@ import { Http } from '@angular/http';
 import { File } from 'ionic-native';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
-import 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
 import X2JS from 'x2js';
 declare var cordova: any;
 declare var zip: any;
 declare var FileTransfer: any;
+declare var window: any;
 
 
 @Injectable()
 export class Package {
 
     constructor(private http: Http, private platform: Platform, private storagefactory: StorageFactory) {
+        console.log("matrix downloading......")
     }
 
     public fileName: any;
     public channelName: any;
 
-    MoveToLocalCollection() {
-
+    MoveToLocalCollection(channelName) {
+        this.fileName = Date.now().toString();
         this.platform.ready().then(() => {
-            this.http.get("file:/storage/emulated/0/DCIM" + "/Temp/matrix1/Header.xml").subscribe((result => {
+            this.http.get(cordova.file.dataDirectory + "Temp/matrix1/Header.xml").subscribe((result => {
+                console.log("header moving..");
                 var header = JSON.parse(result.text());
-                this.fileName = header.Name;
+                console.log(this.fileName);
+                header.Name = this.fileName;
                 this.channelName = header.Channel;
-                this.storagefactory.SaveLocalHeader(result.text(), header.Channel, header.Sport, header.Name, "Matrices");
-                console.log("header move");
+                this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
+                console.log("header moved");
             }));
-            File.listDir("file:/storage/emulated/0/DCIM/" + "Temp/", "matrix1").then((success) => {
+            File.listDir(cordova.file.dataDirectory + "Temp/", "matrix1").then((success) => {
                 success.forEach(file => {
                     var sliced = file.name.substr(-4);
                     switch (sliced) {
                         case '.mtx':
+
                             let parser: any = new X2JS();
                             this.http.get(file.nativeURL).subscribe(data => {
-                                var jsonObj = parser.xml2js(data["_body"]);
-                                var matrix = jsonObj.Matrix;
+                                console.log("mtx moving...");
+                                var matrixdata = parser.xml2js(data["_body"]);
+                                var matrix = matrixdata.Matrix;
+                                console.log(this.fileName);
                                 matrix._Name = this.fileName;
                                 matrix.Channel = this.channelName;
-                                //this.save();
-                                this.storagefactory.SaveMatrixAsync(matrix, matrix.Channel, matrix._Sport, matrix._Name, "matrices");
-                                console.log("mtx move");
+                                this.storagefactory.SaveMatrixAsync(matrixdata, matrix.Channel, matrix._Sport, matrix._Name, "matrices");
+                                console.log("mtx moved");
                             })
                             break;
                         case '.mp4':
-                            File.copyFile("file:/storage/emulated/0/DCIM/Temp/matrix1", file.name, cordova.file.applicationStorageDirectory, file.name);
-                            console.log("video move");
+                            console.log("video moving...");
+                            File.copyFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.applicationStorageDirectory, file.name);
+                            this.CreateThumbnail(file.name);
+                            console.log("video moved");
                             break;
                         case ".gif":
                         case ".rtf":
-                            File.copyFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, "file:/storage/emulated/0/DCIM", file.name);
+                            File.copyFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.applicationStorageDirectory, file.name);
                             break;
                         case ".jpg":
-                            File.copyFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, "file:/storage/emulated/0/DCIM", file.name);
+                            File.copyFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.applicationStorageDirectory, file.name);
                             break;
                         default:
                     }
-                });              
+                });
             })
 
         })
-
-
-        // var headerPath = cordova.file.dataDirectory + "Temp/matrix1/Header.xml";
-        // this.http.get(headerPath).subscribe(data => {
-        //     var result = JSON.parse(data.text());
-        //     this.storagefactory.SaveLocalHeader(data.text(), result.Header.Channel, result.Header.Sport, result.Header.name, "Matrices");
-        // })
-        // var matrixPath = cordova.file.dataDirectory + "Temp/matrix1/matrix1.xml";
-        // this.http.get(matrixPath).subscribe(data => {
-        //     var result = JSON.parse(data.text());
-        //     this.storagefactory.SaveMatrixAsync(data.text(), result.Matrix.Channel, result.Matrix.Sport, result.Matrix.name, "Matrices");
-        // })
-    }
-
-
-
-    save() {
-        this.platform.ready().then(() => {
-            File.createDir(cordova.file.applicationStorageDirectory, "Video", true).then((success) => {
-                console.log(success);
-            })
-        })
-
     }
 
     DownloadServerHeader(fileName, channelName) {
         this.platform.ready().then(() => {
-            File.createDir("file:/storage/emulated/0/DCIM", "Temp", true).then(() => {
-                var NewPath = "file:/storage/emulated/0/DCIM" + "/Temp/";
+            File.createDir(cordova.file.dataDirectory, "Temp", true).then(() => {
+                var NewPath = cordova.file.dataDirectory + "Temp/";
                 File.createDir(NewPath, "matrix1", true).then(() => {
                     var matrixPath = NewPath + "matrix1/";
                     var oldPath = cordova.file.dataDirectory + "Server/" + channelName + "/Tennis/Matrices/" + fileName + "/";
@@ -120,11 +105,27 @@ export class Package {
 
     unzipPackage() {
         this.platform.ready().then(() => {
-            var PathToFileInString = "file:/storage/emulated/0/DCIM/Temp/m1.zip";
-            var PathToResultZip = "file:/storage/emulated/0/DCIM/Temp/matrix1";
+            var PathToFileInString = cordova.file.dataDirectory + "Temp/m1.zip";
+            var PathToResultZip = cordova.file.dataDirectory + "Temp/matrix1";
             zip.unzip(PathToFileInString, PathToResultZip);
         })
 
+    }
+
+
+    CreateThumbnail(name) {
+        var sliced = name.slice(0, -4);
+        console.log(sliced);
+        var sourcePath = cordova.file.applicationStorageDirectory + name;
+        console.log(sliced);
+        var targetPath = cordova.file.applicationStorageDirectory + sliced + ".jpg";
+        console.log(sliced);
+        window.PKVideoThumbnail.createThumbnail(sourcePath, targetPath, function (prevSucc) {
+            alert("thumb success");
+        }, this.fail);
+    }
+    fail(error) {
+        alert(error);
     }
 
 }

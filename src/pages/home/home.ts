@@ -7,10 +7,7 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
-
-
 import { NavController, ActionSheetController, AlertController, PopoverController, ViewController, ToastController, Platform } from 'ionic-angular';
-
 import { EditorPage } from '../editor/editor';
 import { SettingsPage } from '../settings/settings';
 import { CollectionPage } from '../collection/collection';
@@ -38,6 +35,7 @@ export class HomePage {
     private toastCtrl: ToastController,
     private packages: Package
   ) {
+    console.log("main page");
 
     this.selectedSegment = "local";
 
@@ -68,6 +66,33 @@ export class HomePage {
 
     this.GetLocalMatrixHeader();
   }
+
+
+  DuplicateMatrix(channelName, matrixname) {
+    var name = Date.now().toString();
+    this.platform.ready().then(() => {
+      this.http.get(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/Matrices/" + matrixname + "/Header.xml")
+        .subscribe(res => {
+          var header = JSON.parse(res.text());
+          header.name = name;
+          this.storagefactory.SaveLocalHeader(header, channelName, header.Sport, name, "Matrices");
+        })
+      this.http.get(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/matrices/" + matrixname + "/" + matrixname + ".mtx")
+        .subscribe(res => {
+          var matrix = JSON.parse(res.text());
+          matrix.Matrix._Name = name;
+          this.storagefactory.SaveMatrixAsync(matrix, channelName, matrix.Matrix._Sport, name, "Matrices");
+        })
+      Observable.interval(1000)
+        .take(1).map((x) => x + 5)
+        .subscribe((x) => {
+          this.localMatrices = [];
+          this.GetLocalMatrixHeader();
+        })
+    })
+  }
+
+
 
   GetserverHeader() {
 
@@ -208,18 +233,21 @@ export class HomePage {
         .take(1).map((x) => x + 5)
         .subscribe((x) => {
           this.packages.DownloadServerHeader(fileName, channelName);
+          console.log("Download");
         })
 
       Observable.interval(2000)
         .take(3).map((x) => x + 5)
         .subscribe((x) => {
           this.packages.unzipPackage();
+          console.log("unzip");
         })
 
       Observable.interval(4000)
         .take(1).map((x) => x + 5)
         .subscribe((x) => {
-          this.packages.MoveToLocalCollection();
+          this.packages.MoveToLocalCollection(channelName);
+          console.log("matrix moved");
         })
     }
     Observable.interval(5000)
@@ -227,14 +255,14 @@ export class HomePage {
       .subscribe((x) => {
         this.localMatrices = [];
         this.GetLocalMatrixHeader();
-
+        console.log("local header");
       })
     Observable.interval(6000)
       .take(1).map((x) => x + 5)
       .subscribe((x) => {
         this.DeleteServerHeader(fileName, index, value, channelName);
+        console.log("delete server header");
       })
-
     Observable.interval(7000)
       .take(1).map((x) => x + 5)
       .subscribe((x) => {
@@ -244,7 +272,6 @@ export class HomePage {
           });
         })
       })
-
   }
 
   AuthenticateUser() {
@@ -302,13 +329,11 @@ export class HomePage {
   testOpenMatrix() {
     this.http.get("assets/matrix1.mtx")
       .subscribe(data => {
+        console.log(data.text());
+        console.log(data['_data']);
         var res = JSON.parse(data.text());
-        var result = res.Matrix;
-
-        console.log(result);
-
         this.navCtrl.push(EditorPage, {
-          matrixData: result
+          matrixData: res.Matrix
         });
       });
   }
@@ -320,7 +345,7 @@ export class HomePage {
           console.log("open matrix");
           var res = JSON.parse(data.text());
           this.navCtrl.push(EditorPage, {
-            matrixData: res
+            matrixData: res.Matrix
           });
         });
     });
@@ -341,6 +366,7 @@ export class HomePage {
           text: 'Save Copy',
           handler: () => {
             console.log('Copy clicked');
+            this.DuplicateMatrix(channel, DirName);
           }
         }, {
           text: 'Cancel',
@@ -360,6 +386,7 @@ export class HomePage {
 
 
   openChannelCollection(channel) {
+    console.log(channel);
     this.navCtrl.push(ChannelCollectionPage, {
       firstPassed: channel
     });
