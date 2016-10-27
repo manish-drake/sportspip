@@ -49,10 +49,8 @@ export class VideoComponent {
     }
 
     returnVidPath(filename) {
-        var path = cordova.file.applicationStorageDirectory + filename;
-   
-
-        return path
+        return cordova.file.applicationStorageDirectory + filename;
+        //return 'assets/' + filename;
     }
 
     timelineInterval() {
