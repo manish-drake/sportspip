@@ -68,14 +68,6 @@
             "type": "registry",
             "id": "cordova-plugin-file"
         },
-        "is_top_level": false,
-        "variables": {}
-    },
-    "cordova-plugin-file-transfer": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-file-transfer"
-        },
         "is_top_level": true,
         "variables": {}
     },
@@ -140,6 +132,14 @@
         "source": {
             "type": "registry",
             "id": "cordova-plugin-filepath"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-file-transfer": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-file-transfer"
         },
         "is_top_level": true,
         "variables": {}
