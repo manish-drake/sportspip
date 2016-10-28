@@ -4,6 +4,9 @@ import { NavController, NavParams, AlertController, ModalController } from 'ioni
 
 import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 
+import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError } from 'ionic-native';
+
+declare var cordova: any;
 
 @Component({
   selector: 'page-editor',
@@ -132,7 +135,93 @@ export class EditorPage {
     this.views[this.selectedViewIndex] = canvasView;
   }
 
-  addVideo(i) {
+  import() {
+    let alert = this.alertCtrl.create({
+      title: 'Unavailable!',
+      subTitle: 'View library not available currently.',
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
+  chooseVideo() {
+    FileChooser.open().then(uri => {
+
+      console.log(uri);
+      (<any>window).FilePath.resolveNativePath(uri, (filepath) => {
+
+        var path = filepath.substr(0, filepath.lastIndexOf('/') + 1);
+        var fileName = filepath.substr(filepath.lastIndexOf('/') + 1);
+
+        console.log(filepath + ' ' + path + ' ' + fileName);
+
+        File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName)
+          .then(_ => {
+            console.log('Successfully saved video')
+            // this.CreateVideoView(fileName);
+          })
+          .catch(err => {
+            console.log('Failed saving video' + err)
+            let alert = this.alertCtrl.create({
+              title: 'Failed saving video!',
+              subTitle: err,
+              buttons: ['OK']
+            });
+            alert.present();
+          });
+
+      }, (err) => {
+        alert(err);
+      });
+
+    }).catch(e => console.log(e));
+  }
+
+  // Code for Camera Recording Starts
+  recordVideo() {
+    let options: CaptureVideoOptions = {};
+    MediaCapture.captureVideo(options)
+      .then(
+      (data: MediaFile[]) => { this.captureSuccess(data) },
+      (err: CaptureError) => { this.captureError(err) }
+      );
+  }
+
+  captureSuccess(MediaFiles) {
+    MediaFiles.forEach(mediaFile => {
+      var filepath = mediaFile.localURL;
+      console.log(filepath);
+
+      var path = filepath.substr(0, filepath.lastIndexOf('/') + 1);
+      var fileName = filepath.substr(filepath.lastIndexOf('/') + 1);
+
+      File.moveFile(path, fileName, cordova.file.applicationStorageDirectory, fileName)
+        .then(_ => {
+          console.log('Successfully saved video')
+          this.CreateVideoView(fileName);
+        })
+        .catch(err => {
+          console.log('Failed saving video' + err)
+          let alert = this.alertCtrl.create({
+            title: 'Failed saving video!',
+            subTitle: err,
+            buttons: ['OK']
+          });
+          alert.present();
+        });
+    });
+  }
+
+  captureError(err) {
+    let alert = this.alertCtrl.create({
+      title: 'Recording Failed!',
+      subTitle: err,
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
+  CreateVideoView(fileName) {
     var localView = {
       "Content": {
         "Capture": {
@@ -142,7 +231,7 @@ export class EditorPage {
           },
           "View.ChronoMarker": "",
           "_name": "ba160173f284474c9412192dcd77cb1c",
-          "_Kernel": "sample.mp4",
+          "_Kernel": fileName,
           "_Title": "View " + this.selectedViewIndex,
           "_Name": "ba160173f284474c9412192dcd77cb1c",
           "_IsActive": "False"
@@ -154,23 +243,8 @@ export class EditorPage {
     }
     this.views[this.selectedViewIndex] = localView;
   }
+  // Code for Camera Recording Starts
 
-  recordVideo() {
-    let alert = this.alertCtrl.create({
-      title: 'Under Progress!',
-      subTitle: 'You cannot record video.',
-      buttons: ['OK']
-    });
-    alert.present();
-  }
 
-  import() {
-    let alert = this.alertCtrl.create({
-      title: 'Unavailable!',
-      subTitle: 'View library not available currently.',
-      buttons: ['OK']
-    });
-    alert.present();
-  }
   //Code for ViewOptions end
 }
