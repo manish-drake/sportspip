@@ -140,12 +140,13 @@ export class HomePage {
   // }
 
   retrunThumbnailPath(name) {
-    return cordova.file.applicationStorageDirectory + name;
+    return cordova.file.applicationStorageDirectory + name+".jpg";
   }
 
   SerializeServerData(headerData) {
     var res = JSON.parse(headerData.text());
     var result = res.Header;
+    alert(result.ThumbnailSource);
     var item = {
       Title: result.Title, DateCreated: result.DateCreated, Name: result.name, Channel: result.Channel,
       ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,

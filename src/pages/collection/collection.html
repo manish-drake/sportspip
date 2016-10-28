@@ -23,7 +23,7 @@
   <div class="items">
     <div class="item" *ngFor='let matrix of localMatrices; let i = index'>
       <ion-card (click)="openMatrix(matrix.Title)" (press)="matrixPressed(i,matrix.Title)">
-        <img [src]="matrix.ThumbnailSource" />
+        <img [attr.src]="retrunThumbnailPath(matrix.ThumbnailSource)" />
         <ion-card-content>
           <ion-card-title style="font-size:18px;flex-wrap: nowrap;">
             <ion-row>
