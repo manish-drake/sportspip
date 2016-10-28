@@ -4,7 +4,7 @@ import { ModelFactory } from '../../Factory/ModelFactory';
 import { AppVersion, File } from 'ionic-native';
 import { Package } from '../../pages/Package';
 import { DeleteHeader } from '../../Action/DeleteHeader';
-import { OpenMatrix } from '../../Action/openMatrix';
+import { OpenMatrix } from '../../Action/OpenMatrix';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
@@ -15,12 +15,13 @@ import { SettingsPage } from '../settings/settings';
 import { CollectionPage } from '../collection/collection';
 import { ChannelCollectionPage } from '../channelcollection/channelcollection';
 declare var cordova: any;
+declare var navigator: any;
 
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
-  providers: [StorageFactory, ModelFactory, DeleteHeader, Package,OpenMatrix],
+  providers: [StorageFactory, ModelFactory, DeleteHeader, Package, OpenMatrix],
 })
 export class HomePage {
 
@@ -32,7 +33,7 @@ export class HomePage {
     private storagefactory: StorageFactory,
     private modelfactory: ModelFactory,
     private deleteHeader: DeleteHeader,
-    private openmatrix:OpenMatrix,
+    private openmatrix: OpenMatrix,
     private popoverCtrl: PopoverController,
     private actionSheetCtrl: ActionSheetController,
     private alertCtrl: AlertController,
@@ -71,14 +72,12 @@ export class HomePage {
     this.GetLocalMatrixHeader();
   }
 
-
   DuplicateMatrix(channelName, matrixname) {
     var name = Date.now().toString();
     this.platform.ready().then(() => {
       this.http.get(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/Matrices/" + matrixname + "/Header.xml")
         .subscribe(res => {
           var header = JSON.parse(res.text());
-          alert(res.text());
           header.Name = name;
           this.storagefactory.SaveLocalHeader(header, channelName, header.Sport, name, "Matrices");
         })
@@ -115,32 +114,36 @@ export class HomePage {
     //   }).toPromise();
   }
 
-  Save(blob, filename) {
-    File.createFile(cordova.file.dataDirectory, filename, true).then(() => {
-      File.writeFile(cordova.file.dataDirectory, filename, blob, true).then(() => {
+  // Save(blob, filename) {
+  //   File.createFile(cordova.file.dataDirectory, filename, true).then(() => {
+  //     File.writeFile(cordova.file.dataDirectory, filename, blob, true).then(() => {
 
-      })
-    })
-  }
+  //     })
+  //   })
+  // }
 
-  SaveServerHeaders() {
-    this.http.get("file:/storage/emulated/0/DCIM/matrix/matrix.xml").subscribe(data => {
-      var headerList = JSON.parse(data.text());
-      headerList.forEach(header => {
-        var result = header;
-        var item = {
-          Title: result.Title, DateCreated: result.DateCreated, Name: result.UploadIndex.toString(), Channel: result.ChannelName,
-          ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadIndex, Duration: result.Duration,
-          Views: result.Views
-        };
-        this.Header.push(item);
-      });
-      this.SaveDownloadedHeaders(this.Header);
-    })
+  //server header
+  // SaveServerHeaders() {
+  //   this.http.get(cordova.file.dataDirectory+"/matrix.xml").subscribe(data => {
+  //     var headerList = JSON.parse(data.text());
+  //     headerList.forEach(header => {
+  //       var result = header;
+  //       var item = {
+  //         Title: result.Title, DateCreated: result.DateCreated, Name: result.UploadIndex.toString(), Channel: result.ChannelName,
+  //         ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadIndex, Duration: result.Duration,
+  //         Views: result.Views
+  //       };
+  //       this.Header.push(item);
+  //     });
+  //     this.SaveDownloadedHeaders(this.Header);
+  //   })
+  // }
+
+  retrunThumbnailPath(name) {
+    return cordova.file.applicationStorageDirectory + name;
   }
 
   SerializeServerData(headerData) {
-
     var res = JSON.parse(headerData.text());
     var result = res.Header;
     var item = {
@@ -150,7 +153,6 @@ export class HomePage {
     };
     this.Header.push(item);
     this.SaveDownloadedHeaders(this.Header);
-
   }
 
   //Save Downloaded Header
@@ -160,12 +162,16 @@ export class HomePage {
         .take(1).map((x) => x + 5)
         .subscribe((x) => {
           this.storagefactory.SaveRoamingHeader(res, res.Channel, res.Sport, res.Name);
+          this.DownloadThumbnailfromServer(res.Channel,res.Name)
         })
 
     })
     // this.storagefactory.SaveRoamingHeader(Data, HeaderList.Channel, HeaderList.Sport, HeaderList.name);
-
   }
+  DownloadThumbnailfromServer(channelName,matrixName) {
+    this.packages.DownloadThumbnailfromServer(channelName,matrixName);
+  }
+  
 
   GetLocalMatrixHeader() {
     this.platform.ready().then(() => {
@@ -331,7 +337,7 @@ export class HomePage {
   }
 
   openMatrix(matrixName, Channel) {
-    this.openmatrix.run(matrixName,Channel);
+    this.openmatrix.run(matrixName, Channel);
   }
 
   matrixPressed(index, DirName, channel) {
