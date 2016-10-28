@@ -157,10 +157,6 @@ export class EditorPage {
           this.CreateVideoView(fileName);
         }).catch(err => {
 
-          err.forEach(element => {
-            console.log(element)
-          });
-
           console.log('Failed saving video' + err)
           let alert = this.alertCtrl.create({
             title: 'Failed saving video!',
@@ -218,6 +214,7 @@ export class EditorPage {
     });
     alert.present();
   }
+  // Code for Camera Recording Starts
 
   CreateVideoView(fileName) {
     var localView = {
@@ -241,7 +238,6 @@ export class EditorPage {
     }
     this.views[this.selectedViewIndex] = localView;
   }
-  // Code for Camera Recording Starts
 
 
   //Code for ViewOptions end

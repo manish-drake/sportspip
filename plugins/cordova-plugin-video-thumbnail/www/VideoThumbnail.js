@@ -1,5 +1,5 @@
 /**
- * PKVideoThumbnail
+ * cordova-plugin-video-thumbnail
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
  * software and associated documentation files (the "Software"), to deal in the Software
@@ -17,10 +17,14 @@
  * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
  * OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
- */
+**/
 
-#import <Cordova/CDVPlugin.h>
+var Exec = require("cordova/exec");
 
-@interface PKVideoThumbnail : CDVPlugin
-- (void) createThumbnail:(CDVInvokedUrlCommand*)command;
-@end
+function createThumbnail(filePath, callback) {
+    var success = callback.bind(callback, null);
+    
+    Exec(success, callback, "VideoThumbnail", "create", [filePath]);
+}
+
+module.exports = createThumbnail;

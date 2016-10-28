@@ -51,7 +51,11 @@ export class VideoComponent {
             window.clearInterval(this.timelineInterval);
         })
 
-        window.setInterval(() => {
+        this.video.addEventListener('error', (error) => {
+            alert('error :'+error);
+        })
+
+        setInterval(() => {
             this.timelineDuration = this.formatTime(this.video.duration);
             this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
             this.evaluateMarkerPosition();
@@ -91,7 +95,7 @@ export class VideoComponent {
         if (this.video.paused == true) {
             this.video.play();
             this.playPauseButtonIcon = 'pause';
-            this.timelineInterval = window.setInterval(() => {
+            this.timelineInterval = setInterval(() => {
 
                 var factor = (100000 / this.video.duration) * this.video.currentTime;
                 this.sliderValue = factor;
