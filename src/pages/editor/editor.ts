@@ -145,15 +145,9 @@ export class EditorPage {
   }
 
   chooseVideo() {
-    FileChooser.open().then(uri => {
-      console.log(uri);
-      (<any>window).FilePath.resolveNativePath(uri, (filepath) => {
-
-        // File.resolveLocalFilesystemUrl(nativePath).then(data => {
-        //   console.log(data);
-        //   var filepath = data.fullPath;
-
-        console.log(filepath);
+    FileChooser.open().then(uri => { console.log(uri);
+      
+      (<any>window).FilePath.resolveNativePath(uri, (filepath) => { console.log(filepath);
 
         var path = filepath.substr(0, filepath.lastIndexOf('/') + 1);
         var fileName = filepath.substr(filepath.lastIndexOf('/') + 1);
@@ -175,9 +169,6 @@ export class EditorPage {
           });
           alert.present();
         });
-
-        // }).catch(e => console.log('resolveLocalFilesystemUrl'+ e));
-
 
       }, (err) => { console.log(err) });
 
