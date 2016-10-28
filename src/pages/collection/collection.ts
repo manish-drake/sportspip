@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ActionSheetController,Platform } from 'ionic-angular';
+import { NavController, ActionSheetController, Platform } from 'ionic-angular';
 import { File } from 'ionic-native';
 import { EditorPage } from '../editor/editor';
 import { Http } from '@angular/http';
@@ -17,7 +17,7 @@ declare var cordova: any;
 })
 export class CollectionPage {
   localMatrices = [];
-  constructor(public navCtrl: NavController, private actionSheetCtrl: ActionSheetController,private platform:Platform,private http:Http) {
+  constructor(public navCtrl: NavController, private actionSheetCtrl: ActionSheetController, private platform: Platform, private http: Http) {
     this.LoadColectionMatrix();
   }
 
@@ -46,6 +46,10 @@ export class CollectionPage {
       });
     });
 
+  }
+
+  retrunThumbnailPath(name) {
+    return cordova.file.applicationStorageDirectory + name + ".jpg";
   }
 
   ionViewDidLoad() {
