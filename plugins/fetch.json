@@ -103,6 +103,14 @@
         "is_top_level": true,
         "variables": {}
     },
+    "cordova-plugin-video-thumbnail": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-video-thumbnail"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
     "com.mbppower.camerapreview": {
         "source": {
             "type": "registry",

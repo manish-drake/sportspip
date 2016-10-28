@@ -145,36 +145,34 @@ export class EditorPage {
   }
 
   chooseVideo() {
-    FileChooser.open().then(uri => {
-
-      console.log(uri);
-      (<any>window).FilePath.resolveNativePath(uri, (filepath) => {
+    FileChooser.open().then(uri => { console.log(uri);
+      
+      (<any>window).FilePath.resolveNativePath(uri, (filepath) => { console.log(filepath);
 
         var path = filepath.substr(0, filepath.lastIndexOf('/') + 1);
         var fileName = filepath.substr(filepath.lastIndexOf('/') + 1);
 
-        console.log(filepath + ' ' + path + ' ' + fileName);
+        File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName).then(_ => {
+          console.log('Successfully saved video')
+          this.CreateVideoView(fileName);
+        }).catch(err => {
 
-        File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName)
-          .then(_ => {
-            console.log('Successfully saved video')
-            // this.CreateVideoView(fileName);
-          })
-          .catch(err => {
-            console.log('Failed saving video' + err)
-            let alert = this.alertCtrl.create({
-              title: 'Failed saving video!',
-              subTitle: err,
-              buttons: ['OK']
-            });
-            alert.present();
+          err.forEach(element => {
+            console.log(element)
           });
 
-      }, (err) => {
-        alert(err);
-      });
+          console.log('Failed saving video' + err)
+          let alert = this.alertCtrl.create({
+            title: 'Failed saving video!',
+            subTitle: err,
+            buttons: ['OK']
+          });
+          alert.present();
+        });
 
-    }).catch(e => console.log(e));
+      }, (err) => { console.log(err) });
+
+    }).catch(e => { console.log(e) });
   }
 
   // Code for Camera Recording Starts

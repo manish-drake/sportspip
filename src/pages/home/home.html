@@ -40,7 +40,7 @@
 			<div class="items">
 				<div class="item" *ngFor='let matrix of localMatrices | slice: 0:12; let i = index'>
 					<ion-card (click)="openMatrix(matrix.Name,matrix.Channel)" (press)="matrixPressed(i,matrix.Name,matrix.Channel)">
-						<img src="assets/sample.jpg" />
+						<img [attr.src]="retrunThumbnailPath(matrix.ThumbnailSource)" />
 						<ion-card-content>
 							<ion-card-title style="font-size:18px;flex-wrap: nowrap;">
 								<ion-row>
@@ -74,7 +74,7 @@
 				<div class="items">
 					<div class="item" *ngFor="let matrix of channel.value | slice: 0:6; let i = index">
 						<ion-card (click)="channelMatrixPressed(i,matrix.Name,channel.value,matrix.Channel)" (press)="channelMatrixPressed(i,matrix.Name,channel.value,matrix.Channel)">
-							<img src="assets/sample.jpg" />
+							<img [attr.src]="retrunThumbnailPath(matrix.ThumbnailSource)" />
 							<ion-card-content>
 								<ion-card-title style="font-size:18px;flex-wrap: nowrap;">
 									<ion-row>
