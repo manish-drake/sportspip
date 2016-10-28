@@ -15,7 +15,6 @@ declare var cordova: any;
 
 export class EditorPage {
 
-
   selectedViewIndex: number = 0;
 
   matrix: any;
@@ -147,25 +146,33 @@ export class EditorPage {
 
   chooseVideo() {
     FileChooser.open().then(uri => {
+
       console.log(uri);
+      (<any>window).FilePath.resolveNativePath(uri, (filepath) => {
 
-      var path = uri.substr(0, uri.lastIndexOf('/') + 1);
-      var fileName = uri.substr(uri.lastIndexOf('/') + 1);
+        var path = filepath.substr(0, filepath.lastIndexOf('/') + 1);
+        var fileName = filepath.substr(filepath.lastIndexOf('/') + 1);
 
-      File.copyFile(path, fileName, this.appStorage, fileName)
-        .then(_ => {
-          console.log('Successfully saved video')
-          this.CreateVideoView(fileName);
-        })
-        .catch(err => {
-          console.log('Failed saving video' + err)
-          let alert = this.alertCtrl.create({
-            title: 'Failed saving video!',
-            subTitle: err,
-            buttons: ['OK']
+        console.log(filepath + ' ' + path + ' ' + fileName);
+
+        File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName)
+          .then(_ => {
+            console.log('Successfully saved video')
+            // this.CreateVideoView(fileName);
+          })
+          .catch(err => {
+            console.log('Failed saving video' + err)
+            let alert = this.alertCtrl.create({
+              title: 'Failed saving video!',
+              subTitle: err,
+              buttons: ['OK']
+            });
+            alert.present();
           });
-          alert.present();
-        });
+
+      }, (err) => {
+        alert(err);
+      });
 
     }).catch(e => console.log(e));
   }
@@ -180,8 +187,6 @@ export class EditorPage {
       );
   }
 
-  appStorage: string = cordova.file.applicationStorageDirectory;
-
   captureSuccess(MediaFiles) {
     MediaFiles.forEach(mediaFile => {
       var filepath = mediaFile.localURL;
@@ -190,7 +195,7 @@ export class EditorPage {
       var path = filepath.substr(0, filepath.lastIndexOf('/') + 1);
       var fileName = filepath.substr(filepath.lastIndexOf('/') + 1);
 
-      File.moveFile(path, fileName, this.appStorage, fileName)
+      File.moveFile(path, fileName, cordova.file.applicationStorageDirectory, fileName)
         .then(_ => {
           console.log('Successfully saved video')
           this.CreateVideoView(fileName);
@@ -204,9 +209,6 @@ export class EditorPage {
           });
           alert.present();
         });
-
-      // moveFile(path, fileName, newPath, newFileName)
-
     });
   }
 
