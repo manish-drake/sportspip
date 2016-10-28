@@ -79,34 +79,10 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-photokandy-video-thumbnail": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-photokandy-video-thumbnail"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "cordova-plugin-video-thumbnail": {
         "source": {
             "type": "registry",
             "id": "cordova-plugin-video-thumbnail"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "com.mbppower.camerapreview": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-camera-preview"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-media-capture": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-media-capture"
         },
         "is_top_level": true,
         "variables": {}

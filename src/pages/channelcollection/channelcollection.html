@@ -20,7 +20,7 @@
 	<div class="items">
 		<div class="item" *ngFor="let matrix of channelMatrices; let i = index">
 			<ion-card (click)="channelMatrixPressed(i,matrix.Channel,matrix.Name)" (press)="channelMatrixPressed(i,matrix.Channel,matrix.Name)">
-				<img src="assets/sample.jpg" />
+				 <img [attr.src]="retrunThumbnailPath(matrix.ThumbnailSource)" />
 				<ion-card-content>
 					<ion-card-title style="font-size:18px;flex-wrap: nowrap;">
 						<ion-row>

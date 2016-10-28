@@ -61,6 +61,10 @@ export class ChannelCollectionPage {
 
   }
 
+  retrunThumbnailPath(name) {
+    return cordova.file.applicationStorageDirectory + name + ".jpg";
+  }
+
   presentPopover(event) {
     let popover = this.popoverController.create(PopoverPage2);
     popover.present({ ev: event });
@@ -100,7 +104,7 @@ export class ChannelCollectionPage {
     Observable.interval(6000)
       .take(1).map((x) => x + 5)
       .subscribe((x) => {
-        this.DeleteChannelMatrix(fileName,channelName, index);
+        this.DeleteChannelMatrix(fileName, channelName, index);
         console.log("delete server header");
       })
 
