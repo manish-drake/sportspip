@@ -16,30 +16,29 @@
     <ion-buttons end>
       <button ion-button color="light" (click)="dismiss()">Save</button>
     </ion-buttons>
-
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <ion-list>
     <ion-item>
       <ion-label style="width:115px;color:gray">Title*</ion-label>
-      <ion-input value="{{matrixData._Title}}"></ion-input>
+      <ion-input [(ngModel)] = "matrixData._Title" value="{{matrixData._Title}}"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label style="width:115px;color:gray">Sports*</ion-label>
-      <ion-input value="{{matrixData._Sport}}"></ion-input>
+      <ion-input [(ngModel)] = "matrixData._Sport" value="{{matrixData._Sport}}"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label style="width:115px;color:gray">Skill</ion-label>
-      <ion-input value="{{matrixData._Skill}}"></ion-input>
+      <ion-input [(ngModel)] = "matrixData._Skill" value="{{matrixData._Skill}}"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label style="width:115px;color:gray">Location</ion-label>
-      <ion-input value="{{matrixData._Location}}"></ion-input>
+      <ion-input [(ngModel)] = "matrixData._Location" value="{{matrixData._Location}}"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label style="width:115px;color:gray">PIN</ion-label>
-      <ion-input value="{{matrixData._PIN}}"></ion-input>
+      <ion-input [(ngModel)] = "matrixData._PIN" value="{{matrixData._PIN}}"></ion-input>
     </ion-item>
     <ion-item>
       <label style="padding-right:83px;color:gray">Views</label>
