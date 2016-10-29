@@ -18,7 +18,8 @@ export class VideoComponent {
     repeatColor: any;
     playPauseButtonIcon: string;
     volumeButtonIcon: string;
-    // volumeValue: number;
+
+    videoSrcAvailable: boolean = true;
 
     viewBoxSize: any;
 
@@ -27,11 +28,12 @@ export class VideoComponent {
         this.playPauseButtonIcon = "play";
         this.repeatColor = "inactive"
         this.timelinePosition = '00:00:00.00';
-        // this.volumeValue = 50;
         this.volumeButtonIcon = "volume-up";
     }
 
     ngOnInit() { }
+
+    ngOnDestroy() {alert('ngOnDestroy')}
 
     @ViewChild('videoElement') videoElement: ElementRef;
     video: HTMLVideoElement;
@@ -48,17 +50,18 @@ export class VideoComponent {
 
         this.video.addEventListener('ended', () => {
             this.playPauseButtonIcon = 'play';
-            window.clearInterval(this.timelineInterval);
+            clearInterval(this.timelineInterval);
         })
 
-        window.setInterval(() => {
+        this.video.addEventListener('error', (error) => {
+            this.videoSrcAvailable = false;
+        })
+
+        setInterval(() => {
             this.timelineDuration = this.formatTime(this.video.duration);
             this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
             this.evaluateMarkerPosition();
         }, 1);
-
-        // var volFactor = this.volumeValue / 100;
-        // this.video.nativeElement.volume = volFactor;
     }
 
     returnVidPath(filename) {
@@ -91,7 +94,7 @@ export class VideoComponent {
         if (this.video.paused == true) {
             this.video.play();
             this.playPauseButtonIcon = 'pause';
-            this.timelineInterval = window.setInterval(() => {
+            this.timelineInterval = setInterval(() => {
 
                 var factor = (100000 / this.video.duration) * this.video.currentTime;
                 this.sliderValue = factor;
@@ -100,7 +103,7 @@ export class VideoComponent {
         } else {
             this.video.pause();
             this.playPauseButtonIcon = 'play';
-            window.clearInterval(this.timelineInterval);
+            clearInterval(this.timelineInterval);
         }
     }
 
@@ -161,16 +164,6 @@ export class VideoComponent {
             this.volumeButtonIcon = "volume-up";
         }
     }
-
-    // volumeValueChange(){
-    //      var volFactor = this.volumeValue / 100;
-    //      this.video.volume = volFactor;
-    //      if (volFactor == 0) {
-    //          this.volumeButtonIcon = "volume-off";
-    //      } else {
-    //          this.volumeButtonIcon = "volume-up";
-    //      }
-    // }
 
     // Code for Markers starts
     markers = [];
@@ -296,10 +289,10 @@ export class VideoComponent {
     markersObjects = []
 
     loadMarkerObjects() {
-        var interval = window.setInterval(() => {
+        var interval = setInterval(() => {
             if (this.markers != undefined) {
 
-                window.clearInterval(interval);
+                clearInterval(interval);
 
                 this.markers.forEach(data => {
                     var objs = data['Marker.Objects'];
