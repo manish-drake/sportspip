@@ -33,7 +33,7 @@ export class VideoComponent {
 
     ngOnInit() { }
 
-    ngOnDestroy() {alert('ngOnDestroy')}
+    
 
     @ViewChild('videoElement') videoElement: ElementRef;
     video: HTMLVideoElement;
