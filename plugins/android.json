@@ -19,9 +19,6 @@
         "cordova-plugin-app-version": {
             "PACKAGE_NAME": "com.ionicframework.sportspip439155"
         },
-        "cordova-plugin-video-thumbnail": {
-            "PACKAGE_NAME": "com.ionicframework.sportspip439155"
-        },
         "com.megster.cordova.FileChooser": {
             "PACKAGE_NAME": "com.ionicframework.sportspip439155"
         },
@@ -29,6 +26,9 @@
             "PACKAGE_NAME": "com.ionicframework.sportspip439155"
         },
         "cordova-plugin-media-capture": {
+            "PACKAGE_NAME": "com.ionicframework.sportspip439155"
+        },
+        "cordova-plugin-video-thumbnail": {
             "PACKAGE_NAME": "com.ionicframework.sportspip439155"
         }
     },
