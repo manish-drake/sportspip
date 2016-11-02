@@ -18,11 +18,11 @@
 			<image *ngSwitchCase="'Picture'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
 				xlink:href="assets/sample.jpg" />
 			<defs *ngSwitchCase="'Arrow'">
-				<marker id="arrow" viewBox="0 0 14 14" markerWidth="6" markerHeight="6" refX="9" refY="6" orient="auto">
+				<marker id="videoarrow" viewBox="0 0 14 14" markerWidth="6" markerHeight="6" refX="9" refY="6" orient="auto">
 					<path d="M0,0 L0,12 L12,6 L0,0" [attr.fill]="clrCvt(obj.val._Stroke)"></path>
 				</marker>
 			</defs>
-			<line *ngSwitchCase="'Arrow'" #arrow marker-end="url(#arrow)" [attr.x1]="obj.val._X1" [attr.y1]="obj.val._Y1" [attr.x2]="obj.val._X2"
+			<line *ngSwitchCase="'Arrow'" #arrow marker-end="url(#videoarrow)" [attr.x1]="obj.val._X1" [attr.y1]="obj.val._Y1" [attr.x2]="obj.val._X2"
 				[attr.y2]="obj.val._Y2" [attr.stroke]="clrCvt(obj.val._Stroke)" [attr.stroke-width]="obj.val._StrokeThickness" [attr.opacity]="obj.val._Opacity"
 			/>
 			<image *ngSwitchCase="'Ink'" #Ink x="0" y="0" width="100%" height="100%" xlink:href="assets/inksample.gif" />
@@ -43,11 +43,11 @@
 				<image *ngSwitchCase="'Picture'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
 					xlink:href="assets/sample.jpg" />
 				<defs *ngSwitchCase="'Arrow'">
-					<marker id="arrow" viewBox="0 0 14 14" markerWidth="5" markerHeight="5" refX="8" refY="6" orient="auto">
+					<marker id="markerarrow" viewBox="0 0 14 14" markerWidth="6" markerHeight="6" refX="9" refY="6" orient="auto">
 						<path d="M0,0 L0,12 L12,6 L0,0" [attr.fill]="clrCvt(obj.val._Stroke)"></path>
 					</marker>
 				</defs>
-				<line *ngSwitchCase="'Arrow'" #arrow marker-end="url(#arrow)" [attr.x1]="obj.val._X1" [attr.y1]="obj.val._Y1" [attr.x2]="obj.val._X2"
+				<line *ngSwitchCase="'Arrow'" #arrow marker-end="url(#markerarrow)" [attr.x1]="obj.val._X1" [attr.y1]="obj.val._Y1" [attr.x2]="obj.val._X2"
 					[attr.y2]="obj.val._Y2" [attr.stroke]="clrCvt(obj.val._Stroke)" [attr.stroke-width]="obj.val._StrokeThickness" [attr.opacity]="obj.val._Opacity"
 				/>
 				<image *ngSwitchCase="'Ink'" #Ink x="0" y="0" width="100%" height="100%" xlink:href="assets/inksample.gif" />
