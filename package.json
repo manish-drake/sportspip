@@ -45,7 +45,14 @@
     "cordova-plugin-whitelist",
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
-    "ionic-plugin-keyboard"
+    "ionic-plugin-keyboard",
+    "cordova-plugin-app-version",
+    "cordova-plugin-file",
+    "cordova-plugin-file-transfer",
+    "cordova-plugin-zip",
+    "cordova-plugin-video-thumbnail",
+    "cordova-plugin-media-capture",
+    "http://github.com/don/cordova-filechooser.git"
   ],
   "cordovaPlatforms": []
 }
