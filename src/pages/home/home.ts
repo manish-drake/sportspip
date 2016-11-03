@@ -140,7 +140,7 @@ export class HomePage {
   // }
 
   retrunThumbnailPath(name) {
-    return cordova.file.applicationStorageDirectory + name+".jpg";
+    return cordova.file.applicationStorageDirectory + name + ".jpg";
   }
 
   SerializeServerData(headerData) {
@@ -162,16 +162,16 @@ export class HomePage {
         .take(1).map((x) => x + 5)
         .subscribe((x) => {
           this.storagefactory.SaveRoamingHeader(res, res.Channel, res.Sport, res.Name);
-          this.DownloadThumbnailfromServer(res.Channel,res.Name)
+          this.DownloadThumbnailfromServer(res.Channel, res.Name)
         })
 
     })
     // this.storagefactory.SaveRoamingHeader(Data, HeaderList.Channel, HeaderList.Sport, HeaderList.name);
   }
-  DownloadThumbnailfromServer(channelName,matrixName) {
-    this.packages.DownloadThumbnailfromServer(channelName,matrixName);
+  DownloadThumbnailfromServer(channelName, matrixName) {
+    this.packages.DownloadThumbnailfromServer(channelName, matrixName);
   }
-  
+
 
   GetLocalMatrixHeader() {
     this.platform.ready().then(() => {
@@ -323,18 +323,53 @@ export class HomePage {
     });
   }
 
-  // For testing only
+  // For testing only --starts
   testOpenMatrix() {
     this.http.get("assets/matrix1.mtx")
       .subscribe(data => {
         console.log(data.text());
         console.log(data['_data']);
         var res = JSON.parse(data.text());
-        this.navCtrl.push(EditorPage, {
-          matrixData: res.Matrix
-        });
+
+        if (this.platform.is('cordova')) {
+          File.checkFile(cordova.file.applicationStorageDirectory, 'sample.mp4').then(_ => {
+            console.log('Sample video already exists');
+            this.testNavToEditor(res);
+          }).catch(err => {
+
+            File.checkFile(cordova.file.applicationDirectory + '/www/assets/', 'sample.mp4').then(_ => {
+
+              File.copyFile(cordova.file.applicationDirectory + '/www/assets/', 'sample.mp4', cordova.file.applicationStorageDirectory, 'sample.mp4').then(_ => {
+                console.log('Sample video saved to application directory');
+                this.testNavToEditor(res);
+              }).catch(err => {
+                console.log('Failed saving video' + err);
+                this.testNavToEditor(res);
+              });
+
+            }).catch(err => {
+              console.log('Sample video not found in assets');
+              this.testNavToEditor(res);
+            });
+
+          });
+        }
+        else{
+          this.testNavToEditor(res);
+        }
+
       });
+
   }
+
+  testNavToEditor(data) {
+    this.navCtrl.push(EditorPage, {
+      matrixData: data.Matrix
+    });
+  }
+  // For testing only --ends
+
+
 
   openMatrix(matrixName, Channel) {
     this.openmatrix.run(matrixName, Channel);
