@@ -40,3 +40,5 @@ jspm_packages
 platforms
 /tsconfig.tmp.json
 /www
+/plugins
+.vscode

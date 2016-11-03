@@ -20,15 +20,14 @@
 </ion-header>
 
 <ion-content style="background:#eee;" [ngSwitch]="selectedViewIndex">
-	<ion-row style="height:100%;" *ngFor="let view of views; let i = index" [hidden]="hideViewSegment(selectedViewIndex,i)">
-		<ion-col [ngSwitch]="view._Source">
+	<div style="height:100%;" *ngFor="let view of views; let i = index" [hidden]="hideViewSegment(selectedViewIndex,i)" [ngSwitch]="view._Source">
 			<!--ViewCanvasTemplate-->
 			<canvas-component *ngSwitchCase="'Canvas'" [data]="view"></canvas-component>
 			<!--ViewVideoTemplate-->
 			<video-component *ngSwitchCase="'Local'" [data]="view"></video-component>
 			<!--viewOptions-->
 			<ion-row *ngSwitchCase="'(Blank)'" style="height:100%;">
-				<ion-col no-padding center text-center>
+				<ion-col no-padding center text-center >
 					<ion-grid no-padding style="max-width:500px ;margin-left: auto;margin-right: auto;">
 						<ion-row no-padding>
 							<ion-col no-padding width-50>
@@ -77,8 +76,7 @@
 					</ion-grid>
 				</ion-col>
 			</ion-row>
-		</ion-col>
-	</ion-row>
+	</div>
 </ion-content>
 
 <!--<ion-footer>
