@@ -49,6 +49,7 @@
     "cordova-plugin-app-version",
     "cordova-plugin-file",
     "cordova-plugin-file-transfer",
+    "cordova-plugin-filepath",
     "cordova-plugin-zip",
     "cordova-plugin-video-thumbnail",
     "cordova-plugin-media-capture",

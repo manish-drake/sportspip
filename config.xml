@@ -39,6 +39,7 @@
     <plugin name="cordova-plugin-app-version" />
     <plugin name="cordova-plugin-file" />
     <plugin name="cordova-plugin-file-transfer" />
+    <plugin name="cordova-plugin-filepath" />
     <plugin name="cordova-plugin-zip" />
     <plugin name="cordova-plugin-video-thumbnail" />
     <plugin name="cordova-plugin-media-capture" />

@@ -327,8 +327,6 @@ export class HomePage {
   testOpenMatrix() {
     this.http.get("assets/matrix1.mtx")
       .subscribe(data => {
-        console.log(data.text());
-        console.log(data['_data']);
         var res = JSON.parse(data.text());
 
         if (this.platform.is('cordova')) {
