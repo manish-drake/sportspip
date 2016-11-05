@@ -10,7 +10,7 @@ declare var cordova: any;
 
 export class VideoComponent {
 
-    @Input() data: any;
+    @Input() view: any;
 
     sliderValue: any = 0;
     timelinePosition: any;
@@ -41,8 +41,8 @@ export class VideoComponent {
     timelineInterval: any = null;
 
     ngAfterViewInit() {
-        console.log(this.data);
-        this.markers = this.data["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
+        console.log(this.view);
+        this.markers = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
         this.loadObjects();
         this.loadMarkerObjects();
 
@@ -267,7 +267,7 @@ export class VideoComponent {
     objects = [];
 
     loadObjects() {
-        var objs = this.data["Content"]["Capture"]["Marker"]["Marker.Objects"];
+        var objs = this.view["Content"]["Capture"]["Marker"]["Marker.Objects"];
 
         for (var key in objs) {
             // skip loop if the property is from prototype
