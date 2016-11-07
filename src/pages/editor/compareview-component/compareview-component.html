@@ -1,0 +1,104 @@
+<!--compareViewTemplate-->
+<ion-grid style="height: 100%;">
+	<ion-row style="height: 100%;position: relative;">
+		<video #videoElement style="position: absolute; background-color:black;" #video [attr.src]="returnVidPath(view.Content.Capture._Kernel)"
+			width="100%" height="100%"></video>
+		<svg *ngFor="let obj of objects;" [ngSwitch]="obj.key" [attr.viewBox]="viewBoxSize" height="100%" width="100%" style="position:absolute">
+			<rect *ngSwitchCase="'Rectangle'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
+				[attr.fill]="clrCvt(obj.val._Fill)" [attr.stroke]="clrCvt(obj.val._Stroke)" [attr.stroke-width]="obj.val._StrokeThickness"
+				[attr.opacity]="obj.val._Opacity" />
+			<ellipse *ngSwitchCase="'Ellipse'" [attr.cx]="sum(obj.val._Left, obj.val._CenterX)" [attr.cy]="sum(obj.val._Top, obj.val._CenterY)"
+				[attr.rx]="obj.val._Width/2" [attr.ry]="obj.val._Height/2" [attr.fill]="clrCvt(obj.val._Fill)" [attr.stroke]="clrCvt(obj.val._Stroke)"
+				[attr.stroke-width]="obj.val._StrokeThickness" [attr.opacity]="obj.val._Opacity" />
+			<line *ngSwitchCase="'LineObject'" [attr.x1]="obj.val._X1" [attr.y1]="obj.val._Y1" [attr.x2]="obj.val._X2" [attr.y2]="obj.val._Y2"
+				[attr.stroke]="clrCvt(obj.val._Stroke)" [attr.stroke-width]="obj.val._StrokeThickness" [attr.opacity]="obj.val._Opacity"
+			/>
+			<text *ngSwitchCase="'RichTextObject'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.font-size]="obj.val._FontSize"
+				[attr.fill]="clrCvt(obj.val._Foreground)" [attr.opacity]="obj.val._Opacity">Video</text>
+			<image *ngSwitchCase="'Picture'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
+				xlink:href="assets/sample.jpg" />
+			<defs *ngSwitchCase="'Arrow'">
+				<marker id="videoarrow" viewBox="0 0 14 14" markerWidth="6" markerHeight="6" refX="9" refY="6" orient="auto">
+					<path d="M0,0 L0,12 L12,6 L0,0" [attr.fill]="clrCvt(obj.val._Stroke)"></path>
+				</marker>
+			</defs>
+			<line *ngSwitchCase="'Arrow'" #arrow marker-end="url(#videoarrow)" [attr.x1]="obj.val._X1" [attr.y1]="obj.val._Y1" [attr.x2]="obj.val._X2"
+				[attr.y2]="obj.val._Y2" [attr.stroke]="clrCvt(obj.val._Stroke)" [attr.stroke-width]="obj.val._StrokeThickness" [attr.opacity]="obj.val._Opacity"
+			/>
+			<image *ngSwitchCase="'Ink'" #Ink x="0" y="0" width="100%" height="100%" xlink:href="assets/inksample.gif" />
+		</svg>
+		<div #markers *ngFor="let marker of markersObjects;" style="position:absolute;height:100%;width:100%;">
+			<svg *ngFor="let obj of marker.objects;" [ngSwitch]="obj.key" [attr.viewBox]="viewBoxSize" height="100%" width="100%" style="position:absolute">
+				<rect *ngSwitchCase="'Rectangle'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
+					[attr.fill]="clrCvt(obj.val._Fill)" [attr.stroke]="clrCvt(obj.val._Stroke)" [attr.stroke-width]="obj.val._StrokeThickness"
+					[attr.opacity]="obj.val._Opacity" />
+				<ellipse *ngSwitchCase="'Ellipse'" [attr.cx]="sum(obj.val._Left, obj.val._CenterX)" [attr.cy]="sum(obj.val._Top, obj.val._CenterY)"
+					[attr.rx]="obj.val._Width/2" [attr.ry]="obj.val._Height/2" [attr.fill]="clrCvt(obj.val._Fill)" [attr.stroke]="clrCvt(obj.val._Stroke)"
+					[attr.stroke-width]="obj.val._StrokeThickness" [attr.opacity]="obj.val._Opacity" />
+				<line *ngSwitchCase="'LineObject'" [attr.x1]="obj.val._X1" [attr.y1]="obj.val._Y1" [attr.x2]="obj.val._X2" [attr.y2]="obj.val._Y2"
+					[attr.stroke]="clrCvt(obj.val._Stroke)" [attr.stroke-width]="obj.val._StrokeThickness" [attr.opacity]="obj.val._Opacity"
+				/>
+				<text *ngSwitchCase="'RichTextObject'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.font-size]="obj.val._FontSize"
+					[attr.fill]="clrCvt(obj.val._Foreground)" [attr.opacity]="obj.val._Opacity">Video</text>
+				<image *ngSwitchCase="'Picture'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
+					xlink:href="assets/sample.jpg" />
+				<defs *ngSwitchCase="'Arrow'">
+					<marker id="markerarrow" viewBox="0 0 14 14" markerWidth="6" markerHeight="6" refX="9" refY="6" orient="auto">
+						<path d="M0,0 L0,12 L12,6 L0,0" [attr.fill]="clrCvt(obj.val._Stroke)"></path>
+					</marker>
+				</defs>
+				<line *ngSwitchCase="'Arrow'" #arrow marker-end="url(#markerarrow)" [attr.x1]="obj.val._X1" [attr.y1]="obj.val._Y1" [attr.x2]="obj.val._X2"
+					[attr.y2]="obj.val._Y2" [attr.stroke]="clrCvt(obj.val._Stroke)" [attr.stroke-width]="obj.val._StrokeThickness" [attr.opacity]="obj.val._Opacity"
+				/>
+				<image *ngSwitchCase="'Ink'" #Ink x="0" y="0" width="100%" height="100%" xlink:href="assets/inksample.gif" />
+			</svg>
+		</div>
+		<button ion-button icon-right small (click)="selectView($event)" style="position:absolute; left:10px; top:10px; background-color:rgba(0,0,0,0.5);color:white;">
+			{{view._Title}}<ion-icon name="arrow-dropdown"></ion-icon>
+		</button>
+		<button ion-button small (click)="updateLink()" style="position:absolute; right:10px; top:10px; background-color:rgba(0,0,0,0.5);color:white;">
+			<ion-icon name="{{linkUnlinkIcon}}"></ion-icon>
+		</button>
+		<div *ngIf="isSelected" text-center style="position:absolute; right:10px; bottom:10px; display:block;">
+			<button (click)="playbackRateVideo()" style="margin-bottom:-10px; width: 70%; height:40px; border-top-left-radius:5px; border-top-right-radius:5px; ">
+				{{video.playbackRate}}x
+				</button>
+			<button ion-fab (click)="playPause()"><ion-icon name="{{playPauseButtonIcon}}"></ion-icon></button>
+		</div>
+	</ion-row>
+	<ion-row *ngIf="videoSrcAvailable" style="height: auto; flex: 0 0 auto;" color="dark">
+		<ion-col no-padding>
+			<ion-grid no-padding>
+				<ion-row>
+					<ion-col padding-left padding-right>
+						<ion-row>
+							<ion-col #markersContainer no-padding (window:resize)="onResize($event)" style="height:28px;">
+								<button ion-button icon-only clear color="inactive" *ngFor="let marker of markers;let i = index" [class.markerselected]="marker.checked"
+									[style.left]="marker.Left" style="width:18px;height:26px;margin:0 -9px;" (click)="updateSelection(i)" (press)="deleteMarker(i)">
+										<ion-icon name="pin"></ion-icon>
+										</button>
+							</ion-col>
+						</ion-row>
+						<ion-row>
+							<ion-col no-padding>
+								<ion-range style="padding:0;height:25px" min="0" max="100000" step="0.01" [(ngModel)]="sliderValue" (ionChange)="sliderValueChange()"></ion-range>
+							</ion-col>
+						</ion-row>
+					</ion-col>
+				</ion-row>
+				<ion-row>
+					<ion-col>
+						<ion-row>
+							<ion-col no-padding style="width: 100%; color: gray;">
+								{{timelinePosition}}
+							</ion-col>
+							<ion-col no-padding style="width: auto; flex: 0 0 auto; color: gray;">
+								{{timelineDuration}}
+							</ion-col>
+						</ion-row>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-col>
+	</ion-row>
+</ion-grid>

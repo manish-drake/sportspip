@@ -1,0 +1,9 @@
+page-compareview {
+    .componentselected{
+    box-shadow: 0 0 3px 2px #387EF5;
+    }
+    ::-webkit-scrollbar,
+    *::-webkit-scrollbar {
+    display: none;
+}
+}
