@@ -44,11 +44,6 @@ export class CompareviewComponent {
     timelineInterval: any = null;
 
     ngAfterViewInit() {
-        console.log(this.view);
-        this.markers = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
-        this.loadObjects();
-        this.loadMarkerObjects();
-
         this.video = this.videoElement.nativeElement;
 
         this.video.addEventListener('ended', () => {
@@ -60,16 +55,39 @@ export class CompareviewComponent {
             this.videoSrcAvailable = false;
         })
 
+        this.loadViewData();
+    }
+
+    clearViewData(){
+        this.markers = [];
+        this.objects = [];
+        this.markersObjects = [];
+    }
+
+    loadViewData() {
+        this.markers = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
+        this.loadObjects();
+        this.loadMarkerObjects();
+
         setInterval(() => {
             this.timelineDuration = this.formatTime(this.video.duration);
             this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
-            this.evaluateMarkerPosition();
+            // this.evaluateMarkerPosition();
         }, 1);
     }
 
-    selectView(event) {
-        let popover = this.popoverCtrl.create(CaptureViewsPopover);
+    presentViewPopover(event) {
+        let popover = this.popoverCtrl.create(CaptureViewsPopover, {
+            views: this.views,
+            view: this.view
+        });
         popover.present({ ev: event });
+
+        popover.onDidDismiss(data => {
+            this.view = data;
+            this.clearViewData();
+            this.loadViewData();
+        })
     }
 
     updateLink() {
@@ -154,7 +172,9 @@ export class CompareviewComponent {
 
     @ViewChild('markersContainer') markersContainer;
 
-    onResize(event) { this.evaluateMarkerPosition(); }
+    onResize(event) {
+        this.evaluateMarkerPosition();
+    }
 
     evaluateMarkerPosition() {
         var markersContainerWidth = this.markersContainer.nativeElement.clientWidth;
@@ -167,6 +187,7 @@ export class CompareviewComponent {
             marker.Left = positionInMilliseconds * factor + 'px';
         });
 
+        // var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
         // return positionInMilliseconds * factor + 'px';
     }
 
@@ -251,30 +272,34 @@ export class CompareviewComponent {
 
 @Component({
     template: `
-    <ion-list radio-group no-margin>
-  <ion-item *ngFor="let view of views">
+    <ion-list radio-group>
+    <ion-item *ngFor="let view of views; let i = index">
     <ion-label>{{view._Title}}</ion-label>
-    <ion-radio checked="true" value="go" (click)="viewChanged()"></ion-radio>
-  </ion-item>
-</ion-list>
+    <ion-radio value="view" [checked]="view == currentView" (click)="changeView(view)"></ion-radio>
+    </ion-item>
+    </ion-list>
   `
 })
 export class CaptureViewsPopover {
-    views = [{_Title: 'view 1'},{_Title: 'view 2'}];
+    views = [];
+
+    currentView: any;
 
     constructor(public viewCtrl: ViewController,
-    private navParams: NavParams) {
-
+        private navParams: NavParams) {
     }
 
-    ionViewDidLoad() {
+    ngOnInit() {
         console.log('Hello views list popover');
-        // this.views = this.navParams.get('views');
-        // console.log(this.views);
+        if (this.navParams.data) {
+            this.views = this.navParams.data.views;
+            console.log(this.views);
+            this.currentView = this.navParams.data.view;
+        }
     }
 
-    viewChanged(){
-        this.viewCtrl.dismiss();
+    changeView(view) {
+        this.viewCtrl.dismiss(view);
     }
 
 }
