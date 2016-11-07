@@ -2,9 +2,11 @@ import { Component } from '@angular/core';
 
 import { NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 
-import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
-
 import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError } from 'ionic-native';
+
+import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
+import { Compareview } from '../editor/compareview/compareview'
+import { Swipeview } from '../editor/swipeview/swipeview'
 
 declare var cordova: any;
 
@@ -20,7 +22,7 @@ export class EditorPage {
   matrix: any;
   views = [];
 
-  constructor(public navCtrl: NavController, params: NavParams,
+  constructor(public navCtrl: NavController, private params: NavParams,
     private alertCtrl: AlertController,
     private modalCtrl: ModalController) {
     this.matrix = params.get("matrixData");
@@ -34,11 +36,9 @@ export class EditorPage {
   ngOnInit() {
     if (this.matrix["Matrix.Children"]["View"] instanceof Array) {
       this.views = this.matrix["Matrix.Children"]["View"]
-      console.log('array views');
     }
     else {
       this.views.push(this.matrix["Matrix.Children"]["View"]);
-      console.log('object view');
     }
     this.showViewSegment(this.selectedViewIndex);
   }
@@ -145,30 +145,41 @@ export class EditorPage {
   }
 
   chooseVideo() {
-    FileChooser.open().then(uri => { console.log(uri);
-      
-      (<any>window).FilePath.resolveNativePath(uri, (filepath) => { console.log(filepath);
+    FileChooser.open().then(uri => {
+      console.log(uri);
 
-        var path = filepath.substr(0, filepath.lastIndexOf('/') + 1);
-        var fileName = filepath.substr(filepath.lastIndexOf('/') + 1);
+      (<any>window).FilePath.resolveNativePath(uri, (fileUrl) => {
+        console.log(fileUrl);
+
+        var path = fileUrl.substr(0, fileUrl.lastIndexOf('/') + 1);
+        var fileName = fileUrl.substr(fileUrl.lastIndexOf('/') + 1);
 
         File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName).then(_ => {
-          console.log('Successfully saved video')
+          console.log('Successfully copied video')
           this.CreateVideoView(fileName);
         }).catch(err => {
-
-          console.log('Failed saving video' + err)
-          let alert = this.alertCtrl.create({
-            title: 'Failed saving video!',
-            subTitle: err,
-            buttons: ['OK']
-          });
-          alert.present();
+          console.log('Failed copying video:' + err)
+          this.chooseVideoErrorMsg(err);
         });
 
-      }, (err) => { console.log(err) });
+      }, (err) => {
+        console.log(err);
+        this.chooseVideoErrorMsg('Failed Resolving nativepath:' + err);
+      });
 
-    }).catch(e => { console.log(e) });
+    }).catch(err => {
+      console.log(err);
+      this.chooseVideoErrorMsg('Error opening file chooser:' + err);
+    });
+  }
+
+  chooseVideoErrorMsg(err) {
+    let alert = this.alertCtrl.create({
+      title: 'Failed saving video!',
+      subTitle: err,
+      buttons: ['OK']
+    });
+    alert.present();
   }
 
   // Code for Camera Recording Starts
@@ -183,11 +194,11 @@ export class EditorPage {
 
   captureSuccess(MediaFiles) {
     MediaFiles.forEach(mediaFile => {
-      var filepath = mediaFile.localURL;
-      console.log(filepath);
+      var fileUrl = mediaFile.localURL;
+      console.log(fileUrl);
 
-      var path = filepath.substr(0, filepath.lastIndexOf('/') + 1);
-      var fileName = filepath.substr(filepath.lastIndexOf('/') + 1);
+      var path = fileUrl.substr(0, fileUrl.lastIndexOf('/') + 1);
+      var fileName = fileUrl.substr(fileUrl.lastIndexOf('/') + 1);
 
       File.moveFile(path, fileName, cordova.file.applicationStorageDirectory, fileName)
         .then(_ => {
@@ -238,7 +249,31 @@ export class EditorPage {
     }
     this.views[this.selectedViewIndex] = localView;
   }
-
-
   //Code for ViewOptions end
+
+  openCompareView() {
+    var captureViews = [];
+    this.views.forEach(view => {
+      if (view._Source == 'Local') {
+        captureViews.push(view);
+      }
+    });
+    console.log(captureViews);
+    this.navCtrl.push(Compareview, {
+      captureViews: captureViews
+    });
+  }
+
+  openSwipeView() {
+    var captureViews = [];
+    this.views.forEach(view => {
+      if (view._Source == 'Local') {
+        captureViews.push(view);
+      }
+    });
+    console.log(captureViews);
+    this.navCtrl.push(Swipeview, {
+      captureViews: captureViews
+    });
+  }
 }

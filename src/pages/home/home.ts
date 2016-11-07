@@ -283,7 +283,7 @@ export class HomePage {
 
 
   presentPopover(event) {
-    let popover = this.popoverCtrl.create(PopoverPage1);
+    let popover = this.popoverCtrl.create(MoreActionsPopover);
     popover.present({ ev: event });
   }
 
@@ -327,8 +327,6 @@ export class HomePage {
   testOpenMatrix() {
     this.http.get("assets/matrix1.mtx")
       .subscribe(data => {
-        console.log(data.text());
-        console.log(data['_data']);
         var res = JSON.parse(data.text());
 
         if (this.platform.is('cordova')) {
@@ -453,7 +451,7 @@ export class HomePage {
     </ion-list>
   `
 })
-export class PopoverPage1 {
+export class MoreActionsPopover {
 
   versionNumber: any;
 

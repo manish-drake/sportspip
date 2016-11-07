@@ -7,16 +7,16 @@ import { Component, Input } from '@angular/core';
 
 export class CanvasComponent {
 
-  @Input() data: any;
+  @Input() view: any;
 
   constructor() { }
 
   objects = [];
 
   ngOnInit() {
-    console.log(this.data);
+    console.log(this.view);
 
-    var objs = this.data["Content"]["PIP"]["PIP.Objects"];
+    var objs = this.view["Content"]["PIP"]["PIP.Objects"];
     
     for (var key in objs) {
       // skip loop if the property is from prototype

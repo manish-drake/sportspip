@@ -1,39 +1,42 @@
 import { Component, ViewChild, Input, ElementRef } from '@angular/core';
 
-import { AlertController, ModalController, Platform } from 'ionic-angular';
+import { AlertController, ModalController, Platform, PopoverController, ViewController, NavParams } from 'ionic-angular';
+
 declare var cordova: any;
 
 @Component({
-    selector: 'video-component',
-    templateUrl: 'video-component.html'
+    selector: 'compareview-component',
+    templateUrl: 'compareview-component.html'
 })
 
-export class VideoComponent {
+export class CompareviewComponent {
 
     @Input() view: any;
+
+    @Input() views: any;
+
+    @Input() isSelected: boolean;
+
+    isLinked: boolean = false;
+    linkUnlinkIcon: string = "remove";
 
     sliderValue: any = 0;
     timelinePosition: any;
     timelineDuration: any;
-    repeatColor: any;
     playPauseButtonIcon: string;
-    volumeButtonIcon: string;
 
     videoSrcAvailable: boolean = true;
 
     viewBoxSize: any;
 
-    constructor(private alertCtrl: AlertController, private modalCtrl: ModalController, private platform: Platform) {
-
+    constructor(private alertCtrl: AlertController,
+        private modalCtrl: ModalController,
+        private platform: Platform,
+        private popoverCtrl: PopoverController) {
         this.playPauseButtonIcon = "play";
-        this.repeatColor = "inactive"
-        this.timelinePosition = '00:00:00.00';
-        this.volumeButtonIcon = "volume-up";
+        this.timelinePosition = this.formatTime(0);
     }
 
-    ngOnInit() { }
-
-    
 
     @ViewChild('videoElement') videoElement: ElementRef;
     video: HTMLVideoElement;
@@ -49,12 +52,11 @@ export class VideoComponent {
         this.video = this.videoElement.nativeElement;
 
         this.video.addEventListener('ended', () => {
-            this.playPauseButtonIcon = 'play';
+            this.playPauseButtonIcon = "play";
             clearInterval(this.timelineInterval);
         })
 
         this.video.addEventListener('error', (error) => {
-            console.log('Error in video Elmnt:'+error);
             this.videoSrcAvailable = false;
         })
 
@@ -63,6 +65,23 @@ export class VideoComponent {
             this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
             this.evaluateMarkerPosition();
         }, 1);
+    }
+
+    selectView(event) {
+        let popover = this.popoverCtrl.create(CaptureViewsPopover);
+        popover.present({ ev: event });
+    }
+
+    updateLink() {
+        if (!this.isLinked) {
+            this.isLinked = true;
+            this.linkUnlinkIcon = "link";
+        }
+        else {
+            this.isLinked = false;
+            this.linkUnlinkIcon = "remove";
+        }
+
     }
 
     returnVidPath(filename) {
@@ -94,7 +113,7 @@ export class VideoComponent {
     playPause() {
         if (this.video.paused == true) {
             this.video.play();
-            this.playPauseButtonIcon = 'pause';
+            this.playPauseButtonIcon = "pause";
             this.timelineInterval = setInterval(() => {
 
                 var factor = (100000 / this.video.duration) * this.video.currentTime;
@@ -103,34 +122,8 @@ export class VideoComponent {
             }, 1);
         } else {
             this.video.pause();
-            this.playPauseButtonIcon = 'play';
+            this.playPauseButtonIcon = "play";
             clearInterval(this.timelineInterval);
-        }
-    }
-
-    repeatVideo() {
-        if (this.video.loop == false) {
-            this.video.loop = true;
-            this.repeatColor = 'primary';
-        } else {
-            this.video.loop = false;
-            this.repeatColor = 'inactive';
-        }
-    }
-
-    previousVideoFrame() {
-        if (this.video.currentTime >= 0) {
-            this.video.pause();
-            this.playPauseButtonIcon = 'play';
-            this.video.currentTime = this.video.currentTime - 0.1;
-        }
-    }
-
-    nextVideoFrame() {
-        if (this.video.currentTime <= this.video.duration) {
-            this.video.pause();
-            this.playPauseButtonIcon = 'play';
-            this.video.currentTime = this.video.currentTime + 0.1;
         }
     }
 
@@ -154,16 +147,6 @@ export class VideoComponent {
                 break;
         }
         this.video.playbackRate = speed;
-    }
-
-    MuteVideo() {
-        if (this.video.muted == false) {
-            this.video.muted = true;
-            this.volumeButtonIcon = "volume-off";
-        } else {
-            this.video.muted = false;
-            this.volumeButtonIcon = "volume-up";
-        }
     }
 
     // Code for Markers starts
@@ -194,65 +177,6 @@ export class VideoComponent {
             else
                 marker.checked = true;
         });
-    }
-
-    addMarker() {
-        var currentPosition = this.timelinePosition + '00000';
-        var canAddMarker = this.checkPosition(currentPosition);
-        if (canAddMarker) {
-            var name = 'Marker ' + (this.markers.length + 1);
-            this.markers.push({ _Duration: '00:00:03', _Name: name, _Position: currentPosition, _Speed: 1, _name: name });
-            this.evaluateMarkerPosition();
-            console.log(this.markers);
-        }
-        else {
-            let alert = this.alertCtrl.create({
-                title: 'Limit Reached',
-                subTitle: 'Only 4 markers can be added on same position.',
-                buttons: ['OK']
-            });
-            alert.present();
-        }
-    }
-
-    checkPosition(position) {
-        var samePosition: number = 0;
-        if (this.markers.length > 3) {
-            this.markers.forEach((marker) => {
-                if (position == marker._Position)
-                    samePosition++;
-            });
-            if (samePosition >= 4)
-                return false;
-            else
-                return true;
-        }
-        else
-            return true;
-    }
-
-    deleteMarker(i) {
-        let confirm = this.alertCtrl.create({
-            title: 'Delete Marker!',
-            message: 'Do you realy want to delete marker?',
-            buttons: [
-                {
-                    text: 'Cancel',
-                    handler: () => { }
-                },
-                {
-                    text: 'Delete',
-                    handler: () => {
-                        this.markers.forEach((marker, index) => {
-                            if (i == index) {
-                                this.markers.splice(index, 1);
-                            }
-                        });
-                    }
-                }
-            ]
-        });
-        confirm.present();
     }
     // Code for Markers ends
 
@@ -323,4 +247,34 @@ export class VideoComponent {
         }, 1);
     }
     //Code for objects end
+}
+
+@Component({
+    template: `
+    <ion-list radio-group no-margin>
+  <ion-item *ngFor="let view of views">
+    <ion-label>{{view._Title}}</ion-label>
+    <ion-radio checked="true" value="go" (click)="viewChanged()"></ion-radio>
+  </ion-item>
+</ion-list>
+  `
+})
+export class CaptureViewsPopover {
+    views = [{_Title: 'view 1'},{_Title: 'view 2'}];
+
+    constructor(public viewCtrl: ViewController,
+    private navParams: NavParams) {
+
+    }
+
+    ionViewDidLoad() {
+        console.log('Hello views list popover');
+        // this.views = this.navParams.get('views');
+        // console.log(this.views);
+    }
+
+    viewChanged(){
+        this.viewCtrl.dismiss();
+    }
+
 }

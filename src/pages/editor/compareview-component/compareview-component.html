@@ -1,9 +1,8 @@
-<!--ViewVideoTemplate-->
-
-<ion-grid *ngIf="videoSrcAvailable" no-padding style="height: 100%;">
+<!--compareViewTemplate-->
+<ion-grid style="height: 100%;">
 	<ion-row style="height: 100%;position: relative;">
-		<video #videoElement style="position: absolute; background-color:black;" #video [attr.src]="returnVidPath(view.Content.Capture._Kernel)" width="100%"
-			height="100%"></video>
+		<video #videoElement style="position: absolute; background-color:black;" #video [attr.src]="returnVidPath(view.Content.Capture._Kernel)"
+			width="100%" height="100%"></video>
 		<svg *ngFor="let obj of objects;" [ngSwitch]="obj.key" [attr.viewBox]="viewBoxSize" height="100%" width="100%" style="position:absolute">
 			<rect *ngSwitchCase="'Rectangle'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
 				[attr.fill]="clrCvt(obj.val._Fill)" [attr.stroke]="clrCvt(obj.val._Stroke)" [attr.stroke-width]="obj.val._StrokeThickness"
@@ -54,6 +53,18 @@
 				<image *ngSwitchCase="'Ink'" #Ink x="0" y="0" width="100%" height="100%" xlink:href="assets/inksample.gif" />
 			</svg>
 		</div>
+		<button ion-button icon-right small (click)="selectView($event)" style="position:absolute; left:10px; top:10px; background-color:rgba(0,0,0,0.5);color:white;">
+			{{view._Title}}<ion-icon name="arrow-dropdown"></ion-icon>
+		</button>
+		<button ion-button small (click)="updateLink()" style="position:absolute; right:10px; top:10px; background-color:rgba(0,0,0,0.5);color:white;">
+			<ion-icon name="{{linkUnlinkIcon}}"></ion-icon>
+		</button>
+		<div *ngIf="isSelected" text-center style="position:absolute; right:10px; bottom:10px; display:block;">
+			<button (click)="playbackRateVideo()" style="margin-bottom:-10px; width: 70%; height:40px; border-top-left-radius:5px; border-top-right-radius:5px; ">
+				{{video.playbackRate}}x
+				</button>
+			<button ion-fab (click)="playPause()"><ion-icon name="{{playPauseButtonIcon}}"></ion-icon></button>
+		</div>
 	</ion-row>
 	<ion-row *ngIf="videoSrcAvailable" style="height: auto; flex: 0 0 auto;" color="dark">
 		<ion-col no-padding>
@@ -85,38 +96,9 @@
 								{{timelineDuration}}
 							</ion-col>
 						</ion-row>
-						<ion-row>
-							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
-								<button no-margin ion-button icon-only clear (click)="playPause()"><ion-icon name="{{playPauseButtonIcon}}"></ion-icon></button>
-							</ion-col>
-							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
-								<button no-margin ion-button icon-only clear small color="{{repeatColor}}" (click)="repeatVideo()"><ion-icon name="repeat"></ion-icon></button>
-							</ion-col>
-							<ion-col no-padding center text-center style="width:auto;flex: 0 0 auto;">
-								<button no-margin ion-button icon-only clear small (click)="playbackRateVideo()" style="width:50px;">{{video.playbackRate}}x</button>
-							</ion-col>
-							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
-								<button no-margin ion-button icon-only clear small (click)="previousVideoFrame()"><ion-icon name="rewind"></ion-icon></button>
-							</ion-col>
-							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
-								<button no-margin ion-button icon-only clear small (click)="nextVideoFrame()"><ion-icon name="fastforward"></ion-icon></button>
-							</ion-col>
-							<ion-col no-padding center width="100%"></ion-col>
-							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
-								<button no-margin ion-button icon-only clear small (click)="MuteVideo()"> <ion-icon name="{{volumeButtonIcon}}"></ion-icon></button>
-							</ion-col>
-						</ion-row>
-					</ion-col>
-					<ion-col padding-left center text-center style="width:auto;flex:0 0 auto;">
-						<button ion-fab mini (click)="addMarker()">
-							<ion-icon name="pin"></ion-icon>
-							</button>
 					</ion-col>
 				</ion-row>
 			</ion-grid>
 		</ion-col>
 	</ion-row>
 </ion-grid>
-<div>
-	<h2 *ngIf="!videoSrcAvailable" class="videoNotFound">Video not Found..!!</h2>
-</div>
