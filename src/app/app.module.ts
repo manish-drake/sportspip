@@ -5,7 +5,8 @@ import { HomePage, MoreActionsPopover } from '../pages/home/home';
 import { EditorPage } from '../pages/editor/editor';
 import {OrderBy} from '../GroupBy/OrderBy';
 import {GroupBy} from '../GroupBy/GroupBy';
-import { SettingsPage } from '../pages/settings/settings';
+import { SettingsPage,UserActionsPopover } from '../pages/settings/settings';
+import { Login } from '../pages/settings/login/login';
 import { CollectionPage } from '../pages/collection/collection'
 import { ChannelCollectionPage,PopoverPage2 } from '../pages/channelcollection/channelcollection'
 import { MatrixInfoPage } from '../pages/editor/matrixinfo/matrixinfo';
@@ -21,6 +22,8 @@ import { Swipeview } from '../pages/editor/swipeview/swipeview'
     HomePage,
     MoreActionsPopover,
     SettingsPage,
+    UserActionsPopover,
+    Login,
     CollectionPage,
     ChannelCollectionPage,
     PopoverPage2,
@@ -47,6 +50,8 @@ import { Swipeview } from '../pages/editor/swipeview/swipeview'
     EditorPage,
     MatrixInfoPage,
     SettingsPage,
+    UserActionsPopover,
+    Login,
     CollectionPage,
     ChannelCollectionPage,
     PopoverPage2,

@@ -1,0 +1,10 @@
+page-login {
+  ::-webkit-scrollbar,
+    *::-webkit-scrollbar 
+    {
+        display: none;
+    }
+    .textTrim{
+        overflow: hidden;text-overflow: ellipsis;
+}
+}

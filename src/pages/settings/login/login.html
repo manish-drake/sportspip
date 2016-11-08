@@ -1,0 +1,49 @@
+<ion-header no-shadow>
+    <ion-toolbar color="primary" no-border-bottom>
+
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentRegister()" *ngIf="LoginAvailable">
+                <ion-icon name="person-add"></ion-icon>
+            </button>
+        </ion-buttons>
+
+        <ion-title>{{IsLoginAvailable}}</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <!--Login-->
+    <ion-list *ngIf="LoginAvailable">
+        <ion-item>
+            <ion-label style="width:115px;color:gray">Username</ion-label>
+            <ion-input value=""></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label style="width:115px;color:gray">Password</ion-label>
+            <ion-input value="" type="password"></ion-input>
+        </ion-item>
+    </ion-list>
+    <div align="right" *ngIf="LoginAvailable">
+        <button ion-button (click)="dismiss()" style="text-transform: initial;">Log In</button>
+        <button ion-button outline style="text-transform: initial;" (click)="dismiss()">Close</button>
+    </div>
+    <!--Register -->
+    <ion-list *ngIf="!LoginAvailable">
+        <ion-item>
+            <ion-label style="width:115px;color:gray">Email</ion-label>
+            <ion-input value=""></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label style="width:115px;color:gray">First Name</ion-label>
+            <ion-input value=""></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label style="width:115px;color:gray">Last Name</ion-label>
+            <ion-input value=""></ion-input>
+        </ion-item>
+    </ion-list>
+    <div align="right" *ngIf="!LoginAvailable">
+        <button ion-button (click)="dismiss()" style="text-transform: initial;">Sign Up</button>
+        <button ion-button outline (click)="dismiss()" style="text-transform: initial;">Close</button>  <br>
+        <button ion-button small clear style="padding:0px;text-transform: initial;margin-right:5px" (click)="presentLogin()">I already have an account</button>      
+    </div>
+</ion-content>
