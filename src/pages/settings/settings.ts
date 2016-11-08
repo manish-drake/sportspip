@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController } from 'ionic-angular';
-import { Login } from '../settings/LoginModal/Login'
+import { NavController, ModalController, PopoverController, ViewController, Platform, AlertController } from 'ionic-angular';
+import { AppVersion } from 'ionic-native';
+import { Login } from '../settings/login/login'
 import { Subscription } from '../../Stubs/Subscription';
 /*
   Generated class for the Settings page.
@@ -18,7 +19,7 @@ export class SettingsPage {
   chanelList = [];
   subscribeList = [];
 
-  constructor(public navCtrl: NavController, private subscription: Subscription, private modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, private subscription: Subscription, private modalCtrl: ModalController, private popoverCtrl: PopoverController) {
     this.InvalidateSubscribeListAsync();
     this.InvalidateChannelListAsync();
   }
@@ -52,8 +53,39 @@ export class SettingsPage {
   ionViewDidLoad() {
     console.log('Hello Settings Page');
   }
+  public FirstName: any;
   presentLoginModal() {
     let modal = this.modalCtrl.create(Login);
+    modal.onDidDismiss(data => {
+      this.FirstName = "Sachin";
+    });
     modal.present();
+  }
+  presentPopover(event) {
+    let popover = this.popoverCtrl.create(UserActionsPopover);
+    popover.present({ ev: event });
+  }
+}
+
+@Component({
+  template: `
+    <ion-list no-lines>
+    <ion-item>
+      <ion-icon item-left name="person"></ion-icon>Log out
+      </ion-item>
+    </ion-list>
+  `
+})
+
+export class UserActionsPopover {
+
+  versionNumber: any;
+
+  constructor(public viewCtrl: ViewController, private alertCtrl: AlertController, private platform: Platform, ) {
+    if (this.platform.is('cordova')) {
+      AppVersion.getVersionNumber().then((s) => {
+        this.versionNumber = s;
+      })
+    }
   }
 }

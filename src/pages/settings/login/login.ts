@@ -19,6 +19,7 @@ export class Login {
 
   constructor(private viewCtrl: ViewController) { 
     this.IsLoginAvailable = "Login";
+    
   }
   dismiss() {
     this.viewCtrl.dismiss();
@@ -28,11 +29,11 @@ export class Login {
   }
   presentRegister() { console.log('Hello Register Page');
     this.LoginAvailable = false;
-    this.IsLoginAvailable = "Register";
+    this.IsLoginAvailable = "Registration";
   }
    presentLogin() { console.log('Hello Login Page');
     this.LoginAvailable = true;
-    this.IsLoginAvailable = "Login";
+    this.IsLoginAvailable = "Log in";
   }
 
 }
