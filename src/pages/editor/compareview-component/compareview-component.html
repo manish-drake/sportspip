@@ -53,18 +53,23 @@
 				<image *ngSwitchCase="'Ink'" #Ink x="0" y="0" width="100%" height="100%" xlink:href="assets/inksample.gif" />
 			</svg>
 		</div>
-		<button ion-button icon-right small (click)="presentViewPopover($event)" style="position:absolute; left:10px; top:10px; background-color:rgba(0,0,0,0.5);color:white;">
+		<button ion-button icon-right small (click)="presentViewPopover($event)" style="position:absolute; left:5px; top:5px; background-color:rgba(0,0,0,0.5);color:white;">
 			{{view._Title}}<ion-icon name="arrow-dropdown"></ion-icon>
 		</button>
-		<button ion-button small (click)="updateLink()" style="position:absolute; right:10px; top:10px; background-color:rgba(0,0,0,0.5);color:white;">
+		<button ion-button small (click)="updateLink()" style="position:absolute; right:5px; top:5px; background-color:rgba(0,0,0,0.5);color:white;">
 			<ion-icon name="{{linkUnlinkIcon}}"></ion-icon>
 		</button>
-		<div *ngIf="isSelected" text-center style="position:absolute; right:10px; bottom:10px; display:block;">
+		<div *ngIf="isSelected" text-center style="position:absolute; right:5px; bottom:5px; display:block;">
 			<button (click)="playbackRateVideo()" style="margin-bottom:-10px; width: 70%; height:40px; border-top-left-radius:5px; border-top-right-radius:5px; ">
 				{{video.playbackRate}}x
 				</button>
 			<button ion-fab (click)="playPause()"><ion-icon name="{{playPauseButtonIcon}}"></ion-icon></button>
 		</div>
+		<ion-row #fadableTitle style="position:absolute;top:40% ;color:white;font-size:48px;">
+			<ion-col center text-center>
+				{{view._Title}}
+			</ion-col>
+		</ion-row>
 	</ion-row>
 	<ion-row *ngIf="videoSrcAvailable" style="height: auto; flex: 0 0 auto;" color="dark">
 		<ion-col no-padding>
