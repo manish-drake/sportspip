@@ -53,7 +53,7 @@
 				<image *ngSwitchCase="'Ink'" #Ink x="0" y="0" width="100%" height="100%" xlink:href="assets/inksample.gif" />
 			</svg>
 		</div>
-		<button ion-button icon-right small (click)="selectView($event)" style="position:absolute; left:10px; top:10px; background-color:rgba(0,0,0,0.5);color:white;">
+		<button ion-button icon-right small (click)="presentViewPopover($event)" style="position:absolute; left:10px; top:10px; background-color:rgba(0,0,0,0.5);color:white;">
 			{{view._Title}}<ion-icon name="arrow-dropdown"></ion-icon>
 		</button>
 		<button ion-button small (click)="updateLink()" style="position:absolute; right:10px; top:10px; background-color:rgba(0,0,0,0.5);color:white;">

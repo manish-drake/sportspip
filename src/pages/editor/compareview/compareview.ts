@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController,NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
 /*
   Generated class for the Compareview page.
@@ -15,24 +15,33 @@ export class Compareview {
 
   views = [];
 
-  constructor(public navCtrl: NavController,private navParams: NavParams) {
-    
+  compareSegment1: any;
+  compareSegment2: any;
+
+  selectedIndex: number = 0;
+
+  constructor(public navCtrl: NavController, private navParams: NavParams) {
+
   }
 
   ionViewDidLoad() {
     console.log('Hello Compareview Page');
-    this.views = this.navParams.get('captureViews');
-    console.log(this.views);
-    this.views[0].checked = true;
+    if (this.navParams.data) {
+      this.views = this.navParams.data.captureViews;
+
+      if (this.views.length == 1) {
+        this.compareSegment1 = this.views[0];
+        this.compareSegment2 = this.views[0];
+      }
+      else{
+        this.compareSegment1 = this.views[0];
+        this.compareSegment2 = this.views[1];
+      }
+    }
   }
 
   componentSelection(i) {
-        this.views.forEach((view, index) => {
-            if (i != index)
-                view.checked = false;
-            else
-                view.checked = true;
-        });
-    }
+    this.selectedIndex = i;
+  }
 
 }
