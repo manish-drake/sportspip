@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
-
+import { NavController, ModalController } from 'ionic-angular';
+import { Login } from '../settings/LoginModal/Login'
 /*
   Generated class for the Settings page.
 
@@ -13,10 +13,13 @@ import { NavController } from 'ionic-angular';
 })
 export class SettingsPage {
 
-  constructor(public navCtrl: NavController) {}
+  constructor(public navCtrl: NavController,private modalCtrl: ModalController) {}
 
   ionViewDidLoad() {
     console.log('Hello Settings Page');
   }
-
+presentLoginModal() {
+    let modal = this.modalCtrl.create(Login);
+    modal.present();
+  }
 }

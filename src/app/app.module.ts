@@ -9,6 +9,7 @@ import { SettingsPage } from '../pages/settings/settings';
 import { CollectionPage } from '../pages/collection/collection'
 import { ChannelCollectionPage,PopoverPage2 } from '../pages/channelcollection/channelcollection'
 import { MatrixInfoPage } from '../pages/editor/matrixinfo/matrixinfo';
+import { Login } from '../pages/settings/LoginModal/Login';
 import { VideoComponent } from '../pages/editor/video-component/video-component'
 import { CanvasComponent } from '../pages/editor/canvas-component/canvas-component'
 import { Compareview } from '../pages/editor/compareview/compareview'
@@ -21,6 +22,7 @@ import { Swipeview } from '../pages/editor/swipeview/swipeview'
     HomePage,
     MoreActionsPopover,
     SettingsPage,
+    Login,
     CollectionPage,
     ChannelCollectionPage,
     PopoverPage2,
@@ -47,6 +49,7 @@ import { Swipeview } from '../pages/editor/swipeview/swipeview'
     EditorPage,
     MatrixInfoPage,
     SettingsPage,
+    Login,
     CollectionPage,
     ChannelCollectionPage,
     PopoverPage2,
