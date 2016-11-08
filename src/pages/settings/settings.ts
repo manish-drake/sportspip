@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController,Platform } from 'ionic-angular';
-import { Login } from '../settings/LoginModal/Login'
+import { NavController, ModalController, PopoverController, ViewController, Platform, AlertController } from 'ionic-angular';
+import { AppVersion } from 'ionic-native';
+import { Login } from '../settings/login/login'
 import { Subscription } from '../../Stubs/Subscription';
 import { Http } from '@angular/http';
 /*
@@ -19,7 +20,15 @@ export class SettingsPage {
   chanelList = [];
   subscribeList = [];
 
-  constructor(public navCtrl: NavController, private subscription: Subscription, private modalCtrl: ModalController,private http:Http,private platform:Platform) {
+
+  constructor(public navCtrl: NavController, 
+  private subscription: Subscription, 
+  private modalCtrl: ModalController, 
+  private popoverCtrl:PopoverController,
+  private http:Http,
+  private platform:Platform) 
+  {
+
     this.InvalidateSubscribeListAsync();
     this.InvalidateChannelListAsync();
   }
@@ -54,14 +63,42 @@ export class SettingsPage {
     console.log('Hello Settings Page');
   }
 
+
   public FirstName: any;
   public LastName: any;
   presentLoginModal() {
     let modal = this.modalCtrl.create(Login);
     modal.onDidDismiss(data => {
       this.FirstName = data.FirstName;
-      this.LastName = data.LastName;
+      this.LastName = data.LastName; 
     });
     modal.present();
+  }
+  presentPopover(event) {
+    let popover = this.popoverCtrl.create(UserActionsPopover);
+    popover.present({ ev: event });
+  }
+}
+
+@Component({
+  template: `
+    <ion-list no-lines>
+    <ion-item>
+      <ion-icon item-left name="person"></ion-icon>Log out
+      </ion-item>
+    </ion-list>
+  `
+})
+
+export class UserActionsPopover {
+
+  versionNumber: any;
+
+  constructor(public viewCtrl: ViewController, private alertCtrl: AlertController, private platform: Platform, ) {
+    if (this.platform.is('cordova')) {
+      AppVersion.getVersionNumber().then((s) => {
+        this.versionNumber = s;
+      })
+    }
   }
 }

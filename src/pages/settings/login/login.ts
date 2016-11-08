@@ -21,6 +21,7 @@ export class Login {
 
   constructor(private viewCtrl: ViewController, private subscription: Subscription, private storageFactory: StorageFactory) {
     this.IsLoginAvailable = "Login";
+    
   }
   dismiss(user) {
     this.viewCtrl.dismiss(user);
@@ -31,12 +32,12 @@ export class Login {
   presentRegister() {
     console.log('Hello Register Page');
     this.LoginAvailable = false;
-    this.IsLoginAvailable = "Register";
+    this.IsLoginAvailable = "Registration";
   }
   presentLogin() {
     console.log('Hello Login Page');
     this.LoginAvailable = true;
-    this.IsLoginAvailable = "Login";
+    this.IsLoginAvailable = "Log in";
   }
 
   Register(email, firstname, lastname) {
