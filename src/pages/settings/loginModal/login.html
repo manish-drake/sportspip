@@ -30,21 +30,20 @@
     </div>
     <ion-list *ngIf="!LoginAvailable">
         <ion-item>
-            <ion-label style="width:115px;color:gray">Username</ion-label>
-            <ion-input value=""></ion-input>
+            <ion-label style="width:115px;color:gray">Email</ion-label>
+            <ion-input [(ngModel)]="Email" value=""></ion-input>
         </ion-item>
         <ion-item>
             <ion-label style="width:115px;color:gray">First Name</ion-label>
-            <ion-input value=""></ion-input>
+            <ion-input [(ngModel)]="FirstName" value=""></ion-input>
         </ion-item>
         <ion-item>
             <ion-label style="width:115px;color:gray">Last Name</ion-label>
-            <ion-input value=""></ion-input>
+            <ion-input [(ngModel)]="LastName" value=""></ion-input>
         </ion-item>
     </ion-list>
     <div class="padding" *ngIf="!LoginAvailable">
         <button ion-button (click)="dismiss()">Close</button>
-        <button ion-button (click)="dismiss()">Register</button>
-
+        <button ion-button (click)="Register(Email,FirstName,LastName)">Register</button>
     </div>
 </ion-content>

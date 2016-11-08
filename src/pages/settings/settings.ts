@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController } from 'ionic-angular';
+import { NavController, ModalController,Platform } from 'ionic-angular';
 import { Login } from '../settings/LoginModal/Login'
 import { Subscription } from '../../Stubs/Subscription';
+import { Http } from '@angular/http';
 /*
   Generated class for the Settings page.
 
@@ -18,7 +19,7 @@ export class SettingsPage {
   chanelList = [];
   subscribeList = [];
 
-  constructor(public navCtrl: NavController, private subscription: Subscription, private modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, private subscription: Subscription, private modalCtrl: ModalController,private http:Http,private platform:Platform) {
     this.InvalidateSubscribeListAsync();
     this.InvalidateChannelListAsync();
   }
@@ -52,8 +53,15 @@ export class SettingsPage {
   ionViewDidLoad() {
     console.log('Hello Settings Page');
   }
+
+  public FirstName: any;
+  public LastName: any;
   presentLoginModal() {
     let modal = this.modalCtrl.create(Login);
+    modal.onDidDismiss(data => {
+      this.FirstName = data.FirstName;
+      this.LastName = data.LastName;
+    });
     modal.present();
   }
 }

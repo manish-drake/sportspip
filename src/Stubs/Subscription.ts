@@ -31,10 +31,15 @@ export class Subscription {
         return subscription;
     }
 
-    RegisterAsync(firstName, lastName, email, password) {
-        var user = [
-            { FirstName: firstName, LastName: lastName, Email: email, Password: "@abc123" }
-        ];
+    RegisterAsync(firstName, lastName, email) {
+        var user =
+            { FirstName: firstName, LastName: lastName, Email: email, Password: "@abc123" };
+        return user;
+    }
+
+    LoginAsync(email, password) {
+        if (!email)
+            var user = { FirstName: "Sachin", LastName: "Tendulkar", Email: email }
         return user;
     }
 
