@@ -1,27 +1,33 @@
 import { NgModule } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { sportspip } from './app.component';
+
 import { HomePage, MoreActionsPopover } from '../pages/home/home';
-import { EditorPage } from '../pages/editor/editor';
-import {OrderBy} from '../GroupBy/OrderBy';
-import {GroupBy} from '../GroupBy/GroupBy';
-import { SettingsPage,UserActionsPopover } from '../pages/settings/settings';
+import { Connectivity } from '../pages/connectivity/connectivity';
+import { SettingsPage, UserActionsPopover } from '../pages/settings/settings';
 import { Login } from '../pages/settings/login/login';
+
 import { CollectionPage } from '../pages/collection/collection'
-import { ChannelCollectionPage,PopoverPage2 } from '../pages/channelcollection/channelcollection'
+import { ChannelCollectionPage, PopoverPage2 } from '../pages/channelcollection/channelcollection'
+import { OrderBy } from '../GroupBy/OrderBy';
+import { GroupBy } from '../GroupBy/GroupBy';
+
+import { EditorPage } from '../pages/editor/editor';
 import { MatrixInfoPage } from '../pages/editor/matrixinfo/matrixinfo';
 import { VideoComponent } from '../pages/editor/video-component/video-component'
 import { CanvasComponent } from '../pages/editor/canvas-component/canvas-component'
 import { Compareview } from '../pages/editor/compareview/compareview'
-import { CompareviewComponent,CaptureViewsPopover } from '../pages/editor/Compareview-Component/Compareview-Component'
+import { CompareviewComponent, CaptureViewsPopover } from '../pages/editor/Compareview-Component/Compareview-Component'
 import { Swipeview } from '../pages/editor/swipeview/swipeview'
 
 @NgModule({
   declarations: [
     sportspip,
     HomePage,
-    MoreActionsPopover,
+    Connectivity,
     SettingsPage,
+    MoreActionsPopover,
+    
     UserActionsPopover,
     Login,
     CollectionPage,
@@ -46,6 +52,8 @@ import { Swipeview } from '../pages/editor/swipeview/swipeview'
   entryComponents: [
     sportspip,
     HomePage,
+    Connectivity,
+
     MoreActionsPopover,
     EditorPage,
     MatrixInfoPage,

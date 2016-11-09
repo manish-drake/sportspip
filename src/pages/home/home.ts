@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
+import { NavController, ActionSheetController, AlertController, PopoverController, ViewController, ToastController, Platform } from 'ionic-angular';
+import { AppVersion, File } from 'ionic-native';
+
 import { StorageFactory } from '../../Factory/StorageFactory';
 import { ModelFactory } from '../../Factory/ModelFactory';
-import { AppVersion, File } from 'ionic-native';
 import { Package } from '../../pages/Package';
 import { DeleteHeader } from '../../Action/DeleteHeader';
 import { OpenMatrix } from '../../Action/OpenMatrix';
@@ -9,14 +11,15 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
-import { NavController, ActionSheetController, AlertController, PopoverController, ViewController, ToastController, Platform } from 'ionic-angular';
-import { EditorPage } from '../editor/editor';
+
+import { Connectivity } from '../connectivity/connectivity';
 import { SettingsPage } from '../settings/settings';
 import { CollectionPage } from '../collection/collection';
 import { ChannelCollectionPage } from '../channelcollection/channelcollection';
+import { EditorPage } from '../editor/editor';
+
 declare var cordova: any;
 declare var navigator: any;
-
 
 @Component({
   selector: 'page-home',
@@ -70,6 +73,91 @@ export class HomePage {
     // });
 
     this.GetLocalMatrixHeader();
+  }
+
+  openConnectivity() {
+    this.navCtrl.push(Connectivity);
+  }
+
+  presentPopover(event) {
+    let popover = this.popoverCtrl.create(MoreActionsPopover);
+    popover.present({ ev: event });
+  }
+
+  openSettings() {
+    this.navCtrl.push(SettingsPage);
+  }
+
+  openCollection() {
+    this.navCtrl.push(CollectionPage);
+  }
+
+
+  openChannelCollection(channel) {
+    console.log(channel);
+    this.navCtrl.push(ChannelCollectionPage, {
+      firstPassed: channel
+    });
+  }
+
+  openMatrix(matrixName, Channel) {
+    this.openmatrix.run(matrixName, Channel);
+  }
+
+  matrixPressed(index, DirName, channel) {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: DirName,
+      buttons: [
+        {
+          text: 'Delete',
+          role: 'destructive',
+          handler: () => {
+            console.log('Destructive clicked');
+            this.deleteHeader.DeleteLocalHeader(DirName, index, channel);
+            this.localMatrices.splice(index, 1);
+          }
+        }, {
+          text: 'Save Copy',
+          handler: () => {
+            console.log('Copy clicked');
+            this.DuplicateMatrix(channel, DirName);
+          }
+        }, {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    actionSheet.present();
+  }
+
+  channelMatrixPressed(index, title, value, channel) {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: title,
+      buttons: [{
+        text: 'Download',
+        handler: () => {
+          this.DownloadServerHeaderAsync(title, channel, index, value);
+        }
+      }, {
+        text: 'Delete',
+        role: 'destructive',
+        handler: () => {
+          this.deleteHeader.DeleteServerHeader(title, index, value, channel);
+          value.splice(index, 1);
+          this.channels.splice(index, 1);
+        }
+      }, {
+        text: 'Cancel',
+        role: 'cancel',
+        handler: () => { }
+      }
+      ]
+    });
+    actionSheet.present();
   }
 
   DuplicateMatrix(channelName, matrixname) {
@@ -281,16 +369,6 @@ export class HomePage {
     return true;
   }
 
-
-  presentPopover(event) {
-    let popover = this.popoverCtrl.create(MoreActionsPopover);
-    popover.present({ ev: event });
-  }
-
-  openSettings() {
-    this.navCtrl.push(SettingsPage);
-  }
-
   newMatrix() {
     let data =
       `{
@@ -352,7 +430,7 @@ export class HomePage {
 
           });
         }
-        else{
+        else {
           this.testNavToEditor(res);
         }
 
@@ -366,79 +444,6 @@ export class HomePage {
     });
   }
   // For testing only --ends
-
-
-
-  openMatrix(matrixName, Channel) {
-    this.openmatrix.run(matrixName, Channel);
-  }
-
-  matrixPressed(index, DirName, channel) {
-    let actionSheet = this.actionSheetCtrl.create({
-      title: DirName,
-      buttons: [
-        {
-          text: 'Delete',
-          role: 'destructive',
-          handler: () => {
-            console.log('Destructive clicked');
-            this.deleteHeader.DeleteLocalHeader(DirName, index, channel);
-            this.localMatrices.splice(index, 1);
-          }
-        }, {
-          text: 'Save Copy',
-          handler: () => {
-            console.log('Copy clicked');
-            this.DuplicateMatrix(channel, DirName);
-          }
-        }, {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        }
-      ]
-    });
-    actionSheet.present();
-  }
-
-  openCollection() {
-    this.navCtrl.push(CollectionPage);
-  }
-
-
-  openChannelCollection(channel) {
-    console.log(channel);
-    this.navCtrl.push(ChannelCollectionPage, {
-      firstPassed: channel
-    });
-  }
-  channelMatrixPressed(index, title, value, channel) {
-    let actionSheet = this.actionSheetCtrl.create({
-      title: title,
-      buttons: [{
-        text: 'Download',
-        handler: () => {
-          this.DownloadServerHeaderAsync(title, channel, index, value);
-        }
-      }, {
-        text: 'Delete',
-        role: 'destructive',
-        handler: () => {
-          this.deleteHeader.DeleteServerHeader(title, index, value, channel);
-          value.splice(index, 1);
-          this.channels.splice(index, 1);
-        }
-      }, {
-        text: 'Cancel',
-        role: 'cancel',
-        handler: () => { }
-      }
-      ]
-    });
-    actionSheet.present();
-  }
 
 }
 

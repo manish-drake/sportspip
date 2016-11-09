@@ -5,7 +5,6 @@ import { Http } from '@angular/http';
 import { File } from 'ionic-native';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
-import { Observable } from 'rxjs/Rx';
 import X2JS from 'x2js';
 declare var cordova: any;
 declare var zip: any;
