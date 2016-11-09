@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController, PopoverController, ViewController, Platform, AlertController } from 'ionic-angular';
+import { NavController, ModalController, PopoverController } from 'ionic-angular';
 import { AppVersion } from 'ionic-native';
 import { Login } from '../settings/login/login'
 import { Subscription } from '../../Stubs/Subscription';
@@ -81,11 +81,5 @@ export class UserActionsPopover {
 
   versionNumber: any;
 
-  constructor(public viewCtrl: ViewController, private alertCtrl: AlertController, private platform: Platform, ) {
-    if (this.platform.is('cordova')) {
-      AppVersion.getVersionNumber().then((s) => {
-        this.versionNumber = s;
-      })
-    }
+  constructor(){    }
   }
-}

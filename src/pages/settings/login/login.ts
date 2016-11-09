@@ -35,5 +35,24 @@ export class Login {
     this.LoginAvailable = true;
     this.IsLoginAvailable = "Log in";
   }
-
+  login(){
+    var email= document.getElementsByName("email");
+    this.ValidateEmail(email);
+  }
+  signup(){
+    var email = document.getElementsByName("signupEmail");
+    this.ValidateEmail(email);
+  }
+ValidateEmail(email){
+ 
+  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+ 
+  var input = document.createElement('input');
+ 
+  input.type = 'email';
+  input.value = email;
+ 
+  return typeof input.checkValidity == 'function' ? input.checkValidity() : re.test(email);
+ 
+}
 }
