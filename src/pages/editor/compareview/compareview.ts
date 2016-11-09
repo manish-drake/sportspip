@@ -33,7 +33,7 @@ export class Compareview {
         this.compareSegment1 = this.views[0];
         this.compareSegment2 = this.views[0];
       }
-      else{
+      else {
         this.compareSegment1 = this.views[0];
         this.compareSegment2 = this.views[1];
       }
@@ -42,6 +42,10 @@ export class Compareview {
 
   componentSelection(i) {
     this.selectedIndex = i;
+  }
+
+  playPause(ev) {
+    
   }
 
 }
