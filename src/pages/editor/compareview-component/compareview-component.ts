@@ -1,4 +1,4 @@
-import { Component, ViewChild, Input, ElementRef } from '@angular/core';
+import { Component, ViewChild, Input, ElementRef, Output, EventEmitter } from '@angular/core';
 
 import { AlertController, ModalController, Platform, PopoverController, ViewController, NavParams } from 'ionic-angular';
 
@@ -12,10 +12,11 @@ declare var cordova: any;
 export class CompareviewComponent {
 
     @Input() view: any;
-
     @Input() views: any;
-
     @Input() isSelected: boolean;
+
+    @Output() playPauseChild: EventEmitter<string> = new EventEmitter<string>();
+
 
     isLinked: boolean = false;
     linkUnlinkIcon: string = "remove";
@@ -39,6 +40,9 @@ export class CompareviewComponent {
 
 
     @ViewChild('videoElement') videoElement: ElementRef;
+
+    @ViewChild('fadableTitle') fadableTitle: ElementRef;
+    
     video: HTMLVideoElement;
 
     timelineInterval: any = null;
@@ -52,13 +56,29 @@ export class CompareviewComponent {
         })
 
         this.video.addEventListener('error', (error) => {
-            this.videoSrcAvailable = false;
+            console.log('Video Error: ' + error);
+            // this.videoSrcAvailable = false;
         })
 
         this.loadViewData();
+
+        this.fade(this.fadableTitle.nativeElement);
     }
 
-    clearViewData(){
+    fade(element) {
+        var op = 1;  // initial opacity
+        var timer = setInterval(() => {
+            if (op <= 0.1) {
+                clearInterval(timer);
+                element.style.display = 'none';
+            }
+            element.style.opacity = op;
+            element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+            op -= op * 0.01;
+        },30);
+    }
+
+    clearViewData() {
         this.markers = [];
         this.objects = [];
         this.markersObjects = [];
@@ -130,6 +150,7 @@ export class CompareviewComponent {
 
     playPause() {
         if (this.video.paused == true) {
+            this.playPauseChild.emit('play');
             this.video.play();
             this.playPauseButtonIcon = "pause";
             this.timelineInterval = setInterval(() => {
@@ -139,6 +160,7 @@ export class CompareviewComponent {
                 this.timelinePosition = this.formatTime(this.video.currentTime);
             }, 1);
         } else {
+            this.playPauseChild.emit('pause');
             this.video.pause();
             this.playPauseButtonIcon = "play";
             clearInterval(this.timelineInterval);

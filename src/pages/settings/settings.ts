@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController, PopoverController } from 'ionic-angular';
-import { AppVersion } from 'ionic-native';
+import { NavController, ModalController, PopoverController, ViewController, Platform, AlertController } from 'ionic-angular';
+import { File } from 'ionic-native';
 import { Login } from '../settings/login/login'
 import { Subscription } from '../../Stubs/Subscription';
+import { Http } from '@angular/http';
+declare var cordova: any;
 /*
   Generated class for the Settings page.
 
@@ -19,7 +21,13 @@ export class SettingsPage {
   chanelList = [];
   subscribeList = [];
 
-  constructor(public navCtrl: NavController, private subscription: Subscription, private modalCtrl: ModalController, private popoverCtrl: PopoverController) {
+
+  constructor(public navCtrl: NavController,
+    private subscription: Subscription,
+    private modalCtrl: ModalController,
+    private popoverCtrl: PopoverController,
+    private platform: Platform) {
+
     this.InvalidateSubscribeListAsync();
     this.InvalidateChannelListAsync();
   }
@@ -53,24 +61,36 @@ export class SettingsPage {
   ionViewDidLoad() {
     console.log('Hello Settings Page');
   }
+
+
   public FirstName: any;
+  public LastName: any;
   presentLoginModal() {
     let modal = this.modalCtrl.create(Login);
     modal.onDidDismiss(data => {
-      this.FirstName = "Sachin";
+      this.FirstName = data.FirstName;
+      this.LastName = data.LastName;
     });
     modal.present();
   }
+
   presentPopover(event) {
     let popover = this.popoverCtrl.create(UserActionsPopover);
     popover.present({ ev: event });
+    popover.onDidDismiss(data => {
+      this.platform.ready().then(() => {
+        File.removeFile(cordova.file.dataDirectory + "Server", "User.json").then((res) => {
+        })
+        this.FirstName = null;
+      })
+    })
   }
 }
 
 @Component({
   template: `
     <ion-list no-lines>
-    <ion-item>
+    <ion-item (click)="signOut()">
       <ion-icon item-left name="person"></ion-icon>Log out
       </ion-item>
     </ion-list>
@@ -78,8 +98,12 @@ export class SettingsPage {
 })
 
 export class UserActionsPopover {
-
-  versionNumber: any;
-
-  constructor(){    }
+  constructor(public viewCtrl: ViewController,
+    private alertCtrl: AlertController,
+    private http: Http,
+    private platform: Platform) {
   }
+  signOut() {
+    this.viewCtrl.dismiss();
+  }
+}
