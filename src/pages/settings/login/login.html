@@ -15,16 +15,16 @@
     <ion-list *ngIf="LoginAvailable">
         <ion-item>
             <ion-label style="width:115px;color:gray">Username</ion-label>
-            <ion-input value=""></ion-input>
+            <ion-input [(ngModel)]="Email" value=""></ion-input>
         </ion-item>
         <ion-item>
             <ion-label style="width:115px;color:gray">Password</ion-label>
-            <ion-input value="" type="password"></ion-input>
+            <ion-input [(ngModel)]="Pwd" value="" type="password"></ion-input>
         </ion-item>
     </ion-list>
     <div align="right" *ngIf="LoginAvailable">
-        <button ion-button (click)="dismiss()" style="text-transform: initial;">Log In</button>
-        <button ion-button outline style="text-transform: initial;" (click)="dismiss()">Close</button>
+        <button ion-button (click)="Login(Email, Pwd)" style="text-transform: initial;">Log In</button>
+        <button ion-button outline style="text-transform: initial;" (click)="dismiss(null)">Close</button>
     </div>
     <!--Register -->
     <ion-list *ngIf="!LoginAvailable">
@@ -44,7 +44,7 @@
 
     <div align="right" *ngIf="!LoginAvailable">
         <button ion-button (click)=Register(Email,FirstName,LastName) style="text-transform: initial;">Sign Up</button>
-        <button ion-button outline (click)="dismiss()" style="text-transform: initial;">Close</button>  <br>
+        <button ion-button outline (click)="dismiss(null)" style="text-transform: initial;">Close</button>  <br>
         <button ion-button small clear style="padding:0px;text-transform: initial;margin-right:5px" (click)="presentLogin()">I already have an account</button> 
     </div>
 </ion-content>

@@ -4,6 +4,7 @@ import { File } from 'ionic-native';
 import { Login } from '../settings/login/login'
 import { Subscription } from '../../Stubs/Subscription';
 import { Http } from '@angular/http';
+import { Observable } from 'rxjs/Rx';
 declare var cordova: any;
 /*
   Generated class for the Settings page.
@@ -11,32 +12,46 @@ declare var cordova: any;
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 */
+
+export interface IUser {
+  FirstName: string;
+  LastName: string;
+  EmailId: string;
+  AuthToken: string;
+  UserID: number;
+  IsDefault: boolean;
+}
+
 @Component({
   selector: 'page-settings',
   templateUrl: 'settings.html',
   providers: [Subscription]
 })
+
 export class SettingsPage {
 
   chanelList = [];
   subscribeList = [];
+  public FirstName: any;
+  public LastName: any;
 
 
   constructor(public navCtrl: NavController,
     private subscription: Subscription,
+    private http: Http,
     private modalCtrl: ModalController,
     private popoverCtrl: PopoverController,
     private platform: Platform) {
 
-    this.InvalidateSubscribeListAsync();
-    this.InvalidateChannelListAsync();
   }
 
   InvalidateSubscribeListAsync() {
+    this.subscribeList = [];
     this.subscribeList = this.subscription.GetSubscriptionList();
   }
 
   InvalidateChannelListAsync() {
+    this.chanelList = [];
     var ChanelList = this.subscription.GetChannelsAsync();
     ChanelList.forEach(channel => {
       var value = this.subscribeList.find(x => x.ChannelName == channel.ChannelName)
@@ -60,29 +75,54 @@ export class SettingsPage {
 
   ionViewDidLoad() {
     console.log('Hello Settings Page');
+    this.createSettingsasync()
   }
 
+  createSettingsasync() {
+    this.http.get(cordova.file.dataDirectory + "Server/User.json").map(response => response.json())
+      .catch(err => Observable.throw(this.InvalidateChannelListAsync()))
+      .subscribe(result => {
+        this.SetUserAcync(result)
+        this.InvalidateSubscribeListAsync();
+        this.InvalidateChannelListAsync();
+      });
+  }
 
-  public FirstName: any;
-  public LastName: any;
+  SetUserAcync(data) {
+    this.FirstName = data.FirstName;
+    this.LastName = data.LastName;
+  }
+
+  //register and  login
   presentLoginModal() {
     let modal = this.modalCtrl.create(Login);
     modal.onDidDismiss(data => {
-      this.FirstName = data.FirstName;
-      this.LastName = data.LastName;
+      console.log(data);
+      if (data != null) {
+        this.SetUserAcync(data);
+        this.InvalidateSubscribeListAsync();
+        this.InvalidateChannelListAsync();
+      }
+
     });
     modal.present();
   }
 
+  //signOut 
   presentPopover(event) {
     let popover = this.popoverCtrl.create(UserActionsPopover);
     popover.present({ ev: event });
     popover.onDidDismiss(data => {
-      this.platform.ready().then(() => {
-        File.removeFile(cordova.file.dataDirectory + "Server", "User.json").then((res) => {
+      console.log(data);
+      if (data != null) {
+        this.platform.ready().then(() => {
+          File.removeFile(cordova.file.dataDirectory + "Server", "User.json").then((res) => {
+          })
+          this.FirstName = null;
+          this.subscribeList = [];
+          this.InvalidateChannelListAsync();
         })
-        this.FirstName = null;
-      })
+      }
     })
   }
 }
@@ -104,6 +144,6 @@ export class UserActionsPopover {
     private platform: Platform) {
   }
   signOut() {
-    this.viewCtrl.dismiss();
+    this.viewCtrl.dismiss("signOut") ;
   }
 }

@@ -38,8 +38,8 @@ export class Subscription {
     }
 
     LoginAsync(email, password) {
-        if (!email)
-            var user = { FirstName: "Sachin", LastName: "Tendulkar", Email: email }
+
+        var user = { FirstName: "Sachin", LastName: "Tendulkar", Email: email }
         return user;
     }
 

@@ -72,17 +72,6 @@ export class HomePage {
     this.GetLocalMatrixHeader();
   }
 
-  ionViewDidLoad() {
-    console.log("main page");
-  }
-
-  // CreateSettingsAsync(){
-  //   this.http.get(cordova.file.dataDirectory + "Server/User.json").map(res=>{
-
-  //   }).catch((error:any) =>)
-
-  // }
-
   DuplicateMatrix(channelName, matrixname) {
     var name = Date.now().toString();
     this.platform.ready().then(() => {
