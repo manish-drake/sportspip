@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ViewController } from 'ionic-angular';
 import { Subscription } from '../../../Stubs/Subscription';
 import { StorageFactory } from '../../../Factory/StorageFactory';
+import { user } from '../user';
 
 /*
   Generated class for the Matrixinfo page.
@@ -12,7 +13,7 @@ import { StorageFactory } from '../../../Factory/StorageFactory';
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
-  providers: [Subscription, StorageFactory]
+  providers: [Subscription, StorageFactory,user]
 })
 
 export class Login {

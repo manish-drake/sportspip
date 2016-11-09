@@ -10,8 +10,8 @@
 		<ion-buttons end>
 			<button *ngIf="FirstName==null" ion-button icon-only (click)="presentLoginModal()"><ion-icon name="person"></ion-icon></button>
 			<button *ngIf="FirstName!=null" ion-button (click)="presentPopover($event)">
-				<label style="text-transform: initial;">{{FirstName}}</label>				
-				<label style="text-transform: initial;">&nbsp;&nbsp;{{LastName}}</label>
+				<label style="text-transform: capitalize;">{{FirstName}}</label>				
+				<label style="text-transform: capitalize;">&nbsp;&nbsp;{{LastName}}</label>
 			</button>
 		</ion-buttons>
 	</ion-navbar>

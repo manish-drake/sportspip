@@ -4,7 +4,7 @@ import { File } from 'ionic-native';
 import { Login } from '../settings/login/login'
 import { Subscription } from '../../Stubs/Subscription';
 import { Http } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import { Observable, Observer } from 'rxjs/Rx';
 declare var cordova: any;
 /*
   Generated class for the Settings page.
@@ -12,15 +12,6 @@ declare var cordova: any;
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 */
-
-export interface IUser {
-  FirstName: string;
-  LastName: string;
-  EmailId: string;
-  AuthToken: string;
-  UserID: number;
-  IsDefault: boolean;
-}
 
 @Component({
   selector: 'page-settings',
@@ -44,7 +35,7 @@ export class SettingsPage {
     private platform: Platform) {
 
   }
-
+  
   InvalidateSubscribeListAsync() {
     this.subscribeList = [];
     this.subscribeList = this.subscription.GetSubscriptionList();
@@ -62,9 +53,16 @@ export class SettingsPage {
   }
 
   SubscribeList(index, channelName) {
-    var channel = this.subscription.RequestSubscriptionAsync(channelName);
-    this.subscribeList.push(channel);
-    this.chanelList.splice(index, 1);
+    if (this.FirstName == null) {
+      this.presentLoginModal();
+    } 
+    else {
+      var channel = this.subscription.RequestSubscriptionAsync(channelName);
+      this.subscribeList.push(channel);
+      this.chanelList.splice(index, 1);
+    }
+
+
   }
 
   UnSubscribeList(index) {
@@ -80,7 +78,7 @@ export class SettingsPage {
 
   createSettingsasync() {
     this.http.get(cordova.file.dataDirectory + "Server/User.json").map(response => response.json())
-      .catch(err => Observable.throw(this.InvalidateChannelListAsync()))
+      .catch(err => new Observable(observer => { this.InvalidateChannelListAsync() }))
       .subscribe(result => {
         this.SetUserAcync(result)
         this.InvalidateSubscribeListAsync();
@@ -144,6 +142,6 @@ export class UserActionsPopover {
     private platform: Platform) {
   }
   signOut() {
-    this.viewCtrl.dismiss("signOut") ;
+    this.viewCtrl.dismiss("signOut");
   }
 }
