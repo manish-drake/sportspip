@@ -1,34 +1,48 @@
 import { Component } from '@angular/core';
 import { NavController, ModalController, PopoverController, ViewController, Platform, AlertController } from 'ionic-angular';
-import { AppVersion } from 'ionic-native';
+import { File } from 'ionic-native';
 import { Login } from '../settings/login/login'
 import { Subscription } from '../../Stubs/Subscription';
+import { Http } from '@angular/http';
+import { Observable, Observer } from 'rxjs/Rx';
+declare var cordova: any;
 /*
   Generated class for the Settings page.
 
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 */
+
 @Component({
   selector: 'page-settings',
   templateUrl: 'settings.html',
   providers: [Subscription]
 })
+
 export class SettingsPage {
 
   chanelList = [];
   subscribeList = [];
+  public FirstName: any;
+  public LastName: any;
 
-  constructor(public navCtrl: NavController, private subscription: Subscription, private modalCtrl: ModalController, private popoverCtrl: PopoverController) {
-    this.InvalidateSubscribeListAsync();
-    this.InvalidateChannelListAsync();
+
+  constructor(public navCtrl: NavController,
+    private subscription: Subscription,
+    private http: Http,
+    private modalCtrl: ModalController,
+    private popoverCtrl: PopoverController,
+    private platform: Platform) {
+
   }
-
+  
   InvalidateSubscribeListAsync() {
+    this.subscribeList = [];
     this.subscribeList = this.subscription.GetSubscriptionList();
   }
 
   InvalidateChannelListAsync() {
+    this.chanelList = [];
     var ChanelList = this.subscription.GetChannelsAsync();
     ChanelList.forEach(channel => {
       var value = this.subscribeList.find(x => x.ChannelName == channel.ChannelName)
@@ -39,9 +53,16 @@ export class SettingsPage {
   }
 
   SubscribeList(index, channelName) {
-    var channel = this.subscription.RequestSubscriptionAsync(channelName);
-    this.subscribeList.push(channel);
-    this.chanelList.splice(index, 1);
+    if (this.FirstName == null) {
+      this.presentLoginModal();
+    } 
+    else {
+      var channel = this.subscription.RequestSubscriptionAsync(channelName);
+      this.subscribeList.push(channel);
+      this.chanelList.splice(index, 1);
+    }
+
+
   }
 
   UnSubscribeList(index) {
@@ -52,25 +73,62 @@ export class SettingsPage {
 
   ionViewDidLoad() {
     console.log('Hello Settings Page');
+    this.createSettingsasync()
   }
-  public FirstName: any;
+
+  createSettingsasync() {
+    this.http.get(cordova.file.dataDirectory + "Server/User.json").map(response => response.json())
+      .catch(err => new Observable(observer => { this.InvalidateChannelListAsync() }))
+      .subscribe(result => {
+        this.SetUserAcync(result)
+        this.InvalidateSubscribeListAsync();
+        this.InvalidateChannelListAsync();
+      });
+  }
+
+  SetUserAcync(data) {
+    this.FirstName = data.FirstName;
+    this.LastName = data.LastName;
+  }
+
+  //register and  login
   presentLoginModal() {
     let modal = this.modalCtrl.create(Login);
     modal.onDidDismiss(data => {
-      this.FirstName = "Sachin";
+      console.log(data);
+      if (data != null) {
+        this.SetUserAcync(data);
+        this.InvalidateSubscribeListAsync();
+        this.InvalidateChannelListAsync();
+      }
+
     });
     modal.present();
   }
+
+  //signOut 
   presentPopover(event) {
     let popover = this.popoverCtrl.create(UserActionsPopover);
     popover.present({ ev: event });
+    popover.onDidDismiss(data => {
+      console.log(data);
+      if (data != null) {
+        this.platform.ready().then(() => {
+          File.removeFile(cordova.file.dataDirectory + "Server", "User.json").then((res) => {
+          })
+          this.FirstName = null;
+          this.subscribeList = [];
+          this.InvalidateChannelListAsync();
+        })
+      }
+    })
   }
 }
 
 @Component({
   template: `
     <ion-list no-lines>
-    <ion-item>
+    <ion-item (click)="signOut()">
       <ion-icon item-left name="person"></ion-icon>Log out
       </ion-item>
     </ion-list>
@@ -78,14 +136,12 @@ export class SettingsPage {
 })
 
 export class UserActionsPopover {
-
-  versionNumber: any;
-
-  constructor(public viewCtrl: ViewController, private alertCtrl: AlertController, private platform: Platform, ) {
-    if (this.platform.is('cordova')) {
-      AppVersion.getVersionNumber().then((s) => {
-        this.versionNumber = s;
-      })
-    }
+  constructor(public viewCtrl: ViewController,
+    private alertCtrl: AlertController,
+    private http: Http,
+    private platform: Platform) {
+  }
+  signOut() {
+    this.viewCtrl.dismiss("signOut");
   }
 }

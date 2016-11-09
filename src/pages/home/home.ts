@@ -43,7 +43,7 @@ export class HomePage {
     private toastCtrl: ToastController,
     private packages: Package
   ) {
-    console.log("main page");
+
 
     this.selectedSegment = "local";
 

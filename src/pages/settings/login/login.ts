@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { ViewController } from 'ionic-angular';
+import { Subscription } from '../../../Stubs/Subscription';
+import { StorageFactory } from '../../../Factory/StorageFactory';
+import { user } from '../user';
 
 /*
   Generated class for the Matrixinfo page.
@@ -10,30 +13,45 @@ import { ViewController } from 'ionic-angular';
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
+  providers: [Subscription, StorageFactory,user]
 })
 
 export class Login {
-
   LoginAvailable: boolean = true;
-  IsLoginAvailable :string;
+  IsLoginAvailable: string;
 
-  constructor(private viewCtrl: ViewController) { 
+  constructor(private viewCtrl: ViewController, private subscription: Subscription, private storageFactory: StorageFactory) {
     this.IsLoginAvailable = "Login";
-    
+
   }
-  dismiss() {
-    this.viewCtrl.dismiss();
+  dismiss(user) {
+    this.viewCtrl.dismiss(user);
   }
   ionViewDidLoad() {
     console.log('Hello Login Page');
   }
-  presentRegister() { console.log('Hello Register Page');
+  presentRegister() {
+    console.log('Hello Register Page');
     this.LoginAvailable = false;
     this.IsLoginAvailable = "Registration";
   }
-   presentLogin() { console.log('Hello Login Page');
+  presentLogin() {
+    console.log('Hello Login Page');
     this.LoginAvailable = true;
     this.IsLoginAvailable = "Log in";
+  }
+
+  Register(email, firstname, lastname) {
+    console.log("Registration..");
+    var user = this.subscription.RegisterAsync(firstname, lastname, email);
+    this.storageFactory.SaveUserAsync(user);
+    this.dismiss(user);
+  }
+
+  Login(email, pwd) {
+    var user = this.subscription.LoginAsync(email, pwd);
+    this.storageFactory.SaveUserAsync(user);
+    this.dismiss(user);
   }
 
 }
