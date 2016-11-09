@@ -43,8 +43,7 @@ export class Login {
   Register(email, firstname, lastname) {
     console.log("Registration..");
     var user = this.subscription.RegisterAsync(firstname, lastname, email);
-    // this.storageFactory.SaveUserAsync(user);
-    console.log(user);
+    this.storageFactory.SaveUserAsync(user);
     this.dismiss(user);
   }
 

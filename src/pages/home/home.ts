@@ -40,7 +40,7 @@ export class HomePage {
     private toastCtrl: ToastController,
     private packages: Package
   ) {
-    console.log("main page");
+
 
     this.selectedSegment = "local";
 
@@ -71,6 +71,17 @@ export class HomePage {
 
     this.GetLocalMatrixHeader();
   }
+
+  ionViewDidLoad() {
+    console.log("main page");
+  }
+
+  // CreateSettingsAsync(){
+  //   this.http.get(cordova.file.dataDirectory + "Server/User.json").map(res=>{
+
+  //   }).catch((error:any) =>)
+
+  // }
 
   DuplicateMatrix(channelName, matrixname) {
     var name = Date.now().toString();
@@ -352,7 +363,7 @@ export class HomePage {
 
           });
         }
-        else{
+        else {
           this.testNavToEditor(res);
         }
 

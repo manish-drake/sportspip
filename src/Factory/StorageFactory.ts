@@ -139,9 +139,9 @@ export class StorageFactory {
 
     SaveUserAsync(content) {
         this.platform.ready().then(() => {
-            const fs: string = "file:/storage/emulated/0/DCIM";
+            const fs: string = cordova.file.dataDirectory;
             File.createDir(fs, "Server", true).then((success) => {
-                var serverFolder = fs + "/Server/";
+                var serverFolder = fs + "Server/";
                 File.createFile(serverFolder, "User.json", true).then(() => {
                     File.writeFile(serverFolder, "User.json", content, true)
                         .then(function (success) {

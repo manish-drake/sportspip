@@ -68,7 +68,6 @@ export class ChannelCollectionPage {
   presentPopover(event) {
     let popover = this.popoverController.create(PopoverPage2);
     popover.present({ ev: event });
-    alert("Sss");
   }
 
   DeleteChannelMatrix(DirName, Channel, index) {
