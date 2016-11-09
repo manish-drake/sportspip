@@ -7,18 +7,15 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Connectivity</ion-title>
+    <ion-title>Connection</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content style="background:#eee;">
-  <ion-list-header no-lines style="background:transparent;">
-    Connectivity
-  </ion-list-header>
   <ion-item no-lines style="background:transparent;">
-    <ion-label>On</ion-label>
+    <ion-label>Connectivity</ion-label>
     <ion-toggle [(ngModel)]="connectivity"></ion-toggle>
   </ion-item>
   <ion-list *ngIf="connectivity">
