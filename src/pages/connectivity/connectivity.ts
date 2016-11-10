@@ -34,8 +34,6 @@ export class Connectivity {
                 connection.connected = true;
                 connection.status = 'Connected';
                 connection.saved = true;
-                this.connections.splice(index,1);
-                this.connections.unshift(connection);
             }
             else {
                 connection.connected = false;
