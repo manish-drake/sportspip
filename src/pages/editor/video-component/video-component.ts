@@ -35,7 +35,7 @@ export class VideoComponent {
 
     
 
-    @ViewChild('videoElement') videoElement: ElementRef;
+    @ViewChild('video') videoElement: ElementRef;
     video: HTMLVideoElement;
 
     timelineInterval: any = null;

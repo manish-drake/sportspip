@@ -15,18 +15,17 @@
     <form name="loginForm" *ngIf="LoginAvailable">
         <ion-item>
             <ion-label style="width:115px;color:gray">Email</ion-label>
-            <ion-input value="" id="email" placeholder="user@domain.com" type="email" ></ion-input>
+            <ion-input [(ngModel)]="Email" value="" id="email" placeholder="user@domain.com" type="email" ></ion-input>
         </ion-item>
         <ion-item>
             <ion-label style="width:115px;color:gray">Password</ion-label>
-            <ion-input value="" type="password"></ion-input>
+            <ion-input [(ngModel)]="Pwd" value="" type="password"></ion-input>
         </ion-item>
         <div align="right" style="padding-top:16px;padding-right:10px">
-            <button ion-button type="submit" (click)="login()" style="text-transform: initial;">Log In</button>
-            <button ion-button outline style="text-transform: initial;" (click)="dismiss()">Close</button>
+            <button ion-button type="submit" (click)="Login(Email, Pwd)" style="text-transform: initial;">Log In</button>
+            <button ion-button outline style="text-transform: initial;" (click)="dismiss(null)">Close</button>
         </div>
     </form>
-
     <!--Register -->
     <form name="signUpForm" *ngIf="!LoginAvailable">
         <ion-item>
@@ -43,10 +42,8 @@
         </ion-item>
         <div align="right" style="padding-top:16px;padding-right:10px">
             <button ion-button type="submit" type="submit" (click)=Register(Email,FirstName,LastName) style="text-transform: initial;">Sign Up</button>
-            <button ion-button outline type="cancel" (click)="dismiss()" style="text-transform: initial;">Close</button> <br>
+            <button ion-button outline type="cancel" (click)="dismiss(null)" style="text-transform: initial;">Close</button> <br>
             <button ion-button small clear style="padding:0px;text-transform: initial;" (click)="presentLogin()">I already have an account</button>
         </div>
     </form>
-
-
 </ion-content>
