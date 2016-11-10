@@ -4,7 +4,7 @@ import { File } from 'ionic-native';
 import { Login } from '../settings/login/login'
 import { Subscription } from '../../Stubs/Subscription';
 import { Http } from '@angular/http';
-import { Observable, Observer } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
 declare var cordova: any;
 /*
   Generated class for the Settings page.
