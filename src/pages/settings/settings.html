@@ -8,8 +8,8 @@
 	<ion-navbar color="primary">
 		<ion-title>Settings</ion-title>
 		<ion-buttons end>
-			<button *ngIf="FirstName==null" ion-button icon-only (click)="presentLoginModal()"><ion-icon name="person"></ion-icon></button>
-			<button ion-button (click)="presentPopover($event)">{{FirstName}}</button>
+			<button *ngIf="FirstName==null" ion-button icon-only (click)="presentLoginModal()" style="width:20px;"><ion-icon name="person"></ion-icon></button>
+			<button ion-button (click)="presentPopover($event)" style="text-transform:initial;" class="textTrim">{{FirstName}}</button>
 		</ion-buttons>
 	</ion-navbar>
 </ion-header>
@@ -60,8 +60,8 @@
 									</ion-avatar>
 									<h3>{{chanList.ChannelName}}</h3>
 									<button (click)="SubscribeList(i,chanList.ChannelName)" ion-fab mini item-right>
-                    <ion-icon name="add"></ion-icon>
-                  </button>
+                    					<ion-icon name="add"></ion-icon>
+                  					</button>
 								</ion-item>
 							</ion-card>
 						</ion-list>

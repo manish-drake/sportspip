@@ -12,39 +12,41 @@
 </ion-header>
 <ion-content>
     <!--Login-->
-    <ion-list *ngIf="LoginAvailable">
+    <form name="loginForm" *ngIf="LoginAvailable">
         <ion-item>
             <ion-label style="width:115px;color:gray">Email</ion-label>
-            <ion-input value="" name="email" placeholder="user@domain.com"></ion-input>
+            <ion-input value="" id="email" placeholder="user@domain.com" type="email" ></ion-input>
         </ion-item>
         <ion-item>
             <ion-label style="width:115px;color:gray">Password</ion-label>
             <ion-input value="" type="password"></ion-input>
         </ion-item>
-    </ion-list>
-    <div align="right" *ngIf="LoginAvailable">
-        <button ion-button (click)="login()" style="text-transform: initial;">Log In</button>
-        <button ion-button outline style="text-transform: initial;margin-right:5px" (click)="dismiss()">Close</button>
-    </div>
+        <div align="right" style="padding-top:16px;padding-right:10px">
+            <button ion-button type="submit" (click)="login()" style="text-transform: initial;">Log In</button>
+            <button ion-button outline style="text-transform: initial;" (click)="dismiss()">Close</button>
+        </div>
+    </form>
+
     <!--Register -->
-    <ion-list *ngIf="!LoginAvailable">
+    <form name="signUpForm" *ngIf="!LoginAvailable">
         <ion-item>
             <ion-label style="width:115px;color:gray">Email</ion-label>
-            <ion-input name="signupEmail" [(ngModel)]="Email" value="" placeholder="user@domain.com"></ion-input>
+            <ion-input type="email" id="email1" name="signupEmail" [(ngModel)]="Email" value="" placeholder="user@domain.com"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label style="width:115px;color:gray">First Name</ion-label>
-            <ion-input [(ngModel)]="FirstName" value=""></ion-input>
+            <ion-input [(ngModel)]="FirstName" id="fname" name="firstName" value=""></ion-input>
         </ion-item>
         <ion-item>
             <ion-label style="width:115px;color:gray">Last Name</ion-label>
-            <ion-input [(ngModel)]="LastName" value=""></ion-input>
+            <ion-input [(ngModel)]="LastName" id="lname" name="lastName" value=""></ion-input>
         </ion-item>
-    </ion-list>
+        <div align="right" style="padding-top:16px;padding-right:10px">
+            <button ion-button type="submit" type="submit" (click)=Register(Email,FirstName,LastName) style="text-transform: initial;">Sign Up</button>
+            <button ion-button outline type="cancel" (click)="dismiss()" style="text-transform: initial;">Close</button> <br>
+            <button ion-button small clear style="padding:0px;text-transform: initial;" (click)="presentLogin()">I already have an account</button>
+        </div>
+    </form>
 
-    <div align="right" *ngIf="!LoginAvailable">
-        <button ion-button (click)=Register(Email,FirstName,LastName) style="text-transform: initial;">Sign Up</button>
-        <button ion-button outline (click)="dismiss()" style="text-transform: initial;">Close</button> <br>
-        <button ion-button small clear style="padding:0px;text-transform: initial;margin-right:5px" (click)="presentLogin()">I already have an account</button>
-    </div>
+
 </ion-content>

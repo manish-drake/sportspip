@@ -42,5 +42,8 @@ page-settings {
     min-width: calc(12.5%);
   }
 }
-
+.textTrim{
+       overflow: hidden;
+       text-overflow: ellipsis;
+}
 }

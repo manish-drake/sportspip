@@ -43,17 +43,47 @@ export class Login {
         console.log("Registration..");
         var user = this.subscription.RegisterAsync(firstname, lastname, email);
         this.storageFactory.SaveUserAsync(user);
+        this.validateSignUp();
         this.dismiss(user);
     }
-    ValidateEmail(email) {
+    validateLogin() {
+        if (this.presentLogin) {
+            alert("presentLogin");
+            var email = <HTMLInputElement>document.getElementById('email');
+            var password = <HTMLInputElement>document.getElementById('password');
+            if (email.value == null || email.value == "") {
+                
 
-        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            }
+            else {
+                
 
-        var input = document.createElement('input');
+            }
 
-        input.type = 'email';
-        input.value = email;
+            if (password.value == null || password.value == "" || password.value.length < 6) {
+                
 
-        return typeof input.checkValidity == 'function' ? input.checkValidity() : re.test(email);
+            }
+            else {
+               
+
+            }
+
+        }
+    }
+    validateSignUp() {
+        alert("presentRegister");
+        var email1 = <HTMLInputElement>document.getElementById('email1');
+        var fname = <HTMLInputElement>document.getElementById('fname');
+        var lname = <HTMLInputElement>document.getElementById('lname');
+
+
+        if (email1.value == null || email1.value == "") {}
+        else { }
+        if (fname.value == null || fname.value == "") {}
+        else {}
+        if (lname.value == null || lname.value == "") {}
+        else {}
     }
 }
+
