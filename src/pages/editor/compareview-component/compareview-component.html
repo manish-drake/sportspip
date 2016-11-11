@@ -1,7 +1,7 @@
 <!--compareViewTemplate-->
 <ion-grid style="height: 100%;">
 	<ion-row style="height: 100%;position: relative;">
-		<video #videoElement style="position: absolute; background-color:black;" #video [attr.src]="returnVidPath(view.Content.Capture._Kernel)"
+		<video #video style="position: absolute; background-color:black;" [attr.src]="returnVidPath(view.Content.Capture._Kernel)"
 			width="100%" height="100%"></video>
 		<svg *ngFor="let obj of objects;" [ngSwitch]="obj.key" [attr.viewBox]="viewBoxSize" height="100%" width="100%" style="position:absolute">
 			<rect *ngSwitchCase="'Rectangle'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
@@ -53,10 +53,10 @@
 				<image *ngSwitchCase="'Ink'" #Ink x="0" y="0" width="100%" height="100%" xlink:href="assets/inksample.gif" />
 			</svg>
 		</div>
-		<button ion-button icon-right small (click)="presentViewPopover($event)" style="position:absolute; left:5px; top:5px; background-color:rgba(0,0,0,0.5);color:white;">
+		<button ion-button icon-right small (click)="presentViewPopover($event)" style="position:absolute; left:5px; top:5px; background-color:rgba(0,0,0,0.4);color:white;">
 			{{view._Title}}<ion-icon name="arrow-dropdown"></ion-icon>
 		</button>
-		<button ion-button small (click)="updateLink()" style="position:absolute; right:5px; top:5px; background-color:rgba(0,0,0,0.5);color:white;">
+		<button ion-button small  (click)="updateLink()" style="position:absolute; right:5px; top:5px; background-color:rgba(0,0,0,0.4);color:white;font-size:22px;">
 			<ion-icon name="{{linkUnlinkIcon}}"></ion-icon>
 		</button>
 		<div *ngIf="isSelected" text-center style="position:absolute; right:5px; bottom:5px; display:block;">

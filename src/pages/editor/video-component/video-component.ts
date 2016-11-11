@@ -33,7 +33,13 @@ export class VideoComponent {
 
     ngOnInit() { }
 
+<<<<<<< HEAD
     @ViewChild('videoElement') videoElement: ElementRef;
+=======
+    
+
+    @ViewChild('video') videoElement: ElementRef;
+>>>>>>> 1a12076a68790ef860a9d8eea7b6a71d3c7feb2c
     video: HTMLVideoElement;
 
     timelineInterval: any = null;

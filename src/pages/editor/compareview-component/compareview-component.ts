@@ -39,7 +39,7 @@ export class CompareviewComponent {
     }
 
 
-    @ViewChild('videoElement') videoElement: ElementRef;
+    @ViewChild('video') videoElement: ElementRef;
 
     @ViewChild('fadableTitle') fadableTitle: ElementRef;
     

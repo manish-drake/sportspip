@@ -6,7 +6,7 @@ import { Subscription } from '../../Stubs/Subscription';
 import { StorageFactory } from '../../Factory/StorageFactory';
 import { Package } from '../../pages/Package';
 import { Http } from '@angular/http';
-import { Observable, Observer } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
 declare var cordova: any;
 /*
   Generated class for the Settings page.
