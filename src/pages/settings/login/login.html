@@ -2,7 +2,7 @@
     <ion-toolbar color="primary" no-border-bottom>
 
         <ion-buttons end>
-            <button ion-button icon-only (click)="presentRegister(user)" class="regisBtn" *ngIf="LoginAvailable">
+            <button ion-button icon-only (click)="presentRegister()" class="regisBtn" *ngIf="LoginAvailable">
                 <ion-icon name="person-add"></ion-icon>
             </button>
         </ion-buttons>
@@ -52,7 +52,7 @@
             <div style="float:right;">
                 <button ion-button type="submit" (click)=Register(Email,FirstName,LastName) style="text-transform: initial;">Sign Up</button>
                 <button ion-button outline type="cancel" (click)="dismiss(null)" style="text-transform: initial;">Close</button>                <br>
-                <button ion-button small clear style="padding:0px;text-transform: initial;" (click)="presentLogin(user)">I already have an account</button>
+                <button ion-button small clear style="padding:0px;text-transform: initial;" (click)="presentLogin()">I already have an account</button>
             </div>
         </div>
     </ion-list>
