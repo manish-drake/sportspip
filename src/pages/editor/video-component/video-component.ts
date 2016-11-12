@@ -33,19 +33,21 @@ export class VideoComponent {
 
     ngOnInit() { }
 
+<<<<<<< HEAD
+    @ViewChild('videoElement') videoElement: ElementRef;
+=======
     
 
     @ViewChild('video') videoElement: ElementRef;
+>>>>>>> 1a12076a68790ef860a9d8eea7b6a71d3c7feb2c
     video: HTMLVideoElement;
 
     timelineInterval: any = null;
 
     ngAfterViewInit() {
-        console.log(this.view);
         this.markers = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
         this.loadObjects();
         this.loadMarkerObjects();
-
         this.video = this.videoElement.nativeElement;
 
         this.video.addEventListener('ended', () => {
@@ -54,7 +56,7 @@ export class VideoComponent {
         })
 
         this.video.addEventListener('error', (error) => {
-            console.log('Error in video Elmnt:'+error);
+            console.log('Error in video Elmnt:' + error);
             this.videoSrcAvailable = false;
         })
 

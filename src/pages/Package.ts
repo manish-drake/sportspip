@@ -53,8 +53,7 @@ export class Package {
                             break;
                         case '.mp4':
                             console.log("video moving...");
-                            File.copyFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.applicationStorageDirectory, file.name);
-                            //this.CreateThumbnail(file.name);
+                            File.copyFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.applicationStorageDirectory, file.name); 
                             console.log("video moved");
                             break;
                         case ".gif":

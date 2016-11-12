@@ -16,22 +16,48 @@
 <ion-content style="background:#eee;">
   <ion-item no-lines style="background:transparent;">
     <ion-label>Connectivity</ion-label>
-    <ion-toggle [(ngModel)]="connectivity"></ion-toggle>
+    <ion-toggle [(ngModel)]="isConnectivityEnabled"></ion-toggle>
   </ion-item>
-  <ion-list *ngIf="connectivity">
+  <ion-list *ngIf="isConnectivityEnabled">
     <ion-card *ngFor="let connection of connections">
       <ion-item>
-        <h2>{{connection.title}}</h2>
-        <h3 style="margin-bottom:10px;" [style.color]="getStatusColor(connection.status)">{{connection.status}}</h3>
-        <p>Description</p>
-        <h3>{{connection.description}}</h3>
         <ion-row>
           <ion-col>
-            <button ion-button block outline color="dark" *ngIf="connection.connected" (click)="forget(connection)">Forget</button>
+            <h2>{{connection.title}}</h2>
+          </ion-col>
+          <ion-col style="width: auto; flex: 0 0 auto;" [style.color]="getStatusColor(connection.status)">
+            <ion-icon *ngIf="connection.connected" name="wifi"></ion-icon>
+            <ion-icon *ngIf="!connection.saved && !connection.connected" name="link"></ion-icon>
+          </ion-col>
+          <ion-col style="width: auto; flex: 0 0 auto;">
+            <h3 style="margin-bottom:10px;" [style.color]="getStatusColor(connection.status)">{{connection.status}}</h3>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <p>IP Address</p>
+          </ion-col>
+          <ion-col style="width: auto; flex: 0 0 auto;">
+            <h3>{{connection.ipaddress}}</h3>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <p>Description</p>
+          </ion-col>
+          <ion-col style="width: auto; flex: 0 0 auto;">
+            <h3>{{connection.description}}</h3>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <button ion-button block outline small color="dark" *ngIf="connection.saved && connection.available" (click)="forget(connection)">Forget</button>
           </ion-col>
           <ion-col>
-            <button ion-button block *ngIf="!connection.connected" (click)="connect(connection)">Connect</button>
-            <button ion-button block outline *ngIf="connection.connected" (click)="disconnect(connection)">Disconnect</button>
+            <button ion-button block small *ngIf="!connection.saved" (click)="connect(connection)" [style.background-color]="getStatusColor(connection.status)">Pair</button>
+            <button ion-button block small *ngIf="!connection.connected && connection.saved && connection.available" (click)="connect(connection)">Connect</button>
+            <button ion-button block outline small *ngIf="connection.connected" (click)="disconnect(connection)">Disconnect</button>
+            <button ion-button block outline small color="dark" *ngIf="!connection.available" (click)="forget(connection)">Forget</button>
           </ion-col>
         </ion-row>
       </ion-item>

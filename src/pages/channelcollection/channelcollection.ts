@@ -4,7 +4,7 @@ import { StorageFactory } from '../../Factory/StorageFactory';
 import { Http } from '@angular/http';
 import { Package } from '../../pages/Package';
 import { Observable } from 'rxjs/Rx';
-import { NavController, PopoverController, NavParams, ActionSheetController, AlertController, ViewController, Platform } from 'ionic-angular';
+import { NavController,ToastController, PopoverController, NavParams, ActionSheetController, AlertController, ViewController, Platform } from 'ionic-angular';
 declare var cordova: any;
 
 /*
@@ -27,6 +27,7 @@ export class ChannelCollectionPage {
     private storagefactory: StorageFactory,
     private actionSheetCtrl: ActionSheetController,
     private platform: Platform,
+    private toastCtrl: ToastController,
     private alertCtrl: AlertController,
     private popoverController: PopoverController,
     private packages: Package,
@@ -47,7 +48,7 @@ export class ChannelCollectionPage {
               var result = JSON.parse(data.text());
               // var result = header.Header;
               var item = {
-                Title: result.Title, DateCreated: result.DateCreated, Name: result.name, Channel: result.Channel,
+                Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
                 ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
                 Views: result.Clips
               };
@@ -119,7 +120,11 @@ export class ChannelCollectionPage {
   }
 
   AuthenticateUser() {
-    alert("Authenticatnig user");
+    let toast = this.toastCtrl.create({
+      message: 'Authenticatnig user..',
+      duration: 2000,
+    });
+    toast.present();
     return true;
   }
 
