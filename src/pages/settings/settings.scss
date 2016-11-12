@@ -43,7 +43,14 @@ page-settings {
   }
 }
 .textTrim{
-       overflow: hidden;
-       text-overflow: ellipsis;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      max-width: 70px;
+      overflow: hidden;
+      text-transform: capitalize;
+}
+.loginBtn{
+      width: 50px;
+      height: 40px;
 }
 }
