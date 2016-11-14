@@ -26,6 +26,7 @@ declare var navigator: any;
   templateUrl: 'home.html',
   providers: [StorageFactory, ModelFactory, DeleteHeader, Package, OpenMatrix],
 })
+
 export class HomePage {
 
   selectedSegment: any;
@@ -41,21 +42,9 @@ export class HomePage {
     private actionSheetCtrl: ActionSheetController,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
-    private packages: Package
-  ) {
-
+    private packages: Package) {
 
     this.selectedSegment = "local";
-
-    //for local url
-
-    this.GetserverHeader().then((success) => {
-      Observable.interval(1000)
-        .take(1).map((x) => x + 5)
-        .subscribe((x) => {
-          this.DisplayServerHeader();
-        })
-    });
 
     //for server url
 
@@ -71,8 +60,15 @@ export class HomePage {
     //       this.DisplayServerHeader();
     //     })    
     // });
+  }
 
+  ionViewDidEnter() {
+    console.log("main page");
+    this.localMatrices = [];
+    this.channels = [];
+    this.DisplayServerHeader();
     this.GetLocalMatrixHeader();
+
   }
 
   openConnectivity() {
@@ -184,82 +180,9 @@ export class HomePage {
     })
   }
 
-
-
-  GetserverHeader() {
-
-    //local
-    return this.http.get("assets/Header.xml")
-      .map(res => {
-        return this.SerializeServerData(res);
-      }).toPromise()
-
-    //server
-    // return this.http.get("http://sportspip.cloudapp.net:10101/IStorageService/getmtxhdrs")
-    //   .map(res => {
-    //     var headerData = JSON.parse(res.text());
-    //     this.Save(headerData, "header.xml");
-    //   }).toPromise();
-  }
-
-  // Save(blob, filename) {
-  //   File.createFile(cordova.file.dataDirectory, filename, true).then(() => {
-  //     File.writeFile(cordova.file.dataDirectory, filename, blob, true).then(() => {
-
-  //     })
-  //   })
-  // }
-
-  //server header
-  // SaveServerHeaders() {
-  //   this.http.get(cordova.file.dataDirectory+"/matrix.xml").subscribe(data => {
-  //     var headerList = JSON.parse(data.text());
-  //     headerList.forEach(header => {
-  //       var result = header;
-  //       var item = {
-  //         Title: result.Title, DateCreated: result.DateCreated, Name: result.UploadIndex.toString(), Channel: result.ChannelName,
-  //         ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadIndex, Duration: result.Duration,
-  //         Views: result.Views
-  //       };
-  //       this.Header.push(item);
-  //     });
-  //     this.SaveDownloadedHeaders(this.Header);
-  //   })
-  // }
-
   retrunThumbnailPath(name) {
     return cordova.file.applicationStorageDirectory + name + ".jpg";
   }
-
-  SerializeServerData(headerData) {
-    var res = JSON.parse(headerData.text());
-    var result = res.Header;
-    var item = {
-      Title: result.Title, DateCreated: result.DateCreated, Name: result.name, Channel: result.Channel,
-      ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
-      Views: result.Clips
-    };
-    this.Header.push(item);
-    this.SaveDownloadedHeaders(this.Header);
-  }
-
-  //Save Downloaded Header
-  SaveDownloadedHeaders(HeaderList) {
-    HeaderList.forEach((res) => {
-      Observable.interval(2000)
-        .take(1).map((x) => x + 5)
-        .subscribe((x) => {
-          this.storagefactory.SaveRoamingHeader(res, res.Channel, res.Sport, res.Name);
-          this.DownloadThumbnailfromServer(res.Channel, res.Name)
-        })
-
-    })
-    // this.storagefactory.SaveRoamingHeader(Data, HeaderList.Channel, HeaderList.Sport, HeaderList.name);
-  }
-  DownloadThumbnailfromServer(channelName, matrixName) {
-    this.packages.DownloadThumbnailfromServer(channelName, matrixName);
-  }
-
 
   GetLocalMatrixHeader() {
     this.platform.ready().then(() => {
@@ -321,7 +244,6 @@ export class HomePage {
           this.packages.DownloadServerHeader(fileName, channelName);
           console.log("Download");
         })
-
       Observable.interval(2000)
         .take(3).map((x) => x + 5)
         .subscribe((x) => {
@@ -343,12 +265,12 @@ export class HomePage {
         this.GetLocalMatrixHeader();
         console.log("local header");
       })
-    // Observable.interval(6000)
-    //   .take(1).map((x) => x + 5)
-    //   .subscribe((x) => {
-    //     this.deleteHeader.DeleteServerHeader(fileName, index, value, channelName);
-    //     console.log("delete server header");
-    //   })
+    Observable.interval(6000)
+      .take(1).map((x) => x + 5)
+      .subscribe((x) => {
+        this.deleteHeader.DeleteServerHeader(fileName, index, value, channelName);
+        console.log("delete server header");
+      })
     Observable.interval(7000)
       .take(1).map((x) => x + 5)
       .subscribe((x) => {

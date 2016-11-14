@@ -3,6 +3,8 @@ import { NavController, ModalController, PopoverController, ViewController, Plat
 import { File } from 'ionic-native';
 import { Login } from '../settings/login/login'
 import { Subscription } from '../../Stubs/Subscription';
+import { StorageFactory } from '../../Factory/StorageFactory';
+import { Package } from '../../pages/Package';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 declare var cordova: any;
@@ -16,7 +18,7 @@ declare var cordova: any;
 @Component({
   selector: 'page-settings',
   templateUrl: 'settings.html',
-  providers: [Subscription]
+  providers: [Subscription, StorageFactory, Package]
 })
 
 export class SettingsPage {
@@ -25,17 +27,20 @@ export class SettingsPage {
   subscribeList = [];
   public FirstName: any;
   public LastName: any;
+  Header = [];
 
 
   constructor(public navCtrl: NavController,
     private subscription: Subscription,
     private http: Http,
+    private storagefactory: StorageFactory,
+    private packages: Package,
     private modalCtrl: ModalController,
     private popoverCtrl: PopoverController,
     private platform: Platform) {
 
   }
-  
+
   InvalidateSubscribeListAsync() {
     this.subscribeList = [];
     this.subscribeList = this.subscription.GetSubscriptionList();
@@ -55,11 +60,12 @@ export class SettingsPage {
   SubscribeList(index, channelName) {
     if (this.FirstName == null) {
       this.presentLoginModal();
-    } 
+    }
     else {
       var channel = this.subscription.RequestSubscriptionAsync(channelName);
       this.subscribeList.push(channel);
       this.chanelList.splice(index, 1);
+      this.GetserverHeader();
     }
 
 
@@ -105,6 +111,80 @@ export class SettingsPage {
     });
     modal.present();
   }
+
+
+  GetserverHeader() {
+    //local
+    this.http.get("assets/Header.xml")
+      .subscribe(res => {
+        console.log("getting header");
+        this.SerializeServerData(res);
+      })
+
+    //server
+    // return this.http.get("http://sportspip.cloudapp.net:10101/IStorageService/getmtxhdrs")
+    //   .map(res => {
+    //     var headerData = JSON.parse(res.text());
+    //     this.Save(headerData, "header.xml");
+    //   }).toPromise();
+  }
+
+
+  SerializeServerData(headerData) {
+    console.log("serialize header");
+    var res = JSON.parse(headerData.text());
+    var result = res.Header;
+    var item = {
+      Title: result.Title, DateCreated: result.DateCreated, Name: result.name, Channel: result.Channel,
+      ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
+      Views: result.Clips
+    };
+    this.Header.push(item);
+    this.SaveDownloadedHeaders(this.Header);
+  }
+
+  //Save Downloaded Header
+  SaveDownloadedHeaders(HeaderList) {
+    HeaderList.forEach((res) => {
+      Observable.interval(2000)
+        .take(1).map((x) => x + 5)
+        .subscribe((x) => {
+          console.log("save header");
+          this.storagefactory.SaveRoamingHeader(res, res.Channel, res.Sport, res.Name);
+          this.DownloadThumbnailAsync(res.Channel, res.Name);
+        })
+    })
+    // this.storagefactory.SaveRoamingHeader(Data, HeaderList.Channel, HeaderList.Sport, HeaderList.name);
+  }
+
+  DownloadThumbnailAsync(channelName,matrixName){
+    this.packages.DownloadThumbnailfromServer(channelName,matrixName);
+  }
+
+  // Save(blob, filename) {
+  //   File.createFile(cordova.file.dataDirectory, filename, true).then(() => {
+  //     File.writeFile(cordova.file.dataDirectory, filename, blob, true).then(() => {
+
+  //     })
+  //   })
+  // }
+
+  //server header
+  // SaveServerHeaders() {
+  //   this.http.get(cordova.file.dataDirectory+"/matrix.xml").subscribe(data => {
+  //     var headerList = JSON.parse(data.text());
+  //     headerList.forEach(header => {
+  //       var result = header;
+  //       var item = {
+  //         Title: result.Title, DateCreated: result.DateCreated, Name: result.UploadIndex.toString(), Channel: result.ChannelName,
+  //         ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadIndex, Duration: result.Duration,
+  //         Views: result.Views
+  //       };
+  //       this.Header.push(item);
+  //     });
+  //     this.SaveDownloadedHeaders(this.Header);
+  //   })
+  // }
 
   //signOut 
   presentPopover(event) {

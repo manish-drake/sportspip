@@ -32,20 +32,18 @@ export class VideoComponent {
     }
 
     ngOnInit() { }
-
-    
+    //     @ViewChild('videoElement') videoElement: ElementRef; 
 
     @ViewChild('video') videoElement: ElementRef;
+
     video: HTMLVideoElement;
 
     timelineInterval: any = null;
 
     ngAfterViewInit() {
-        console.log(this.view);
         this.markers = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
         this.loadObjects();
         this.loadMarkerObjects();
-
         this.video = this.videoElement.nativeElement;
 
         this.video.addEventListener('ended', () => {
