@@ -16,28 +16,32 @@
 	</ion-toolbar>
 </ion-header>
 
-<ion-content style="background:#f1f1f1;">
+<ion-content style="background:#f1f1f1; position: relative;">
 	<div class="items">
 		<div class="item" *ngFor="let matrix of channelMatrices; let i = index">
-			<ion-card (click)="channelMatrixPressed(i,matrix.Channel,matrix.Name)" (press)="channelMatrixPressed(i,matrix.Channel,matrix.Name)">
-				 <img [attr.src]="retrunThumbnailPath(matrix.ThumbnailSource)" />
+			<ion-card style="position: relative;" (click)="channelMatrixPressed(i,matrix.Channel,matrix.Name)" (press)="channelMatrixPressed(i,matrix.Channel,matrix.Name)">
+				<img [attr.src]="retrunThumbnailPath(matrix.ThumbnailSource)" />
 				<ion-card-content>
-					<ion-card-title style="font-size:18px;flex-wrap: nowrap;">
-						<ion-row>
-							<ion-col>
-								<div style="text-overflow:ellipsis;">{{matrix.Title}}</div>
-							</ion-col>
-							<ion-col center text-right style="width:10px;">
-								<p>{{matrix.DateCreated}}</p>
-							</ion-col>
-						</ion-row>
-					</ion-card-title>
-					<div style="display:block;">
-						<p>{{matrix.Sport}}/{{matrix.Skill}}</p>
-						<p>{{matrix.Duration}}</p>
-					</div>
+					<ion-row>
+						<ion-col style="width: 100%;font-size: 18px;overflow: hidden;text-overflow: ellipsis;">
+							{{matrix.Title}}
+						</ion-col>
+						<ion-col center text-right style="flex: 0 0 auto; width: auto;">
+							<p>{{matrix.DateCreated}}</p>
+						</ion-col>
+					</ion-row>
+					<p>{{matrix.Sport}}/{{matrix.Skill}}</p>
+					<p>{{matrix.Duration}}</p>
 				</ion-card-content>
+				<ion-row center style="position: absolute;top: 0;font-size: 2.0em;width: 100%;height: 100%;font-weight: bold;color: rgba(244,244,244,0.9);background-color: rgba(0,0,0,0.1);">
+					<ion-col center text-center>Download</ion-col>
+				</ion-row>
 			</ion-card>
 		</div>
 	</div>
+	<ion-row center *ngIf="!(channelMatrices.length > 0)" style="position: absolute;top: 0;width: 100%;height: 100%; color: gray;">
+		<ion-col text-center center>
+			No matrix exist in channel
+		</ion-col>
+	</ion-row>
 </ion-content>
