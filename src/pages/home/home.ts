@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, ActionSheetController, AlertController, PopoverController, ViewController, ToastController, Platform } from 'ionic-angular';
+import {
+  NavController, ActionSheetController, AlertController, PopoverController,
+  ViewController, ToastController, Platform, LoadingController
+} from 'ionic-angular';
 import { AppVersion, File } from 'ionic-native';
 
 import { StorageFactory } from '../../Factory/StorageFactory';
@@ -30,7 +33,7 @@ declare var navigator: any;
 
 export class HomePage {
 
-  selectedSegment: any;
+  selectedSegment: any = "local";
   localMatrices = [];
   channels = [];
   Header = [];
@@ -44,9 +47,8 @@ export class HomePage {
     private actionSheetCtrl: ActionSheetController,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
-    private packages: Package) {
-
-    this.selectedSegment = "local";
+    private packages: Package,
+    private loadingCtrl: LoadingController) {
 
     //for server url
 
@@ -257,7 +259,14 @@ export class HomePage {
     });
   }
 
+
   DownloadServerHeaderAsync(fileName, channelName, index, value) {
+    let loader = this.loadingCtrl.create({
+      content: 'Downloading..',
+      duration: 300000
+    });
+    loader.present();
+
     var authenticate = this.AuthenticateUser();
     if (authenticate) {
 
@@ -300,17 +309,15 @@ export class HomePage {
         this.platform.ready().then(() => {
           File.removeRecursively(cordova.file.dataDirectory, "Temp").then(() => {
             console.log("delete temp");
+            loader.dismiss();
+            this.selectedSegment = "local";
           });
         })
       })
   }
 
   AuthenticateUser() {
-    let toast = this.toastCtrl.create({
-      message: 'Authenticatnig user..',
-      duration: 2000,
-    });
-    toast.present();
+    console.log('Authenticatnig user..');
     return true;
   }
 

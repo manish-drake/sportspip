@@ -11,47 +11,93 @@ import { user } from '../user';
   Ionic pages and navigation.
 */
 @Component({
-  selector: 'page-login',
-  templateUrl: 'login.html',
-  providers: [Subscription, StorageFactory,user]
+    selector: 'page-login',
+    templateUrl: 'login.html',
+    providers: [Subscription, StorageFactory, user]
 })
 
 export class Login {
-  LoginAvailable: boolean = true;
-  IsLoginAvailable: string;
+    LoginAvailable: boolean = true;
+    IsLoginAvailable: string;
+    errorMessege: string;
+    Email: any;
+    LoginEmail: any;
+    Password: any;
+    FirstName: any;
+    LastName: any;
 
-  constructor(private viewCtrl: ViewController, private subscription: Subscription, private storageFactory: StorageFactory) {
-    this.IsLoginAvailable = "Login";
+    constructor(private viewCtrl: ViewController, private subscription: Subscription, private storageFactory: StorageFactory) {
+        this.IsLoginAvailable = "Login";
+        this.errorMessege = " ";
+    }
+    dismiss(user) {
+        this.viewCtrl.dismiss(user);
+    }
+    ionViewDidLoad() {
+        console.log('Hello Login Page');
 
-  }
-  dismiss(user) {
-    this.viewCtrl.dismiss(user);
-  }
-  ionViewDidLoad() {
-    console.log('Hello Login Page');
-  }
-  presentRegister() {
-    console.log('Hello Register Page');
-    this.LoginAvailable = false;
-    this.IsLoginAvailable = "Registration";
-  }
-  presentLogin() {
-    console.log('Hello Login Page');
-    this.LoginAvailable = true;
-    this.IsLoginAvailable = "Log in";
-  }
+    }
+    presentRegister() {
+        console.log('Hello Register Page');
+        this.LoginAvailable = false;
+        this.IsLoginAvailable = "Registration";
+        this.errorMessege = " ";
+    }
+    presentLogin() {
+        console.log('Hello Login Page');
+        this.LoginAvailable = true;
+        this.IsLoginAvailable = "Log in";
+        this.errorMessege = " ";
+    }
 
-  Register(email, firstname, lastname) {
-    console.log("Registration..");
-    var user = this.subscription.RegisterAsync(firstname, lastname, email);
-    this.storageFactory.SaveUserAsync(user);
-    this.dismiss(user);
-  }
+    Register(email, firstname, lastname) {
+        console.log("Registration..");
+        this.validateSignUp();
+        if (this.validateSignUp()) {
+            var user = this.subscription.RegisterAsync(firstname, lastname, email);
+            this.storageFactory.SaveUserAsync(user);
+            this.dismiss(user);
+        }
+    }
 
-  Login(email, pwd) {
-    var user = this.subscription.LoginAsync(email, pwd);
-    this.storageFactory.SaveUserAsync(user);
-    this.dismiss(user);
-  }
+    Login(email, pwd) {
+        this.validateLogin();
+        if (this.validateLogin()) {
+            var user = this.subscription.LoginAsync(email, pwd);
+            this.storageFactory.SaveUserAsync(user);
+            this.dismiss(user);
+        }
+    }
+    validateLogin() {
+        if (!this.LoginEmail || !this.Password) {
+            if (!this.LoginEmail) this.errorMessege = "Email ID Requried";
+            else if (!this.Password) this.errorMessege = "Password Requried";
+            return false;
+        }
+        else {
+            this.errorMessege = "";
+            return true;
+        }
+    }
+    validateSignUp() {
+        if (!this.Email || !this.FirstName || !this.LastName) {
+            if (!this.Email) this.errorMessege = "Email ID Requried";
+            else if (!this.FirstName) this.errorMessege = "First Name Requried";
+            else if (!this.LastName) this.errorMessege = "Last Name Requried";
+            return false;
+        }
+        else {
+            var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            if (!this.Email.match(mailformat)) {
+                this.errorMessege = "Invalid Email Id";
+                return false;
+            }
+            else {
+                this.errorMessege = "";
+                return true;
+            }
+        }
+    }
 
 }
+

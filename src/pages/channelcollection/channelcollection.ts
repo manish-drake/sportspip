@@ -4,7 +4,8 @@ import { StorageFactory } from '../../Factory/StorageFactory';
 import { Http } from '@angular/http';
 import { Package } from '../../pages/Package';
 import { Observable } from 'rxjs/Rx';
-import { NavController,ToastController, PopoverController, NavParams, ActionSheetController, AlertController, ViewController, Platform } from 'ionic-angular';
+import { NavController,ToastController, PopoverController, NavParams,
+   ActionSheetController, AlertController, ViewController, Platform, LoadingController } from 'ionic-angular';
 declare var cordova: any;
 
 /*
@@ -31,7 +32,8 @@ export class ChannelCollectionPage {
     private alertCtrl: AlertController,
     private popoverController: PopoverController,
     private packages: Package,
-    private http: Http) {
+    private http: Http,
+    private loadingCtrl: LoadingController) {
 
     this.channel = params.get("firstPassed");
     this.GetChannelMatrix(this.channel);
@@ -77,6 +79,12 @@ export class ChannelCollectionPage {
   }
 
   DownloadServerHeaderAsync(fileName, channelName, index) {
+    let loader = this.loadingCtrl.create({
+      content: 'Downloading..',
+      duration: 300000
+    });
+    loader.present();
+
     var authenticate = this.AuthenticateUser();
     if (authenticate) {
 
@@ -106,6 +114,7 @@ export class ChannelCollectionPage {
       .subscribe((x) => {
         this.DeleteChannelMatrix(fileName, channelName, index);
         console.log("delete server header");
+        loader.dismiss();
       })
 
     Observable.interval(7000)
@@ -120,11 +129,7 @@ export class ChannelCollectionPage {
   }
 
   AuthenticateUser() {
-    let toast = this.toastCtrl.create({
-      message: 'Authenticatnig user..',
-      duration: 2000,
-    });
-    toast.present();
+    console.log("Authenticatnig user..");
     return true;
   }
 

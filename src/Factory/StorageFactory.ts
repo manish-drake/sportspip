@@ -66,6 +66,7 @@ export class StorageFactory {
                                 File.createFile(fileLocation, matrixName + ".mtx", true).then(() => {
                                     File.writeFile(fileLocation, matrixName + ".mtx", content, true)
                                         .then(function (success) {
+                                            console.log('Saved in SF');
                                         })
                                 })
                             })
@@ -115,11 +116,7 @@ export class StorageFactory {
         this.platform.ready().then(() => {
             var headerFolder = cordova.file.dataDirectory + "Server/" + channel + "/Tennis/Matrices/"
             File.removeRecursively(headerFolder, DirName).then(() => {
-                let toast = this.toastCtrl.create({
-                    message: 'Deleted Successfully..',
-                    duration: 2000,
-                });
-                toast.present();
+                console.log('Deleted Successfully.');
             })
         })
     }

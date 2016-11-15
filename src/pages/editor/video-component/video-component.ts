@@ -52,7 +52,7 @@ export class VideoComponent {
 
         this.video.addEventListener('error', (error) => {
             console.log('Error in video Elmnt:' + error);
-            this.videoSrcAvailable = false;
+            // this.videoSrcAvailable = false;
         })
 
         setInterval(() => {
