@@ -14,6 +14,7 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
+import { DatePipe } from '@angular/common';
 
 import { Connectivity } from '../connectivity/connectivity';
 import { SettingsPage } from '../settings/settings';
@@ -27,7 +28,7 @@ declare var navigator: any;
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
-  providers: [StorageFactory, ModelFactory, DeleteHeader, Package, OpenMatrix],
+  providers: [StorageFactory, ModelFactory, DeleteHeader, Package, OpenMatrix, DatePipe],
 })
 
 export class HomePage {
@@ -37,6 +38,7 @@ export class HomePage {
   channels = [];
   Header = [];
   constructor(private http: Http, private platform: Platform, public navCtrl: NavController,
+    private datepipe: DatePipe,
     private storagefactory: StorageFactory,
     private modelfactory: ModelFactory,
     private deleteHeader: DeleteHeader,
@@ -102,23 +104,23 @@ export class HomePage {
     this.openmatrix.run(matrixName, Channel);
   }
 
-  matrixPressed(index, DirName, channel) {
+  matrixPressed(index, Name, channel) {
     let actionSheet = this.actionSheetCtrl.create({
-      title: DirName,
+      title: Name,
       buttons: [
         {
           text: 'Delete',
           role: 'destructive',
           handler: () => {
             console.log('Destructive clicked');
-            this.deleteHeader.DeleteLocalHeader(DirName, index, channel);
+            this.deleteHeader.DeleteLocalHeader(Name, channel);
             this.localMatrices.splice(index, 1);
           }
         }, {
           text: 'Save Copy',
           handler: () => {
             console.log('Copy clicked');
-            this.DuplicateMatrix(channel, DirName);
+            this.DuplicateMatrix(channel, Name);
           }
         }, {
           text: 'Cancel',
@@ -130,6 +132,12 @@ export class HomePage {
       ]
     });
     actionSheet.present();
+  }
+
+  deleteServerHeader(matrixName, index, value, channel) {
+    this.deleteHeader.DeleteServerHeader(matrixName, channel);
+    value.splice(index, 1);
+    this.channels.splice(index, 1);
   }
 
   channelMatrixPressed(index, title, value, channel) {
@@ -144,9 +152,7 @@ export class HomePage {
         text: 'Delete',
         role: 'destructive',
         handler: () => {
-          this.deleteHeader.DeleteServerHeader(title, index, value, channel);
-          value.splice(index, 1);
-          this.channels.splice(index, 1);
+          this.deleteServerHeader(title, index, value, channel)
         }
       }, {
         text: 'Cancel',
@@ -209,6 +215,10 @@ export class HomePage {
         })
       });
     });
+  }
+
+  FormateDate(value) {
+    return this.packages.FormateDate(value);
   }
 
   //Display Server Header
@@ -277,7 +287,7 @@ export class HomePage {
     Observable.interval(6000)
       .take(1).map((x) => x + 5)
       .subscribe((x) => {
-        this.deleteHeader.DeleteServerHeader(fileName, index, value, channelName);
+        this.deleteServerHeader(fileName, index, value, channelName)
         console.log("delete server header");
       })
     Observable.interval(7000)

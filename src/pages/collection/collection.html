@@ -22,7 +22,7 @@
 <ion-content style="background: #f1f1f1;position: relative;">
   <div class="items">
     <div class="item" *ngFor='let matrix of localMatrices; let i = index'>
-      <ion-card (click)="openMatrix(matrix.Title)" (press)="matrixPressed(i,matrix.Title)">
+      <ion-card (click)="openMatrix(matrix.Name,matrix.Channel)" (press)="matrixPressed(i,matrix.Name,matrix.Channel)">
         <img [attr.src]="retrunThumbnailPath(matrix.ThumbnailSource)" />
         <ion-card-content>
           <ion-row>
@@ -30,7 +30,7 @@
               {{matrix.Title}}
             </ion-col>
             <ion-col center text-right style="flex: 0 0 auto; width: auto;">
-              <p>{{matrix.DateCreated}}</p>
+              <p>{{FormateDate(matrix.DateCreated)}}</p>
             </ion-col>
           </ion-row>
           <p>{{matrix.Sport}}/{{matrix.Skill}}</p>

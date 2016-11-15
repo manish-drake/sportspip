@@ -64,6 +64,10 @@ export class ChannelCollectionPage {
 
   }
 
+  FormateDate(value) {
+    return this.packages.FormateDate(value);
+  }
+
   retrunThumbnailPath(name) {
     return cordova.file.applicationStorageDirectory + name + ".jpg";
   }

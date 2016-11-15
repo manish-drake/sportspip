@@ -53,7 +53,7 @@ export class Package {
                             break;
                         case '.mp4':
                             console.log("video moving...");
-                            File.copyFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.applicationStorageDirectory, file.name); 
+                            File.copyFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.applicationStorageDirectory, file.name);
                             console.log("video moved");
                             break;
                         case ".gif":
@@ -109,12 +109,12 @@ export class Package {
 
     }
 
-    DownloadThumbnailfromServer(channelName,matrixName) {
+    DownloadThumbnailfromServer(channelName, matrixName) {
         const ft = new FileTransfer();
-        var url = encodeURI("https://drake.blob.core.windows.net/thumbnails/"+channelName+"/"+matrixName+".jpg");
+        var url = encodeURI("https://drake.blob.core.windows.net/thumbnails/" + channelName + "/" + matrixName + ".jpg");
         ft.download(
             url,
-            cordova.file.applicationStorageDirectory + matrixName+".jpg",
+            cordova.file.applicationStorageDirectory + matrixName + ".jpg",
             function (entry) {
                 console.log("download complete: " + entry.toURL());
             },
@@ -124,5 +124,13 @@ export class Package {
                 console.log("download error code" + error.code);
             },
             true);
+    }
+
+    FormateDate(value) {
+        var st = value;
+        var pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
+        var date = new Date(st.replace(pattern, '$1-$2-$3 $4:$5:$6'));
+        return date.toDateString().slice(4, 10)
+
     }
 }
