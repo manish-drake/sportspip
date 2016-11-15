@@ -13,7 +13,7 @@ declare var cordova: any;
 @Component({
   selector: 'page-matrixinfo',
   templateUrl: 'matrixinfo.html',
-   providers: [StorageFactory],
+  providers: [StorageFactory],
 })
 
 export class MatrixInfoPage {
@@ -22,11 +22,14 @@ export class MatrixInfoPage {
 
   formattedDateCreated: any;
 
+  errorMessege: string;
+
   constructor(private viewCtrl: ViewController, navParams: NavParams,
-  private storagefactory:StorageFactory,
-   private platform: Platform, private http: Http) {
+    private storagefactory: StorageFactory,
+    private platform: Platform, private http: Http) {
     this.matrixData = navParams.get("matrixData");
     console.log(this.matrixData);
+    this.errorMessege = "";
   }
 
   getDateFromString(datestring) {
@@ -38,20 +41,36 @@ export class MatrixInfoPage {
   }
 
   dismiss() {
-    this.platform.ready().then(() => {
-      console.log(this.matrixData.Channel);
-      this.http.get(cordova.file.dataDirectory + "Local/" + this.matrixData.Channel + "/Tennis/matrices/" + this.matrixData._Name + "/" + this.matrixData._Name + ".mtx")
-        .subscribe(data => {
-          var res = JSON.parse(data.text());
-          var matrix=res.Matrix;
-          matrix._Title=this.matrixData._Title;
-          matrix._Sport=this.matrixData._Sport;
-          matrix._Skill=this.matrixData._Skill;
-          matrix._Location=this.matrixData._Location;
-          this.storagefactory.SaveMatrixAsync(res, matrix.Channel, matrix._Sport, matrix._Name, "matrices");
-        });
-    });
     this.viewCtrl.dismiss();
   }
+  save() {
+    if (this.validatematrixInfo()) {
+      this.platform.ready().then(() => {
+        console.log(this.matrixData.Channel);
+        this.http.get(cordova.file.dataDirectory + "Local/" + this.matrixData.Channel + "/Tennis/matrices/" + this.matrixData._Name + "/" + this.matrixData._Name + ".mtx")
+          .subscribe(data => {
+            var res = JSON.parse(data.text());
+            var matrix = res.Matrix;
+            matrix._Title = this.matrixData._Title;
+            matrix._Sport = this.matrixData._Sport;
+            matrix._Skill = this.matrixData._Skill;
+            matrix._Location = this.matrixData._Location;
+            this.storagefactory.SaveMatrixAsync(res, matrix.Channel, matrix._Sport, matrix._Name, "matrices");
+          });
+      });
+      this.viewCtrl.dismiss();
+    }
+  }
 
+  validatematrixInfo() {
+    if (!this.matrixData._Title || !this.matrixData._Sport) {
+      if (!this.matrixData._Title) this.errorMessege = "Title Required";
+      else if (!this.matrixData._Sport) this.errorMessege = "Sport Required";
+      return false;
+    }
+    else {
+      this.errorMessege = "";
+      return true;
+    }
+  }
 }
