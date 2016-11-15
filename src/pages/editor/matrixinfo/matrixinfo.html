@@ -5,47 +5,44 @@
   Ionic pages and navigation.
 -->
 <ion-header no-shadow >
-  <ion-toolbar color="primary" no-border-bottom>
-    
-    <ion-buttons start>
-      <button ion-button color="light" (click)="dismiss()">Cancel</button>
-    </ion-buttons>
-
-    <ion-title>Matrix Info.</ion-title>
+  <ion-toolbar no-border-bottom>
+    <ion-title color="primary">Matrix Info.</ion-title>
 
     <ion-buttons end>
-      <button ion-button color="light" (click)="dismiss()">Save</button>
+      <button ion-button color="primary" (click)="dismiss()">OK</button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <ion-list>
     <ion-item>
-      <ion-label style="width:115px;color:gray">Title*</ion-label>
+      <ion-label fixed>Title*</ion-label>
       <ion-input [(ngModel)] = "matrixData._Title" value="{{matrixData._Title}}"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label style="width:115px;color:gray">Sports*</ion-label>
+      <ion-label fixed>Sports*</ion-label>
       <ion-input [(ngModel)] = "matrixData._Sport" value="{{matrixData._Sport}}"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label style="width:115px;color:gray">Skill</ion-label>
+      <ion-label fixed>Skill</ion-label>
       <ion-input [(ngModel)] = "matrixData._Skill" value="{{matrixData._Skill}}"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label style="width:115px;color:gray">Location</ion-label>
+      <ion-label fixed>Location</ion-label>
       <ion-input [(ngModel)] = "matrixData._Location" value="{{matrixData._Location}}"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label style="width:115px;color:gray">PIN</ion-label>
+      <ion-label fixed>PIN</ion-label>
       <ion-input [(ngModel)] = "matrixData._PIN" value="{{matrixData._PIN}}"></ion-input>
     </ion-item>
-    <ion-item>
-      <label style="padding-right:83px;color:gray">Views</label>
+    <ion-item no-lines style="min-height:20px;">
+    </ion-item>
+    <ion-item no-lines>
+      <label style="padding-right:73px;color:gray;">Views</label>
       <label style="color:gray">{{matrixData["Matrix.Children"]["View"].length}}</label>
     </ion-item>
-    <ion-item>
-      <label style="padding-right:30px;color:gray">Date Created</label>
+    <ion-item no-lines>
+      <label style="padding-right:20px;color:gray;">Date Created</label>
       <label style="color:gray">{{getDateFromString(matrixData._DateCreated)}}</label>
     </ion-item>
   </ion-list>

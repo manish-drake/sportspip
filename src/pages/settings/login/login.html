@@ -1,59 +1,84 @@
 <ion-header no-shadow>
-    <ion-toolbar color="primary" no-border-bottom>
+    <ion-toolbar no-border-bottom>
 
         <ion-buttons end>
-            <button ion-button icon-only (click)="presentRegister()" class="regisBtn" *ngIf="LoginAvailable">
-                <ion-icon name="person-add"></ion-icon>
+            <button ion-button icon-left color="primary" (click)="dismiss(null)">
+                Cancel
             </button>
         </ion-buttons>
 
-        <ion-title>{{IsLoginAvailable}}</ion-title>
+        <ion-title color="primary">{{IsLoginAvailable}}</ion-title>
     </ion-toolbar>
 </ion-header>
-<ion-content >
+<ion-content>
     <!--Login-->
-    <ion-list name="loginForm" *ngIf="LoginAvailable">
-        <ion-item>
-            <ion-label style="width:115px;color:gray">Email</ion-label>
-            <ion-input type="email" [(ngModel)]="LoginEmail" value="" placeholder="user@domain.com"></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label style="width:115px;color:gray">Password</ion-label>
-            <ion-input value="" [(ngModel)]="Password" type="password"></ion-input>
-        </ion-item>
-        <div style="width:100%;height:60px;padding-top:16px;padding-right:5px;">
-            <div style="float:left;margin-left:15px;width:150px">
-                <ion-label style="color:red">{{errorMessege}}</ion-label>
-            </div>
-            <div style="float:right;width:160px;">
-                <button ion-button type="submit" (click)="Login(Email, Pwd)" style="text-transform: initial;">Log In</button>
-                <button ion-button outline type="cancel" (click)="dismiss(null)" style="text-transform: initial;">Close</button> 
-            </div>
-        </div>
-    </ion-list>
+    <div name="loginForm" *ngIf="LoginAvailable">
+        <ion-list>
+            <ion-item>
+                <ion-label floating>Email</ion-label>
+                <ion-input type="email" [(ngModel)]="LoginEmail" value=""></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label floating>Password</ion-label>
+                <ion-input value="" [(ngModel)]="Password" type="password"></ion-input>
+            </ion-item>
+        </ion-list>
+        <ion-grid>
+            <ion-row>
+                <ion-col>
+                    <ion-label style="color:red">{{errorMessege}}</ion-label>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    <button ion-button block (click)="Login(Email, Pwd)" style="text-transform: initial;">Log In</button>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col text-center style="color:gray;">
+                    or
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col text-center>
+                    <button ion-button block outline icon-left (click)="presentRegister()" style="text-transform: initial;"><ion-icon name="person-add"></ion-icon> Sign up</button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+
     <!--Register -->
-    <ion-list name="signUpForm" *ngIf="!LoginAvailable">
-        <ion-item>
-            <ion-label style="width:115px;color:gray">Email</ion-label>
-            <ion-input type="email" [(ngModel)]="Email" value="" placeholder="user@domain.com"></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label style="width:115px;color:gray">First Name</ion-label>
-            <ion-input [(ngModel)]="FirstName" value=""></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label style="width:115px;color:gray">Last Name</ion-label>
-            <ion-input [(ngModel)]="LastName" value=""></ion-input>
-        </ion-item>
-        <div style="width:100%;height:60px;padding-top:16px;padding-right:10px">
-            <div style="float:left;margin-left:15px">
-                <ion-label style="color:red">{{errorMessege}}</ion-label>
-            </div>
-            <div style="float:right;">
-                <button ion-button type="submit" (click)=Register(Email,FirstName,LastName) style="text-transform: initial;">Sign Up</button>
-                <button ion-button outline type="cancel" (click)="dismiss(null)" style="text-transform: initial;">Close</button>                <br>
-                <button ion-button small clear style="padding:0px;text-transform: initial;" (click)="presentLogin()">I already have an account</button>
-            </div>
-        </div>
-    </ion-list>
+    <div name="signUpForm" *ngIf="!LoginAvailable">
+        <ion-list>
+            <ion-item>
+                <ion-label floating>Email</ion-label>
+                <ion-input type="email" [(ngModel)]="Email" value=""></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label floating>First Name</ion-label>
+                <ion-input [(ngModel)]="FirstName" value=""></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label floating>Last Name</ion-label>
+                <ion-input [(ngModel)]="LastName" value=""></ion-input>
+            </ion-item>
+        </ion-list>
+        <ion-grid>
+            <ion-row>
+                <ion-col>
+                    <ion-label style="color:red">{{errorMessege}}</ion-label>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    <button ion-button block (click)=Register(Email,FirstName,LastName) style="text-transform: initial;">Create Account</button>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col text-center>
+                    <button ion-button small clear style="padding:0px;text-transform: initial;" (click)="presentLogin()">Already have an account</button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
 </ion-content>

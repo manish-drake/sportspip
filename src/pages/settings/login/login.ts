@@ -40,7 +40,7 @@ export class Login {
     presentRegister() {
         console.log('Hello Register Page');
         this.LoginAvailable = false;
-        this.IsLoginAvailable = "Registration";
+        this.IsLoginAvailable = "Sign Up";
         this.errorMessege = " ";
     }
     presentLogin() {

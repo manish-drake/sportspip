@@ -209,7 +209,7 @@ export class SettingsPage {
   template: `
     <ion-list no-lines>
     <ion-item (click)="signOut()">
-      <ion-icon item-left name="person"></ion-icon>Log out
+      <ion-icon item-left name="log-out"></ion-icon>Log out
       </ion-item>
     </ion-list>
   `
