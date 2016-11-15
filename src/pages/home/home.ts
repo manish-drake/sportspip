@@ -11,6 +11,7 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
+import { DatePipe } from '@angular/common';
 
 import { Connectivity } from '../connectivity/connectivity';
 import { SettingsPage } from '../settings/settings';
@@ -24,7 +25,7 @@ declare var navigator: any;
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
-  providers: [StorageFactory, ModelFactory, DeleteHeader, Package, OpenMatrix],
+  providers: [StorageFactory, ModelFactory, DeleteHeader, Package, OpenMatrix, DatePipe],
 })
 
 export class HomePage {
@@ -34,6 +35,7 @@ export class HomePage {
   channels = [];
   Header = [];
   constructor(private http: Http, private platform: Platform, public navCtrl: NavController,
+    private datepipe: DatePipe,
     private storagefactory: StorageFactory,
     private modelfactory: ModelFactory,
     private deleteHeader: DeleteHeader,
@@ -60,6 +62,15 @@ export class HomePage {
     //       this.DisplayServerHeader();
     //     })    
     // });
+
+    var st = "20161010150718";
+    var pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
+    var date = new Date(st.replace(pattern, '$1-$2-$3 $4:$5:$6'));
+    console.log(date);
+    console.log(date.toDateString().slice(4,10));
+    console.log(date.toLocaleDateString());
+    console.log(date.getDate() + " " + date.getMonth())
+
   }
 
   ionViewDidEnter() {
@@ -130,6 +141,12 @@ export class HomePage {
     actionSheet.present();
   }
 
+  deleteServerHeader(matrixName, index, value, channel) {
+    this.deleteHeader.DeleteServerHeader(matrixName, index, value, channel);
+    value.splice(index, 1);
+    this.channels.splice(index, 1);
+  }
+
   channelMatrixPressed(index, title, value, channel) {
     let actionSheet = this.actionSheetCtrl.create({
       title: title,
@@ -142,9 +159,7 @@ export class HomePage {
         text: 'Delete',
         role: 'destructive',
         handler: () => {
-          this.deleteHeader.DeleteServerHeader(title, index, value, channel);
-          value.splice(index, 1);
-          this.channels.splice(index, 1);
+          this.deleteServerHeader(title, index, value, channel)
         }
       }, {
         text: 'Cancel',
@@ -196,7 +211,7 @@ export class HomePage {
                   var result = JSON.parse(data.text());
                   // var result = header.Header;
                   var item = {
-                    Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
+                    Title: result.Title, DateCreated: this.FormateDate(result.DateCreated), Name: result.Name, Channel: result.Channel,
                     ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
                     Views: result.Clips
                   };
@@ -207,6 +222,14 @@ export class HomePage {
         })
       });
     });
+  }
+
+  FormateDate(value) {
+    var st = value;
+    var pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
+    var date = new Date(st.replace(pattern, '$1-$2-$3 $4:$5:$6'));
+    return date.toDateString().slice(4,10)
+
   }
 
   //Display Server Header
@@ -268,7 +291,7 @@ export class HomePage {
     Observable.interval(6000)
       .take(1).map((x) => x + 5)
       .subscribe((x) => {
-        this.deleteHeader.DeleteServerHeader(fileName, index, value, channelName);
+        this.deleteServerHeader(fileName, index, value, channelName)
         console.log("delete server header");
       })
     Observable.interval(7000)

@@ -30,16 +30,11 @@ export class VideoComponent {
         this.timelinePosition = '00:00:00.00';
         this.volumeButtonIcon = "volume-up";
     }
-
     ngOnInit() { }
 
-<<<<<<< HEAD
-    @ViewChild('videoElement') videoElement: ElementRef;
-=======
-    
 
+    // @ViewChild('videoElement') videoElement: ElementRef;  
     @ViewChild('video') videoElement: ElementRef;
->>>>>>> 1a12076a68790ef860a9d8eea7b6a71d3c7feb2c
     video: HTMLVideoElement;
 
     timelineInterval: any = null;
@@ -94,6 +89,9 @@ export class VideoComponent {
     }
 
     playPause() {
+        this.video.removeEventListener("timeupdate", function () {
+
+        })
         if (this.video.paused == true) {
             this.video.play();
             this.playPauseButtonIcon = 'pause';
@@ -193,8 +191,30 @@ export class VideoComponent {
         this.markers.forEach((marker, index) => {
             if (i != index)
                 marker.checked = false;
-            else
+            else {
                 marker.checked = true;
+
+                this.timelinePosition = marker._Position;
+                var positionInMilliseconds = Number(marker._Position.slice(1, 2)) * 36000000000 + Number(marker._Position.slice(4, 5)) * 60000000 + Number(marker._Position.slice(7, 8)) * 10000000 + Number(marker._Position.substr(-7));
+                var markerTime = positionInMilliseconds / 10000000;
+                this.video.currentTime = markerTime;
+
+                var factor = (100000 / this.video.duration) * this.video.currentTime;
+                this.sliderValue = factor;
+                this.playPause();
+
+                this.video.addEventListener("timeupdate", function () {
+                    if (this.currentTime >= markerTime + 3.00) {
+                        this.pause();
+                        this.currentTime = markerTime;
+                        console.log(markerTime);
+                        this.play();
+                    }
+
+                });
+
+            }
+
         });
     }
 
