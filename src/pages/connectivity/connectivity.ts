@@ -19,7 +19,7 @@ export class Connectivity {
         { title: 'Server 1', status: 'Ready to Pair', ipaddress: '192.168.1.267', description: 'Sports PIP Server', connected: false, saved: false, available: true },
         { title: 'Server 2', status: 'Ready to Pair', ipaddress: '192.168.1.268', description: 'Sports PIP Server', connected: false, saved: false, available: true },
         { title: 'Server 3', status: 'Ready to Pair', ipaddress: '192.168.1.269', description: 'Sports PIP Server', connected: false, saved: false, available: true },
-        { title: 'Server 3', status: 'Unavailable', ipaddress: '192.168.1.270', description: 'Sports PIP Server', connected: false, saved: true, available: false }
+        { title: 'Server 4', status: 'Unavailable', ipaddress: '192.168.1.270', description: 'Sports PIP Server', connected: false, saved: true, available: false }
     ];
 
     constructor(public navCtrl: NavController) { }

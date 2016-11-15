@@ -66,6 +66,7 @@ export class StorageFactory {
                                 File.createFile(fileLocation, matrixName + ".mtx", true).then(() => {
                                     File.writeFile(fileLocation, matrixName + ".mtx", content, true)
                                         .then(function (success) {
+                                            console.log('Saved in SF');
                                         })
                                 })
                             })

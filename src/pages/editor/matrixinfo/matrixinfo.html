@@ -14,7 +14,7 @@
     <ion-title>Matrix Info.</ion-title>
 
     <ion-buttons end>
-      <button ion-button color="light" (click)="save()">Save</button>
+      <button ion-button color="light" (click)="dismiss()">Save</button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -22,11 +22,11 @@
   <ion-list>
     <ion-item>
       <ion-label style="width:115px;color:gray">Title*</ion-label>
-      <ion-input  [(ngModel)]="matrixData._Title" value="{{matrixData._Title}}"></ion-input>
+      <ion-input  [(ngModel)]="matrixData._Title" (keyup)="validatematrixInfo()" value="{{matrixData._Title}}"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label style="width:115px;color:gray">Sports*</ion-label>
-      <ion-input [(ngModel)]="matrixData._Sport" value="{{matrixData._Sport}}"></ion-input>
+      <ion-input [(ngModel)]="matrixData._Sport" (keyup)="validatematrixInfo()" value="{{matrixData._Sport}}"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label style="width:115px;color:gray">Skill</ion-label>
