@@ -2,7 +2,12 @@ import { Component } from '@angular/core';
 import { NavController, ActionSheetController, Platform } from 'ionic-angular';
 import { File } from 'ionic-native';
 import { EditorPage } from '../editor/editor';
+import { Package } from '../../pages/Package';
 import { Http } from '@angular/http';
+import { OpenMatrix } from '../../Action/OpenMatrix';
+import { Observable } from 'rxjs/Rx';
+import { StorageFactory } from '../../Factory/StorageFactory';
+import { DeleteHeader } from '../../Action/DeleteHeader';
 declare var cordova: any;
 
 /*
@@ -13,15 +18,21 @@ declare var cordova: any;
 */
 @Component({
   selector: 'page-collection',
-  templateUrl: 'collection.html'
+  templateUrl: 'collection.html',
+  providers: [Package, OpenMatrix, StorageFactory, DeleteHeader],
 })
 export class CollectionPage {
   localMatrices = [];
-  constructor(public navCtrl: NavController, private actionSheetCtrl: ActionSheetController, private platform: Platform, private http: Http) {
-    this.LoadColectionMatrix();
+  constructor(public navCtrl: NavController, private actionSheetCtrl: ActionSheetController,
+    private deleteHeader: DeleteHeader,
+    private storagefactory: StorageFactory,
+    private openmatrix: OpenMatrix,
+    private packages: Package,
+    private platform: Platform, private http: Http) {
+    this.LoadCollectionMatrix();
   }
 
-  LoadColectionMatrix() {
+  LoadCollectionMatrix() {
 
     this.platform.ready().then(() => {
       File.listDir(cordova.file.dataDirectory, "Local/").then((success) => {
@@ -34,7 +45,7 @@ export class CollectionPage {
                   var result = JSON.parse(data.text());
                   // var result = header.Header;
                   var item = {
-                    Title: result.Title, DateCreated: result.DateCreated, Name: "matrix1", Channel: result.Channel,
+                    Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
                     ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
                     Views: result.Clips
                   };
@@ -45,7 +56,10 @@ export class CollectionPage {
         })
       });
     });
+  }
 
+  FormateDate(value) {
+    return this.packages.FormateDate(value);
   }
 
   retrunThumbnailPath(name) {
@@ -56,26 +70,49 @@ export class CollectionPage {
     console.log('Hello Collection Page');
   }
 
-  openMatrix(title) {
-    this.navCtrl.push(EditorPage, {
-      firstPassed: title
-    });
+  openMatrix(matrixName, Channel) {
+    this.openmatrix.run(matrixName, Channel);
   }
 
-  matrixPressed(index, title) {
+  DuplicateMatrix(matrixname,channelName) {
+    var name = Date.now().toString();
+    this.platform.ready().then(() => {
+      this.http.get(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/Matrices/" + matrixname + "/Header.xml")
+        .subscribe(res => {
+          var header = JSON.parse(res.text());
+          header.Name = name;
+          this.storagefactory.SaveLocalHeader(header, channelName, header.Sport, name, "Matrices");
+        })
+      this.http.get(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/matrices/" + matrixname + "/" + matrixname + ".mtx")
+        .subscribe(res => {
+          var matrix = JSON.parse(res.text());
+          matrix.Matrix._Name = name;
+          this.storagefactory.SaveMatrixAsync(matrix, channelName, matrix.Matrix._Sport, name, "Matrices");
+        })
+      Observable.interval(1000)
+        .take(1).map((x) => x + 5)
+        .subscribe((x) => {
+          this.localMatrices = [];
+          this.LoadCollectionMatrix();
+        })
+    })
+  }
+
+  matrixPressed(index, matrixName, channel) {
     let actionSheet = this.actionSheetCtrl.create({
-      title: title,
+      title: matrixName,
       buttons: [
         {
           text: 'Delete',
           role: 'destructive',
           handler: () => {
-            console.log('Destructive clicked');
+            this.deleteHeader.DeleteLocalHeader(matrixName, channel);
+            this.localMatrices.splice(index, 1);
           }
         }, {
           text: 'Save Copy',
           handler: () => {
-            console.log('Copy clicked');
+            this.DuplicateMatrix(matrixName, channel);
           }
         }, {
           text: 'Cancel',

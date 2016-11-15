@@ -64,15 +64,6 @@ export class HomePage {
     //       this.DisplayServerHeader();
     //     })    
     // });
-
-    var st = "20161010150718";
-    var pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
-    var date = new Date(st.replace(pattern, '$1-$2-$3 $4:$5:$6'));
-    console.log(date);
-    console.log(date.toDateString().slice(4,10));
-    console.log(date.toLocaleDateString());
-    console.log(date.getDate() + " " + date.getMonth())
-
   }
 
   ionViewDidEnter() {
@@ -113,23 +104,23 @@ export class HomePage {
     this.openmatrix.run(matrixName, Channel);
   }
 
-  matrixPressed(index, DirName, channel) {
+  matrixPressed(index, Name, channel) {
     let actionSheet = this.actionSheetCtrl.create({
-      title: DirName,
+      title: Name,
       buttons: [
         {
           text: 'Delete',
           role: 'destructive',
           handler: () => {
             console.log('Destructive clicked');
-            this.deleteHeader.DeleteLocalHeader(DirName, index, channel);
+            this.deleteHeader.DeleteLocalHeader(Name, channel);
             this.localMatrices.splice(index, 1);
           }
         }, {
           text: 'Save Copy',
           handler: () => {
             console.log('Copy clicked');
-            this.DuplicateMatrix(channel, DirName);
+            this.DuplicateMatrix(channel, Name);
           }
         }, {
           text: 'Cancel',
@@ -144,7 +135,7 @@ export class HomePage {
   }
 
   deleteServerHeader(matrixName, index, value, channel) {
-    this.deleteHeader.DeleteServerHeader(matrixName, index, value, channel);
+    this.deleteHeader.DeleteServerHeader(matrixName, channel);
     value.splice(index, 1);
     this.channels.splice(index, 1);
   }
@@ -213,7 +204,7 @@ export class HomePage {
                   var result = JSON.parse(data.text());
                   // var result = header.Header;
                   var item = {
-                    Title: result.Title, DateCreated: this.FormateDate(result.DateCreated), Name: result.Name, Channel: result.Channel,
+                    Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
                     ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
                     Views: result.Clips
                   };
@@ -227,11 +218,7 @@ export class HomePage {
   }
 
   FormateDate(value) {
-    var st = value;
-    var pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
-    var date = new Date(st.replace(pattern, '$1-$2-$3 $4:$5:$6'));
-    return date.toDateString().slice(4,10)
-
+    return this.packages.FormateDate(value);
   }
 
   //Display Server Header

@@ -8,11 +8,11 @@ channels = [];
     constructor(private storagefactory: StorageFactory) {
 
     }
-    DeleteLocalHeader(DirName, index, channel) {
+    DeleteLocalHeader(DirName, channel) {
     this.storagefactory.DeleteLocalHeader(DirName, channel);  
   }
    //Deleted Server Header
-  DeleteServerHeader(DirName, index, value, channel) {
+  DeleteServerHeader(DirName, channel) {
     this.storagefactory.DeleteServerHeader(DirName, channel);
   }
 }
