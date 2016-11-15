@@ -30,12 +30,10 @@
 	</ion-toolbar>
 
 	<div [ngSwitch]="selectedSegment">
-		<div *ngSwitchCase="'local'">
+		<div *ngSwitchCase="'local'" style="position: relative;">
 			<ion-row>
-				<ion-col center>
-				</ion-col>
 				<ion-col center text-right>
-					<button ion-button clear (click)="openCollection()">View All</button>
+					<button ion-button clear *ngIf="localMatrices.length > 0" (click)="openCollection()">View All</button>
 				</ion-col>
 			</ion-row>
 			<div class="items">
@@ -43,28 +41,29 @@
 					<ion-card (click)="openMatrix(matrix.Name,matrix.Channel)" (press)="matrixPressed(i,matrix.Name,matrix.Channel)">
 						<img [attr.src]="retrunThumbnailPath(matrix.ThumbnailSource)" />
 						<ion-card-content>
-							<ion-card-title style="font-size:18px;flex-wrap: nowrap;">
-								<ion-row>
-									<ion-col>
-										<div style="text-overflow:ellipsis;">{{matrix.Title}}</div>
-									</ion-col>
-									<ion-col center text-right style="width:10px;">
-										<p>{{matrix.DateCreated}}</p>
-									</ion-col>
-								</ion-row>
-							</ion-card-title>
-							<div style="display:block;">
-								<p>{{matrix.Sport}}/{{matrix.Skill}}</p>
-								<p>{{matrix.Duration}}</p>
-							</div>
+							<ion-row>
+								<ion-col style="width: 100%;font-size: 18px;overflow: hidden;text-overflow: ellipsis;">
+									{{matrix.Title}}
+								</ion-col>
+								<ion-col center text-right style="flex: 0 0 auto; width: auto;">
+									<p>{{matrix.DateCreated}}</p>
+								</ion-col>
+							</ion-row>
+							<p>{{matrix.Sport}}/{{matrix.Skill}}</p>
+							<p>{{matrix.Duration}}</p>
 						</ion-card-content>
 					</ion-card>
 				</div>
 			</div>
+			<ion-row center *ngIf="!(localMatrices.length > 0)" style="position: absolute;margin-top:45%; color: gray;">
+				<ion-col text-center center>
+					No matrix exist
+				</ion-col>
+			</ion-row>
 		</div>
-		<div *ngSwitchCase="'server'">
+		<div *ngSwitchCase="'server'" style="position: relative;">
 			<ion-item-group *ngFor="let channel of channels|groupBy:'Channel'">
-				<ion-row>
+				<ion-row *ngIf="channel.value.length > 0">
 					<ion-col center>
 						<ion-title>{{channel.key}}</ion-title>
 					</ion-col>
@@ -74,28 +73,32 @@
 				</ion-row>
 				<div class="items">
 					<div class="item" *ngFor="let matrix of channel.value | slice: 0:6; let i = index">
-						<ion-card (click)="channelMatrixPressed(i,matrix.Name,channel.value,matrix.Channel)" (press)="channelMatrixPressed(i,matrix.Name,channel.value,matrix.Channel)">
+						<ion-card style="position: relative;" (click)="channelMatrixPressed(i,matrix.Name,channel.value,matrix.Channel)" (press)="channelMatrixPressed(i,matrix.Name,channel.value,matrix.Channel)">
 							<img [attr.src]="retrunThumbnailPath(matrix.ThumbnailSource)" />
 							<ion-card-content>
-								<ion-card-title style="font-size:18px;flex-wrap: nowrap;">
-									<ion-row>
-										<ion-col>
-											<div style="text-overflow:ellipsis;">{{matrix.Title}}</div>
-										</ion-col>
-										<ion-col center text-right style="width:10px;">
-											<p>{{matrix.DateCreated}}</p>
-										</ion-col>
-									</ion-row>
-								</ion-card-title>
-								<div style="display:block;">
-									<p>{{matrix.Sport}}/{{matrix.Skill}}</p>
-									<p>{{matrix.Duration}}</p>
-								</div>
+								<ion-row>
+									<ion-col style="width: 100%;font-size: 18px;overflow: hidden;text-overflow: ellipsis;">
+										{{matrix.Title}}
+									</ion-col>
+									<ion-col center text-right style="flex: 0 0 auto; width: auto;">
+										<p>{{matrix.DateCreated}}</p>
+									</ion-col>
+								</ion-row>
+								<p>{{matrix.Sport}}/{{matrix.Skill}}</p>
+								<p>{{matrix.Duration}}</p>
 							</ion-card-content>
+							<ion-row center style="position: absolute;top: 0;font-size: 2.0em;width: 100%;height: 100%;font-weight: bold;color: rgba(244,244,244,0.9);background-color: rgba(0,0,0,0.1);">
+								<ion-col center text-center>Download</ion-col>
+							</ion-row>
 						</ion-card>
 					</div>
 				</div>
 			</ion-item-group>
+			<ion-row center *ngIf="!(channels.length > 0)" style="position: absolute;margin-top:45%; color: gray;">
+				<ion-col text-center center>
+					No channel exist
+				</ion-col>
+			</ion-row>
 		</div>
 	</div>
 
