@@ -189,7 +189,7 @@ export class HomePage {
     }
 
     retrunThumbnailPath(name) {
-        return cordova.file.applicationStorageDirectory + name + ".jpg";
+        return "url(" + cordova.file.applicationStorageDirectory + name + ".jpg" + ")";
     }
 
     GetLocalMatrixHeader() {
@@ -231,9 +231,8 @@ export class HomePage {
             var s = secs + 's';
             return h + m + s;
         }
-        else
-        {
-          return "";
+        else {
+            return "";
         }
     }
 

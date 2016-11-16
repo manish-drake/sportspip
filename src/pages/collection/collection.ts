@@ -78,7 +78,7 @@ export class CollectionPage {
   }
 
   retrunThumbnailPath(name) {
-    return cordova.file.applicationStorageDirectory + name + ".jpg";
+    return "url(" + cordova.file.applicationStorageDirectory + name + ".jpg" + ")";
   }
 
   ionViewDidLoad() {

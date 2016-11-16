@@ -21,11 +21,10 @@
 		<div class="item" *ngFor="let matrix of channelMatrices; let i = index">
 			<ion-card (click)="channelMatrixPressed(i,matrix.Channel,matrix.Name)" (press)="channelMatrixPressed(i,matrix.Channel,matrix.Name,matrix.Title)">
 				<ion-row>
-					<ion-col no-padding style="position: relative;">
-						<img [attr.src]="retrunThumbnailPath(matrix.ThumbnailSource)" />
+					<ion-col no-padding [style.background-image]="retrunThumbnailPath(matrix.ThumbnailSource)" style="position: relative; height: 120px;background-size: cover;">
 						<ion-row center style="position: absolute;top: 0;font-size: 2.0em;width: 100%;height: 100%;font-weight: bold;background-color: rgba(0,0,0,0.2);">
 							<ion-col center text-center>
-								<button ion-button icon-left clear color="light" style="font-size: 22px; font-weight: bold;"><ion-icon name="download"></ion-icon>Download</button>
+								<button ion-button icon-left clear color="light" style="font-size: 20px; font-weight: bold;"><ion-icon name="download"></ion-icon>Download</button>
 							</ion-col>
 						</ion-row>
 					</ion-col>
