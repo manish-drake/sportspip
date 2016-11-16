@@ -83,7 +83,7 @@ export class CollectionPage {
           header.Name = name;
           this.storagefactory.SaveLocalHeader(header, channelName, header.Sport, name, "Matrices");
         })
-      this.http.get(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/matrices/" + matrixname + "/" + matrixname + ".mtx")
+      this.http.get(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/Matrices /" + matrixname + "/" + matrixname + ".mtx")
         .subscribe(res => {
           var matrix = JSON.parse(res.text());
           matrix.Matrix._Name = name;

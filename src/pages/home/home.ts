@@ -173,7 +173,7 @@ export class HomePage {
           header.Name = name;
           this.storagefactory.SaveLocalHeader(header, channelName, header.Sport, name, "Matrices");
         })
-      this.http.get(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/matrices/" + matrixname + "/" + matrixname + ".mtx")
+      this.http.get(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/Matrices/" + matrixname + "/" + matrixname + ".mtx")
         .subscribe(res => {
           var matrix = JSON.parse(res.text());
           matrix.Matrix._Name = name;
@@ -309,31 +309,12 @@ export class HomePage {
   }
 
   newMatrix() {
-    let data =
-      `{
-  "Matrix": {
-    "_name": "matrix1",
-    "_Name": "New Matrix 1",
-    "_Title": "New Matrix 1",
-    "_Skill": "Serve",
-    "_Location": "Field",
-    "_Duration": "00:00:00",
-    "_DateCreated": "20161010150719",
-    "_Sport": "Tennis",
-    "_Channel": "Local",
-    "Matrix.Children": {
-      "View":
-        {
-          "_name": "View 1",
-          "_Title": "View 1",
-          "_Source": "(Blank)",
-          "_Content": {}
-        }
-    }
-  }
-}`;
-    var res = JSON.parse(data);
-    var result = res.Matrix;
+    var newMatrix = this.storagefactory.ComposeNewMatrix();
+    var result = newMatrix.Matrix;
+    this.storagefactory.SaveMatrixAsync(newMatrix, result.Channel, result._Sport, result._Name, "Matrices");
+
+    var headerContent = this.storagefactory.ComposeMatrixHeader(result);
+    this.storagefactory.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
 
     this.navCtrl.push(EditorPage, {
       matrixData: result

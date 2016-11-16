@@ -49,6 +49,7 @@ export class StorageFactory {
     }
 
     SaveMatrixAsync(content, channel, sport, matrixName, typeFolder) {
+        console.log(content, channel, sport, matrixName, typeFolder)
         this.platform.ready().then(() => {
             const fs: string = cordova.file.dataDirectory;
 
@@ -80,6 +81,7 @@ export class StorageFactory {
     }
 
     SaveLocalHeader(content, channel, sport, matrixName, typeFolder) {
+        console.log(content, channel, sport, matrixName, typeFolder);
 
         this.platform.ready().then(() => {
             const fs: string = cordova.file.dataDirectory;
@@ -99,6 +101,7 @@ export class StorageFactory {
                                     File.writeFile(fileLocation, "Header.xml", content, true)
                                         .then(function (success) {
 
+console.log("saved local");
                                         })
                                 })
                             })
@@ -147,6 +150,54 @@ export class StorageFactory {
                 })
             })
         })
+
+    }
+
+    ComposeNewMatrix() {
+        var name = Date.now().toString();
+        let data =
+            {
+                "Matrix": {
+                    "_name": name,
+                    "_Name": name,
+                    "_Title": "Title1",
+                    "_Skill": "Serve",
+                    "_Location": "Field",
+                    "_Duration": "00:00:00",
+                    "_DateCreated": Date.now().toString(),
+                    "_Sport": "Tennis",
+                    "Channel": "Local",
+                    "Matrix.Children": {
+                        "View":
+                        {
+                            "_name": "View 1",
+                            "_Title": "View 1",
+                            "_Source": "(Blank)",
+                            "_Content": {}
+                        }
+                    }
+                }
+            };
+        return data;
+    }
+
+    ComposeMatrixHeader(fromMatrix) {
+        console.log(fromMatrix["Matrix.Children"]);
+        
+        var header = {
+            DateCreated: Date.now(),
+            Location: fromMatrix._Location,
+            Duration: fromMatrix._Duration,
+            Name: fromMatrix._Name,
+            Pin: fromMatrix._Pin,
+            Sport: fromMatrix._Sport,
+            Skill: fromMatrix._Skill,
+            Channel: fromMatrix.Channel,
+            Title: fromMatrix._Title,
+            Views: fromMatrix["Matrix.Children"].View.Lenght
+        }
+        console.log(header);
+        return header;
 
     }
 }

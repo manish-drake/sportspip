@@ -58,13 +58,13 @@ export class EditorPage {
   saveMatrix() {
     this.platform.ready().then(() => {
       console.log(this.matrix.Channel);
-      this.http.get(cordova.file.dataDirectory + "Local/" + this.matrix.Channel + "/Tennis/matrices/" + this.matrix._Name + "/" + this.matrix._Name + ".mtx")
+      this.http.get(cordova.file.dataDirectory + "Local/" + this.matrix.Channel + "/Tennis/Matrices/" + this.matrix._Name + "/" + this.matrix._Name + ".mtx")
         .subscribe(data => {
           var res = JSON.parse(data.text());
           var matrix = res.Matrix;
           matrix['Matrix.Children'].View = this.views;
           console.log(matrix.Channel + ' ' + matrix._Sport + ' ' + matrix._Name);
-          this.storagefactory.SaveMatrixAsync(res, matrix.Channel, matrix._Sport, matrix._Name, "matrices");
+          this.storagefactory.SaveMatrixAsync(res, matrix.Channel, matrix._Sport, matrix._Name, "Matrices");
         });
     });
   }

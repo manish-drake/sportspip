@@ -11,7 +11,7 @@ export class OpenMatrix {
 
     run(matrixName, Channel) {
         this.platform.ready().then(() => {
-            this.http.get(cordova.file.dataDirectory + "Local/" + Channel + "/Tennis/matrices/" + matrixName + "/" + matrixName + ".mtx")
+            this.http.get(cordova.file.dataDirectory + "Local/" + Channel + "/Tennis/Matrices/" + matrixName + "/" + matrixName + ".mtx")
                 .subscribe(data => {
                     console.log("open matrix");
                     var res = JSON.parse(data.text());
