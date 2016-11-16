@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ViewController, NavParams, Platform } from 'ionic-angular';
 import { Http } from '@angular/http';
+
 import { StorageFactory } from '../../../Factory/StorageFactory';
 
 declare var cordova: any;
@@ -14,7 +15,7 @@ declare var cordova: any;
 @Component({
     selector: 'page-matrixinfo',
     templateUrl: 'matrixinfo.html',
-    providers: [StorageFactory],
+    providers: [StorageFactory]
 })
 
 export class MatrixInfoPage {
@@ -34,30 +35,32 @@ export class MatrixInfoPage {
         this.errorMessege = "";
     }
 
-    getDateFromString(datestring) {
-        return (new Date(parseInt(datestring))).toISOString();
+    FormateDate(value) {
+        var pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
+        var date = new Date(value.replace(pattern, '$1-$2-$3 $4:$5:$6'));
+        return date.toDateString();
     }
 
     ionViewDidLoad() {
         console.log('Hello Matrixinfo Page');
     }
-    
+
     dismiss() {
         if (this.validatematrixInfo()) {
-        this.platform.ready().then(() => {
-            console.log(this.matrixData.Channel);
-            this.http.get(cordova.file.dataDirectory + "Local/" + this.matrixData.Channel + "/Tennis/matrices/" + this.matrixData._Name + "/" + this.matrixData._Name + ".mtx")
-                .subscribe(data => {
-                    var res = JSON.parse(data.text());
-                    var matrix = res.Matrix;
-                    matrix._Title = this.matrixData._Title;
-                    matrix._Sport = this.matrixData._Sport;
-                    matrix._Skill = this.matrixData._Skill;
-                    matrix._Location = this.matrixData._Location;
-                    this.storagefactory.SaveMatrixAsync(res, matrix.Channel, matrix._Sport, matrix._Name, "matrices");
-                });
-        });
-        this.viewCtrl.dismiss();
+            this.platform.ready().then(() => {
+                console.log(this.matrixData.Channel);
+                this.http.get(cordova.file.dataDirectory + "Local/" + this.matrixData.Channel + "/Tennis/matrices/" + this.matrixData._Name + "/" + this.matrixData._Name + ".mtx")
+                    .subscribe(data => {
+                        var res = JSON.parse(data.text());
+                        var matrix = res.Matrix;
+                        matrix._Title = this.matrixData._Title;
+                        matrix._Sport = this.matrixData._Sport;
+                        matrix._Skill = this.matrixData._Skill;
+                        matrix._Location = this.matrixData._Location;
+                        this.storagefactory.SaveMatrixAsync(res, matrix.Channel, matrix._Sport, matrix._Name, "matrices");
+                    });
+            });
+            this.viewCtrl.dismiss();
         }
     }
 

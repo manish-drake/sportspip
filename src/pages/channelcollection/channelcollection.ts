@@ -4,8 +4,10 @@ import { StorageFactory } from '../../Factory/StorageFactory';
 import { Http } from '@angular/http';
 import { Package } from '../../pages/Package';
 import { Observable } from 'rxjs/Rx';
-import { NavController,ToastController, PopoverController, NavParams,
-   ActionSheetController, AlertController, ViewController, Platform, LoadingController } from 'ionic-angular';
+import {
+  NavController, ToastController, PopoverController, NavParams,
+  ActionSheetController, AlertController, ViewController, Platform, LoadingController
+} from 'ionic-angular';
 declare var cordova: any;
 
 /*
@@ -66,6 +68,21 @@ export class ChannelCollectionPage {
 
   FormateDate(value) {
     return this.packages.FormateDate(value);
+  }
+
+  formatDuration(dur) {
+    if (dur != null) {
+      var hrs = Number(dur.slice(0, 2));
+      var h = (hrs == 0) ? "" : hrs + 'h ';
+      var mins = Number(dur.slice(3, 5));
+      var m = (mins == 0) ? "" : mins + 'm ';
+      var secs = Number(dur.slice(6, 8));
+      var s = secs + 's';
+      return h + m + s;
+    }
+    else {
+      return "";
+    }
   }
 
   retrunThumbnailPath(name) {
@@ -137,9 +154,9 @@ export class ChannelCollectionPage {
     return true;
   }
 
-  channelMatrixPressed(index, channel, DirName) {
+  channelMatrixPressed(index, channel, DirName, title) {
     let actionSheet = this.actionSheetCtrl.create({
-      title: DirName,
+      title: title,
       buttons: [{
         text: 'Download',
         handler: () => {

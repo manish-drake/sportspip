@@ -38,20 +38,34 @@
 			</ion-row>
 			<div class="items">
 				<div class="item" *ngFor='let matrix of localMatrices | slice: 0:12; let i = index'>
-					<ion-card (click)="openMatrix(matrix.Name,matrix.Channel)" (press)="matrixPressed(i,matrix.Name,matrix.Channel)">
-						<img [attr.src]="retrunThumbnailPath(matrix.ThumbnailSource)" />
-						<ion-card-content>
-							<ion-row>
-								<ion-col style="width: 100%;font-size: 18px;overflow: hidden;text-overflow: ellipsis;">
-									{{matrix.Title}}
-								</ion-col>
-								<ion-col center text-right style="flex: 0 0 auto; width: auto;">
-									<p>{{FormateDate(matrix.DateCreated)}}</p>
-								</ion-col>
-							</ion-row>
-							<p>{{matrix.Sport}}/{{matrix.Skill}}</p>
-							<p>{{matrix.Duration}}</p>
-						</ion-card-content>
+					<ion-card (click)="openMatrix(matrix.Name,matrix.Channel)" (press)="matrixPressed(i,matrix.Name,matrix.Channel,matrix.Title)">
+						<ion-row>
+							<ion-col no-padding style="position: relative;">
+								<img [attr.src]="retrunThumbnailPath(matrix.ThumbnailSource)" />
+							</ion-col>
+						</ion-row>
+						<ion-row>
+							<ion-col no-padding>
+								<ion-card-content style="padding:5px 10px 2px 10px ">
+									<ion-row>
+										<ion-col no-padding style="width: 100%;font-size: 18px;overflow: hidden;text-overflow: ellipsis;">
+											{{matrix.Title}}
+										</ion-col>
+										<ion-col no-padding center text-right style="flex: 0 0 auto; width: auto;">
+											<p>{{FormateDate(matrix.DateCreated)}}</p>
+										</ion-col>
+									</ion-row>
+									<ion-row>
+										<ion-col no-padding style="width: 100%;overflow: hidden;text-overflow: ellipsis;">
+											{{matrix.Sport}}/{{matrix.Skill}}
+										</ion-col>
+										<ion-col no-padding center text-right style="flex: 0 0 auto; width: auto;">
+											<p>{{formatDuration(matrix.Duration)}}</p>
+										</ion-col>
+									</ion-row>
+								</ion-card-content>
+							</ion-col>
+						</ion-row>
 					</ion-card>
 				</div>
 			</div>
@@ -73,22 +87,39 @@
 				</ion-row>
 				<div class="items">
 					<div class="item" *ngFor="let matrix of channel.value | slice: 0:6; let i = index">
-						<ion-card style="position: relative;" (click)="channelMatrixPressed(i,matrix.Name,channel.value,matrix.Channel)" (press)="channelMatrixPressed(i,matrix.Name,channel.value,matrix.Channel)">
-							<img [attr.src]="retrunThumbnailPath(matrix.ThumbnailSource)" />
-							<ion-card-content>
-								<ion-row>
-									<ion-col style="width: 100%;font-size: 18px;overflow: hidden;text-overflow: ellipsis;">
-										{{matrix.Title}}
-									</ion-col>
-									<ion-col center text-right style="flex: 0 0 auto; width: auto;">
-										<p>{{FormateDate(matrix.DateCreated)}}</p>
-									</ion-col>
-								</ion-row>
-								<p>{{matrix.Sport}}/{{matrix.Skill}}</p>
-								<p>{{matrix.Duration}}</p>
-							</ion-card-content>
-							<ion-row center style="position: absolute;top: 0;font-size: 2.0em;width: 100%;height: 100%;font-weight: bold;color: rgba(244,244,244,0.9);background-color: rgba(0,0,0,0.1);">
-								<ion-col center text-center>Download</ion-col>
+
+						<ion-card (click)="channelMatrixPressed(i,matrix.Title,channel.value,matrix.Channel)" (press)="channelMatrixPressed(i,matrix.Name,channel.value,matrix.Channel,matrix.Title)">
+							<ion-row>
+								<ion-col no-padding style="position: relative;">
+									<img [attr.src]="retrunThumbnailPath(matrix.ThumbnailSource)" />
+									<ion-row center style="position: absolute;top: 0;width: 100%;height: 100%;background-color: rgba(0,0,0,0.2);">
+										<ion-col center text-center>
+											<button ion-button icon-left clear color="light" style="font-size: 22px; font-weight: bold;"><ion-icon name="download"></ion-icon>Download</button>
+										</ion-col>
+									</ion-row>
+								</ion-col>
+							</ion-row>
+							<ion-row>
+								<ion-col no-padding>
+									<ion-card-content style="padding:5px 10px 2px 10px ">
+										<ion-row>
+											<ion-col no-padding style="width: 100%;font-size: 18px;overflow: hidden;text-overflow: ellipsis;">
+												{{matrix.Title}}
+											</ion-col>
+											<ion-col no-padding center text-right style="flex: 0 0 auto; width: auto;">
+												<p>{{FormateDate(matrix.DateCreated)}}</p>
+											</ion-col>
+										</ion-row>
+										<ion-row>
+											<ion-col no-padding style="width: 100%;overflow: hidden;text-overflow: ellipsis;">
+												{{matrix.Sport}}/{{matrix.Skill}}
+											</ion-col>
+											<ion-col no-padding center text-right style="flex: 0 0 auto; width: auto;">
+												<p>{{formatDuration(matrix.Duration)}}</p>
+											</ion-col>
+										</ion-row>
+									</ion-card-content>
+								</ion-col>
 							</ion-row>
 						</ion-card>
 					</div>
