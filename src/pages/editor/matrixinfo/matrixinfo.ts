@@ -49,7 +49,7 @@ export class MatrixInfoPage {
         if (this.validatematrixInfo()) {
             this.platform.ready().then(() => {
                 console.log(this.matrixData.Channel);
-                this.http.get(cordova.file.dataDirectory + "Local/" + this.matrixData.Channel + "/Tennis/matrices/" + this.matrixData._Name + "/" + this.matrixData._Name + ".mtx")
+                this.http.get(cordova.file.dataDirectory + "Local/" + this.matrixData.Channel + "/Tennis/Matrices/" + this.matrixData._Name + "/" + this.matrixData._Name + ".mtx")
                     .subscribe(data => {
                         var res = JSON.parse(data.text());
                         var matrix = res.Matrix;
@@ -57,7 +57,7 @@ export class MatrixInfoPage {
                         matrix._Sport = this.matrixData._Sport;
                         matrix._Skill = this.matrixData._Skill;
                         matrix._Location = this.matrixData._Location;
-                        this.storagefactory.SaveMatrixAsync(res, matrix.Channel, matrix._Sport, matrix._Name, "matrices");
+                        this.storagefactory.SaveMatrixAsync(res, matrix.Channel, matrix._Sport, matrix._Name, "Matrices");
                     });
             });
             this.viewCtrl.dismiss();

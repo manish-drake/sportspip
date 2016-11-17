@@ -66,8 +66,8 @@ export class ChannelCollectionPage {
 
   }
 
-  FormateDate(value) {
-    return this.packages.FormateDate(value);
+  FormatDate(value) {
+    return this.packages.FormatDate(value);
   }
 
   formatDuration(dur) {

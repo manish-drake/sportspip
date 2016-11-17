@@ -27,7 +27,6 @@ export class Package {
             this.http.get(cordova.file.dataDirectory + "Temp/matrix1/Header.xml").subscribe((result => {
                 console.log("header moving..");
                 var header = JSON.parse(result.text());
-                console.log(this.fileName);
                 header.Name = this.fileName;
                 this.channelName = header.Channel;
                 this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
@@ -38,7 +37,6 @@ export class Package {
                     var sliced = file.name.substr(-4);
                     switch (sliced) {
                         case '.mtx':
-
                             let parser: any = new X2JS();
                             this.http.get(file.nativeURL).subscribe(data => {
                                 console.log("mtx moving...");
@@ -47,7 +45,7 @@ export class Package {
                                 console.log(this.fileName);
                                 matrix._Name = this.fileName;
                                 matrix.Channel = this.channelName;
-                                this.storagefactory.SaveMatrixAsync(matrixdata, matrix.Channel, matrix._Sport, matrix._Name, "matrices");
+                                this.storagefactory.SaveMatrixAsync(matrixdata, matrix.Channel, matrix._Sport, matrix._Name, "Matrices");
                                 console.log("mtx moved");
                             })
                             break;
@@ -126,7 +124,7 @@ export class Package {
             true);
     }
 
-    FormateDate(value) {
+    FormatDate(value) {
         var st = value;
         var pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
         var date = new Date(st.replace(pattern, '$1-$2-$3 $4:$5:$6'));
