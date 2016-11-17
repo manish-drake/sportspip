@@ -131,4 +131,19 @@ export class Package {
         return date.toDateString().slice(4, 10)
 
     }
+
+     FormatDuration(dur) {
+        if (dur != null) {
+            var hrs = Number(dur.slice(0, 2));
+            var h = (hrs == 0) ? "" : hrs + 'h ';
+            var mins = Number(dur.slice(3, 5));
+            var m = (mins == 0) ? "" : mins + 'm ';
+            var secs = Number(dur.slice(6, 8));
+            var s = secs + 's';
+            return h + m + s;
+        }
+        else {
+            return "";
+        }
+    }
 }

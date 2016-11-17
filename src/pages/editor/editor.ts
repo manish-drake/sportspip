@@ -51,7 +51,7 @@ export class EditorPage {
     this.showViewSegment(this.selectedViewIndex);
   }
 
-  ionViewWillUnload(){
+  ionViewWillUnload() {
     this.saveMatrix();
   }
 
@@ -63,8 +63,11 @@ export class EditorPage {
           var res = JSON.parse(data.text());
           var matrix = res.Matrix;
           matrix['Matrix.Children'].View = this.views;
-          console.log(matrix.Channel + ' ' + matrix._Sport + ' ' + matrix._Name);
           this.storagefactory.SaveMatrixAsync(res, matrix.Channel, matrix._Sport, matrix._Name, "Matrices");
+
+          var header = this.storagefactory.ComposeMatrixHeader(matrix);
+          alert(header.Title);
+          this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
         });
     });
   }

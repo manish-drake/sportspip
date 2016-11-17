@@ -54,7 +54,7 @@ export class StorageFactory {
 
             //create Server Folder
             File.createDir(fs, "Local", true).then((success) => {
-                var localFolder = fs + "/Local/";
+                var localFolder = fs + "Local/";
                 File.createDir(localFolder, channel, true).then(() => {
                     var channelFolder = localFolder + channel + "/";
                     File.createDir(channelFolder, sport, true).then(() => {
@@ -80,15 +80,13 @@ export class StorageFactory {
     }
 
     SaveLocalHeader(content, channel, sport, matrixName, typeFolder) {
-        console.log(content, channel, sport, matrixName, typeFolder);
 
         this.platform.ready().then(() => {
-            // const fs: string = "file:/storage/emulated/0/DCIM";
-             const fs: string = cordova.file.dataDirectory;
+            const fs: string = cordova.file.dataDirectory;
 
             //create local Folder
             File.createDir(fs, "Local", true).then((success) => {
-                var localFolder = fs + "/Local/";
+                var localFolder = fs + "Local/";
                 File.createDir(localFolder, channel, true).then(() => {
                     var channelFolder = localFolder + channel + "/";
                     File.createDir(channelFolder, sport, true).then(() => {
@@ -163,11 +161,11 @@ export class StorageFactory {
                     "_Skill": "Serve",
                     "_Location": "Field",
                     "_Duration": "00:00:00",
-                    "_DateCreated": Date.now().toString(),
+                    "_DateCreated": new Date().toString(),
                     "_Sport": "Tennis",
                     "Channel": "Local",
                     "Matrix.Children": {
-                        "Views":
+                        "View":
                         {
                             "_name": "View 1",
                             "_Title": "View 1",
@@ -190,9 +188,10 @@ export class StorageFactory {
             Channel: fromMatrix.Channel,
             ThumbnailSource: "636049183928404138",
             Sport: fromMatrix._Sport,
-            Skill: fromMatrix._Skill, UploadID: "0",
+            Skill: fromMatrix._Skill,
+            UploadID: "0",
             Duration: fromMatrix._Duration,
-            Views: fromMatrix["Matrix.Children"].Views.Lenght
+            Views: fromMatrix["Matrix.Children"].View.Lenght
         };
 
         return header;
