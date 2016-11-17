@@ -10,12 +10,13 @@
 		<ion-buttons end>
 			<button *ngIf="!FirstName" ion-button icon-left (click)="presentLoginModal()"><ion-icon name="log-in"></ion-icon>Login</button>
 			<button *ngIf="FirstName" ion-button icon-left (click)="presentPopover($event)">
-				<ion-icon name="person"></ion-icon>{{FirstName}} {{LastName}}
+				<ion-icon name="person"></ion-icon>
+				<span>{{FirstName}} {{LastName}}</span>
 			</button>
 		</ion-buttons>
 	</ion-navbar>
 </ion-header>
-<ion-content padding style="background:#eee;">
+<ion-content style="background:#eee;">
 	<ion-grid *ngIf="subscribeList.length > 0">
 		<ion-row>
 			<ion-col text-left>
@@ -23,21 +24,19 @@
 			</ion-col>
 		</ion-row>
 		<ion-row>
-			<ion-col no-padding style="max-width:250px;" *ngFor='let subList of subscribeList;let i = index'>
-				<ion-list no-lines>
-					<ion-card>
-						<ion-item>
-							<ion-avatar item-left>
-								<ion-icon name="person" style="font-size:30px"></ion-icon>
-							</ion-avatar>
-							<h3>{{subList.ChannelName}}</h3>
-							<p>{{subList.Description}}</p>
-							<button (click)="UnSubscribeList(i)" ion-fab mini item-right>
-                    <ion-icon name="close"></ion-icon>
-                  </button>
-						</ion-item>
-					</ion-card>
-				</ion-list>
+			<ion-col style="max-width:250px;" *ngFor="let subList of subscribeList;let i = index">
+				<ion-card>
+					<ion-item>
+						<ion-avatar item-left>
+							<ion-icon name="person" style="font-size:30px"></ion-icon>
+						</ion-avatar>
+						<h3>{{subList.ChannelName}}</h3>
+						<p>{{subList.Description}}</p>
+						<button (click)="UnSubscribeList(i)" ion-fab mini item-right>
+							<ion-icon name="close"></ion-icon>
+							</button>
+					</ion-item>
+				</ion-card>
 			</ion-col>
 		</ion-row>
 	</ion-grid>
@@ -49,19 +48,17 @@
 		</ion-row>
 		<ion-row>
 			<ion-col style="max-width:250px;" *ngFor='let chanList of chanelList;let i = index'>
-				<ion-list>
-					<ion-card style="max-width:250px;">
-						<ion-item>
-							<ion-avatar item-left>
-								<ion-icon name="person" style="font-size:30px"></ion-icon>
-							</ion-avatar>
-							<h3>{{chanList.ChannelName}}</h3>
-							<button (click)="SubscribeList(i,chanList.ChannelName)" ion-fab mini item-right>
+				<ion-card>
+					<ion-item>
+						<ion-avatar item-left>
+							<ion-icon name="person" style="font-size:30px"></ion-icon>
+						</ion-avatar>
+						<h3>{{chanList.ChannelName}}</h3>
+						<button (click)="SubscribeList(i,chanList.ChannelName)" ion-fab mini item-right>
                     					<ion-icon name="add"></ion-icon>
                   					</button>
-						</ion-item>
-					</ion-card>
-				</ion-list>
+					</ion-item>
+				</ion-card>
 			</ion-col>
 			<ion-col center text-center clear *ngIf='chanelList.length == 0' style="color:gray;">
 				no channel available
