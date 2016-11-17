@@ -40,7 +40,7 @@
 				<div class="item" *ngFor='let matrix of localMatrices | slice: 0:12; let i = index'>
 					<ion-card (click)="openMatrix(matrix.Name,matrix.Channel)" (press)="matrixPressed(i,matrix.Name,matrix.Channel,matrix.Title)">
 						<ion-row>
-							<ion-col no-padding [style.background-image]="retrunThumbnailPath(matrix.ThumbnailSource)" style="height: 120px;background-size: cover;">
+							<ion-col no-padding [style.background-image]="retrunThumbnailPath(matrix.ThumbnailSource)" style="height: 120px;background-size: cover;background-color:lightgray;background-position: center;">
 							</ion-col>
 						</ion-row>
 						<ion-row>
@@ -89,7 +89,7 @@
 
 						<ion-card (click)="channelMatrixPressed(i,matrix.Title,channel.value,matrix.Channel)" (press)="channelMatrixPressed(i,matrix.Name,channel.value,matrix.Channel,matrix.Title)">
 							<ion-row>
-								<ion-col no-padding [style.background-image]="retrunThumbnailPath(matrix.ThumbnailSource)" style="position: relative; height: 120px;background-size: cover;">
+								<ion-col no-padding [style.background-image]="retrunThumbnailPath(matrix.ThumbnailSource)" style="position: relative; height: 120px;background-size: cover;background-color:lightgray;background-position: center;">
 									<ion-row center style="position: absolute;top: 0;width: 100%;height: 100%;background-color: rgba(0,0,0,0.2);">
 										<ion-col center text-center>
 											<button ion-button icon-left clear color="light" style="font-size: 20px; font-weight: bold;"><ion-icon name="download"></ion-icon>Download</button>
