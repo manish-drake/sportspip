@@ -39,4 +39,45 @@
 				</foreignObject>-->
 		</svg>
 	</ion-row>
+	<ion-row style="height: auto; flex: 0 0 auto;" color="dark">
+		<ion-col no-padding>
+			<ion-grid no-padding>
+				<ion-row padding-left padding-right>
+					<ion-col no-padding>
+						<ion-range style="padding:0;height:25px" min="0" max="100000" step="0.01"></ion-range>
+					</ion-col>
+				</ion-row>
+				<ion-row>
+					<ion-col>
+						<ion-row>
+							<ion-col no-padding style="width: 100%; color: gray;">
+								00:00:00
+							</ion-col>
+							<ion-col no-padding style="width: auto; flex: 0 0 auto; color: gray;">
+								{{maxDuration}}
+							</ion-col>
+						</ion-row>
+						<ion-row>
+							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
+								<button no-margin ion-button icon-only clear><ion-icon name="play"></ion-icon></button>
+							</ion-col>
+							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
+								<button no-margin ion-button icon-only clear small color="{{repeatColor}}"><ion-icon name="repeat"></ion-icon></button>
+							</ion-col>
+							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
+								<button no-margin ion-button icon-only clear small><ion-icon name="rewind"></ion-icon></button>
+							</ion-col>
+							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
+								<button no-margin ion-button icon-only clear small><ion-icon name="fastforward"></ion-icon></button>
+							</ion-col>
+							<ion-col no-padding center width="100%"></ion-col>
+							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
+								<button no-margin ion-button icon-only clear small> <ion-icon name="volume-up"></ion-icon></button>
+							</ion-col>
+						</ion-row>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-col>
+	</ion-row>
 </ion-grid>
