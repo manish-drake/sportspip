@@ -153,51 +153,51 @@ console.log("saved local");
 
     }
 
-    ComposeNewMatrix() {
-        var name = Date.now().toString();
-        let data =
-            {
-                "Matrix": {
-                    "_name": name,
-                    "_Name": name,
-                    "_Title": "Title1",
-                    "_Skill": "Serve",
-                    "_Location": "Field",
-                    "_Duration": "00:00:00",
-                    "_DateCreated": Date.now().toString(),
-                    "_Sport": "Tennis",
-                    "Channel": "Local",
-                    "Matrix.Children": {
-                        "View":
-                        {
-                            "_name": "View 1",
-                            "_Title": "View 1",
-                            "_Source": "(Blank)",
-                            "_Content": {}
-                        }
-                    }
-                }
-            };
-        return data;
-    }
+    // ComposeNewMatrix() {
+    //     var name = Date.now().toString();
+    //     let data =
+    //         {
+    //             "Matrix": {
+    //                 "_name": name,
+    //                 "_Name": name,
+    //                 "_Title": "Title1",
+    //                 "_Skill": "Serve",
+    //                 "_Location": "Field",
+    //                 "_Duration": "00:00:00",
+    //                 "_DateCreated": Date.now().toString(),
+    //                 "_Sport": "Tennis",
+    //                 "Channel": "Local",
+    //                 "Matrix.Children": {
+    //                     "View":
+    //                     {
+    //                         "_name": "View 1",
+    //                         "_Title": "View 1",
+    //                         "_Source": "(Blank)",
+    //                         "_Content": {}
+    //                     }
+    //                 }
+    //             }
+    //         };
+    //     return data;
+    // }
 
-    ComposeMatrixHeader(fromMatrix) {
-        console.log(fromMatrix["Matrix.Children"]);
+    // ComposeMatrixHeader(fromMatrix) {
+    //     console.log(fromMatrix["Matrix.Children"]);
         
-        var header = {
-            DateCreated: Date.now(),
-            Location: fromMatrix._Location,
-            Duration: fromMatrix._Duration,
-            Name: fromMatrix._Name,
-            Pin: fromMatrix._Pin,
-            Sport: fromMatrix._Sport,
-            Skill: fromMatrix._Skill,
-            Channel: fromMatrix.Channel,
-            Title: fromMatrix._Title,
-            Views: fromMatrix["Matrix.Children"].View.Lenght
-        }
-        console.log(header);
-        return header;
+    //     var header = {
+    //         DateCreated: Date.now(),
+    //         Location: fromMatrix._Location,
+    //         Duration: fromMatrix._Duration,
+    //         Name: fromMatrix._Name,
+    //         Pin: fromMatrix._Pin,
+    //         Sport: fromMatrix._Sport,
+    //         Skill: fromMatrix._Skill,
+    //         Channel: fromMatrix.Channel,
+    //         Title: fromMatrix._Title,
+    //         Views: fromMatrix["Matrix.Children"].View.Lenght
+    //     }
+    //     console.log(header);
+    //     return header;
 
-    }
+    // }
 }

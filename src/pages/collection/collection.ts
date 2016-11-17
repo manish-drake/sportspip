@@ -62,8 +62,23 @@ export class CollectionPage {
     return this.packages.FormateDate(value);
   }
 
+  formatDuration(dur) {
+    if (dur != null) {
+      var hrs = Number(dur.slice(0, 2));
+      var h = (hrs == 0) ? "" : hrs + 'h ';
+      var mins = Number(dur.slice(3, 5));
+      var m = (mins == 0) ? "" : mins + 'm ';
+      var secs = Number(dur.slice(6, 8));
+      var s = secs + 's';
+      return h + m + s;
+    }
+    else {
+      return "";
+    }
+  }
+
   retrunThumbnailPath(name) {
-    return cordova.file.applicationStorageDirectory + name + ".jpg";
+    return "url(" + cordova.file.applicationStorageDirectory + name + ".jpg" + ")";
   }
 
   ionViewDidLoad() {
@@ -74,7 +89,7 @@ export class CollectionPage {
     this.openmatrix.run(matrixName, Channel);
   }
 
-  DuplicateMatrix(matrixname,channelName) {
+  DuplicateMatrix(matrixname, channelName) {
     var name = Date.now().toString();
     this.platform.ready().then(() => {
       this.http.get(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/Matrices/" + matrixname + "/Header.xml")
@@ -98,9 +113,9 @@ export class CollectionPage {
     })
   }
 
-  matrixPressed(index, matrixName, channel) {
+  matrixPressed(index, matrixName, channel, title) {
     let actionSheet = this.actionSheetCtrl.create({
-      title: matrixName,
+      title: title,
       buttons: [
         {
           text: 'Delete',
