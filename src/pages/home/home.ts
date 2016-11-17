@@ -4,6 +4,7 @@ import {
     ViewController, ToastController, Platform, LoadingController
 } from 'ionic-angular';
 import { AppVersion, File } from 'ionic-native';
+
 import { StorageFactory } from '../../Factory/StorageFactory';
 import { ModelFactory } from '../../Factory/ModelFactory';
 import { Package } from '../../pages/Package';
@@ -14,6 +15,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
 import { DatePipe } from '@angular/common';
+
 import { Connectivity } from '../connectivity/connectivity';
 import { SettingsPage } from '../settings/settings';
 import { CollectionPage } from '../collection/collection';
@@ -62,6 +64,9 @@ export class HomePage {
         //       this.DisplayServerHeader();
         //     })    
         // });
+
+        console.log(this.packages.FormatDate(new Date().toString()));
+        console.log(this.formatDuration("00:00:00"));
     }
 
     ionViewDidEnter() {
@@ -111,7 +116,6 @@ export class HomePage {
                     role: 'destructive',
                     handler: () => {
                         console.log('Destructive clicked');
-                        console.log(index, Name, channel, title)
                         this.deleteHeader.DeleteLocalHeader(Name, channel);
                         this.localMatrices.splice(index, 1);
                     }
@@ -134,12 +138,10 @@ export class HomePage {
     }
 
     deleteServerHeader(matrixName, index, value, channel) {
-        console.log(matrixName, index, value, channel);
         this.deleteHeader.DeleteServerHeader(matrixName, channel);
         value.splice(index, 1);
         this.channels.splice(index, 1);
     }
-
 
     channelMatrixPressed(index, name, value, channel, title) {
         let actionSheet = this.actionSheetCtrl.create({
@@ -207,7 +209,7 @@ export class HomePage {
                                     var item = {
                                         Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
                                         ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
-                                        Views: result.Clips
+                                        Views: result.Views
                                     };
                                     this.localMatrices.push(item);
                                 });
@@ -219,8 +221,7 @@ export class HomePage {
     }
 
     FormatDate(value) {
-        console.log(value);
-        return this.packages.FormateDate(value);
+        return this.packages.FormatDate(value);
     }
 
     formatDuration(dur) {
@@ -234,7 +235,7 @@ export class HomePage {
             return h + m + s;
         }
         else {
-            return " ";
+            return "";
         }
     }
 
@@ -326,16 +327,40 @@ export class HomePage {
     }
 
     newMatrix() {
+        var name = Date.now().toString();
+        let data =
+            {
+                "Matrix": {
+                    "_name": name,
+                    "_Name": name,
+                    "_Title": "Title1",
+                    "_Skill": "Serve",
+                    "_Location": "Field",
+                    "_Duration": "00:00:00",
+                    "_DateCreated": new Date().toString(),
+                    "_Sport": "Tennis",
+                    "Channel": "Local",
+                    "Matrix.Children": {
+                        "View":
+                        {
+                            "_name": "View 1",
+                            "_Title": "View 1",
+                            "_Source": "(Blank)",
+                            "_Content": {}
+                        }
+                    }
+                }
+            };
         // var newMatrix = this.storagefactory.ComposeNewMatrix();
-        // var result = newMatrix.Matrix;
-        // this.storagefactory.SaveMatrixAsync(newMatrix, result.Channel, result._Sport, result._Name, "Matrices");
+        var result = data.Matrix;
+        this.storagefactory.SaveMatrixAsync(data, result.Channel, result._Sport, result._Name, "Matrices");
 
-        // var headerContent = this.storagefactory.ComposeMatrixHeader(result);
-        // this.storagefactory.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
+        var headerContent = this.storagefactory.ComposeMatrixHeader(result);
+        this.storagefactory.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
 
-        // this.navCtrl.push(EditorPage, {
-        //     matrixData: result
-        // });
+        this.navCtrl.push(EditorPage, {
+            matrixData: result
+        });
     }
 
     // For testing only --starts

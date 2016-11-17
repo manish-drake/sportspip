@@ -49,13 +49,12 @@ export class StorageFactory {
     }
 
     SaveMatrixAsync(content, channel, sport, matrixName, typeFolder) {
-        console.log(content, channel, sport, matrixName, typeFolder)
         this.platform.ready().then(() => {
             const fs: string = cordova.file.dataDirectory;
 
             //create Server Folder
             File.createDir(fs, "Local", true).then((success) => {
-                var localFolder = fs + "Local/";
+                var localFolder = fs + "/Local/";
                 File.createDir(localFolder, channel, true).then(() => {
                     var channelFolder = localFolder + channel + "/";
                     File.createDir(channelFolder, sport, true).then(() => {
@@ -84,11 +83,12 @@ export class StorageFactory {
         console.log(content, channel, sport, matrixName, typeFolder);
 
         this.platform.ready().then(() => {
-            const fs: string = cordova.file.dataDirectory;
+            // const fs: string = "file:/storage/emulated/0/DCIM";
+             const fs: string = cordova.file.dataDirectory;
 
             //create local Folder
             File.createDir(fs, "Local", true).then((success) => {
-                var localFolder = fs + "Local/";
+                var localFolder = fs + "/Local/";
                 File.createDir(localFolder, channel, true).then(() => {
                     var channelFolder = localFolder + channel + "/";
                     File.createDir(channelFolder, sport, true).then(() => {
@@ -100,8 +100,7 @@ export class StorageFactory {
                                 File.createFile(fileLocation, "Header.xml", true).then(() => {
                                     File.writeFile(fileLocation, "Header.xml", content, true)
                                         .then(function (success) {
-
-console.log("saved local");
+                                            console.log("saved local");
                                         })
                                 })
                             })
@@ -153,51 +152,50 @@ console.log("saved local");
 
     }
 
-    // ComposeNewMatrix() {
-    //     var name = Date.now().toString();
-    //     let data =
-    //         {
-    //             "Matrix": {
-    //                 "_name": name,
-    //                 "_Name": name,
-    //                 "_Title": "Title1",
-    //                 "_Skill": "Serve",
-    //                 "_Location": "Field",
-    //                 "_Duration": "00:00:00",
-    //                 "_DateCreated": Date.now().toString(),
-    //                 "_Sport": "Tennis",
-    //                 "Channel": "Local",
-    //                 "Matrix.Children": {
-    //                     "View":
-    //                     {
-    //                         "_name": "View 1",
-    //                         "_Title": "View 1",
-    //                         "_Source": "(Blank)",
-    //                         "_Content": {}
-    //                     }
-    //                 }
-    //             }
-    //         };
-    //     return data;
-    // }
+    ComposeNewMatrix() {
+        var name = Date.now().toString();
+        let data =
+            {
+                "Matrix": {
+                    "_name": name,
+                    "_Name": name,
+                    "_Title": "Title1",
+                    "_Skill": "Serve",
+                    "_Location": "Field",
+                    "_Duration": "00:00:00",
+                    "_DateCreated": Date.now().toString(),
+                    "_Sport": "Tennis",
+                    "Channel": "Local",
+                    "Matrix.Children": {
+                        "Views":
+                        {
+                            "_name": "View 1",
+                            "_Title": "View 1",
+                            "_Source": "(Blank)",
+                            "_Content": {}
+                        }
+                    }
+                }
+            };
+        return data;
+    }
 
-    // ComposeMatrixHeader(fromMatrix) {
-    //     console.log(fromMatrix["Matrix.Children"]);
-        
-    //     var header = {
-    //         DateCreated: Date.now(),
-    //         Location: fromMatrix._Location,
-    //         Duration: fromMatrix._Duration,
-    //         Name: fromMatrix._Name,
-    //         Pin: fromMatrix._Pin,
-    //         Sport: fromMatrix._Sport,
-    //         Skill: fromMatrix._Skill,
-    //         Channel: fromMatrix.Channel,
-    //         Title: fromMatrix._Title,
-    //         Views: fromMatrix["Matrix.Children"].View.Lenght
-    //     }
-    //     console.log(header);
-    //     return header;
+    ComposeMatrixHeader(fromMatrix) {
+        console.log(fromMatrix["Matrix.Children"]);
 
-    // }
+        var header = {
+            Title: fromMatrix._Title,
+            DateCreated: fromMatrix._DateCreated,
+            Name: fromMatrix._Name,
+            Channel: fromMatrix.Channel,
+            ThumbnailSource: "636049183928404138",
+            Sport: fromMatrix._Sport,
+            Skill: fromMatrix._Skill, UploadID: "0",
+            Duration: fromMatrix._Duration,
+            Views: fromMatrix["Matrix.Children"].Views.Lenght
+        };
+
+        return header;
+
+    }
 }

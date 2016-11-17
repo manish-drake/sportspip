@@ -124,7 +124,7 @@ export class Package {
             true);
     }
 
-    FormateDate(value) {
+    FormatDate(value) {
         var st = value;
         var pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
         var date = new Date(st.replace(pattern, '$1-$2-$3 $4:$5:$6'));
