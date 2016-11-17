@@ -27,7 +27,6 @@ export class Package {
             this.http.get(cordova.file.dataDirectory + "Temp/matrix1/Header.xml").subscribe((result => {
                 console.log("header moving..");
                 var header = JSON.parse(result.text());
-                console.log(this.fileName);
                 header.Name = this.fileName;
                 this.channelName = header.Channel;
                 this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
@@ -38,7 +37,6 @@ export class Package {
                     var sliced = file.name.substr(-4);
                     switch (sliced) {
                         case '.mtx':
-
                             let parser: any = new X2JS();
                             this.http.get(file.nativeURL).subscribe(data => {
                                 console.log("mtx moving...");
@@ -47,13 +45,13 @@ export class Package {
                                 console.log(this.fileName);
                                 matrix._Name = this.fileName;
                                 matrix.Channel = this.channelName;
-                                this.storagefactory.SaveMatrixAsync(matrixdata, matrix.Channel, matrix._Sport, matrix._Name, "matrices");
+                                this.storagefactory.SaveMatrixAsync(matrixdata, matrix.Channel, matrix._Sport, matrix._Name, "Matrices");
                                 console.log("mtx moved");
                             })
                             break;
                         case '.mp4':
                             console.log("video moving...");
-                            File.copyFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.applicationStorageDirectory, file.name); 
+                            File.copyFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.applicationStorageDirectory, file.name);
                             console.log("video moved");
                             break;
                         case ".gif":
@@ -109,12 +107,12 @@ export class Package {
 
     }
 
-    DownloadThumbnailfromServer(channelName,matrixName) {
+    DownloadThumbnailfromServer(channelName, matrixName) {
         const ft = new FileTransfer();
-        var url = encodeURI("https://drake.blob.core.windows.net/thumbnails/"+channelName+"/"+matrixName+".jpg");
+        var url = encodeURI("https://drake.blob.core.windows.net/thumbnails/" + channelName + "/" + matrixName + ".jpg");
         ft.download(
             url,
-            cordova.file.applicationStorageDirectory + matrixName+".jpg",
+            cordova.file.applicationStorageDirectory + matrixName + ".jpg",
             function (entry) {
                 console.log("download complete: " + entry.toURL());
             },
@@ -124,5 +122,28 @@ export class Package {
                 console.log("download error code" + error.code);
             },
             true);
+    }
+
+    FormatDate(value) {
+        var st = value;
+        var pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
+        var date = new Date(st.replace(pattern, '$1-$2-$3 $4:$5:$6'));
+        return date.toDateString().slice(4, 10)
+
+    }
+
+     FormatDuration(dur) {
+        if (dur != null) {
+            var hrs = Number(dur.slice(0, 2));
+            var h = (hrs == 0) ? "" : hrs + 'h ';
+            var mins = Number(dur.slice(3, 5));
+            var m = (mins == 0) ? "" : mins + 'm ';
+            var secs = Number(dur.slice(6, 8));
+            var s = secs + 's';
+            return h + m + s;
+        }
+        else {
+            return "";
+        }
     }
 }

@@ -4,8 +4,10 @@ import { StorageFactory } from '../../Factory/StorageFactory';
 import { Http } from '@angular/http';
 import { Package } from '../../pages/Package';
 import { Observable } from 'rxjs/Rx';
-import { NavController,ToastController, PopoverController, NavParams,
-   ActionSheetController, AlertController, ViewController, Platform, LoadingController } from 'ionic-angular';
+import {
+  NavController, ToastController, PopoverController, NavParams,
+  ActionSheetController, AlertController, ViewController, Platform, LoadingController
+} from 'ionic-angular';
 declare var cordova: any;
 
 /*
@@ -64,8 +66,16 @@ export class ChannelCollectionPage {
 
   }
 
+  FormatDate(value) {
+    return this.packages.FormatDate(value);
+  }
+
+  formatDuration(dur) {
+      return this.packages.FormatDuration(dur);
+  }
+
   retrunThumbnailPath(name) {
-    return cordova.file.applicationStorageDirectory + name + ".jpg";
+    return "url(" + cordova.file.applicationStorageDirectory + name + ".jpg" + ")";
   }
 
   presentPopover(event) {
@@ -133,9 +143,9 @@ export class ChannelCollectionPage {
     return true;
   }
 
-  channelMatrixPressed(index, channel, DirName) {
+  channelMatrixPressed(index, channel, DirName, title) {
     let actionSheet = this.actionSheetCtrl.create({
-      title: DirName,
+      title: title,
       buttons: [{
         text: 'Download',
         handler: () => {

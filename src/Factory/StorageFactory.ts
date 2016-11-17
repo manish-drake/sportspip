@@ -98,7 +98,7 @@ export class StorageFactory {
                                 File.createFile(fileLocation, "Header.xml", true).then(() => {
                                     File.writeFile(fileLocation, "Header.xml", content, true)
                                         .then(function (success) {
-
+                                            console.log("saved local");
                                         })
                                 })
                             })
@@ -147,6 +147,54 @@ export class StorageFactory {
                 })
             })
         })
+
+    }
+
+    ComposeNewMatrix() {
+        var name = Date.now().toString();
+        let data =
+            {
+                "Matrix": {
+                    "_name": name,
+                    "_Name": name,
+                    "_Title": "Title1",
+                    "_Skill": "Serve",
+                    "_Location": "Field",
+                    "_Duration": "00:00:00",
+                    "_DateCreated": new Date().toString(),
+                    "_Sport": "Tennis",
+                    "Channel": "Local",
+                    "Matrix.Children": {
+                        "View":
+                        {
+                            "_name": "View 1",
+                            "_Title": "View 1",
+                            "_Source": "(Blank)",
+                            "_Content": {}
+                        }
+                    }
+                }
+            };
+        return data;
+    }
+
+    ComposeMatrixHeader(fromMatrix) {
+        console.log(fromMatrix["Matrix.Children"]);
+
+        var header = {
+            Title: fromMatrix._Title,
+            DateCreated: fromMatrix._DateCreated,
+            Name: fromMatrix._Name,
+            Channel: fromMatrix.Channel,
+            ThumbnailSource: "636049183928404138",
+            Sport: fromMatrix._Sport,
+            Skill: fromMatrix._Skill,
+            UploadID: "0",
+            Duration: fromMatrix._Duration,
+            Views: fromMatrix["Matrix.Children"].View.Lenght
+        };
+
+        return header;
 
     }
 }

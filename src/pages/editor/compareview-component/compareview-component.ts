@@ -104,9 +104,11 @@ export class CompareviewComponent {
         popover.present({ ev: event });
 
         popover.onDidDismiss(data => {
-            this.view = data;
-            this.clearViewData();
-            this.loadViewData();
+            if(data != null){
+                this.view = data;
+                this.clearViewData();
+                this.loadViewData();
+            }
         })
     }
 
