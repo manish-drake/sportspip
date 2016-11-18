@@ -25,6 +25,8 @@ import { EditorPage } from '../editor/editor';
 declare var cordova: any;
 declare var navigator: any;
 
+declare var chrome: any;
+
 @Component({
     selector: 'page-home',
     templateUrl: 'home.html',
@@ -75,7 +77,6 @@ export class HomePage {
         this.channels = [];
         this.DisplayServerHeader();
         this.GetLocalMatrixHeader();
-
     }
 
     openConnectivity() {

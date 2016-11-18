@@ -210,11 +210,8 @@ export class VideoComponent {
                         console.log(markerTime);
                         this.play();
                     }
-
                 });
-
             }
-
         });
     }
 
