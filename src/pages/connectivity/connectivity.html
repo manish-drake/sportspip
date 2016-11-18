@@ -20,13 +20,12 @@
   </ion-item>
   <div *ngIf="isConnectivityEnabled">
     <ion-list>
-      <ion-item *ngFor="let server of servers">
-        <ion-label>{{server._name}}
-        </ion-label>
+      <ion-item *ngFor="let ser of servers">
+        <ion-label>Title</ion-label>
       </ion-item>
     </ion-list>
     
-    <!--<ion-card *ngFor="let server of servers">
+    <ion-card *ngFor="let server of connections">
       <ion-item>
         <ion-row>
           <ion-col>
@@ -62,13 +61,13 @@
           </ion-col>
           <ion-col>
             <button ion-button block small *ngIf="!server.saved" (click)="connect(server)" [style.background-color]="getStatusColor(server.status)">Pair</button>
-            <button ion-button block small *ngIf="!server.connected && connection.saved && server.available" (click)="connect(server)">Connect</button>
+            <button ion-button block small *ngIf="!server.connected && server.saved && server.available" (click)="connect(server)">Connect</button>
             <button ion-button block outline small *ngIf="server.connected" (click)="disconnect(server)">Disconnect</button>
-            <button ion-button block outline small color="dark" *ngIf="!server.available" (click)="forget(server)">Forget</button>
+            <button ion-button block outline small color="dark" *ngIf="!server.available" (click)="forget(i)">Forget</button>
           </ion-col>
         </ion-row>
       </ion-item>
-    </ion-card>-->
+    </ion-card>
   </div>
 
 

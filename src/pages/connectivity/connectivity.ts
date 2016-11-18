@@ -24,13 +24,6 @@ export class Connectivity {
 
     isConnectivityEnabled: boolean = true;
 
-    // connections = [
-    //     { title: 'Server 1', status: 'Ready to Pair', ipaddress: '192.168.1.267', description: 'Sports PIP Server', connected: false, saved: false, available: true },
-    //     { title: 'Server 2', status: 'Ready to Pair', ipaddress: '192.168.1.268', description: 'Sports PIP Server', connected: false, saved: false, available: true },
-    //     { title: 'Server 3', status: 'Ready to Pair', ipaddress: '192.168.1.269', description: 'Sports PIP Server', connected: false, saved: false, available: true },
-    //     { title: 'Server 4', status: 'Unavailable', ipaddress: '192.168.1.270', description: 'Sports PIP Server', connected: false, saved: true, available: false }
-    // ];
-
     constructor(public navCtrl: NavController) { }
 
     ionViewDidLoad() {
@@ -38,9 +31,14 @@ export class Connectivity {
         this.scanUdp();
     }
 
-    servers = [];
+    public servers = [];
+
+    call = (res): void => {
+        alert('Called');
+    }
 
     scanUdp() {
+        var serverstemp = [];
         var onReceive = function (info) {
             var binaryData = (info.data);
             var dataStr = '';
@@ -51,10 +49,18 @@ export class Connectivity {
 
             let parser: any = new X2JS();
             var data = parser.xml2js(dataStr);
-            // alert( JSON.stringify(data.Server));
-            var server = JSON.stringify(data.Server);
-            this.servers.push({server});
-            alert(this.servers);
+            // alert( JSON.stringify(data));
+            // var serverData = JSON.parse(data.text());
+            // var server = { _name: data.Server._name };
+
+            // alert(data.Server._name);
+
+            var item = { name: 'Server11' };
+
+            serverstemp.push(item);
+            alert(serverstemp.length);
+            this.servers.push(item);
+            alert('...' + this.servers.length);
         }
         var onReceiveError = function (errorinfo) {
             console.log('onReceiveError:');
@@ -74,8 +80,15 @@ export class Connectivity {
         });
     }
 
+    connections = [
+        { _name: 'Server 1', status: 'Ready to Pair', _Location: '192.168.1.267', _Information: 'Sports PIP Server', connected: false, saved: false, available: true },
+        { _name: 'Server 2', status: 'Ready to Pair', _Location: '192.168.1.268', _Information: 'Sports PIP Server', connected: false, saved: false, available: true },
+        { _name: 'Server 3', status: 'Ready to Pair', _Location: '192.168.1.269', _Information: 'Sports PIP Server', connected: false, saved: false, available: true },
+        { _name: 'Server 4', status: 'Unavailable', _Location: '192.168.1.270', _Information: 'Sports PIP Server', connected: false, saved: true, available: false }
+    ];
+
     connect(conn) {
-        this.servers.forEach((connection, index) => {
+        this.connections.forEach((connection, index) => {
             if (conn == connection) {
                 connection.connected = true;
                 connection.status = 'Connected';
@@ -94,7 +107,7 @@ export class Connectivity {
     }
 
     disconnect(conn) {
-        this.servers.forEach(connection => {
+        this.connections.forEach(connection => {
             console.log(conn);
             console.log(connection);
             if (conn == connection) {
@@ -104,16 +117,16 @@ export class Connectivity {
         });
     }
 
-    forget(conn) {
-        this.servers.forEach((connection, index) => {
-            if (conn == connection) {
+    forget(i) {
+        this.connections.forEach((connection, index) => {
+            if (i == index) {
                 if (connection.available) {
                     connection.connected = false;
                     connection.status = 'Ready to Pair';
                     connection.saved = false;
                 }
                 else {
-                    this.servers.splice(index, 1);
+                    this.connections.splice(index, 1);
                 }
             }
         });
