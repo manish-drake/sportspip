@@ -66,9 +66,6 @@ export class HomePage {
         //       this.DisplayServerHeader();
         //     })    
         // });
-
-        console.log(this.packages.FormatDate(new Date().toString()));
-        console.log(this.formatDuration("00:00:00"));
     }
 
     ionViewDidEnter() {
@@ -210,7 +207,7 @@ export class HomePage {
                                     var item = {
                                         Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
                                         ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
-                                        Views: result.Views
+                                        Views: result.Clips
                                     };
                                     this.localMatrices.push(item);
                                 });
@@ -226,18 +223,7 @@ export class HomePage {
     }
 
     formatDuration(dur) {
-        if (dur != null) {
-            var hrs = Number(dur.slice(0, 2));
-            var h = (hrs == 0) ? "" : hrs + 'h ';
-            var mins = Number(dur.slice(3, 5));
-            var m = (mins == 0) ? "" : mins + 'm ';
-            var secs = Number(dur.slice(6, 8));
-            var s = secs + 's';
-            return h + m + s;
-        }
-        else {
-            return "";
-        }
+        return this.packages.FormatDuration(dur);
     }
 
     //Display Server Header
@@ -328,31 +314,7 @@ export class HomePage {
     }
 
     newMatrix() {
-        var name = Date.now().toString();
-        let data =
-            {
-                "Matrix": {
-                    "_name": name,
-                    "_Name": name,
-                    "_Title": "Title1",
-                    "_Skill": "Serve",
-                    "_Location": "Field",
-                    "_Duration": "00:00:00",
-                    "_DateCreated": new Date().toString(),
-                    "_Sport": "Tennis",
-                    "Channel": "Local",
-                    "Matrix.Children": {
-                        "View":
-                        {
-                            "_name": "View 1",
-                            "_Title": "View 1",
-                            "_Source": "(Blank)",
-                            "_Content": {}
-                        }
-                    }
-                }
-            };
-        // var newMatrix = this.storagefactory.ComposeNewMatrix();
+        var data = this.storagefactory.ComposeNewMatrix();
         var result = data.Matrix;
         this.storagefactory.SaveMatrixAsync(data, result.Channel, result._Sport, result._Name, "Matrices");
 

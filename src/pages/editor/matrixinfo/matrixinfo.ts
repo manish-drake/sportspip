@@ -3,6 +3,7 @@ import { ViewController, NavParams, Platform } from 'ionic-angular';
 import { Http } from '@angular/http';
 
 import { StorageFactory } from '../../../Factory/StorageFactory';
+import { Package } from '../../../pages/Package';
 
 declare var cordova: any;
 
@@ -15,7 +16,7 @@ declare var cordova: any;
 @Component({
     selector: 'page-matrixinfo',
     templateUrl: 'matrixinfo.html',
-    providers: [StorageFactory]
+    providers: [StorageFactory, Package]
 })
 
 export class MatrixInfoPage {
@@ -28,6 +29,7 @@ export class MatrixInfoPage {
 
     constructor(private viewCtrl: ViewController, navParams: NavParams,
         private storagefactory: StorageFactory,
+        private packages: Package,
         private platform: Platform,
         private http: Http) {
         this.matrixData = navParams.get("matrixData");
@@ -36,9 +38,7 @@ export class MatrixInfoPage {
     }
 
     FormateDate(value) {
-        var pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
-        var date = new Date(value.replace(pattern, '$1-$2-$3 $4:$5:$6'));
-        return date.toDateString();
+        return this.packages.FormatDate(value);
     }
 
     ionViewDidLoad() {
