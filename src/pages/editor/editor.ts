@@ -66,7 +66,6 @@ export class EditorPage {
           this.storagefactory.SaveMatrixAsync(res, matrix.Channel, matrix._Sport, matrix._Name, "Matrices");
 
           var header = this.storagefactory.ComposeMatrixHeader(matrix);
-          alert(header.Title);
           this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
         });
     });
