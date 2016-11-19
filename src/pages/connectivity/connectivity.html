@@ -8,6 +8,9 @@
 
   <ion-navbar color="primary">
     <ion-title>Connection</ion-title>
+    <ion-buttons end>
+			<button ion-button icon-only (click)="refreshConnection()"><ion-icon name="refresh"></ion-icon></button>
+		</ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -16,58 +19,54 @@
 <ion-content style="background:#eee;">
   <ion-item no-lines style="background:transparent;">
     <ion-label>Connectivity</ion-label>
-    <ion-toggle [(ngModel)]="isConnectivityEnabled"></ion-toggle>
+    <ion-toggle [(ngModel)]="isConnectivityEnabled" (ngModelChange)="connectivityChanged(isConnectivityEnabled)"></ion-toggle>
   </ion-item>
   <div *ngIf="isConnectivityEnabled">
     <ion-list>
-      <ion-item *ngFor="let ser of servers">
-        <ion-label>Title</ion-label>
-      </ion-item>
+      <ion-card *ngFor="let server of servers; let i = index;" >
+        <ion-item>
+          <ion-row>
+            <ion-col style="overflow: hidden;text-overflow: ellipsis;">
+              <h2>{{server.Data.Name}}</h2>
+            </ion-col>
+            <ion-col style="width: auto; flex: 0 0 auto;" [style.color]="getStatusColor(server.status)">
+              <ion-icon *ngIf="server.connected" name="wifi"></ion-icon>
+              <ion-icon *ngIf="!server.saved && !server.connected" name="link"></ion-icon>
+            </ion-col>
+            <ion-col center style="width: auto; flex: 0 0 auto;">
+              <h3 style="margin-bottom:10px;" [style.color]="getStatusColor(server.status)">{{server.status}}</h3>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col center>
+              <p>IP Address</p>
+            </ion-col>
+            <ion-col style="width: auto; flex: 0 0 auto;overflow: hidden;text-overflow: ellipsis;">
+              <h3>{{server.Address}}</h3>
+            </ion-col>
+          </ion-row>
+          <ion-row style="overflow: hidden;text-overflow: ellipsis;">
+            <ion-col center> 
+              <p>Description</p>
+            </ion-col>
+            <ion-col style="width: auto; flex: 0 0 auto;">
+              <h3>{{server.Data.Information}}</h3>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <button ion-button block outline small color="dark" *ngIf="server.saved && server.available" (click)="forget(server)">Forget</button>
+            </ion-col>
+            <ion-col>
+              <button ion-button block small *ngIf="!server.saved" (click)="connect(server)" [style.background-color]="getStatusColor(server.status)">Pair</button>
+              <button ion-button block small *ngIf="!server.connected && server.saved && server.available" (click)="connect(server)">Connect</button>
+              <button ion-button block outline small *ngIf="server.connected" (click)="disconnect(server)">Disconnect</button>
+              <button ion-button block outline small color="dark" *ngIf="!server.available" (click)="forget(server)">Forget</button>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+      </ion-card>
     </ion-list>
-    
-    <ion-card *ngFor="let server of connections">
-      <ion-item>
-        <ion-row>
-          <ion-col>
-            <h2>{{server._name}}</h2>
-          </ion-col>
-          <ion-col style="width: auto; flex: 0 0 auto;" [style.color]="getStatusColor(server.status)">
-            <ion-icon *ngIf="server.connected" name="wifi"></ion-icon>
-            <ion-icon *ngIf="!server.saved && !server.connected" name="link"></ion-icon>
-          </ion-col>
-          <ion-col style="width: auto; flex: 0 0 auto;">
-            <h3 style="margin-bottom:10px;" [style.color]="getStatusColor(server.status)">{{server.status}}</h3>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <p>IP Address</p>
-          </ion-col>
-          <ion-col style="width: auto; flex: 0 0 auto;">
-            <h3>{{server._Location}}</h3>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <p>Description</p>
-          </ion-col>
-          <ion-col style="width: auto; flex: 0 0 auto;">
-            <h3>{{server._Information}}</h3>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <button ion-button block outline small color="dark" *ngIf="server.saved && server.available" (click)="forget(server)">Forget</button>
-          </ion-col>
-          <ion-col>
-            <button ion-button block small *ngIf="!server.saved" (click)="connect(server)" [style.background-color]="getStatusColor(server.status)">Pair</button>
-            <button ion-button block small *ngIf="!server.connected && server.saved && server.available" (click)="connect(server)">Connect</button>
-            <button ion-button block outline small *ngIf="server.connected" (click)="disconnect(server)">Disconnect</button>
-            <button ion-button block outline small color="dark" *ngIf="!server.available" (click)="forget(i)">Forget</button>
-          </ion-col>
-        </ion-row>
-      </ion-item>
-    </ion-card>
   </div>
 
 

@@ -22,15 +22,15 @@ import { CollectionPage } from '../collection/collection';
 import { ChannelCollectionPage } from '../channelcollection/channelcollection';
 import { EditorPage } from '../editor/editor';
 
+import { Connection } from '../../pages/Connection';
+
 declare var cordova: any;
 declare var navigator: any;
-
-declare var chrome: any;
 
 @Component({
     selector: 'page-home',
     templateUrl: 'home.html',
-    providers: [StorageFactory, ModelFactory, DeleteHeader, Package, OpenMatrix, DatePipe]
+    providers: [StorageFactory, ModelFactory, DeleteHeader, Package, OpenMatrix, DatePipe, Connection]
 })
 
 export class HomePage {
@@ -39,6 +39,7 @@ export class HomePage {
     localMatrices = [];
     channels = [];
     Header = [];
+
     constructor(private http: Http, private platform: Platform, public navCtrl: NavController,
         private datepipe: DatePipe,
         private storagefactory: StorageFactory,
@@ -50,7 +51,8 @@ export class HomePage {
         private alertCtrl: AlertController,
         private toastCtrl: ToastController,
         private packages: Package,
-        private loadingCtrl: LoadingController) {
+        private loadingCtrl: LoadingController,
+        private connection: Connection) {
 
         //for server url
 
@@ -74,6 +76,12 @@ export class HomePage {
         this.channels = [];
         this.DisplayServerHeader();
         this.GetLocalMatrixHeader();
+    }
+
+    ionViewDidLoad() {
+        this.platform.ready().then(() => {
+            this.connection.scanUdp();
+        });
     }
 
     openConnectivity() {
