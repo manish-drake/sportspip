@@ -27,31 +27,33 @@
 			/>
 			<image *ngSwitchCase="'Ink'" #Ink x="0" y="0" width="100%" height="100%" xlink:href="assets/inksample.gif" />
 		</svg>
-		<div #markers *ngFor="let marker of markersObjects;" style="position:absolute;height:100%;width:100%;">
-			<svg *ngFor="let obj of marker.objects;" [ngSwitch]="obj.key" [attr.viewBox]="viewBoxSize" height="100%" width="100%" style="position:absolute">
-				<rect *ngSwitchCase="'Rectangle'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
-					[attr.fill]="clrCvt(obj.val._Fill)" [attr.stroke]="clrCvt(obj.val._Stroke)" [attr.stroke-width]="obj.val._StrokeThickness"
-					[attr.opacity]="obj.val._Opacity" />
-				<ellipse *ngSwitchCase="'Ellipse'" [attr.cx]="sum(obj.val._Left, obj.val._CenterX)" [attr.cy]="sum(obj.val._Top, obj.val._CenterY)"
-					[attr.rx]="obj.val._Width/2" [attr.ry]="obj.val._Height/2" [attr.fill]="clrCvt(obj.val._Fill)" [attr.stroke]="clrCvt(obj.val._Stroke)"
-					[attr.stroke-width]="obj.val._StrokeThickness" [attr.opacity]="obj.val._Opacity" />
-				<line *ngSwitchCase="'LineObject'" [attr.x1]="obj.val._X1" [attr.y1]="obj.val._Y1" [attr.x2]="obj.val._X2" [attr.y2]="obj.val._Y2"
-					[attr.stroke]="clrCvt(obj.val._Stroke)" [attr.stroke-width]="obj.val._StrokeThickness" [attr.opacity]="obj.val._Opacity"
-				/>
-				<text *ngSwitchCase="'RichTextObject'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.font-size]="obj.val._FontSize"
-					[attr.fill]="clrCvt(obj.val._Foreground)" [attr.opacity]="obj.val._Opacity">Video</text>
-				<image *ngSwitchCase="'Picture'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
-					xlink:href="assets/sample.jpg" />
-				<defs *ngSwitchCase="'Arrow'">
-					<marker id="markerarrow" viewBox="0 0 14 14" markerWidth="6" markerHeight="6" refX="9" refY="6" orient="auto">
-						<path d="M0,0 L0,12 L12,6 L0,0" [attr.fill]="clrCvt(obj.val._Stroke)"></path>
-					</marker>
-				</defs>
-				<line *ngSwitchCase="'Arrow'" #arrow marker-end="url(#markerarrow)" [attr.x1]="obj.val._X1" [attr.y1]="obj.val._Y1" [attr.x2]="obj.val._X2"
-					[attr.y2]="obj.val._Y2" [attr.stroke]="clrCvt(obj.val._Stroke)" [attr.stroke-width]="obj.val._StrokeThickness" [attr.opacity]="obj.val._Opacity"
-				/>
-				<image *ngSwitchCase="'Ink'" #Ink x="0" y="0" width="100%" height="100%" xlink:href="assets/inksample.gif" />
-			</svg>
+		<div  style="position:absolute;height:100%;width:100%;"> 
+			<div>
+				<svg *ngFor="let obj of objectss;" [ngSwitch]="obj.key" [attr.viewBox]="viewBoxSize" height="100%" width="100%" style="position:absolute">
+					<rect *ngSwitchCase="'Rectangle'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
+						[attr.fill]="clrCvt(obj.val._Fill)" [attr.stroke]="clrCvt(obj.val._Stroke)" [attr.stroke-width]="obj.val._StrokeThickness"
+						[attr.opacity]="obj.val._Opacity" />
+					<ellipse *ngSwitchCase="'Ellipse'" [attr.cx]="sum(obj.val._Left, obj.val._CenterX)" [attr.cy]="sum(obj.val._Top, obj.val._CenterY)"
+						[attr.rx]="obj.val._Width/2" [attr.ry]="obj.val._Height/2" [attr.fill]="clrCvt(obj.val._Fill)" [attr.stroke]="clrCvt(obj.val._Stroke)"
+						[attr.stroke-width]="obj.val._StrokeThickness" [attr.opacity]="obj.val._Opacity" />
+					<line *ngSwitchCase="'LineObject'" [attr.x1]="obj.val._X1" [attr.y1]="obj.val._Y1" [attr.x2]="obj.val._X2" [attr.y2]="obj.val._Y2"
+						[attr.stroke]="clrCvt(obj.val._Stroke)" [attr.stroke-width]="obj.val._StrokeThickness" [attr.opacity]="obj.val._Opacity"
+					/>
+					<text *ngSwitchCase="'RichTextObject'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.font-size]="obj.val._FontSize"
+						[attr.fill]="clrCvt(obj.val._Foreground)" [attr.opacity]="obj.val._Opacity">Video</text>
+					<image *ngSwitchCase="'Picture'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
+						xlink:href="assets/sample.jpg" />
+					<defs *ngSwitchCase="'Arrow'">
+						<marker id="markerarrow" viewBox="0 0 14 14" markerWidth="6" markerHeight="6" refX="9" refY="6" orient="auto">
+							<path d="M0,0 L0,12 L12,6 L0,0" [attr.fill]="clrCvt(obj.val._Stroke)"></path>
+						</marker>
+					</defs>
+					<line *ngSwitchCase="'Arrow'" #arrow marker-end="url(#markerarrow)" [attr.x1]="obj.val._X1" [attr.y1]="obj.val._Y1" [attr.x2]="obj.val._X2"
+						[attr.y2]="obj.val._Y2" [attr.stroke]="clrCvt(obj.val._Stroke)" [attr.stroke-width]="obj.val._StrokeThickness" [attr.opacity]="obj.val._Opacity"
+					/>
+					<image *ngSwitchCase="'Ink'" #Ink x="0" y="0" width="100%" height="100%" xlink:href="assets/inksample.gif" />
+				</svg>
+			</div>
 		</div>
 		<button ion-button icon-right small (click)="presentViewPopover($event)" style="position:absolute; left:5px; top:5px; background-color:rgba(0,0,0,0.4);color:white;">
 			{{view._Title}}<ion-icon name="arrow-dropdown"></ion-icon>
@@ -79,7 +81,7 @@
 						<ion-row>
 							<ion-col #markersContainer no-padding (window:resize)="onResize($event)" style="height:28px;">
 								<button ion-button icon-only clear color="inactive" *ngFor="let marker of markers;let i = index" [class.markerselected]="marker.checked"
-									[style.left]="marker.Left" style="width:18px;height:26px;margin:0 -9px;" (click)="updateSelection(i)" (press)="deleteMarker(i)">
+									[style.left]="marker.Left" style="width:18px;height:26px;margin:0 -9px;" (click)="updateSelection(i,marker.checked)" (press)="deleteMarker(i)">
 										<ion-icon name="pin"></ion-icon>
 										</button>
 							</ion-col>

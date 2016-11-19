@@ -341,14 +341,14 @@ export class HomePage {
                 var res = JSON.parse(data.text());
 
                 if (this.platform.is('cordova')) {
-                    File.checkFile(cordova.file.applicationStorageDirectory, 'sample.mp4').then(_ => {
+                    File.checkFile(cordova.file.applicationStorageDirectory, 'sample2.mp4').then(_ => {
                         console.log('Sample video already exists');
                         this.testNavToEditor(res);
                     }).catch(err => {
 
-                        File.checkFile(cordova.file.applicationDirectory + '/www/assets/', 'sample.mp4').then(_ => {
+                        File.checkFile(cordova.file.applicationDirectory + '/www/assets/', 'sample2.mp4').then(_ => {
 
-                            File.copyFile(cordova.file.applicationDirectory + '/www/assets/', 'sample.mp4', cordova.file.applicationStorageDirectory, 'sample.mp4').then(_ => {
+                            File.copyFile(cordova.file.applicationDirectory + '/www/assets/', 'sample2.mp4', cordova.file.applicationStorageDirectory, 'sample2.mp4').then(_ => {
                                 console.log('Sample video saved to application directory');
                                 this.testNavToEditor(res);
                             }).catch(err => {
