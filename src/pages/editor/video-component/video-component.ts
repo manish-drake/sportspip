@@ -305,7 +305,6 @@ export class VideoComponent {
             else {
                 if (isSelect) {
                     marker.checked = false;
-
                 }
                 else {
                     marker.checked = true;
@@ -320,7 +319,6 @@ export class VideoComponent {
                     this.sliderValue = factor;
                 }
             }
-
         });
     }
 
