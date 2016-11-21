@@ -11,6 +11,7 @@ import { StorageFactory } from '../../Factory/StorageFactory';
 import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 import { Compareview } from '../editor/compareview/compareview'
 import { Swipeview } from '../editor/swipeview/swipeview'
+import { Ipcameras } from '../editor/ipcameras/ipcameras'
 
 declare var cordova: any;
 
@@ -254,6 +255,10 @@ export class EditorPage {
     alert.present();
   }
   // Code for Camera Recording Starts
+
+  IPCamCapture(){
+    this.navCtrl.push(Ipcameras);
+  }
 
   CreateVideoView(fileName) {
     var localView = {

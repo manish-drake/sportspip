@@ -27,7 +27,7 @@
 		<ion-row *ngSwitchCase="'(Blank)'" style="height:100%;">
 			<ion-col no-padding center text-center>
 				<ion-grid no-padding style="max-width:500px ;margin-left: auto;margin-right: auto;">
-					<ion-row no-padding>
+					<ion-row>
 						<ion-col no-padding width-50>
 							<ion-card (click)="addBlankCanvas()">
 								<ion-item>
@@ -49,7 +49,7 @@
 							</ion-card>
 						</ion-col>
 					</ion-row>
-					<ion-row no-padding>
+					<ion-row>
 						<ion-col no-padding width-50>
 							<ion-card (click)="import()">
 								<ion-item>
@@ -67,6 +67,18 @@
 										<ion-icon name="videocam" item-left></ion-icon>
 									</ion-avatar>
 									<h2 class="textTrim">Record Video</h2>
+								</ion-item>
+							</ion-card>
+						</ion-col>
+					</ion-row>
+					<ion-row>
+						<ion-col no-padding>
+							<ion-card (click)="IPCamCapture()">
+								<ion-item>
+									<ion-avatar item-left style="font-size: 24px;">
+										<ion-icon name="wifi" item-left></ion-icon>
+									</ion-avatar>
+									<h2 class="textTrim">Capture IP Cams</h2>
 								</ion-item>
 							</ion-card>
 						</ion-col>

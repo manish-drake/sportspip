@@ -14,6 +14,7 @@ import { GroupBy } from '../GroupBy/GroupBy';
 
 import { EditorPage } from '../pages/editor/editor';
 import { MatrixInfoPage } from '../pages/editor/matrixinfo/matrixinfo';
+import { Ipcameras,IpCamSettingsModal } from '../pages/editor/ipcameras/ipcameras'
 import { VideoComponent } from '../pages/editor/video-component/video-component'
 import { CanvasComponent } from '../pages/editor/canvas-component/canvas-component'
 import { Compareview } from '../pages/editor/compareview/compareview'
@@ -38,6 +39,7 @@ import { Swipeview } from '../pages/editor/swipeview/swipeview'
 
     EditorPage,
     MatrixInfoPage,
+    Ipcameras,IpCamSettingsModal,
     VideoComponent,
     CanvasComponent,
     Compareview,
@@ -57,6 +59,7 @@ import { Swipeview } from '../pages/editor/swipeview/swipeview'
     MoreActionsPopover,
     EditorPage,
     MatrixInfoPage,
+    Ipcameras,IpCamSettingsModal,
     SettingsPage,
     UserActionsPopover,
     Login,

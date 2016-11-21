@@ -9,8 +9,8 @@
   <ion-navbar color="primary">
     <ion-title>Connection</ion-title>
     <ion-buttons end>
-			<button ion-button icon-only (click)="refreshConnection()"><ion-icon name="refresh"></ion-icon></button>
-		</ion-buttons>
+      <button ion-button icon-only (click)="refreshConnection()"><ion-icon name="refresh"></ion-icon></button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -23,7 +23,7 @@
   </ion-item>
   <div *ngIf="isConnectivityEnabled">
     <ion-list>
-      <ion-card *ngFor="let server of servers; let i = index;" >
+      <ion-card *ngFor="let server of servers; let i = index;">
         <ion-item>
           <ion-row>
             <ion-col style="overflow: hidden;text-overflow: ellipsis;">
@@ -46,7 +46,7 @@
             </ion-col>
           </ion-row>
           <ion-row style="overflow: hidden;text-overflow: ellipsis;">
-            <ion-col center> 
+            <ion-col center>
               <p>Description</p>
             </ion-col>
             <ion-col style="width: auto; flex: 0 0 auto;">
@@ -67,6 +67,18 @@
         </ion-item>
       </ion-card>
     </ion-list>
+    <!--<button ion-button block (click)="previewIPCams()">Preview IP Cams</button>
+    <ion-list>
+      <ion-card *ngFor="let cam of ipCams;">
+        <img [attr.src]="getIPCamPreview(cam._IPAdd)"/>
+        <ion-card-header>
+          {{cam._IPAdd}}
+        </ion-card-header>
+        <ion-card-content>
+          {{stringifyJSON(cam)}}
+        </ion-card-content>
+      </ion-card>
+    </ion-list>-->
   </div>
 
 
