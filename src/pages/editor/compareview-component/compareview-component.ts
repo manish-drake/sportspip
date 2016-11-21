@@ -89,16 +89,26 @@ export class CompareviewComponent {
         this.markers = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
         this.loadObjects();
         // this.loadMarkerObjects();
-
+        var delay = 1 / 60;
         setInterval(() => {
             this.timelineDuration = this.formatTime(this.video.duration);
             this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
-            this.evaluateMarkerPosition();
+            // this.evaluateMarkerPosition();
+
+            if (!this.isSelected) {
+                this.video.pause();
+                this.playPauseButtonIcon = "play";
+                clearInterval(this.timelineInterval);
+            }
+
+            if (this.formatTime(this.video.currentTime) == this.timelineDuration) {
+                this.objectss = [];
+                this.markersDirectory = [];
+            }
 
             this.PlayMarker();
             this.PlayStoryBoard();
-
-        }, 1);
+        }, delay);
     }
 
     PlayMarker() {
@@ -209,10 +219,12 @@ export class CompareviewComponent {
 
     updateLink() {
         if (!this.isLinked) {
+            console.log(this.views);
             this.isLinked = true;
             this.linkUnlinkIcon = "link";
         }
         else {
+            console.log(this.views);
             this.isLinked = false;
             this.linkUnlinkIcon = "remove";
         }
@@ -246,6 +258,7 @@ export class CompareviewComponent {
     }
 
     playPause() {
+
         if (this.video.paused == true) {
             this.playPauseChild.emit('play');
             this.video.play();
