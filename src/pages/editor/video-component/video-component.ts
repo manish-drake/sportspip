@@ -45,6 +45,7 @@ export class VideoComponent {
     timelineInterval: any = null;
 
     ngAfterViewInit() {
+        var delay = 1 / 60;
         this.markers = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
         this.loadObjects();
         this.video = this.videoElement.nativeElement;
@@ -53,9 +54,7 @@ export class VideoComponent {
             this.playPauseButtonIcon = 'play';
             clearInterval(this.timelineInterval);
         })
-
-        var val = this.markers.find(x => x.Che)
-
+        
         this.video.addEventListener('error', (error) => {
             console.log('Error in video Elmnt:' + error);
             // this.videoSrcAvailable = false;
@@ -75,7 +74,7 @@ export class VideoComponent {
             this.PlayMarker();
             this.PlayStoryBoard();
 
-        }, 1);
+        }, delay);
     }
 
     PlayMarker() {

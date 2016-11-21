@@ -13,7 +13,6 @@
                            {
                               "Marker.Objects": {
                                  "Ellipse": {
-                                    "Behaviors": "",
                                     "_name": "3a2d735f29fa43baaccba3e1392ac09c",
                                     "_Fill": "#FFFFA500",
                                     "_Stroke": "#FF000000",
@@ -35,7 +34,6 @@
                                  },
                                  "Rectangle": [
                                     {
-                                       "Behaviors": "",
                                        "_name": "d76273a8ba66492e8510d95bb88a7d11",
                                        "_Fill": "#FFFFA500",
                                        "_Stroke": "#FF000000",
@@ -56,7 +54,6 @@
                                        "_CenterY": "83.000175476074"
                                     },
                                     {
-                                       "Behaviors": "",
                                        "_name": "9057a99889c84efd9f33c9df68e1eeaa",
                                        "_Fill": "#FFFFA500",
                                        "_Stroke": "#FF000000",
@@ -88,7 +85,6 @@
                               "Marker.Objects": {
                                  "Rectangle": [
                                     {
-                                       "Behaviors": "",
                                        "_name": "52c30b31e9934c2cb1d9a6045ee8833e",
                                        "_Fill": "#FFFFA500",
                                        "_Stroke": "#FF000000",
@@ -110,7 +106,6 @@
                                     }
                                  ],
                                  "LineObject": {
-                                    "Behaviors": "",
                                     "_name": "dbdbf4d5cf1447efbf73400bd6f34d3f",
                                     "_X1": "969.063171386719",
                                     "_Y1": "123.985382080078",
@@ -134,7 +129,6 @@
                                     "_CenterY": "0"
                                  },
                                  "Arrow": {
-                                    "Behaviors": "",
                                     "_name": "8b2e02a3bfe74a649ad7462f3a9bb80b",
                                     "_X1": "373.592010498047",
                                     "_Y1": "553.008544921875",
@@ -168,7 +162,6 @@
                               "Marker.Objects": {
                                  "Rectangle": [
                                     {
-                                       "Behaviors": "",
                                        "_name": "32689ed2b29c42f5b0012a833046bdc4",
                                        "_Fill": "#FF49270A",
                                        "_Stroke": "#FF000000",
@@ -190,7 +183,6 @@
                                     }
                                  ],
                                  "Ellipse": {
-                                    "Behaviors": "",
                                     "_name": "56aca89bf5ae42ce949be5d74f5bbdbb",
                                     "_Fill": "#FF110D0A",
                                     "_Stroke": "#FF000000",
@@ -235,7 +227,14 @@
                   "PIP": {
                      "PIP.Objects": {
                         "Ellipse": {
-                           "Behaviors": "",
+                           "Behaviors": {
+                              "Span": {
+                                 "_name": "00ed5aa724a84ba5827b3fc559eac1ae",
+                                 "_WithEasing": "False",
+                                 "_Position": "00:00:01.0673274",
+                                 "_Duration": "00:00:00.7597662"
+                              }
+                           },
                            "_name": "662b622cdf0b49c0a7d9bb96458b5a2a",
                            "_Fill": "#FFFFA500",
                            "_Stroke": "#FF000000",
@@ -257,7 +256,14 @@
                         },
                         "Rectangle": [
                            {
-                              "Behaviors": "",
+                              "Behaviors": {
+                                 "Span": {
+                                    "_name": "f868f11a93f8429eb749db910a4d9e41",
+                                    "_WithEasing": "False",
+                                    "_Position": "00:00:00",
+                                    "_Duration": "00:00:00.6518651"
+                                 }
+                              },
                               "_name": "237497f1a77646eca8600a53b6382828",
                               "_Fill": "#FFFFA500",
                               "_Stroke": "#FF000000",
@@ -279,7 +285,14 @@
                            }
                         ],
                         "Arrow": {
-                           "Behaviors": "",
+                           "Behaviors": {
+                              "Span": {
+                                 "_name": "defe533a7736408899106bbee4adc540",
+                                 "_WithEasing": "False",
+                                 "_Position": "00:00:00.7413947",
+                                 "_Duration": "00:00:04.8354940"
+                              }
+                           },
                            "_name": "a710a5aa079d41fe8e2c022e974138ca",
                            "_X1": "846.169311523438",
                            "_Y1": "220.132446289063",
@@ -292,7 +305,7 @@
                            "_BorderBrush": "",
                            "_BorderThickness": "0,0,0,0",
                            "_Left": "0",
-                           "_Opacity": "1",
+                           "_Opacity": "0",
                            "_Top": "0",
                            "_Width": "0",
                            "_Height": "0",
@@ -303,7 +316,14 @@
                            "_CenterY": "0"
                         },
                         "LineObject": {
-                           "Behaviors": "",
+                           "Behaviors": {
+                              "Span": {
+                                 "_name": "56fc3b9414b340f09a1f505406073b5b",
+                                 "_WithEasing": "False",
+                                 "_Position": "00:00:01.0666666",
+                                 "_Duration": "00:00:06.5652308"
+                              }
+                           },
                            "_name": "73cd0df9c8ec4bda8ad9de961b218c4d",
                            "_X1": "559.172302246094",
                            "_Y1": "427.842193603516",
@@ -316,7 +336,7 @@
                            "_BorderBrush": "",
                            "_BorderThickness": "0,0,0,0",
                            "_Left": "0",
-                           "_Opacity": "1",
+                           "_Opacity": "0",
                            "_Top": "0",
                            "_Width": "0",
                            "_Height": "0",
@@ -327,7 +347,7 @@
                            "_CenterY": "0"
                         }
                      },
-                     "_name": "68cc33a91f50439c97e69a0f91c98a28",
+                     "_name": "5eec0679468f4ed99c567583f7324e59",
                      "_CanvasBackgroundBrush": "#FFFFFFFF",
                      "_CanvasBackgroundOpacity": "1"
                   }
@@ -347,7 +367,6 @@
                            {
                               "Marker.Objects": {
                                  "Ellipse": {
-                                    "Behaviors": "",
                                     "_name": "cb8863d081ce472e926c6ec734ca30aa",
                                     "_Fill": "#FFFFA500",
                                     "_Stroke": "#FF000000",
@@ -369,7 +388,6 @@
                                  },
                                  "Rectangle": [
                                     {
-                                       "Behaviors": "",
                                        "_name": "3530a869f8464616a55f7f09c6f7c4d4",
                                        "_Fill": "#FFFFA500",
                                        "_Stroke": "#FF000000",
@@ -391,7 +409,6 @@
                                     }
                                  ],
                                  "Arrow": {
-                                    "Behaviors": "",
                                     "_name": "d26b5ad8fb7f42bf94f8b8331c46396c",
                                     "_X1": "600.396606445313",
                                     "_Y1": "79.9907684326172",

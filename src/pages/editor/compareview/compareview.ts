@@ -45,8 +45,6 @@ export class Compareview {
   }
 
   playPause(ev) {
-    console.log("ss");
-    console.log(ev);
 
   }
 
