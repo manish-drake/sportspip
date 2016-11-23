@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController, ViewController, AlertController, NavParams, LoadingController } from 'ionic-angular';
+import { NavController, ModalController, ViewController, AlertController, NavParams, LoadingController, Platform } from 'ionic-angular';
 
 import { Http } from '@angular/http';
 import X2JS from 'x2js';
@@ -7,23 +7,43 @@ import X2JS from 'x2js';
 import { Connection } from '../../../pages/Connection';
 import { Connectivity } from '../../connectivity/connectivity';
 
+import { StorageFactory } from '../../../Factory/StorageFactory';
+
+import { HomePage } from '../../home/home';
+
+
 /*
   Generated class for the Ipcamera page.
 
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 */
+declare var cordova: any;
+
 @Component({
   selector: 'page-ipcamera',
-  templateUrl: 'ipcameras.html'
+  templateUrl: 'ipcameras.html',
+  providers: [StorageFactory,Connection]
 })
 export class Ipcameras {
+  matrix: any;
+  views: any;
+  selectedViewIndex: any;
 
   constructor(public navCtrl: NavController,
     private modalCtrl: ModalController,
+    private connection: Connection,
     private http: Http,
     private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController) { }
+    private loadingCtrl: LoadingController,
+    private platform: Platform,
+    private navParams: NavParams,
+    private storagefactory: StorageFactory) {
+
+    this.matrix = this.navParams.data.matrix;
+    this.views = this.navParams.data.views;
+    this.selectedViewIndex = this.navParams.data.selectedViewIndex;
+  }
 
   ionViewDidLoad() {
     console.log('Hello Ipcamera Page');
@@ -149,30 +169,34 @@ export class Ipcameras {
   record() {
     console.log("Recording for IP Cams on network");
     var connectedServerIP = Connection.connectedServer.Data.Location;
-    var Name = Date.now();
-    var uri: string = "http://" + connectedServerIP + ":10080/icamera/cams/ip/" + Name + "/rec?duration=" + this.recordingDuration;
+    var fileName = Date.now();
+    var uri: string = "http://" + connectedServerIP + ":10080/icamera/cams/ip/" + fileName + "/rec?duration=" + this.recordingDuration;
     console.log('Request URI: ' + uri);
     this.http.post(uri, null)
       .toPromise()
       .then(res => {
         console.log('Response: ' + res);
-          var time = Number(0);
 
-          let loader = this.loadingCtrl.create({
-            content: 'Recording ' + time.toString() + 's',
-            duration: this.recordingDuration * 1000,
-            dismissOnPageChange: true
-          });
-          loader.present();
+        this.createViews(fileName);
 
-          var interval = setInterval(() => {
-            time++;
-            loader.setContent('Recording ' + time.toString() + 's');
-            if (time >= this.recordingDuration) {
-              clearInterval(interval);
-              this.isRecording = false;
-            }
-          }, 1000);
+        var time = Number(0);
+        let loader = this.loadingCtrl.create({
+          content: 'Recording ' + time.toString() + 's',
+          duration: this.recordingDuration * 1000,
+          dismissOnPageChange: true
+        });
+        loader.present();
+
+        var interval = setInterval(() => {
+          time++;
+          loader.setContent('Recording ' + time.toString() + 's');
+          if (time >= this.recordingDuration) {
+            clearInterval(interval);
+            this.isRecording = false;
+            this.connection.transferMatrix(this.matrix._Name);
+            this.navCtrl.popToRoot();
+          }
+        }, 1000);
       })
       .catch(err => {
         console.log('Error: ' + err);
@@ -184,6 +208,84 @@ export class Ipcameras {
         alert.present();
         this.isRecording = false;
       });
+  }
+
+  createViews(fileName) {
+    if (this.ipCams.length == 1) {
+      this.createVideoView(fileName + "_1.mp4");
+    }
+    else {
+      this.ipCams.forEach((element, index) => {
+        if (index == 0) {
+          this.createVideoView(fileName + "_1.mp4");
+        }
+        else {
+          this.selectedViewIndex++;
+          this.addView();
+          this.createVideoView(fileName + "_" + (index + 1) + ".mp4");
+        }
+      });
+    }
+
+    this.saveMatrix();
+  }
+
+  createVideoView(fileName) {
+    var localView = {
+      "Content": {
+        "Capture": {
+          "Marker": {
+            "Marker.Objects": "",
+            "_name": "c379224ff2704c5ea5ad1f10275a28c1"
+          },
+          "View.ChronoMarker": "",
+          "_name": "ba160173f284474c9412192dcd77cb1c",
+          "_Kernel": fileName,
+          "_Title": "View " + this.selectedViewIndex,
+          "_Name": "ba160173f284474c9412192dcd77cb1c",
+          "_IsActive": "False"
+        }
+      },
+      "_name": "View " + this.selectedViewIndex,
+      "_Title": "View " + this.selectedViewIndex,
+      "_Source": "Local"
+    }
+    this.views[this.selectedViewIndex] = localView;
+  }
+
+  addView() {
+    if (this.views.length <= 7) {
+      var inum: number = this.views.length + 1;
+      this.views.push({
+        "_name": "View " + inum,
+        "_Title": "View " + inum,
+        "_Source": "(Blank)"
+      });
+    }
+    else {
+      let alert = this.alertCtrl.create({
+        title: 'Maximum 8 views!',
+        subTitle: 'No more views could be added.',
+        buttons: ['OK']
+      });
+      alert.present();
+    }
+  }
+
+  saveMatrix() {
+    this.platform.ready().then(() => {
+      console.log(this.matrix.Channel);
+      this.http.get(cordova.file.dataDirectory + "Local/" + this.matrix.Channel + "/Tennis/Matrices/" + this.matrix._Name + "/" + this.matrix._Name + ".mtx")
+        .subscribe(data => {
+          var res = JSON.parse(data.text());
+          var matrix = res.Matrix;
+          matrix['Matrix.Children'].View = this.views;
+          this.storagefactory.SaveMatrixAsync(res, matrix.Channel, matrix._Sport, matrix._Name, "Matrices");
+
+          var header = this.storagefactory.ComposeMatrixHeader(matrix);
+          this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
+        });
+    });
   }
 }
 
