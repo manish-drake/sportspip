@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 
-import { NavController, NavParams, AlertController, ModalController, Platform } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ModalController, Platform, App } from 'ionic-angular';
 
 import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError } from 'ionic-native';
 
@@ -16,6 +16,7 @@ import { Connection } from '../../pages/Connection';
 
 declare var cordova: any;
 
+@Injectable()
 @Component({
   selector: 'page-editor',
   templateUrl: 'editor.html',
@@ -34,13 +35,17 @@ export class EditorPage {
     private modalCtrl: ModalController,
     private platform: Platform,
     private http: Http,
-    private storagefactory: StorageFactory, ) {
+    private storagefactory: StorageFactory,
+    private app: App) {
     this.matrix = params.get("matrixData");
     console.log(this.matrix);
   }
 
   ionViewDidLoad() {
+  }
 
+  ionViewWillUnload() {
+    this.saveMatrix();
   }
 
   ngOnInit() {
@@ -51,10 +56,6 @@ export class EditorPage {
       this.views.push(this.matrix["Matrix.Children"]["View"]);
     }
     this.showViewSegment(this.selectedViewIndex);
-  }
-
-  ionViewWillUnload() {
-    this.saveMatrix();
   }
 
   saveMatrix() {
@@ -268,7 +269,11 @@ export class EditorPage {
   // Code for Camera Recording Starts
 
   IPCamCapture() {
-    this.navCtrl.push(Ipcameras);
+    this.navCtrl.push(Ipcameras, {
+      matrix: this.matrix,
+      views: this.views,
+      selectedViewIndex: this.selectedViewIndex
+    });
   }
 
   CreateVideoView(fileName) {
