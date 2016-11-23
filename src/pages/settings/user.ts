@@ -20,6 +20,6 @@ export class user implements IUser {
     }
 
     SaveUserAsync(file) {
-        var data = <user[]>file.json();
+        // var data = <user[]>file.json();
     }
 }

@@ -9,8 +9,6 @@ import { Connectivity } from '../../connectivity/connectivity';
 
 import { StorageFactory } from '../../../Factory/StorageFactory';
 
-import { HomePage } from '../../home/home';
-
 
 /*
   Generated class for the Ipcamera page.
@@ -86,7 +84,6 @@ export class Ipcameras {
     }
     else {
       var connectedServerIP = Connection.connectedServer.Address;
-      var Port = Connection.connectedServer.Port;
 
       var requestUri = "http://" + connectedServerIP + ":10080/icamera/cams/ip/";
 
