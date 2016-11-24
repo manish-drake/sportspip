@@ -54,7 +54,7 @@ export class VideoComponent {
             this.playPauseButtonIcon = 'play';
             clearInterval(this.timelineInterval);
         })
-        
+
         this.video.addEventListener('error', (error) => {
             console.log('Error in video Elmnt:' + error);
             // this.videoSrcAvailable = false;
@@ -191,19 +191,20 @@ export class VideoComponent {
     sliderValueChange() {
         this.timelinePosition = this.formatTime(this.video.currentTime);
         var factor = this.video.duration * (this.sliderValue / 100000);
-        this.video.currentTime = factor;
+        this.timelinePosition = this.formatTime(factor);
     }
+    currentTime: any = 0;
 
     playPause() {
-
         if (this.video.paused == true) {
             this.video.play();
             this.playPauseButtonIcon = 'pause';
             var delay = 1 / 60;
             this.timelineInterval = setInterval(() => {
-
+                var num = this.video.currentTime;
+                this.currentTime = num.toFixed(1);
                 var factor = (100000 / this.video.duration) * this.video.currentTime;
-                this.sliderValue = factor;
+                this.sliderValue = factor;                
                 this.timelinePosition = this.formatTime(this.video.currentTime);
             }, delay);
         } else {
@@ -316,6 +317,7 @@ export class VideoComponent {
                     this.video.currentTime = formatPosition;
                     var factor = (100000 / this.video.duration) * this.video.currentTime;
                     this.sliderValue = factor;
+                    this.timelinePosition = this.formatTime(formatPosition);
                 }
             }
         });
