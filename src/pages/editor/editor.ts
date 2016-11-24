@@ -4,7 +4,7 @@ import { NavController, NavParams, AlertController, ModalController, Platform, A
 
 import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError } from 'ionic-native';
 
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http } from '@angular/http';
 
 import { StorageFactory } from '../../Factory/StorageFactory';
 
@@ -12,7 +12,6 @@ import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 import { Compareview } from '../editor/compareview/compareview'
 import { Swipeview } from '../editor/swipeview/swipeview'
 import { Ipcameras } from '../editor/ipcameras/ipcameras'
-import { Connection } from '../../pages/Connection';
 
 declare var cordova: any;
 
@@ -235,7 +234,7 @@ export class EditorPage {
       File.moveFile(path, fileName, cordova.file.applicationStorageDirectory, fileName)
         .then(_ => {
           console.log('Successfully saved video')
-          var server = Connection.connectedServer.Address;
+          // var server = Connection.connectedServer.Address;
           // this.http.get(cordova.file.applicationStorageDirectory + fileName).subscribe(success => {
           //   let headers = new Headers({ 'Content-Type': 'multipart/form-data' }); // ... Set content type to JSON
           //   let options = new RequestOptions({ headers: headers });
