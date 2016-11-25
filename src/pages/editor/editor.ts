@@ -41,12 +41,20 @@ export class EditorPage {
     console.log(this.matrix);
   }
 
-  ionViewDidLoad() {
-  }
+  // ionViewDidLoad() {
+  //   alert('ionViewDidLoad');
+  // }
+
+  // ionViewWillLeave(){
+  //   alert('ionViewWillLeave');
+  // }
+
+  // ionViewDidLeave(){
+  //   alert('ionViewDidLeave');
+  // }
 
   ionViewWillUnload() {
-
-    console.log(this.matrix["Matrix.Children"]["View"]["Content"]);
+    // alert('ionViewWillUnload');
     this.saveMatrix();
   }
 

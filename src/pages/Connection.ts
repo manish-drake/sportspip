@@ -20,7 +20,7 @@ export class Connection {
     public static socketId: any;
 
     scanUdp() {
-        if (this.platform.is('cordova')) {
+        this.platform.ready().then(() => {
             var onReceive = function (info) {
                 var binaryData = (info.data);
                 var dataStr = '';
@@ -29,9 +29,13 @@ export class Connection {
                     dataStr = dataStr + String.fromCharCode(ui8[i]);
                 }
 
+                alert('dataString: ' + dataStr);
+
                 let parser: any = new X2JS();
                 var data = parser.xml2js(dataStr);
                 var server = data.Server;
+
+                alert('server data got.');
 
                 var item = {
                     Id: server._ID,
@@ -64,14 +68,16 @@ export class Connection {
                 Connection.socketId = createInfo.socketId;
                 chrome.sockets.udp.onReceive.addListener(onReceive);
                 chrome.sockets.udp.onReceiveError.addListener(onReceiveError);
-                chrome.sockets.udp.bind(Connection.socketId, '0.0.0.0', 5353, function (result) {
+                chrome.sockets.udp.bind(createInfo.socketId, '0.0.0.0', 5353, function (result) {
+                    console.log('bind result: ' + result);
                     if (result < 0) {
                         console.log("Error binding socket.");
+                        alert('Error searching servers');
                         return;
                     }
                 })
             });
-        }
+        });
     }
 
     transferMatrix(fileName) {
@@ -87,10 +93,12 @@ export class Connection {
     }
 
     close() {
-        chrome.sockets.udp.close(Connection.socketId, function (info) {
-            Connection.servers.length = 0;
-            console.log('connection closed: ' + info);
-        })
+        this.platform.ready().then(() => {
+            chrome.sockets.udp.close(Connection.socketId, function (info) {
+                Connection.servers.length = 0;
+                console.log('connection closed: ' + info);
+            })
+        });
     }
 
     connect(server) {

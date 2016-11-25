@@ -82,7 +82,7 @@ export class HomePage {
     }
 
     ionViewDidLoad() {
-            this.connection.scanUdp();
+        this.connection.scanUdp();
     }
 
     openConnectivity() {
