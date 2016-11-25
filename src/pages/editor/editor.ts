@@ -45,8 +45,6 @@ export class EditorPage {
   }
 
   ionViewWillUnload() {
-
-    console.log(this.matrix["Matrix.Children"]["View"]["Content"]);
     this.saveMatrix();
   }
 
