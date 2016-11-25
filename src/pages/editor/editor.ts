@@ -4,7 +4,7 @@ import { NavController, NavParams, AlertController, ModalController, Platform, A
 
 import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError } from 'ionic-native';
 
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http } from '@angular/http';
 
 import { StorageFactory } from '../../Factory/StorageFactory';
 

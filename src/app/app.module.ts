@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { IonicApp, IonicModule } from 'ionic-angular';
+import { NgModule, ErrorHandler } from '@angular/core';
+import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { sportspip } from './app.component';
 
 import { HomePage, MoreActionsPopover } from '../pages/home/home';
@@ -14,7 +14,7 @@ import { GroupBy } from '../GroupBy/GroupBy';
 
 import { EditorPage } from '../pages/editor/editor';
 import { MatrixInfoPage } from '../pages/editor/matrixinfo/matrixinfo';
-import { Ipcameras,IpCamSettingsModal } from '../pages/editor/ipcameras/ipcameras'
+import { Ipcameras, IpCamSettingsModal } from '../pages/editor/ipcameras/ipcameras'
 import { VideoComponent } from '../pages/editor/video-component/video-component'
 import { CanvasComponent } from '../pages/editor/canvas-component/canvas-component'
 import { Compareview } from '../pages/editor/compareview/compareview'
@@ -28,7 +28,7 @@ import { Swipeview } from '../pages/editor/swipeview/swipeview'
     Connectivity,
     SettingsPage,
     MoreActionsPopover,
-    
+
     UserActionsPopover,
     Login,
     CollectionPage,
@@ -39,7 +39,7 @@ import { Swipeview } from '../pages/editor/swipeview/swipeview'
 
     EditorPage,
     MatrixInfoPage,
-    Ipcameras,IpCamSettingsModal,
+    Ipcameras, IpCamSettingsModal,
     VideoComponent,
     CanvasComponent,
     Compareview,
@@ -59,7 +59,7 @@ import { Swipeview } from '../pages/editor/swipeview/swipeview'
     MoreActionsPopover,
     EditorPage,
     MatrixInfoPage,
-    Ipcameras,IpCamSettingsModal,
+    Ipcameras, IpCamSettingsModal,
     SettingsPage,
     UserActionsPopover,
     Login,
@@ -71,6 +71,6 @@ import { Swipeview } from '../pages/editor/swipeview/swipeview'
     CaptureViewsPopover,
     Swipeview
   ],
-  providers: []
+  providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }]
 })
 export class AppModule { }
