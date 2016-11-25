@@ -107,8 +107,6 @@ export class VideoComponent {
     currentTime: any = 0;
 
     playPause() {
-        this.video = this.videoElement.nativeElement;
-        this.timelineDuration = this.formatTime(this.video.duration);
         if (this.video.paused == true) {
 
             if (this.formatTime(this.video.currentTime) == this.timelineDuration) {
