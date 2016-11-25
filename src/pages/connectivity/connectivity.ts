@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, ToastController } from 'ionic-angular';
 
 import { Connection } from '../../pages/Connection';
 
@@ -27,7 +27,8 @@ export class Connectivity {
     isConnectivityEnabled: boolean = true;
 
     constructor(public navCtrl: NavController,
-        private connection: Connection) {
+        private connection: Connection,
+        private toastCtrl: ToastController) {
 
     }
 
@@ -38,16 +39,34 @@ export class Connectivity {
     connectivityChanged(isOn) {
         if (isOn) {
             this.connection.scanUdp();
+            let toast = this.toastCtrl.create({
+                message: 'Connectivity is now on.',
+                duration: 2000,
+                position: 'top'
+            });
+            toast.present(toast);
         }
         else {
             this.connection.close();
+            let toast = this.toastCtrl.create({
+                message: 'Connectivity closed.',
+                duration: 2000,
+                position: 'top'
+            });
+            toast.present(toast);
         }
     }
     refreshConnection() {
         this.connection.close();
-        setTimeout(() => {
-            this.connection.scanUdp();
-        }, 500);
+
+        let toast = this.toastCtrl.create({
+            message: 'Connections reloaded.',
+            duration: 2000,
+            position: 'top'
+        });
+        toast.present(toast);
+
+        this.connection.scanUdp();
     }
 
     connect(server) {

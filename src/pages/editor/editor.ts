@@ -41,8 +41,10 @@ export class EditorPage {
     console.log(this.matrix);
   }
 
-  ionViewDidLoad() {
-  }
+  // ionViewDidLoad() {
+  //   alert('ionViewDidLoad');
+  // }
+
 
   ionViewWillUnload() {
     this.saveMatrix();
