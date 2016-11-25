@@ -79,7 +79,7 @@ export class EditorPage {
   }
 
   saveMatrix() {
-    this.platform.ready().then(() => {
+    if (this.platform.is('cordova')) {
       console.log(this.matrix.Channel);
       this.http.get(cordova.file.dataDirectory + "Local/" + this.matrix.Channel + "/Tennis/Matrices/" + this.matrix._Name + "/" + this.matrix._Name + ".mtx")
         .subscribe(data => {
@@ -91,7 +91,7 @@ export class EditorPage {
           var header = this.storagefactory.ComposeMatrixHeader(matrix);
           this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
         });
-    });
+    }
   }
 
   presentInfoModal() {
@@ -196,33 +196,35 @@ export class EditorPage {
   }
 
   chooseVideo() {
-    FileChooser.open().then(uri => {
-      console.log(uri);
+    if (this.platform.is('cordova')) {
+      FileChooser.open().then(uri => {
+        console.log(uri);
 
-      (<any>window).FilePath.resolveNativePath(uri, (fileUrl) => {
-        console.log(fileUrl);
+        (<any>window).FilePath.resolveNativePath(uri, (fileUrl) => {
+          console.log(fileUrl);
 
-        var path = fileUrl.substr(0, fileUrl.lastIndexOf('/') + 1);
-        var fileName = fileUrl.substr(fileUrl.lastIndexOf('/') + 1);
+          var path = fileUrl.substr(0, fileUrl.lastIndexOf('/') + 1);
+          var fileName = fileUrl.substr(fileUrl.lastIndexOf('/') + 1);
 
-        File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName).then(_ => {
-          console.log('Successfully copied video')
+          File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName).then(_ => {
+            console.log('Successfully copied video')
 
-          this.CreateVideoView(fileName);
-        }).catch(err => {
-          console.log('Failed copying video:' + err)
-          this.chooseVideoErrorMsg(err);
+            this.CreateVideoView(fileName);
+          }).catch(err => {
+            console.log('Failed copying video:' + err)
+            this.chooseVideoErrorMsg(err);
+          });
+
+        }, (err) => {
+          console.log(err);
+          this.chooseVideoErrorMsg('Failed Resolving nativepath:' + err);
         });
 
-      }, (err) => {
+      }).catch(err => {
         console.log(err);
-        this.chooseVideoErrorMsg('Failed Resolving nativepath:' + err);
+        this.chooseVideoErrorMsg('Error opening file chooser:' + err);
       });
-
-    }).catch(err => {
-      console.log(err);
-      this.chooseVideoErrorMsg('Error opening file chooser:' + err);
-    });
+    }
   }
 
   chooseVideoErrorMsg(err) {

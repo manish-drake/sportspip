@@ -1,5 +1,7 @@
 import { Injectable } from "@angular/core";
 
+import { Platform } from 'ionic-angular';
+
 import X2JS from 'x2js';
 
 import { Http, Headers, RequestOptions } from '@angular/http';
@@ -9,7 +11,7 @@ declare var cordova: any;
 
 @Injectable()
 export class Connection {
-    constructor(private http: Http) { }
+    constructor(private http: Http, private platform: Platform) { }
 
     public static servers = [];
 
@@ -18,56 +20,58 @@ export class Connection {
     public static socketId: any;
 
     scanUdp() {
-        var onReceive = function (info) {
-            var binaryData = (info.data);
-            var dataStr = '';
-            var ui8 = new Uint8Array(binaryData);
-            for (var i = 0; i < ui8.length; i++) {
-                dataStr = dataStr + String.fromCharCode(ui8[i]);
-            }
-
-            let parser: any = new X2JS();
-            var data = parser.xml2js(dataStr);
-            var server = data.Server;
-
-            var item = {
-                Id: server._ID,
-                Address: info.remoteAddress,
-                Port: info.remotePort,
-                Data: { Name: server._Name, Information: server._Information, Location: server._Location },
-                status: 'Ready to Pair',
-                connected: false,
-                saved: false,
-                available: true
-            };
-
-            var isAlreadyGotserver = false;
-            Connection.servers.forEach(element => {
-                if (server._ID == element.Id) {
-                    isAlreadyGotserver = true;
+        if (this.platform.is('cordova')) {
+            var onReceive = function (info) {
+                var binaryData = (info.data);
+                var dataStr = '';
+                var ui8 = new Uint8Array(binaryData);
+                for (var i = 0; i < ui8.length; i++) {
+                    dataStr = dataStr + String.fromCharCode(ui8[i]);
                 }
+
+                let parser: any = new X2JS();
+                var data = parser.xml2js(dataStr);
+                var server = data.Server;
+
+                var item = {
+                    Id: server._ID,
+                    Address: info.remoteAddress,
+                    Port: info.remotePort,
+                    Data: { Name: server._Name, Information: server._Information, Location: server._Location },
+                    status: 'Ready to Pair',
+                    connected: false,
+                    saved: false,
+                    available: true
+                };
+
+                var isAlreadyGotserver = false;
+                Connection.servers.forEach(element => {
+                    if (server._ID == element.Id) {
+                        isAlreadyGotserver = true;
+                    }
+                });
+
+                if (!isAlreadyGotserver) {
+                    Connection.servers.push(item);
+                }
+            }
+            var onReceiveError = function (errorinfo) {
+                console.log('onReceiveError:');
+                console.log(errorinfo);
+                alert('onReceiveError:' + errorinfo);
+            }
+            chrome.sockets.udp.create({}, function (createInfo) {
+                Connection.socketId = createInfo.socketId;
+                chrome.sockets.udp.onReceive.addListener(onReceive);
+                chrome.sockets.udp.onReceiveError.addListener(onReceiveError);
+                chrome.sockets.udp.bind(Connection.socketId, '0.0.0.0', 5353, function (result) {
+                    if (result < 0) {
+                        console.log("Error binding socket.");
+                        return;
+                    }
+                })
             });
-
-            if (!isAlreadyGotserver) {
-                Connection.servers.push(item);
-            }
         }
-        var onReceiveError = function (errorinfo) {
-            console.log('onReceiveError:');
-            console.log(errorinfo);
-            alert('onReceiveError:' + errorinfo);
-        }
-        chrome.sockets.udp.create({}, function (createInfo) {
-            Connection.socketId = createInfo.socketId;
-            chrome.sockets.udp.onReceive.addListener(onReceive);
-            chrome.sockets.udp.onReceiveError.addListener(onReceiveError);
-            chrome.sockets.udp.bind(Connection.socketId, '0.0.0.0', 5353, function (result) {
-                if (result < 0) {
-                    console.log("Error binding socket.");
-                    return;
-                }
-            })
-        });
     }
 
     transferMatrix(fileName) {

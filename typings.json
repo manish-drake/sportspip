@@ -7,6 +7,7 @@
     "es6-shim": "registry:dt/es6-shim#0.31.2+20160317120654"
   },
   "globalDependencies": {
+    "cordova": "registry:dt/cordova#0.0.0+20160607055823",
     "lodash": "registry:dt/lodash#4.14.0+20161004174455",
     "xml2js": "registry:dt/xml2js#0.0.0+20160317120654"
   }

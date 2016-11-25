@@ -74,14 +74,15 @@ export class HomePage {
         console.log("main page");
         this.localMatrices = [];
         this.channels = [];
-        this.DisplayServerHeader();
-        this.GetLocalMatrixHeader();
+
+        if (this.platform.is('cordova')) {
+            this.DisplayServerHeader();
+            this.GetLocalMatrixHeader();
+        }
     }
 
     ionViewDidLoad() {
-        this.platform.ready().then(() => {
             this.connection.scanUdp();
-        });
     }
 
     openConnectivity() {

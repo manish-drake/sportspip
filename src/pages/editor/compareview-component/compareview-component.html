@@ -29,7 +29,7 @@
 		</svg>
 		<div  style="position:absolute;height:100%;width:100%;"> 
 			<div>
-				<svg *ngFor="let obj of objectss;" [ngSwitch]="obj.key" [attr.viewBox]="viewBoxSize" height="100%" width="100%" style="position:absolute">
+				<svg *ngFor="let obj of markersobjects;" [ngSwitch]="obj.key" [attr.viewBox]="viewBoxSize" height="100%" width="100%" style="position:absolute">
 					<rect *ngSwitchCase="'Rectangle'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
 						[attr.fill]="clrCvt(obj.val._Fill)" [attr.stroke]="clrCvt(obj.val._Stroke)" [attr.stroke-width]="obj.val._StrokeThickness"
 						[attr.opacity]="obj.val._Opacity" />
