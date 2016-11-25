@@ -12,7 +12,8 @@ import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 import { Compareview } from '../editor/compareview/compareview'
 import { Swipeview } from '../editor/swipeview/swipeview'
 import { Ipcameras } from '../editor/ipcameras/ipcameras'
-
+import { Connection } from '../../pages/Connection';
+declare var navigator: any;
 declare var cordova: any;
 
 @Injectable()
@@ -44,6 +45,8 @@ export class EditorPage {
   }
 
   ionViewWillUnload() {
+
+    console.log(this.matrix["Matrix.Children"]["View"]["Content"]);
     this.saveMatrix();
   }
 
@@ -57,8 +60,28 @@ export class EditorPage {
     this.showViewSegment(this.selectedViewIndex);
   }
 
+  CreateThumbnail(name) {
+    var blob: any;
+    var sliced = name.slice(0, -4);
+    var sourcePath = cordova.file.applicationStorageDirectory + name;
+    navigator.createThumbnail(sourcePath, function (err, imageData) {
+      console.log(err);
+      blob = imageData;
+      console.log(blob);
+    });
+    // Observable.interval(2000)
+    //     .take(1).map((x) => x + 5)
+    //     .subscribe((x) => {
+    //         var data = this.b64toBlob(blob, 'image/jpeg', 1024);
+    //         File.createFile(cordova.file.applicationStorageDirectory, sliced + ".jpg", true).then(() => {
+    //             File.writeFile(cordova.file.applicationStorageDirectory, sliced + ".jpg", data, true).then(() => {
+    //             })
+    //         })
+    //     })
+  }
+
   saveMatrix() {
-    this.platform.ready().then(() => {
+    if (this.platform.is('cordova')) {
       console.log(this.matrix.Channel);
       this.http.get(cordova.file.dataDirectory + "Local/" + this.matrix.Channel + "/Tennis/Matrices/" + this.matrix._Name + "/" + this.matrix._Name + ".mtx")
         .subscribe(data => {
@@ -70,7 +93,7 @@ export class EditorPage {
           var header = this.storagefactory.ComposeMatrixHeader(matrix);
           this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
         });
-    });
+    }
   }
 
   presentInfoModal() {
@@ -175,33 +198,35 @@ export class EditorPage {
   }
 
   chooseVideo() {
-    FileChooser.open().then(uri => {
-      console.log(uri);
+    if (this.platform.is('cordova')) {
+      FileChooser.open().then(uri => {
+        console.log(uri);
 
-      (<any>window).FilePath.resolveNativePath(uri, (fileUrl) => {
-        console.log(fileUrl);
+        (<any>window).FilePath.resolveNativePath(uri, (fileUrl) => {
+          console.log(fileUrl);
 
-        var path = fileUrl.substr(0, fileUrl.lastIndexOf('/') + 1);
-        var fileName = fileUrl.substr(fileUrl.lastIndexOf('/') + 1);
+          var path = fileUrl.substr(0, fileUrl.lastIndexOf('/') + 1);
+          var fileName = fileUrl.substr(fileUrl.lastIndexOf('/') + 1);
 
-        File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName).then(_ => {
-          console.log('Successfully copied video')
+          File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName).then(_ => {
+            console.log('Successfully copied video')
 
-          this.CreateVideoView(fileName);
-        }).catch(err => {
-          console.log('Failed copying video:' + err)
-          this.chooseVideoErrorMsg(err);
+            this.CreateVideoView(fileName);
+          }).catch(err => {
+            console.log('Failed copying video:' + err)
+            this.chooseVideoErrorMsg(err);
+          });
+
+        }, (err) => {
+          console.log(err);
+          this.chooseVideoErrorMsg('Failed Resolving nativepath:' + err);
         });
 
-      }, (err) => {
+      }).catch(err => {
         console.log(err);
-        this.chooseVideoErrorMsg('Failed Resolving nativepath:' + err);
+        this.chooseVideoErrorMsg('Error opening file chooser:' + err);
       });
-
-    }).catch(err => {
-      console.log(err);
-      this.chooseVideoErrorMsg('Error opening file chooser:' + err);
-    });
+    }
   }
 
   chooseVideoErrorMsg(err) {
