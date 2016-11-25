@@ -104,8 +104,9 @@ export class VideoComponent {
     sliderValueChange() {
         this.timelinePosition = this.formatTime(this.video.currentTime);
         var factor = this.video.duration * (this.sliderValue / 100000);
-        this.video.currentTime = factor;
+        this.timelinePosition = this.formatTime(factor);
     }
+    currentTime: any = 0;
 
     playPause() {
         this.video = this.videoElement.nativeElement;
@@ -120,9 +121,10 @@ export class VideoComponent {
             this.playPauseButtonIcon = 'pause';
             var delay = 1 / 60;
             this.timelineInterval = setInterval(() => {
-
+                var num = this.video.currentTime;
+                this.currentTime = num.toFixed(1);
                 var factor = (100000 / this.video.duration) * this.video.currentTime;
-                this.sliderValue = factor;
+                this.sliderValue = factor;                
                 this.timelinePosition = this.formatTime(this.video.currentTime);
             }, delay);
         } else {
@@ -330,6 +332,7 @@ export class VideoComponent {
                     this.video.currentTime = formatPosition;
                     var factor = (100000 / this.video.duration) * this.video.currentTime;
                     this.sliderValue = factor;
+                    this.timelinePosition = this.formatTime(formatPosition);
                 }
             }
         });

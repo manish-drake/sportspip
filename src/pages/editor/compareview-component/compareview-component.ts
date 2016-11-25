@@ -49,22 +49,21 @@ export class CompareviewComponent {
     markers = [];
 
     ionViewDidEnter() {
-        this.markers = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
 
         this.video = this.videoElement.nativeElement;
 
         this.video.addEventListener('ended', () => {
-            this.playPauseButtonIcon = "play";
+            this.playPauseButtonIcon = 'play';
             clearInterval(this.timelineInterval);
         })
-
+        
         this.video.addEventListener('error', (error) => {
-            console.log('Video Error: ' + error);
+            console.log('Error in video Elmnt:' + error);
             // this.videoSrcAvailable = false;
         })
 
         this.loadViewData();
-
+        
         this.fade(this.fadableTitle.nativeElement);
     }
 
@@ -89,11 +88,15 @@ export class CompareviewComponent {
     }
 
     loadViewData() {
+        this.markers = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
+        this.loadObjects();
+        // this.loadMarkerObjects();          
+
         var delay = 1 / 60;
         setInterval(() => {
             this.timelineDuration = this.formatTime(this.video.duration);
             this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
-            // this.evaluateMarkerPosition();
+           // this.evaluateMarkerPosition();
 
             if (!this.isSelected) {
                 this.video.pause();
@@ -105,7 +108,6 @@ export class CompareviewComponent {
                 this.markersobjects = [];
                 this.markersDirectory = [];
             }
-
             this.PlayMarker();
             this.PlayStoryBoard();
         }, delay);
@@ -173,10 +175,10 @@ export class CompareviewComponent {
         return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
     }
 
-    sliderValueChange() {
+     sliderValueChange() {
         this.timelinePosition = this.formatTime(this.video.currentTime);
         var factor = this.video.duration * (this.sliderValue / 100000);
-        this.video.currentTime = factor;
+        this.timelinePosition = this.formatTime(factor);
     }
 
     playPause() {
@@ -309,10 +311,9 @@ export class CompareviewComponent {
     }
 
     evaluateMarkerPosition() {
-        var markersContainerWidth = this.markersContainer.nativeElement.clientWidth;
+         var markersContainerWidth = this.markersContainer.nativeElement.clientWidth;
         var durationInMilliseconds = this.formatDurationInMiliSecond(this.timelineDuration);
         var factor = markersContainerWidth / durationInMilliseconds;
-
         this.markers.forEach(marker => {
             var pos = marker._Position;
             var positionInMilliseconds = this.formatPoistionInMiliSecond(pos);
@@ -346,6 +347,7 @@ export class CompareviewComponent {
                     this.video.currentTime = formatPosition;
                     var factor = (100000 / this.video.duration) * this.video.currentTime;
                     this.sliderValue = factor;
+                    this.timelinePosition = this.formatTime(formatPosition);
                 }
             }
         });
