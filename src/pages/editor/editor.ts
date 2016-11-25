@@ -12,7 +12,8 @@ import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 import { Compareview } from '../editor/compareview/compareview'
 import { Swipeview } from '../editor/swipeview/swipeview'
 import { Ipcameras } from '../editor/ipcameras/ipcameras'
-
+import { Connection } from '../../pages/Connection';
+declare var navigator: any;
 declare var cordova: any;
 
 @Injectable()
@@ -44,6 +45,8 @@ export class EditorPage {
   }
 
   ionViewWillUnload() {
+
+    console.log(this.matrix["Matrix.Children"]["View"]["Content"]);
     this.saveMatrix();
   }
 
@@ -55,6 +58,26 @@ export class EditorPage {
       this.views.push(this.matrix["Matrix.Children"]["View"]);
     }
     this.showViewSegment(this.selectedViewIndex);
+  }
+
+  CreateThumbnail(name) {
+    var blob: any;
+    var sliced = name.slice(0, -4);
+    var sourcePath = cordova.file.applicationStorageDirectory + name;
+    navigator.createThumbnail(sourcePath, function (err, imageData) {
+      console.log(err);
+      blob = imageData;
+      console.log(blob);
+    });
+    // Observable.interval(2000)
+    //     .take(1).map((x) => x + 5)
+    //     .subscribe((x) => {
+    //         var data = this.b64toBlob(blob, 'image/jpeg', 1024);
+    //         File.createFile(cordova.file.applicationStorageDirectory, sliced + ".jpg", true).then(() => {
+    //             File.writeFile(cordova.file.applicationStorageDirectory, sliced + ".jpg", data, true).then(() => {
+    //             })
+    //         })
+    //     })
   }
 
   saveMatrix() {
