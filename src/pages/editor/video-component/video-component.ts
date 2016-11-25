@@ -44,7 +44,7 @@ export class VideoComponent {
         this.markers = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
     }
 
-    ionViewDidLoad() {
+    ngAfterViewInit() {
         this.video = this.videoElement.nativeElement;
 
         this.loadObjects();
@@ -106,7 +106,6 @@ export class VideoComponent {
         var factor = this.video.duration * (this.sliderValue / 100000);
         this.timelinePosition = this.formatTime(factor);
     }
-    currentTime: any = 0;
 
     playPause() {
         this.video = this.videoElement.nativeElement;
@@ -121,8 +120,6 @@ export class VideoComponent {
             this.playPauseButtonIcon = 'pause';
             var delay = 1 / 60;
             this.timelineInterval = setInterval(() => {
-                var num = this.video.currentTime;
-                this.currentTime = num.toFixed(1);
                 var factor = (100000 / this.video.duration) * this.video.currentTime;
                 this.sliderValue = factor;                
                 this.timelinePosition = this.formatTime(this.video.currentTime);

@@ -7,7 +7,7 @@ import { Component, Input } from '@angular/core';
 
 export class CanvasComponent {
 
-@Input() view: any;
+  @Input() view: any;
   playPauseButtonIcon: string;
   volumeButtonIcon: string;
   repeatColor: any;
@@ -15,14 +15,14 @@ export class CanvasComponent {
   timelinePosition: any;
   sliderValue: any = 0;
   duration: any;
-  isTimelineAvailable:any;
+  isTimelineAvailable: boolean;
 
   constructor() {
     this.timelinePosition = "00:00:00:00";
     this.playPauseButtonIcon = "play";
     this.repeatColor = "inactive";
     this.volumeButtonIcon = "volume-up";
-    this.isTimelineAvailable="false";
+    this.isTimelineAvailable = false;
   }
 
   objects = [];
@@ -33,7 +33,6 @@ export class CanvasComponent {
   objDirectory = [];
 
   ngAfterViewInit() {
-
     this.timelineDuration = "00:00:00.00";
     this.objs = this.view["Content"]["PIP"]["PIP.Objects"];
     for (var key in this.objs) {
@@ -48,9 +47,9 @@ export class CanvasComponent {
   }
 
   returnMaxDuration(objBehaviors) {
+    this.isTimelineAvailable = true;    
     var objduration = objBehaviors.Span._Duration;
     if (objduration > this.timelineDuration) { this.timelineDuration = objduration; }
-
     var durationInMS = (this.formatDurationInMiliSecond(this.timelineDuration)) / 10000000;
     this.duration = durationInMS;
     this.timelineDuration = this.formatTime(this.duration);
@@ -79,6 +78,12 @@ export class CanvasComponent {
   sliderValueChange() {
     var factor = this.duration * (this.sliderValue / 10000);
     this.timelinePosition = this.formatTime(factor);
+    if (this.timelinePosition == this.timelineDuration) {
+      this.objects = [];
+      this.objDirectory = [];
+    }
+    this.PlayStoryBoard();
+    this.RemoveObjects();
   }
 
   formatPoistionInMiliSecond(pos) {
