@@ -1,5 +1,5 @@
-import { NgModule, ErrorHandler } from '@angular/core';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { NgModule } from '@angular/core';
+import { IonicApp, IonicModule } from 'ionic-angular';
 import { sportspip } from './app.component';
 
 import { HomePage, MoreActionsPopover } from '../pages/home/home';
@@ -71,6 +71,6 @@ import { Swipeview } from '../pages/editor/swipeview/swipeview'
     CaptureViewsPopover,
     Swipeview
   ],
-  providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }]
+  providers: []
 })
 export class AppModule { }

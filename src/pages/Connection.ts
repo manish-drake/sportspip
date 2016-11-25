@@ -31,6 +31,7 @@ export class Connection {
 
                 let parser: any = new X2JS();
                 var data = parser.xml2js(dataStr);
+                console.log(data);
                 var server = data.Server;
 
                 var item = {
