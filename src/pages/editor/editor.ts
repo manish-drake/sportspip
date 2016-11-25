@@ -45,17 +45,10 @@ export class EditorPage {
   //   alert('ionViewDidLoad');
   // }
 
-  // ionViewWillLeave(){
-  //   alert('ionViewWillLeave');
-  // }
-
-  // ionViewDidLeave(){
-  //   alert('ionViewDidLeave');
-  // }
 
   ionViewWillUnload() {
-    // alert('ionViewWillUnload');
     this.saveMatrix();
+     alert(this.views["Content"]["Capture"].find(x=>x._Kernel!=null));
   }
 
   ngOnInit() {

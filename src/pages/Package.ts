@@ -41,6 +41,7 @@ export class Package {
                             this.http.get(file.nativeURL).subscribe(data => {
                                 console.log("mtx moving...");
                                 var matrixdata = parser.xml2js(data["_body"]);
+                                console.log(matrixdata);
                                 var matrix = matrixdata.Matrix;
                                 console.log(this.fileName);
                                 matrix._Name = this.fileName;
