@@ -41,4 +41,5 @@ platforms
 /tsconfig.tmp.json
 /www
 /plugins
-.vscode
+/.vscode
+/.editorconfig
