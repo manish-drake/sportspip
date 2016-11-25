@@ -46,6 +46,7 @@ export class EditorPage {
 
   ionViewWillUnload() {
     this.saveMatrix();
+     alert(this.matrix["Matrix.Children"]["View"]["Content"]["Capture"]);
   }
 
   ngOnInit() {
