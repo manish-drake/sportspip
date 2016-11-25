@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, ActionSheetController, Platform } from 'ionic-angular';
 import { File } from 'ionic-native';
-import { EditorPage } from '../editor/editor';
 import { Package } from '../../pages/Package';
 import { Http } from '@angular/http';
 import { OpenMatrix } from '../../Action/OpenMatrix';

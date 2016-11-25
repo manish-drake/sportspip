@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 
-import { NavController, NavParams, AlertController, ModalController, Platform } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ModalController, Platform, App } from 'ionic-angular';
 
 import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError } from 'ionic-native';
 
@@ -11,9 +11,11 @@ import { StorageFactory } from '../../Factory/StorageFactory';
 import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 import { Compareview } from '../editor/compareview/compareview'
 import { Swipeview } from '../editor/swipeview/swipeview'
+import { Ipcameras } from '../editor/ipcameras/ipcameras'
 
 declare var cordova: any;
 
+@Injectable()
 @Component({
   selector: 'page-editor',
   templateUrl: 'editor.html',
@@ -32,13 +34,17 @@ export class EditorPage {
     private modalCtrl: ModalController,
     private platform: Platform,
     private http: Http,
-    private storagefactory: StorageFactory, ) {
+    private storagefactory: StorageFactory,
+    private app: App) {
     this.matrix = params.get("matrixData");
     console.log(this.matrix);
   }
 
   ionViewDidLoad() {
+  }
 
+  ionViewWillUnload() {
+    this.saveMatrix();
   }
 
   ngOnInit() {
@@ -49,10 +55,6 @@ export class EditorPage {
       this.views.push(this.matrix["Matrix.Children"]["View"]);
     }
     this.showViewSegment(this.selectedViewIndex);
-  }
-
-  ionViewWillUnload() {
-    this.saveMatrix();
   }
 
   saveMatrix() {
@@ -184,6 +186,7 @@ export class EditorPage {
 
         File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName).then(_ => {
           console.log('Successfully copied video')
+
           this.CreateVideoView(fileName);
         }).catch(err => {
           console.log('Failed copying video:' + err)
@@ -231,6 +234,15 @@ export class EditorPage {
       File.moveFile(path, fileName, cordova.file.applicationStorageDirectory, fileName)
         .then(_ => {
           console.log('Successfully saved video')
+          // var server = Connection.connectedServer.Address;
+          // this.http.get(cordova.file.applicationStorageDirectory + fileName).subscribe(success => {
+          //   let headers = new Headers({ 'Content-Type': 'multipart/form-data' }); // ... Set content type to JSON
+          //   let options = new RequestOptions({ headers: headers });
+          //   this.http.post("http://" + server + ":10080/imatrix/matrices/"+fileName+"/videos", success.text(),options)
+          //     .subscribe(res => {
+          //       alert(res);
+          //     })
+          // })
           this.CreateVideoView(fileName);
         })
         .catch(err => {
@@ -254,6 +266,14 @@ export class EditorPage {
     alert.present();
   }
   // Code for Camera Recording Starts
+
+  IPCamCapture() {
+    this.navCtrl.push(Ipcameras, {
+      matrix: this.matrix,
+      views: this.views,
+      selectedViewIndex: this.selectedViewIndex
+    });
+  }
 
   CreateVideoView(fileName) {
     var localView = {

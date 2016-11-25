@@ -2,11 +2,14 @@ import { Injectable } from "@angular/core";
 
 import X2JS from 'x2js';
 
+import { Http, Headers, RequestOptions } from '@angular/http';
+
 declare var chrome: any;
+declare var cordova: any;
 
 @Injectable()
 export class Connection {
-    constructor() { }
+    constructor(private http: Http) { }
 
     public static servers = [];
 
@@ -65,6 +68,18 @@ export class Connection {
                 }
             })
         });
+    }
+
+    transferMatrix(fileName) {
+        var server = Connection.connectedServer.Address;
+        this.http.get(cordova.file.applicationStorageDirectory + fileName).subscribe(success => {
+            let headers = new Headers({ 'Content-Type': 'multipart/form-data' }); // ... Set content type to JSON
+            let options = new RequestOptions({ headers: headers });
+            this.http.post("http://" + server + ":10080/imatrix/matrices/" + fileName + "/videos", success.text(), options)
+                .subscribe(res => {
+                    alert(res);
+                })
+        })
     }
 
     close() {

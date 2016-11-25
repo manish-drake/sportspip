@@ -14,7 +14,6 @@ export class CanvasComponent {
   timelineDuration: any;
   timelinePosition: any;
   sliderValue: any = 0;
-  objPostion: any;
   duration: any;
   isTimelineAvailable:any;
 
@@ -26,41 +25,35 @@ export class CanvasComponent {
     this.isTimelineAvailable="false";
   }
 
-   objects = [];
+  objects = [];
   objduration: any;
   timelineInterval: any = null;
+  objs: any;
+  unlinkObjList = [];
+  objDirectory = [];
 
-  ngOnInit() {
-    this.timelineDuration = "00:00:00:00";
-    console.log(this.view);
+  ngAfterViewInit() {
 
-    var objs = this.view["Content"]["PIP"]["PIP.Objects"];
-
-    for (var key in objs) {
-      // skip loop if the property is from prototype
-      if (!objs.hasOwnProperty(key)) continue;
-      var val = objs[key];
+    this.timelineDuration = "00:00:00.00";
+    this.objs = this.view["Content"]["PIP"]["PIP.Objects"];
+    for (var key in this.objs) {
+      var val = this.objs[key];
       //for maximum duration
       var objBehaviors = val.Behaviors;
       if (objBehaviors != undefined) {
-        this.objduration = objBehaviors.Span._Duration;
-        this.objPostion = objBehaviors.Span._Position;
-        if (this.objduration > this.timelineDuration) { this.timelineDuration = this.objduration; }
+        if (objBehaviors.Span != undefined) this.returnMaxDuration(objBehaviors);
       }
-      var durationInMilliseconds = (Number(this.timelineDuration.slice(1, 2)) * 36000000000 + Number(this.timelineDuration.slice(4, 5)) * 60000000 + Number(this.timelineDuration.slice(7, 8)) * 10000000) / 10000000;
-      this.duration = durationInMilliseconds;
-      this.timelineDuration = this.formatTime(this.duration);
-
-      if (val instanceof Array) {
-        val.forEach(val => {
-          this.objects.push({ key, val });
-        });
-      }
-      else {
-        this.objects.push({ key, val });
-      }
+      this.PlayStoryBoard();
     }
-    console.log(this.objects);
+  }
+
+  returnMaxDuration(objBehaviors) {
+    var objduration = objBehaviors.Span._Duration;
+    if (objduration > this.timelineDuration) { this.timelineDuration = objduration; }
+
+    var durationInMS = (this.formatDurationInMiliSecond(this.timelineDuration)) / 10000000;
+    this.duration = durationInMS;
+    this.timelineDuration = this.formatTime(this.duration);
   }
 
   clrCvt(color) {
@@ -69,11 +62,6 @@ export class CanvasComponent {
 
   sum(a, b) {
     return Number(a) + Number(b);
-  }
-
-  sliderValueChange() {
-    var factor = this.duration * (this.sliderValue / 10000);
-    this.timelinePosition = this.formatTime(factor);
   }
 
   formatTime(time) {
@@ -86,5 +74,121 @@ export class CanvasComponent {
     var milliseconds = time.toFixed(2).substr(-2);
     return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
   }
-}
 
+
+  sliderValueChange() {
+    var factor = this.duration * (this.sliderValue / 10000);
+    this.timelinePosition = this.formatTime(factor);
+  }
+
+  formatPoistionInMiliSecond(pos) {
+    var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
+    return positionInMilliseconds;
+  }
+
+  formatDurationInMiliSecond(dur) {
+    var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-2)) * 100000;
+    return durationInMilliseconds;
+  }
+
+  playPause() {
+
+    if (this.playPauseButtonIcon == 'play') {
+      this.playPauseButtonIcon = 'pause';
+
+      if (this.timelinePosition == this.timelineDuration) {
+        this.sliderValue = 0;
+        this.objects = [];
+        this.objDirectory = []
+      }
+
+      this.timelineInterval = setInterval(() => {
+
+        this.sliderValue = this.sliderValue + 5;
+        var factor = this.duration * (this.sliderValue / 10000);
+        this.timelinePosition = this.formatTime(factor);
+
+        this.PlayStoryBoard();
+        this.RemoveObjects();
+        this.ClearInterval();
+      }, 1 / 60);
+    }
+    else {
+      this.playPauseButtonIcon = 'play';
+      clearInterval(this.timelineInterval);
+    }
+  }
+
+  PlayStoryBoard() {
+
+    for (var key in this.objs) {
+
+      // skip loop if the property is from prototype
+      var val = this.objs[key];
+      var objBehaviors = val.Behaviors;
+      if (!this.objs.hasOwnProperty(key)) continue;
+
+      if (val instanceof Array) {
+        val.forEach(val => {
+          if (this.IsObjectExist(val) == -1) {
+            if (val.Behaviors.Span._Position == "00:00:00") {
+              this.objDirectory.push(val);
+              this.objects.push({ key, val });
+            } else {
+              var positionInMS = (this.formatPoistionInMiliSecond(val.Behaviors.Span._Position)) / 10000000;
+              if (this.formatTime(positionInMS) == this.timelinePosition) {
+                this.objDirectory.push(val);
+                this.objects.push({ key, val });
+              }
+            }
+
+          }
+        });
+      }
+      else if (objBehaviors.Span._Position == "00:00:00") {
+        if (this.IsObjectExist(val) == -1) {
+          this.objDirectory.push(val);
+          this.objects.push({ key, val });
+        }
+      }
+      else if (objBehaviors != undefined) {
+        if (this.IsObjectExist(val) == -1) {
+          var positionInMS = (this.formatPoistionInMiliSecond(objBehaviors.Span._Position)) / 10000000;
+          if (this.formatTime(positionInMS) == this.timelinePosition) {
+            this.objDirectory.push(val);
+            this.objects.push({ key, val });
+          }
+        }
+      }
+    }
+  }
+
+  IsObjectExist(obj) {
+    return this.objDirectory.indexOf(obj)
+  }
+
+  returnTotalDuration(objBehaviors) {
+    if (objBehaviors.Span != undefined) {
+      var durationInMS = this.formatDurationInMiliSecond(objBehaviors.Span._Duration);
+      var positionInMS = this.formatPoistionInMiliSecond(objBehaviors.Span._Position);
+      var totalDur = (durationInMS + positionInMS) / 10000000;
+      return totalDur
+    }
+  }
+
+  RemoveObjects() {
+    var objects = this.objects.find(x => this.formatTime(this.returnTotalDuration(x.val.Behaviors)) == this.timelinePosition)
+    if (objects != undefined) {
+      var obj = this.objects.indexOf(objects);
+      this.objects.splice(obj, 1);
+    }
+
+  }
+
+  ClearInterval() {
+    if (this.timelinePosition == this.timelineDuration) {
+      this.playPauseButtonIcon = 'play';
+      clearInterval(this.timelineInterval);
+    }
+  }
+}

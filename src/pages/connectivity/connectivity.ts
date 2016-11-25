@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
-import { } from 'ionic-native';
-
 import { Connection } from '../../pages/Connection';
 
 /*
@@ -29,7 +27,9 @@ export class Connectivity {
     isConnectivityEnabled: boolean = true;
 
     constructor(public navCtrl: NavController,
-        public connection: Connection) { }
+        private connection: Connection) {
+
+    }
 
     ionViewDidLoad() {
         console.log('Hello Connectivity Page');
