@@ -2,11 +2,14 @@ import { Component, ViewChild, Input, ElementRef, Output, EventEmitter } from '@
 
 import { AlertController, ModalController, Platform, PopoverController, ViewController, NavParams } from 'ionic-angular';
 
+import{Compareviewservice} from './compareviewservice'
+
 declare var cordova: any;
 
 @Component({
     selector: 'compareview-component',
-    templateUrl: 'compareview-component.html'
+    templateUrl: 'compareview-component.html',
+    providers:[Compareviewservice]
 })
 
 export class CompareviewComponent {

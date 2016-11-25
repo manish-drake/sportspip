@@ -25,18 +25,19 @@ export class Connection {
                 var binaryData = (info.data);
                 var dataStr = '';
                 var ui8 = new Uint8Array(binaryData);
-                for (var i = 0; i < ui8.length; i++) {
+                for (var i = 39; i < ui8.length; i++) {
                     dataStr = dataStr + String.fromCharCode(ui8[i]);
                 }
 
-                alert('dataString: ' + dataStr);
+                alert(dataStr);
 
-                let parser: any = new X2JS();
+                var parser = new X2JS();
                 var data = parser.xml2js(dataStr);
+                // var data = parser.xml2js(`<Server name="DESKTOP-TBMV3MR" Name="DESKTOP-TBMV3MR" Information="Pro Matrix Server:DESKTOP-TBMV3MR" ID="428217ea5a474eec8563b05ac5a612a0" Location="192.168.10.7" Genre="Pro" Filename=""/>`);
+
+                alert(JSON.stringify(data));
+
                 var server = data.Server;
-
-                alert('server data got.');
-
                 var item = {
                     Id: server._ID,
                     Address: info.remoteAddress,
