@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+
 @Component({
   selector: 'canvas-component',
   templateUrl: 'canvas-component.html'
@@ -6,7 +7,7 @@ import { Component, Input } from '@angular/core';
 
 export class CanvasComponent {
 
-  @Input() view: any;
+@Input() view: any;
   playPauseButtonIcon: string;
   volumeButtonIcon: string;
   repeatColor: any;
@@ -14,15 +15,18 @@ export class CanvasComponent {
   timelinePosition: any;
   sliderValue: any = 0;
   duration: any;
+  isTimelineAvailable:any;
 
   constructor() {
-    this.timelinePosition = "00:00:00.00";
+    this.timelinePosition = "00:00:00:00";
     this.playPauseButtonIcon = "play";
     this.repeatColor = "inactive";
     this.volumeButtonIcon = "volume-up";
+    this.isTimelineAvailable="false";
   }
 
   objects = [];
+  objduration: any;
   timelineInterval: any = null;
   objs: any;
   unlinkObjList = [];
@@ -70,6 +74,7 @@ export class CanvasComponent {
     var milliseconds = time.toFixed(2).substr(-2);
     return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
   }
+
 
   sliderValueChange() {
     var factor = this.duration * (this.sliderValue / 10000);
