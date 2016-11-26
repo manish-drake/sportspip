@@ -7,7 +7,7 @@ import { Component, Input } from '@angular/core';
 
 export class CanvasComponent {
 
-@Input() view: any;
+  @Input() view: any;
   playPauseButtonIcon: string;
   volumeButtonIcon: string;
   repeatColor: any;
@@ -15,14 +15,14 @@ export class CanvasComponent {
   timelinePosition: any;
   sliderValue: any = 0;
   duration: any;
-  isTimelineAvailable:any;
+  isTimelineAvailable: any;
 
   constructor() {
     this.timelinePosition = "00:00:00:00";
     this.playPauseButtonIcon = "play";
     this.repeatColor = "inactive";
     this.volumeButtonIcon = "volume-up";
-    this.isTimelineAvailable="false";
+    this.isTimelineAvailable = "false";
   }
 
   objects = [];
@@ -33,7 +33,6 @@ export class CanvasComponent {
   objDirectory = [];
 
   ngAfterViewInit() {
-
     this.timelineDuration = "00:00:00.00";
     this.objs = this.view["Content"]["PIP"]["PIP.Objects"];
     for (var key in this.objs) {
@@ -87,8 +86,10 @@ export class CanvasComponent {
   }
 
   formatDurationInMiliSecond(dur) {
-    var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-2)) * 100000;
-    return durationInMilliseconds;
+    if (dur != undefined) {
+      var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-2)) * 100000;
+      return durationInMilliseconds;
+    }
   }
 
   playPause() {
