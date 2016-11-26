@@ -44,7 +44,6 @@ export class ChannelCollectionPage {
   GetChannelMatrix(channel) {
     this.platform.ready().then(() => {
       File.listDir(cordova.file.dataDirectory, "Server/" + channel + "/Tennis/Matrices/").then((success) => {
-
         success.forEach((res) => {
           this.http.get(cordova.file.dataDirectory + "Server/" + channel + "/Tennis/Matrices/" + res.name + "/Header.xml")
             .subscribe(data => {
@@ -57,7 +56,7 @@ export class ChannelCollectionPage {
                 Views: result.Clips
               };
               this.channelMatrices.push(item);
-
+              console.log(this.channelMatrices.length);
             });
         });
 
@@ -71,7 +70,7 @@ export class ChannelCollectionPage {
   }
 
   formatDuration(dur) {
-      return this.packages.FormatDuration(dur);
+    return this.packages.FormatDuration(dur);
   }
 
   retrunThumbnailPath(name) {
