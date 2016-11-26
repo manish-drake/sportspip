@@ -2,11 +2,14 @@ import { Component, ViewChild, Input, ElementRef, Output, EventEmitter } from '@
 
 import { AlertController, ModalController, Platform, PopoverController, ViewController, NavParams } from 'ionic-angular';
 
+import{Compareviewservice} from './compareviewservice'
+
 declare var cordova: any;
 
 @Component({
     selector: 'compareview-component',
-    templateUrl: 'compareview-component.html'
+    templateUrl: 'compareview-component.html',
+    providers:[Compareviewservice]
 })
 
 export class CompareviewComponent {
@@ -34,7 +37,9 @@ export class CompareviewComponent {
     constructor(private alertCtrl: AlertController,
         private modalCtrl: ModalController,
         private platform: Platform,
-        private popoverCtrl: PopoverController) {
+        private popoverCtrl: PopoverController,
+        private compareviewservice: Compareviewservice) {
+
         this.playPauseButtonIcon = "play";
         this.timelinePosition = this.formatTime(0);
     }
@@ -266,6 +271,7 @@ export class CompareviewComponent {
     }
 
     playPause() {
+        this.compareviewservice.play();
 
         if (this.video.paused == true) {
 
