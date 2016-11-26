@@ -12,6 +12,7 @@ import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 import { Compareview } from '../editor/compareview/compareview'
 import { Swipeview } from '../editor/swipeview/swipeview'
 import { Ipcameras } from '../editor/ipcameras/ipcameras'
+import { Connection } from '../../pages/Connection'
 declare var navigator: any;
 declare var cordova: any;
 
@@ -19,7 +20,7 @@ declare var cordova: any;
 @Component({
   selector: 'page-editor',
   templateUrl: 'editor.html',
-  providers: [StorageFactory],
+  providers: [StorageFactory,Connection]
 })
 
 export class EditorPage {
@@ -34,6 +35,7 @@ export class EditorPage {
     private modalCtrl: ModalController,
     private platform: Platform,
     private http: Http,
+    private connection: Connection,
     private storagefactory: StorageFactory,
     private app: App) {
     this.matrix = params.get("matrixData");
@@ -176,7 +178,7 @@ export class EditorPage {
     var canvasView = {
       "Content": {
         "PIP": {
-          "PIP.Objects": "",
+          "PIP.Objects": {},
           "_name": "d002b8ed5fe24f57aab501f05398262c",
           "_CanvasBackgroundBrush": "#FFFFFFFF",
           "_CanvasBackgroundOpacity": "1"
@@ -186,6 +188,7 @@ export class EditorPage {
       "_Title": "View " + this.selectedViewIndex,
       "_Source": 'Canvas'
     }
+    console.log(canvasView);
     this.views[this.selectedViewIndex] = canvasView;
   }
 
@@ -299,11 +302,28 @@ export class EditorPage {
   // Code for Camera Recording Starts
 
   IPCamCapture() {
-    this.navCtrl.push(Ipcameras, {
+    var modal = this.modalCtrl.create(Ipcameras, {
       matrix: this.matrix,
       views: this.views,
       selectedViewIndex: this.selectedViewIndex
     });
+
+    modal.present();
+
+    modal.onDidDismiss((views) => {
+      alert(views);
+      if (views != null) {
+        this.views = views;
+        this.saveMatrix();
+        this.connection.transferMatrix(this.matrix._Name);
+      }
+    });
+
+    // this.navCtrl.push(Ipcameras, {
+    //   matrix: this.matrix,
+    //   views: this.views,
+    //   selectedViewIndex: this.selectedViewIndex
+    // });
   }
 
   CreateVideoView(fileName) {
