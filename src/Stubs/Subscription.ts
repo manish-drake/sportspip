@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
+import { Http } from '@angular/http';
 
 @Injectable()
 export class Subscription {
-    constructor() {
+    constructor(private http: Http) {
         console.log("stubs......")
     }
 
@@ -31,9 +32,13 @@ export class Subscription {
     }
 
     RegisterAsync(firstName, lastName, email) {
-        var user =
-            { FirstName: firstName, LastName: lastName, Email: email, Password: "@abc123" };
-        return user;
+        this.http.get("http://sportspipservice.cloudapp.net:10106/IMobile/users/{" + firstName + "}/{" + lastName + "}/{" + email + "}/{@abc123}/{0}")
+            .subscribe(data => {
+                console.log(data.text());
+            })
+        // var user =
+        //     { FirstName: firstName, LastName: lastName, Email: email, Password: "@abc123" };
+        // return user;
     }
 
     LoginAsync(email, password) {

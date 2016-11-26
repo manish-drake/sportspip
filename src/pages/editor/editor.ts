@@ -12,7 +12,6 @@ import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 import { Compareview } from '../editor/compareview/compareview'
 import { Swipeview } from '../editor/swipeview/swipeview'
 import { Ipcameras } from '../editor/ipcameras/ipcameras'
-import { Connection } from '../../pages/Connection';
 declare var navigator: any;
 declare var cordova: any;
 
@@ -45,10 +44,9 @@ export class EditorPage {
   //   alert('ionViewDidLoad');
   // }
 
-
   ionViewWillUnload() {
     this.saveMatrix();
-     alert(this.views["Content"]["Capture"].find(x=>x._Kernel!=null));
+     alert(this.views["Content"]["Capture"]);
   }
 
   ngOnInit() {
@@ -63,13 +61,14 @@ export class EditorPage {
 
   CreateThumbnail(name) {
     var blob: any;
-    var sliced = name.slice(0, -4);
+    
     var sourcePath = cordova.file.applicationStorageDirectory + name;
     navigator.createThumbnail(sourcePath, function (err, imageData) {
       console.log(err);
       blob = imageData;
       console.log(blob);
     });
+    // var sliced = name.slice(0, -4);
     // Observable.interval(2000)
     //     .take(1).map((x) => x + 5)
     //     .subscribe((x) => {

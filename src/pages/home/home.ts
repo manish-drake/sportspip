@@ -53,28 +53,12 @@ export class HomePage {
         private packages: Package,
         private loadingCtrl: LoadingController,
         private connection: Connection) {
-
-        //for server url
-
-        // this.GetserverHeader().then(success => {
-        //   Observable.interval(1000)
-        //     .take(1).map((x) => x + 5)
-        //     .subscribe((x) => {
-        //       this.SaveServerHeaders();
-        //     })
-        //      Observable.interval(2000)
-        //     .take(1).map((x) => x + 5)
-        //     .subscribe((x) => {
-        //       this.DisplayServerHeader();
-        //     })    
-        // });
     }
 
     ionViewDidEnter() {
         console.log("main page");
-        this.localMatrices = [];
         this.channels = [];
-
+        this.localMatrices = [];
         if (this.platform.is('cordova')) {
             this.DisplayServerHeader();
             this.GetLocalMatrixHeader();
@@ -183,7 +167,7 @@ export class HomePage {
                     header.Name = name;
                     this.storagefactory.SaveLocalHeader(header, channelName, header.Sport, name, "Matrices");
                 })
-            this.http.get(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/matrices/" + matrixname + "/" + matrixname + ".mtx")
+            this.http.get(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/Matrices/" + matrixname + "/" + matrixname + ".mtx")
                 .subscribe(res => {
                     var matrix = JSON.parse(res.text());
                     matrix.Matrix._Name = name;
@@ -199,7 +183,7 @@ export class HomePage {
     }
 
     retrunThumbnailPath(name) {
-        return "url(" + cordova.file.applicationStorageDirectory + name + ".jpg" + ")";
+        return "url(" + cordova.file.applicationStorageDirectory + "636049183928404138" + ".jpg" + ")";
     }
 
     GetLocalMatrixHeader() {
