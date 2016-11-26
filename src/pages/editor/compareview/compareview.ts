@@ -14,14 +14,13 @@ import { NavController, NavParams } from 'ionic-angular';
 export class Compareview {
 
   views = [];
-
   compareSegment1: any;
   compareSegment2: any;
 
   selectedIndex: number = 0;
 
   constructor(public navCtrl: NavController, private navParams: NavParams) {
-
+    this.ionViewDidLoad();
   }
 
   ionViewDidLoad() {

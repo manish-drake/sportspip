@@ -17,17 +17,6 @@ export class CompareviewComponent {
 
     @Output() playPauseChild: EventEmitter<string> = new EventEmitter<string>();
 
-    @ViewChild('video') videoElement: ElementRef;
-
-    @ViewChild('fadableTitle') fadableTitle: ElementRef;
-
-    constructor(private alertCtrl: AlertController,
-        private modalCtrl: ModalController,
-        private platform: Platform,
-        private popoverCtrl: PopoverController) {
-
-        this.timelinePosition = this.formatTime(0);
-    }
 
     isLinked: boolean = false;
     linkUnlinkIcon: string = "remove";
@@ -35,38 +24,47 @@ export class CompareviewComponent {
     sliderValue: any = 0;
     timelinePosition: any;
     timelineDuration: any;
-    playPauseButtonIcon: string = "play";
-    markersobjects = [];
+    playPauseButtonIcon: string;
+    objectss = [];
     videoSrcAvailable: boolean = true;
     markersDirectory = [];
     index = 0;
     viewBoxSize: any;
 
+    constructor(private alertCtrl: AlertController,
+        private modalCtrl: ModalController,
+        private platform: Platform,
+        private popoverCtrl: PopoverController) {
+        this.playPauseButtonIcon = "play";
+        this.timelinePosition = this.formatTime(0);
+    }
+
+
+    @ViewChild('video') videoElement: ElementRef;
+
+    @ViewChild('fadableTitle') fadableTitle: ElementRef;
+
     video: HTMLVideoElement;
 
     timelineInterval: any = null;
 
-    markers = [];
-
-    ionViewDidEnter() {
-
+    ngAfterViewInit() {
         this.video = this.videoElement.nativeElement;
 
         this.video.addEventListener('ended', () => {
-            this.playPauseButtonIcon = 'play';
+            this.playPauseButtonIcon = "play";
             clearInterval(this.timelineInterval);
         })
-        
+
         this.video.addEventListener('error', (error) => {
-            console.log('Error in video Elmnt:' + error);
+            console.log('Video Error: ' + error);
             // this.videoSrcAvailable = false;
         })
 
         this.loadViewData();
-        
+
         this.fade(this.fadableTitle.nativeElement);
     }
-
 
     fade(element) {
         var op = 1;  // initial opacity
@@ -84,19 +82,18 @@ export class CompareviewComponent {
     clearViewData() {
         this.markers = [];
         this.objects = [];
-        this.markersobjects = [];
+        // this.markersObjects = [];
     }
 
     loadViewData() {
         this.markers = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
         this.loadObjects();
-        // this.loadMarkerObjects();          
-
+        // this.loadMarkerObjects();
         var delay = 1 / 60;
         setInterval(() => {
             this.timelineDuration = this.formatTime(this.video.duration);
             this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
-           // this.evaluateMarkerPosition();
+            // this.evaluateMarkerPosition();
 
             if (!this.isSelected) {
                 this.video.pause();
@@ -104,15 +101,102 @@ export class CompareviewComponent {
                 clearInterval(this.timelineInterval);
             }
 
-            if (this.formatTime(this.video.currentTime) == this.timelineDuration) {
-                this.markersobjects = [];
-                this.markersDirectory = [];
-            }
             this.PlayMarker();
             this.PlayStoryBoard();
         }, delay);
+    }
 
-        this.loadObjects();
+    PlayMarker() {
+
+        var val = this.markers.find(x => x.checked == true)
+        if (val != undefined) {
+            var positionMS = this.formatPoistionInMiliSecond(val._Position);
+            var durationMS = this.formatDurationInMiliSecond(val._Duration)
+
+            var totalMarkerDur = durationMS + positionMS;
+            var totalDuartion = this.formatTime(totalMarkerDur / 10000000);
+
+            var fp = positionMS / 10000000;
+
+            if (this.formatTime(this.video.currentTime) >= totalDuartion) {
+                this.video.pause();
+                this.video.currentTime = fp;
+                this.video.play();
+            }
+        }
+    }
+
+    PlayStoryBoard() {
+
+        var marker = this.markers.find(x => x.checked == true)
+        if (marker != undefined && this.index == 0) {
+
+            this.objectss = [];
+            this.markersDirectory = [];
+            this.InvalidateObjects(marker);
+            this.index = 1;
+        }
+        else if (marker == undefined) {
+
+            this.markers.forEach(mar => {
+                this.InvalidateObjects(mar);
+                this.RemoveObjects();
+            });
+        }
+    }
+
+    RemoveObjects() {
+        var objects = this.objectss.find(x => x.totalDuartion == this.formatTime(this.video.currentTime))
+        if (objects != null) {
+            this.objectss.splice(objects, 1);
+        }
+    }
+
+    InvalidateObjects(selctedMarker) {
+        var objs = selctedMarker["Marker.Objects"];
+
+        if (selctedMarker._Position == "00:00:00") {
+            if (this.IsMarkerObjectExist(selctedMarker) == -1) {
+                var durationMS = this.formatDurationInMiliSecond(selctedMarker._Duration);
+                var positionMS = 0;
+                var totalDuartion = this.formatTime((durationMS + positionMS) / 10000000);
+                this.markersDirectory.push(selctedMarker);
+                for (var key in objs) {
+                    if (!objs.hasOwnProperty(key)) continue;
+                    var val = objs[key];
+                    if (val instanceof Array) val.forEach(val => { this.objectss.push({ key, val, totalDuartion }); });
+                    else this.objectss.push({ key, val, totalDuartion });
+                }
+            }
+        }
+        else {
+            var durationMS = this.formatDurationInMiliSecond(selctedMarker._Duration);
+            var positionMS = this.formatPoistionInMiliSecond(selctedMarker._Position);
+            if (this.formatTime(this.video.currentTime) >= selctedMarker._Position) {
+                var totalDuartion = this.formatTime((durationMS + positionMS) / 10000000);
+
+                if (this.IsMarkerObjectExist(selctedMarker) == -1) {
+                    for (var key in objs) {
+                        if (!objs.hasOwnProperty(key)) continue;
+                        var val = objs[key];
+
+                        if (val instanceof Array) {
+                            val.forEach(val => {
+                                this.objectss.push({ key, val });
+                            });
+                        }
+                        else {
+                            this.markersDirectory.push(selctedMarker);
+                            this.objectss.push({ key, val, totalDuartion });
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    IsMarkerObjectExist(selctedMarker) {
+        return this.markersDirectory.indexOf(selctedMarker)
     }
 
     formatPoistionInMiliSecond(pos) {
@@ -175,15 +259,21 @@ export class CompareviewComponent {
         return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
     }
 
-     sliderValueChange() {
+    sliderValueChange() {
         this.timelinePosition = this.formatTime(this.video.currentTime);
         var factor = this.video.duration * (this.sliderValue / 100000);
+        this.video.currentTime = factor;
         this.timelinePosition = this.formatTime(factor);
     }
 
     playPause() {
-        this.video = this.videoElement.nativeElement;
+
         if (this.video.paused == true) {
+
+            if (this.formatTime(this.video.currentTime) == this.timelineDuration) {
+                this.objectss = [];
+                this.markersDirectory = [];
+            }
             this.playPauseChild.emit('play');
             this.video.play();
             this.playPauseButtonIcon = "pause";
@@ -223,87 +313,8 @@ export class CompareviewComponent {
         this.video.playbackRate = speed;
     }
 
-    PlayMarker() {
-
-        var val = this.markers.find(x => x.checked == true)
-        if (val != undefined) {
-            var positionMS = this.formatPoistionInMiliSecond(val._Position);
-            var durationMS = this.formatDurationInMiliSecond(val._Duration)
-
-            var totalMarkerDur = durationMS + positionMS;
-            var totalDuartion = this.formatTime(totalMarkerDur / 10000000);
-
-            var fp = positionMS / 10000000;
-
-            if (this.formatTime(this.video.currentTime) >= totalDuartion) {
-                this.video.pause();
-                this.video.currentTime = fp;
-                this.video.play();
-            }
-        }
-    }
-
-    PlayStoryBoard() {
-
-        var marker = this.markers.find(x => x.checked == true)
-        if (marker != undefined && this.index == 0) {
-
-            this.markersobjects = [];
-            this.markersDirectory = [];
-            this.InvalidateObjects(marker);
-            this.index = 1;
-        }
-        else if (marker == undefined) {
-
-            this.markers.forEach(mar => {
-                this.InvalidateObjects(mar);
-                this.RemoveObjects();
-            });
-        }
-    }
-
-    RemoveObjects() {
-        var objects = this.markersobjects.find(x => x.totalDuartion == this.formatTime(this.video.currentTime))
-        if (objects != null) {
-            this.markersobjects.splice(objects, 1);
-        }
-    }
-
-    InvalidateObjects(selctedMarker) {
-
-        var durationMS = this.formatDurationInMiliSecond(selctedMarker._Duration);
-        var positionMS = this.formatPoistionInMiliSecond(selctedMarker._Position);
-        var markerPosition = this.formatTime(positionMS / 10000000);
-
-        if (markerPosition == this.formatTime(this.video.currentTime)) {
-
-            if (this.markersDirectory.indexOf(selctedMarker) !== -1) {
-            }
-            else {
-                this.markersDirectory.push(selctedMarker);
-
-                var totalMarkerDur = durationMS + positionMS;
-                var totalDuartion = this.formatTime(totalMarkerDur / 10000000);
-
-                var objs = selctedMarker["Marker.Objects"];
-                for (var key in objs) {
-                    if (!objs.hasOwnProperty(key)) continue;
-                    var val = objs[key];
-
-                    if (val instanceof Array) {
-                        val.forEach(val => {
-                            this.markersobjects.push({ key, val, totalDuartion });
-                        });
-                    }
-                    else {
-                        this.markersobjects.push({ key, val, totalDuartion });
-                    }
-                }
-            }
-        }
-    }
-
     // Code for Markers starts
+    markers = [];
     @ViewChild('markersContainer') markersContainer;
 
     onResize(event) {
@@ -311,9 +322,10 @@ export class CompareviewComponent {
     }
 
     evaluateMarkerPosition() {
-         var markersContainerWidth = this.markersContainer.nativeElement.clientWidth;
+        var markersContainerWidth = this.markersContainer.nativeElement.clientWidth;
         var durationInMilliseconds = this.formatDurationInMiliSecond(this.timelineDuration);
         var factor = markersContainerWidth / durationInMilliseconds;
+
         this.markers.forEach(marker => {
             var pos = marker._Position;
             var positionInMilliseconds = this.formatPoistionInMiliSecond(pos);
@@ -343,7 +355,7 @@ export class CompareviewComponent {
                     this.timelinePosition = marker._Position;
                     var positionMS = this.formatPoistionInMiliSecond(marker._Position);
                     var formatPosition = positionMS / 10000000;
-
+                    
                     this.video.currentTime = formatPosition;
                     var factor = (100000 / this.video.duration) * this.video.currentTime;
                     this.sliderValue = factor;
@@ -384,9 +396,44 @@ export class CompareviewComponent {
         }
         console.log(this.objects);
     }
+
+    // markersObjects = []
+
+    // loadMarkerObjects() {
+    //     var interval = setInterval(() => {
+    //         if (this.markers != undefined) {
+
+    //             clearInterval(interval);
+
+    //             this.markers.forEach(data => {
+    //                 var objs = data['Marker.Objects'];
+
+    //                 var objects = [];
+
+    //                 for (var key in objs) {
+    //                     // skip loop if the property is from prototype
+    //                     if (!objs.hasOwnProperty(key)) continue;
+    //                     var val = objs[key];
+
+    //                     if (val instanceof Array) {
+    //                         val.forEach(val => {
+    //                             objects.push({ key, val });
+    //                         });
+    //                     }
+    //                     else {
+    //                         objects.push({ key, val });
+    //                     }
+    //                 }
+
+    //                 this.markersObjects.push({ data, objects })
+
+    //             });
+    //             console.log(this.markersObjects);
+    //         }
+    //     }, 1);
+    // }
     //Code for objects end
 }
-
 @Component({
     template: `
     <ion-list radio-group>

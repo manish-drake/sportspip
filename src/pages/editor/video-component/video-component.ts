@@ -14,7 +14,7 @@ export class VideoComponent {
 
     @ViewChild('video') videoElement: ElementRef;
 
-    constructor(private alertCtrl: AlertController, private modalCtrl: ModalController, private platform: Platform) { 
+    constructor(private alertCtrl: AlertController, private modalCtrl: ModalController, private platform: Platform) {
         this.timelinePosition = this.formatTime(0);
     }
 
@@ -40,11 +40,8 @@ export class VideoComponent {
 
     markers = [];
 
-    ionViewWillEnter() {
-        this.markers = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
-    }
-
     ngAfterViewInit() {
+        this.markers = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
         this.video = this.videoElement.nativeElement;
 
         this.loadObjects();
@@ -60,13 +57,14 @@ export class VideoComponent {
         })
 
         setInterval(() => {
-
             this.timelineDuration = this.formatTime(this.video.duration);
             this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
-            this.evaluateMarkerPosition();
+            if (this.markers != undefined) {
+                // this.evaluateMarkerPosition();
 
-            this.PlayMarker();
-            this.PlayStoryBoard();
+                this.PlayMarker();
+                this.PlayStoryBoard();
+            }
 
         }, 1 / 60);
     }
@@ -108,8 +106,6 @@ export class VideoComponent {
     }
 
     playPause() {
-        this.video = this.videoElement.nativeElement;
-        this.timelineDuration = this.formatTime(this.video.duration);
         if (this.video.paused == true) {
 
             if (this.formatTime(this.video.currentTime) == this.timelineDuration) {
@@ -121,7 +117,7 @@ export class VideoComponent {
             var delay = 1 / 60;
             this.timelineInterval = setInterval(() => {
                 var factor = (100000 / this.video.duration) * this.video.currentTime;
-                this.sliderValue = factor;                
+                this.sliderValue = factor;
                 this.timelinePosition = this.formatTime(this.video.currentTime);
             }, delay);
         } else {
@@ -240,7 +236,6 @@ export class VideoComponent {
         var objs = selctedMarker["Marker.Objects"];
 
         if (selctedMarker._Position == "00:00:00") {
-
             if (this.IsMarkerObjectExist(selctedMarker) == -1) {
                 var durationMS = this.formatDurationInMiliSecond(selctedMarker._Duration);
                 var positionMS = 0;
@@ -258,7 +253,6 @@ export class VideoComponent {
             var durationMS = this.formatDurationInMiliSecond(selctedMarker._Duration);
             var positionMS = this.formatPoistionInMiliSecond(selctedMarker._Position);
             if (this.formatTime(this.video.currentTime) >= selctedMarker._Position) {
-
                 var totalDuartion = this.formatTime((durationMS + positionMS) / 10000000);
 
                 if (this.IsMarkerObjectExist(selctedMarker) == -1) {

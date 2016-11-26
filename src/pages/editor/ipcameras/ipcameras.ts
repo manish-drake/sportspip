@@ -279,8 +279,8 @@ export class Ipcameras {
           matrix['Matrix.Children'].View = this.views;
           this.storagefactory.SaveMatrixAsync(res, matrix.Channel, matrix._Sport, matrix._Name, "Matrices");
 
-          var header = this.storagefactory.ComposeMatrixHeader(matrix);
-          this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
+          // var header = this.storagefactory.ComposeMatrixHeader(matrix);
+          // this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
         });
     });
   }

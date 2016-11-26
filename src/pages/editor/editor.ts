@@ -41,13 +41,14 @@ export class EditorPage {
     console.log(this.matrix);
   }
 
-  ionViewDidLoad() {
-  }
+  // ionViewDidLoad() {
+  //   alert('ionViewDidLoad');
+  // }
+
 
   ionViewWillUnload() {
-
-    console.log(this.matrix["Matrix.Children"]["View"]["Content"]);
     this.saveMatrix();
+     alert(this.views["Content"]["Capture"].find(x=>x._Kernel!=null));
   }
 
   ngOnInit() {
