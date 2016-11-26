@@ -92,8 +92,10 @@ export class CanvasComponent {
   }
 
   formatDurationInMiliSecond(dur) {
-    var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-2)) * 100000;
-    return durationInMilliseconds;
+    if (dur != undefined) {
+      var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-2)) * 100000;
+      return durationInMilliseconds;
+    }
   }
 
   playPause() {

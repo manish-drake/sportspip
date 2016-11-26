@@ -1,7 +1,8 @@
 {
   "name": "ionic-hello-world",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "author": "cougar",
+  "homepage": "http://sportspip.com/",
+  "description": "sportspip",
   "private": true,
   "scripts": {
     "ionic:build": "ionic-app-scripts build",
@@ -33,7 +34,6 @@
     "@types/x2js": "0.0.27",
     "typescript": "^2.0.6"
   },
-  "description": "sportspip: An Ionic project",
   "cordovaPlugins": [
     "cordova-plugin-device",
     "cordova-plugin-console",

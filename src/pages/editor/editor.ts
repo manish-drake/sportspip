@@ -46,7 +46,6 @@ export class EditorPage {
 
   ionViewWillUnload() {
     this.saveMatrix();
-     alert(this.views["Content"]["Capture"]);
   }
 
   ngOnInit() {
@@ -57,11 +56,12 @@ export class EditorPage {
       this.views.push(this.matrix["Matrix.Children"]["View"]);
     }
     this.showViewSegment(this.selectedViewIndex);
+    this.evaluateCaptureViews();
   }
 
   CreateThumbnail(name) {
     var blob: any;
-    
+
     var sourcePath = cordova.file.applicationStorageDirectory + name;
     navigator.createThumbnail(sourcePath, function (err, imageData) {
       console.log(err);
@@ -154,6 +154,7 @@ export class EditorPage {
               else {
                 this.showViewSegment(index - 1)
               }
+              this.evaluateCaptureViews();
             }
           }
         ]
@@ -283,12 +284,17 @@ export class EditorPage {
   }
 
   captureError(err) {
-    let alert = this.alertCtrl.create({
-      title: 'Recording Failed!',
-      subTitle: err,
-      buttons: ['OK']
-    });
-    alert.present();
+    if (err.code == "3") {
+      console.log("Reording: " + err.message + ", Code:" + err.code)
+    }
+    else {
+      let alert = this.alertCtrl.create({
+        title: 'Recording Failed!',
+        subTitle: err.code + ", " + err.message,
+        buttons: ['OK']
+      });
+      alert.present();
+    }
   }
   // Code for Camera Recording Starts
 
@@ -321,6 +327,7 @@ export class EditorPage {
       "_Source": "Local"
     }
     this.views[this.selectedViewIndex] = localView;
+    this.evaluateCaptureViews();
   }
   //Code for ViewOptions end
 
@@ -334,6 +341,17 @@ export class EditorPage {
     console.log(captureViews);
     this.navCtrl.push(Compareview, {
       captureViews: captureViews
+    });
+  }
+
+  countOfCaptureViews: number = 0;
+
+  evaluateCaptureViews() {
+    this.countOfCaptureViews = 0;
+    this.views.forEach(element => {
+      if (element._Source == "Local") {
+        this.countOfCaptureViews++;
+      }
     });
   }
 

@@ -2,14 +2,14 @@ import { Component, ViewChild, Input, ElementRef, Output, EventEmitter } from '@
 
 import { AlertController, ModalController, Platform, PopoverController, ViewController, NavParams } from 'ionic-angular';
 
-import{Compareviewservice} from './compareviewservice'
+import { Compareviewservice } from './compareviewservice'
 
 declare var cordova: any;
 
 @Component({
     selector: 'compareview-component',
     templateUrl: 'compareview-component.html',
-    providers:[Compareviewservice]
+    providers: [Compareviewservice]
 })
 
 export class CompareviewComponent {
@@ -65,15 +65,18 @@ export class CompareviewComponent {
             console.log('Video Error: ' + error);
             // this.videoSrcAvailable = false;
         })
+        // this.markers = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
 
-        this.markers.forEach(element => {
-            if(element.checked){
-                alert("was checked");
-                element.checked = false;
-            }
-        });
+
         this.loadViewData();
-
+        var markerCheckInterval = setInterval(() => {
+            this.markers.forEach(element => {
+                if (element.checked = true) {
+                    element.checked = false;
+                }
+            });
+            clearInterval(markerCheckInterval);
+        })
 
         this.fade(this.fadableTitle.nativeElement);
         this.evaluateMarkerPosition();
@@ -114,8 +117,10 @@ export class CompareviewComponent {
                 clearInterval(this.timelineInterval);
             }
 
-            this.PlayMarker();
-            this.PlayStoryBoard();
+            if (this.markers != undefined) {
+                this.PlayMarker();
+                this.PlayStoryBoard();
+            }
         }, delay);
     }
 
@@ -218,8 +223,10 @@ export class CompareviewComponent {
     }
 
     formatDurationInMiliSecond(dur) {
-        var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-2)) * 100000;
-        return durationInMilliseconds;
+        if (dur != undefined) {
+            var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-2)) * 100000;
+            return durationInMilliseconds;
+        }
     }
 
     presentViewPopover(event) {
@@ -336,31 +343,31 @@ export class CompareviewComponent {
     }
 
     evaluateMarkerPosition() {
-                 
-           var interval = setInterval(() => {
-           
-                var markersContainerWidth = this.markersContainer.nativeElement.clientWidth;
-                var durationInMilliseconds = this.formatDurationInMiliSecond(this.timelineDuration);
-                if (markersContainerWidth != 0 && this.timelineDuration != undefined) {
-                    var factor = markersContainerWidth / durationInMilliseconds;
 
-                    this.markers.forEach(marker => {
-                        var pos = marker._Position;
-                        var positionInMilliseconds = this.formatPoistionInMiliSecond(pos);
-                        marker.Left = positionInMilliseconds * factor + 'px';
-                    });
-                    clearInterval(interval);
+        var interval = setInterval(() => {
 
-                    // return positionInMilliseconds * factor + 'px';
-                
+            var markersContainerWidth = this.markersContainer.nativeElement.clientWidth;
+            var durationInMilliseconds = this.formatDurationInMiliSecond(this.timelineDuration);
+            if (markersContainerWidth != 0 && this.timelineDuration != undefined) {
+                var factor = markersContainerWidth / durationInMilliseconds;
+
+                this.markers.forEach(marker => {
+                    var pos = marker._Position;
+                    var positionInMilliseconds = this.formatPoistionInMiliSecond(pos);
+                    marker.Left = positionInMilliseconds * factor + 'px';
+                });
+                clearInterval(interval);
+
+                // return positionInMilliseconds * factor + 'px';
+
             }
         }, 1 / 60)
-         // var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
+        // var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
         // return positionInMilliseconds * factor + 'px';
     }
 
-       
-   
+
+
 
     updateSelection(i, isSelect) {
 
