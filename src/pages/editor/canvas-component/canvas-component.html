@@ -59,7 +59,7 @@
 						</ion-row>
 						<ion-row>
 							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
-								<button no-margin ion-button icon-only clear ><ion-icon name="{{playPauseButtonIcon}}"></ion-icon></button>
+								<button no-margin ion-button icon-only clear (click)="playPause()"><ion-icon name="{{playPauseButtonIcon}}"></ion-icon></button>
 							</ion-col>
 							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
 								<button no-margin ion-button icon-only clear small color="{{repeatColor}}" ><ion-icon name="repeat"></ion-icon></button>
