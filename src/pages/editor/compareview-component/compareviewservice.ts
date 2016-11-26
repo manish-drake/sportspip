@@ -5,4 +5,8 @@ export class Compareviewservice {
 
     constructor() { }
 
+    play() {
+        // alert('played');
+    }
+
 }
