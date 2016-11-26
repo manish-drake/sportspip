@@ -23,22 +23,20 @@
 				<h5>Subscribed Channels</h5>
 			</ion-col>
 		</ion-row>
-		<ion-row>
-			<ion-col style="max-width:250px;" *ngFor="let subList of subscribeList;let i = index">
+		<div class="items">
+			<div class="item" *ngFor="let subList of subscribeList;let i = index">
 				<ion-card>
 					<ion-item>
-						<ion-avatar item-left>
-							<ion-icon name="person" style="font-size:30px"></ion-icon>
-						</ion-avatar>
-						<h3>{{subList.ChannelName}}</h3>
+						<ion-icon item-left name="person"></ion-icon>
+						<h2>{{subList.ChannelName}}</h2>
 						<p>{{subList.Description}}</p>
 						<button (click)="UnSubscribeList(i)" ion-fab mini item-right>
 							<ion-icon name="close"></ion-icon>
 							</button>
 					</ion-item>
 				</ion-card>
-			</ion-col>
-		</ion-row>
+			</div>
+		</div>
 	</ion-grid>
 	<ion-grid>
 		<ion-row>
@@ -47,19 +45,19 @@
 			</ion-col>
 		</ion-row>
 		<ion-row>
-			<ion-col style="max-width:250px;" *ngFor='let chanList of chanelList;let i = index'>
-				<ion-card>
-					<ion-item>
-						<ion-avatar item-left>
-							<ion-icon name="person" style="font-size:30px"></ion-icon>
-						</ion-avatar>
-						<h3>{{chanList.ChannelName}}</h3>
-						<button (click)="SubscribeList(i,chanList.ChannelName)" ion-fab mini item-right>
+			<div class="items">
+				<div class="item" *ngFor='let chanList of chanelList;let i = index'>
+					<ion-card>
+						<ion-item>
+							<ion-icon item-left name="person"></ion-icon>
+							<h2>{{chanList.ChannelName}}</h2>
+							<button (click)="SubscribeList(i,chanList.ChannelName)" ion-fab mini item-right>
                     					<ion-icon name="add"></ion-icon>
                   					</button>
-					</ion-item>
-				</ion-card>
-			</ion-col>
+						</ion-item>
+					</ion-card>
+				</div>
+			</div>
 			<ion-col center text-center clear *ngIf='chanelList.length == 0' style="color:gray;">
 				no channel available
 			</ion-col>

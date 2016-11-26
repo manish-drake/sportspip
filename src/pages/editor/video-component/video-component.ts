@@ -40,6 +40,8 @@ export class VideoComponent {
 
     markers = [];
 
+    evaluateMarkersInterval: any;
+
     ngAfterViewInit() {
         this.markers = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
         this.video = this.videoElement.nativeElement;
@@ -60,13 +62,20 @@ export class VideoComponent {
             this.timelineDuration = this.formatTime(this.video.duration);
             this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
             if (this.markers != undefined) {
-                this.evaluateMarkerPosition();
+                // this.evaluateMarkerPosition();
 
                 this.PlayMarker();
                 this.PlayStoryBoard();
             }
 
         }, 1 / 60);
+
+        this.evaluateMarkersInterval = setInterval(() => {
+            if (this.markers != undefined) {
+                this.evaluateMarkerPosition();
+            }
+
+        }, 1 / 60)
     }
 
     returnVidPath(filename) {
@@ -298,6 +307,8 @@ export class VideoComponent {
             var positionInMilliseconds = this.formatPoistionInMiliSecond(pos);
             marker.Left = positionInMilliseconds * factor + 'px';
         });
+
+        clearInterval(this.evaluateMarkersInterval);
 
         // return positionInMilliseconds * factor + 'px';
     }
