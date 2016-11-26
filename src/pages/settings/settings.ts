@@ -114,34 +114,66 @@ export class SettingsPage {
 
 
   GetserverHeader() {
-    //local
-    this.http.get("assets/Header.xml")
-      .subscribe(res => {
-        console.log("getting header");
-        this.SerializeServerData(res);
-      })
+    //stub
+    // this.http.get("assets/Header.xml")
+    //   .subscribe(res => {
+    //     console.log("getting header");
+    //     this.SerializeServerData(res);
+    //   })
 
     //server
-    // return this.http.get("http://sportspip.cloudapp.net:10101/IStorageService/getmtxhdrs")
-    //   .map(res => {
-    //     var headerData = JSON.parse(res.text());
-    //     this.Save(headerData, "header.xml");
-    //   }).toPromise();
+    this.http.get("http://sportspipservice.cloudapp.net:10106/IMobile/getmtxhdrs")
+      .map(res => {
+        var headerData = JSON.parse(res.text());
+        this.Save(headerData, "header.xml");
+        Observable.interval(2000)
+          .take(1).map((x) => x + 5)
+          .subscribe((x) => {
+            this.SaveServerHeaders();
+          })
+      }).toPromise();
+  }
+
+  Save(blob, filename) {
+    File.createFile(cordova.file.dataDirectory, filename, true).then(() => {
+      File.writeFile(cordova.file.dataDirectory, filename, blob, true).then(() => {
+
+      })
+    })
+  }
+
+  //server header
+  SaveServerHeaders() {
+    this.http.get(cordova.file.dataDirectory + "/header.xml").subscribe(data => {
+
+      var headerList = JSON.parse(data.text());
+      headerList.forEach(header => {
+        var result = header;
+        var item = {
+          Title: result.Title, DateCreated: result.DateCreated.toString(), Name: result.UploadIndex.toString(), Channel: result.ChannelName,
+          ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadIndex, Duration: result.Duration,
+          Views: result.Views
+        };
+        this.Header.push(item);
+      });
+      this.SaveDownloadedHeaders(this.Header);
+    })
   }
 
 
-  SerializeServerData(headerData) {
-    console.log("serialize header");
-    var res = JSON.parse(headerData.text());
-    var result = res.Header;
-    var item = {
-      Title: result.Title, DateCreated: result.DateCreated, Name: result.name, Channel: result.Channel,
-      ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
-      Views: result.Clips
-    };
-    this.Header.push(item);
-    this.SaveDownloadedHeaders(this.Header);
-  }
+//stub header
+  // SerializeServerData(headerData) {
+  //   console.log("serialize header");
+  //   var res = JSON.parse(headerData.text());
+  //   var result = res.Header;
+  //   var item = {
+  //     Title: result.Title, DateCreated: result.DateCreated, Name: result.name, Channel: result.Channel,
+  //     ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
+  //     Views: result.Clips
+  //   };
+  //   this.Header.push(item);
+  //   this.SaveDownloadedHeaders(this.Header);
+  // }
 
   //Save Downloaded Header
   SaveDownloadedHeaders(HeaderList) {
@@ -149,42 +181,16 @@ export class SettingsPage {
       Observable.interval(2000)
         .take(1).map((x) => x + 5)
         .subscribe((x) => {
-          console.log("save header");
           this.storagefactory.SaveRoamingHeader(res, res.Channel, res.Sport, res.Name);
           this.DownloadThumbnailAsync(res.Channel, res.Name);
         })
     })
-    // this.storagefactory.SaveRoamingHeader(Data, HeaderList.Channel, HeaderList.Sport, HeaderList.name);
   }
 
-  DownloadThumbnailAsync(channelName,matrixName){
-    this.packages.DownloadThumbnailfromServer(channelName,matrixName);
+  DownloadThumbnailAsync(channelName, matrixName) {
+    this.packages.DownloadThumbnailfromServer("Harvest", "636049183928404138");
   }
 
-  // Save(blob, filename) {
-  //   File.createFile(cordova.file.dataDirectory, filename, true).then(() => {
-  //     File.writeFile(cordova.file.dataDirectory, filename, blob, true).then(() => {
-
-  //     })
-  //   })
-  // }
-
-  //server header
-  // SaveServerHeaders() {
-  //   this.http.get(cordova.file.dataDirectory+"/matrix.xml").subscribe(data => {
-  //     var headerList = JSON.parse(data.text());
-  //     headerList.forEach(header => {
-  //       var result = header;
-  //       var item = {
-  //         Title: result.Title, DateCreated: result.DateCreated, Name: result.UploadIndex.toString(), Channel: result.ChannelName,
-  //         ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadIndex, Duration: result.Duration,
-  //         Views: result.Views
-  //       };
-  //       this.Header.push(item);
-  //     });
-  //     this.SaveDownloadedHeaders(this.Header);
-  //   })
-  // }
 
   //signOut 
   presentPopover(event) {

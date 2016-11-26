@@ -44,10 +44,9 @@ export class EditorPage {
   //   alert('ionViewDidLoad');
   // }
 
-
   ionViewWillUnload() {
     this.saveMatrix();
-     alert(this.views["Content"]["Capture"].find(x=>x._Kernel!=null));
+     alert(this.views["Content"]["Capture"]);
   }
 
   ngOnInit() {
