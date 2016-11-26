@@ -196,7 +196,7 @@ export class HomePage {
                                 .subscribe(data => {
                                     //deserialiae server header  
                                     var result = JSON.parse(data.text());
-                                    // var result = header.Header;
+                                    console.log(result);
                                     var item = {
                                         Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
                                         ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
@@ -308,6 +308,7 @@ export class HomePage {
 
     newMatrix() {
         var data = this.storagefactory.ComposeNewMatrix();
+        console.log(data);
         var result = data.Matrix;
         this.storagefactory.SaveMatrixAsync(data, result.Channel, result._Sport, result._Name, "Matrices");
 
