@@ -66,9 +66,17 @@ export class CompareviewComponent {
             // this.videoSrcAvailable = false;
         })
 
+        this.markers.forEach(element => {
+            if(element.checked){
+                alert("was checked");
+                element.checked = false;
+            }
+        });
         this.loadViewData();
 
+
         this.fade(this.fadableTitle.nativeElement);
+        this.evaluateMarkerPosition();
     }
 
     fade(element) {
@@ -328,21 +336,34 @@ export class CompareviewComponent {
     }
 
     evaluateMarkerPosition() {
-        var markersContainerWidth = this.markersContainer.nativeElement.clientWidth;
-        var durationInMilliseconds = this.formatDurationInMiliSecond(this.timelineDuration);
-        var factor = markersContainerWidth / durationInMilliseconds;
+                 
+           var interval = setInterval(() => {
+           
+                var markersContainerWidth = this.markersContainer.nativeElement.clientWidth;
+                var durationInMilliseconds = this.formatDurationInMiliSecond(this.timelineDuration);
+                if (markersContainerWidth != 0 && this.timelineDuration != undefined) {
+                    var factor = markersContainerWidth / durationInMilliseconds;
 
-        this.markers.forEach(marker => {
-            var pos = marker._Position;
-            var positionInMilliseconds = this.formatPoistionInMiliSecond(pos);
-            marker.Left = positionInMilliseconds * factor + 'px';
-        });
+                    this.markers.forEach(marker => {
+                        var pos = marker._Position;
+                        var positionInMilliseconds = this.formatPoistionInMiliSecond(pos);
+                        marker.Left = positionInMilliseconds * factor + 'px';
+                    });
+                    clearInterval(interval);
 
-        // var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
+                    // return positionInMilliseconds * factor + 'px';
+                
+            }
+        }, 1 / 60)
+         // var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
         // return positionInMilliseconds * factor + 'px';
     }
 
+       
+   
+
     updateSelection(i, isSelect) {
+
         this.markers.forEach((marker, index) => {
             if (i != index) {
                 marker.checked = false;
@@ -361,7 +382,7 @@ export class CompareviewComponent {
                     this.timelinePosition = marker._Position;
                     var positionMS = this.formatPoistionInMiliSecond(marker._Position);
                     var formatPosition = positionMS / 10000000;
-                    
+
                     this.video.currentTime = formatPosition;
                     var factor = (100000 / this.video.duration) * this.video.currentTime;
                     this.sliderValue = factor;

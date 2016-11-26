@@ -80,7 +80,7 @@
 					<ion-col padding-left padding-right>
 						<ion-row>
 							<ion-col #markersContainer no-padding (window:resize)="onResize($event)" style="height:28px;">
-								<button ion-button icon-only clear color="inactive" *ngFor="let marker of markers;let i = index" [class.markerselected]="marker.checked"
+								<button ion-button icon-only clear color="inactive"  *ngFor="let marker of markers;let i = index" [class.markerselected]="marker.checked"
 									[style.left]="marker.Left" style="width:18px;height:26px;margin:0 -9px;" (click)="updateSelection(i,marker.checked)" (press)="deleteMarker(i)">
 										<ion-icon name="pin"></ion-icon>
 										</button>
