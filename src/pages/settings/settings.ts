@@ -44,9 +44,9 @@ export class SettingsPage {
 
   InvalidateSubscribeListAsync(userId) {
     this.subscribeList = [];
-     this.subscription.GetSubscriptionList(userId).then((data) => {
-
-     });
+    this.subscription.GetSubscriptionList(userId).then((data) => {
+      this.subscribeList = data;
+    });
   }
 
   InvalidateChannelListAsync(userId) {
@@ -67,12 +67,17 @@ export class SettingsPage {
       this.presentLoginModal();
     }
     else {
-      var channel = this.subscription.RequestSubscriptionAsync(channelName);
+      // this.subscription.RequestSubscriptionAsync(channelName, this.UserID).then((data) => {
+      //   this.subscribeList.push(data);
+      //   this.chanelList.splice(index, 1);
+      //   this.GetserverHeader();
+      // });
+
+      var channel = this.subscription.RequestSubscriptionAsync(channelName, this.UserID);
       this.subscribeList.push(channel);
       this.chanelList.splice(index, 1);
       this.GetserverHeader();
     }
-
   }
 
   UnSubscribeList(index) {
@@ -205,7 +210,7 @@ export class SettingsPage {
           File.removeFile(cordova.file.dataDirectory + "Server", "User.json").then((res) => {
           })
           this.FirstName = null;
-          this.UserID=0;
+          this.UserID = 0;
           this.subscribeList = [];
           this.InvalidateChannelListAsync(this.UserID);
         })

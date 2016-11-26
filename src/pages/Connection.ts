@@ -28,7 +28,6 @@ export class Connection {
                 for (var i = 39; i < ui8.length; i++) {
                     dataStr = dataStr + String.fromCharCode(ui8[i]);
                 }
-                console.log(dataStr)
                 var parser = new X2JS();
                 var data = parser.xml2js('<Server name="DESKTOP-TBMV3MR" Name="DESKTOP-TBMV3MR" Information="Pro Matrix Server: DESKTOP-TBMV3MR" ID="4613d979dd574b89b55edfb5be9a896f" Location="192.168.10.7" Genre="Pro" Filename="" />');
                 if (data == null) return;
