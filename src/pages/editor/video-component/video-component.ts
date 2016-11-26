@@ -20,7 +20,7 @@ export class VideoComponent {
 
     sliderValue: any = 0;
     timelinePosition: any;
-    timelineDuration: any = "00:00:00.00";
+    timelineDuration: any;
     repeatColor: any = "inactive";
     playPauseButtonIcon: string = "play";
     volumeButtonIcon: string = "volume-up";
@@ -40,13 +40,12 @@ export class VideoComponent {
 
     markers = [];
 
-    evaluateMarkersInterval: any;
-
     ngAfterViewInit() {
         this.markers = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
         this.video = this.videoElement.nativeElement;
 
         this.loadObjects();
+        this.evaluateMarkerPosition();
 
         this.video.addEventListener('ended', () => {
             this.playPauseButtonIcon = 'play';
@@ -69,13 +68,6 @@ export class VideoComponent {
             }
 
         }, 1 / 60);
-
-        this.evaluateMarkersInterval = setInterval(() => {
-            if (this.markers != undefined) {
-                this.evaluateMarkerPosition();
-            }
-
-        }, 1 / 60)
     }
 
     returnVidPath(filename) {
@@ -298,19 +290,24 @@ export class VideoComponent {
     onResize(event) { this.evaluateMarkerPosition(); }
 
     evaluateMarkerPosition() {
-        var markersContainerWidth = this.markersContainer.nativeElement.clientWidth;
-        var durationInMilliseconds = this.formatDurationInMiliSecond(this.timelineDuration);
-        var factor = markersContainerWidth / durationInMilliseconds;
+        var interval = setInterval(() => {
+            if (this.markers != undefined) {
+                var markersContainerWidth = this.markersContainer.nativeElement.clientWidth;
+                var durationInMilliseconds = this.formatDurationInMiliSecond(this.timelineDuration);
+                if (markersContainerWidth != 0 && this.timelineDuration != undefined) {
+                    var factor = markersContainerWidth / durationInMilliseconds;
 
-        this.markers.forEach(marker => {
-            var pos = marker._Position;
-            var positionInMilliseconds = this.formatPoistionInMiliSecond(pos);
-            marker.Left = positionInMilliseconds * factor + 'px';
-        });
+                    this.markers.forEach(marker => {
+                        var pos = marker._Position;
+                        var positionInMilliseconds = this.formatPoistionInMiliSecond(pos);
+                        marker.Left = positionInMilliseconds * factor + 'px';
+                    });
+                    clearInterval(interval);
 
-        clearInterval(this.evaluateMarkersInterval);
-
-        // return positionInMilliseconds * factor + 'px';
+                    // return positionInMilliseconds * factor + 'px';
+                }
+            }
+        }, 1 / 60)
     }
 
     updateSelection(i, isSelect) {
