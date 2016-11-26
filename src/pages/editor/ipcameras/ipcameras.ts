@@ -28,9 +28,9 @@ export class Ipcameras {
   views: any;
   selectedViewIndex: any;
 
-  constructor(public navCtrl: NavController,
+  constructor(public viewCtrl :ViewController,
+    public navCtrl: NavController,
     private modalCtrl: ModalController,
-    private connection: Connection,
     private http: Http,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
@@ -190,8 +190,7 @@ export class Ipcameras {
           if (time >= this.recordingDuration) {
             clearInterval(interval);
             this.isRecording = false;
-            this.connection.transferMatrix(this.matrix._Name);
-            this.navCtrl.popToRoot();
+            this.viewCtrl.dismiss(this.views);
           }
         }, 1000);
       })
@@ -223,8 +222,10 @@ export class Ipcameras {
         }
       });
     }
+  }
 
-    this.saveMatrix();
+  dismiss(){
+    this.viewCtrl.dismiss(null);
   }
 
   createVideoView(fileName) {
@@ -267,22 +268,6 @@ export class Ipcameras {
       });
       alert.present();
     }
-  }
-
-  saveMatrix() {
-    this.platform.ready().then(() => {
-      console.log(this.matrix.Channel);
-      this.http.get(cordova.file.dataDirectory + "Local/" + this.matrix.Channel + "/Tennis/Matrices/" + this.matrix._Name + "/" + this.matrix._Name + ".mtx")
-        .subscribe(data => {
-          var res = JSON.parse(data.text());
-          var matrix = res.Matrix;
-          matrix['Matrix.Children'].View = this.views;
-          this.storagefactory.SaveMatrixAsync(res, matrix.Channel, matrix._Sport, matrix._Name, "Matrices");
-
-          // var header = this.storagefactory.ComposeMatrixHeader(matrix);
-          // this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
-        });
-    });
   }
 }
 
