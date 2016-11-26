@@ -65,10 +65,21 @@ export class CompareviewComponent {
             console.log('Video Error: ' + error);
             // this.videoSrcAvailable = false;
         })
+        // this.markers = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
+
 
         this.loadViewData();
+        var markerCheckInterval = setInterval(() => {
+            this.markers.forEach(element => {
+                if (element.checked = true) {
+                    element.checked = false;
+                }
+            });
+            clearInterval(markerCheckInterval);
+        })
 
         this.fade(this.fadableTitle.nativeElement);
+        this.evaluateMarkerPosition();
     }
 
     fade(element) {
@@ -106,11 +117,11 @@ export class CompareviewComponent {
                 clearInterval(this.timelineInterval);
             }
 
-            if (this.markers != undefined){
-                     this.PlayMarker();
-                     this.PlayStoryBoard();
+            if (this.markers != undefined) {
+                this.PlayMarker();
+                this.PlayStoryBoard();
             }
-        }, delay); 
+        }, delay);
     }
 
     PlayMarker() {
@@ -272,6 +283,7 @@ export class CompareviewComponent {
         this.timelinePosition = this.formatTime(this.video.currentTime);
         var factor = this.video.duration * (this.sliderValue / 100000);
         this.video.currentTime = factor;
+        this.timelinePosition = this.formatTime(factor);
     }
 
     playPause() {
@@ -331,21 +343,34 @@ export class CompareviewComponent {
     }
 
     evaluateMarkerPosition() {
-        var markersContainerWidth = this.markersContainer.nativeElement.clientWidth;
-        var durationInMilliseconds = this.formatDurationInMiliSecond(this.timelineDuration);
-        var factor = markersContainerWidth / durationInMilliseconds;
 
-        this.markers.forEach(marker => {
-            var pos = marker._Position;
-            var positionInMilliseconds = this.formatPoistionInMiliSecond(pos);
-            marker.Left = positionInMilliseconds * factor + 'px';
-        });
+        var interval = setInterval(() => {
 
+            var markersContainerWidth = this.markersContainer.nativeElement.clientWidth;
+            var durationInMilliseconds = this.formatDurationInMiliSecond(this.timelineDuration);
+            if (markersContainerWidth != 0 && this.timelineDuration != undefined) {
+                var factor = markersContainerWidth / durationInMilliseconds;
+
+                this.markers.forEach(marker => {
+                    var pos = marker._Position;
+                    var positionInMilliseconds = this.formatPoistionInMiliSecond(pos);
+                    marker.Left = positionInMilliseconds * factor + 'px';
+                });
+                clearInterval(interval);
+
+                // return positionInMilliseconds * factor + 'px';
+
+            }
+        }, 1 / 60)
         // var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
         // return positionInMilliseconds * factor + 'px';
     }
 
+
+
+
     updateSelection(i, isSelect) {
+
         this.markers.forEach((marker, index) => {
             if (i != index) {
                 marker.checked = false;
@@ -368,6 +393,7 @@ export class CompareviewComponent {
                     this.video.currentTime = formatPosition;
                     var factor = (100000 / this.video.duration) * this.video.currentTime;
                     this.sliderValue = factor;
+                    this.timelinePosition = this.formatTime(formatPosition);
                 }
             }
         });

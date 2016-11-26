@@ -46,7 +46,6 @@ export class VideoComponent {
 
         this.loadObjects();
         this.evaluateMarkerPosition();
-
         this.video.addEventListener('ended', () => {
             this.playPauseButtonIcon = 'play';
             clearInterval(this.timelineInterval);
@@ -56,6 +55,15 @@ export class VideoComponent {
             console.log('Error in video Elmnt:' + error);
             // this.videoSrcAvailable = false;
         })
+        // var markerCheckInterval = setInterval(() => {
+        //     this.markers.forEach(element => {
+        //         if (element.checked) {
+        //             alert('checked');
+        //             element.checked = false;
+        //         }
+        //     });
+        //     clearInterval(markerCheckInterval);
+        // });
 
         setInterval(() => {
             this.timelineDuration = this.formatTime(this.video.duration);
@@ -69,6 +77,7 @@ export class VideoComponent {
 
         }, 1 / 60);
     }
+
 
     returnVidPath(filename) {
         if (this.platform.is('cordova')) {
@@ -107,7 +116,6 @@ export class VideoComponent {
         var factor = this.video.duration * (this.sliderValue / 100000);
         this.timelinePosition = this.formatTime(factor);
     }
-    currentTime: any = 0;
 
     playPause() {
         if (this.video.paused == true) {
@@ -120,8 +128,6 @@ export class VideoComponent {
             this.playPauseButtonIcon = 'pause';
             var delay = 1 / 60;
             this.timelineInterval = setInterval(() => {
-                var num = this.video.currentTime;
-                this.currentTime = num.toFixed(1);
                 var factor = (100000 / this.video.duration) * this.video.currentTime;
                 this.sliderValue = factor;
                 this.timelinePosition = this.formatTime(this.video.currentTime);

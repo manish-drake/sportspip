@@ -52,22 +52,24 @@ export class Login {
 
     Register(email, firstname, lastname) {
         console.log("Registration..");
-        this.validateSignUp();
         if (this.validateSignUp()) {
-            var user = this.subscription.RegisterAsync(firstname, lastname, email);
-            this.storageFactory.SaveUserAsync(user);
-            this.dismiss(user);
+            this.subscription.RegisterAsync(firstname, lastname, email).then((user) => {
+                this.storageFactory.SaveUserAsync(user);
+                this.dismiss(user);
+            });
+
         }
     }
 
     Login(email, pwd) {
-        this.validateLogin();
         if (this.validateLogin()) {
-            var user = this.subscription.LoginAsync(email, pwd);
-            this.storageFactory.SaveUserAsync(user);
-            this.dismiss(user);
+            this.subscription.LoginAsync(email, pwd).then((user) => {
+                this.storageFactory.SaveUserAsync(user);
+                this.dismiss(user);
+            });
         }
     }
+
     validateLogin() {
         if (!this.LoginEmail || !this.Password) {
             if (!this.LoginEmail) this.errorMessege = "Email ID Requried";
@@ -79,6 +81,7 @@ export class Login {
             return true;
         }
     }
+
     validateSignUp() {
         if (!this.Email || !this.FirstName || !this.LastName) {
             if (!this.Email) this.errorMessege = "Email ID Requried";

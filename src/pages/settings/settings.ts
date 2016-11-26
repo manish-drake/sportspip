@@ -26,6 +26,7 @@ export class SettingsPage {
   chanelList = [];
   subscribeList = [];
   public FirstName: any;
+  public UserID: any;
   public LastName: any;
   Header = [];
 
@@ -41,20 +42,24 @@ export class SettingsPage {
 
   }
 
-  InvalidateSubscribeListAsync() {
+  InvalidateSubscribeListAsync(userId) {
     this.subscribeList = [];
-    this.subscribeList = this.subscription.GetSubscriptionList();
+     this.subscription.GetSubscriptionList(userId).then((data) => {
+
+     });
   }
 
-  InvalidateChannelListAsync() {
+  InvalidateChannelListAsync(userId) {
     this.chanelList = [];
-    var ChanelList = this.subscription.GetChannelsAsync();
-    ChanelList.forEach(channel => {
-      var value = this.subscribeList.find(x => x.ChannelName == channel.ChannelName)
-      if (value == undefined) {
-        this.chanelList.push(channel);
-      }
+    this.subscription.GetChannelsAsync(userId).then((data) => {
+      data.forEach(channel => {
+        var value = this.subscribeList.find(x => x.ChannelName == channel.ChannelName)
+        if (value == undefined) {
+          this.chanelList.push(channel);
+        }
+      });
     });
+
   }
 
   SubscribeList(index, channelName) {
@@ -68,13 +73,12 @@ export class SettingsPage {
       this.GetserverHeader();
     }
 
-
   }
 
   UnSubscribeList(index) {
     this.subscribeList.splice(index, 1);
     this.chanelList = [];
-    this.InvalidateChannelListAsync();
+    this.InvalidateChannelListAsync(this.UserID);
   }
 
   ionViewDidLoad() {
@@ -84,17 +88,18 @@ export class SettingsPage {
 
   createSettingsasync() {
     this.http.get(cordova.file.dataDirectory + "Server/User.json").map(response => response.json())
-      .catch(err => new Observable(observer => { this.InvalidateChannelListAsync() }))
+      .catch(err => new Observable(observer => { this.UserID = 0; this.InvalidateChannelListAsync("0"); console.log("no user find"); }))
       .subscribe(result => {
         this.SetUserAcync(result)
-        this.InvalidateSubscribeListAsync();
-        this.InvalidateChannelListAsync();
+        this.InvalidateSubscribeListAsync(this.UserID);
+        this.InvalidateChannelListAsync(this.UserID);
       });
   }
 
   SetUserAcync(data) {
     this.FirstName = data.FirstName;
     this.LastName = data.LastName;
+    this.UserID = data.UserId;
   }
 
   //register and  login
@@ -104,14 +109,12 @@ export class SettingsPage {
       console.log(data);
       if (data != null) {
         this.SetUserAcync(data);
-        this.InvalidateSubscribeListAsync();
-        this.InvalidateChannelListAsync();
+        this.InvalidateSubscribeListAsync(this.UserID);
+        this.InvalidateChannelListAsync(this.UserID);
       }
-
     });
     modal.present();
   }
-
 
   GetserverHeader() {
     //stub
@@ -161,7 +164,7 @@ export class SettingsPage {
   }
 
 
-//stub header
+  //stub header
   // SerializeServerData(headerData) {
   //   console.log("serialize header");
   //   var res = JSON.parse(headerData.text());
@@ -197,14 +200,14 @@ export class SettingsPage {
     let popover = this.popoverCtrl.create(UserActionsPopover);
     popover.present({ ev: event });
     popover.onDidDismiss(data => {
-      console.log(data);
       if (data != null) {
         this.platform.ready().then(() => {
           File.removeFile(cordova.file.dataDirectory + "Server", "User.json").then((res) => {
           })
           this.FirstName = null;
+          this.UserID=0;
           this.subscribeList = [];
-          this.InvalidateChannelListAsync();
+          this.InvalidateChannelListAsync(this.UserID);
         })
       }
     })
