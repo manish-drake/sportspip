@@ -276,18 +276,18 @@ export class HomePage {
                         this.packages.MoveToLocalCollection(channelName);
                     })
 
-                Observable.interval(5000)
+                Observable.interval(6000)
                     .take(1).map((x) => x + 5)
                     .subscribe((x) => {
                         this.localMatrices = [];
                         this.GetLocalMatrixHeader();
                     })
-                Observable.interval(6000)
+                Observable.interval(7000)
                     .take(1).map((x) => x + 5)
                     .subscribe((x) => {
                         this.deleteServerHeader(fileName, index, value, channelName)
                     })
-                Observable.interval(7000)
+                Observable.interval(8000)
                     .take(1).map((x) => x + 5)
                     .subscribe((x) => {
                         this.platform.ready().then(() => {

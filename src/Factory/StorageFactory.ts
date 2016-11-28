@@ -188,8 +188,8 @@ export class StorageFactory {
             Sport: fromMatrix._Sport,
             Skill: fromMatrix._Skill,
             UploadID: "0",
-            Duration: fromMatrix._Duration,
-            Views: fromMatrix["Matrix.Children"].View.length
+            Duration: fromMatrix._Duration
+            // Views: fromMatrix["Matrix.Children"].View.length
         };
 
         return header;
