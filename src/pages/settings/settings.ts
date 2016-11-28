@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController, PopoverController, ViewController, Platform, AlertController } from 'ionic-angular';
+import { NavController, ModalController, PopoverController, ViewController, Platform, AlertController, LoadingController } from 'ionic-angular';
 import { File } from 'ionic-native';
 import { Login } from '../settings/login/login'
 import { Subscription } from '../../Stubs/Subscription';
@@ -38,15 +38,16 @@ export class SettingsPage {
     private packages: Package,
     private modalCtrl: ModalController,
     private popoverCtrl: PopoverController,
-    private platform: Platform) {
+    private platform: Platform,
+    private loadingCtrl: LoadingController) {
 
   }
 
   InvalidateSubscribeListAsync(userId) {
     this.subscribeList = [];
-     this.subscription.GetSubscriptionList(userId).then((data) => {
+    this.subscription.GetSubscriptionList(userId).then((data) => {
 
-     });
+    });
   }
 
   InvalidateChannelListAsync(userId) {
@@ -67,6 +68,11 @@ export class SettingsPage {
       this.presentLoginModal();
     }
     else {
+      let loader = this.loadingCtrl.create({
+        content: "Subscribing..",
+        duration: 2000
+      });
+      loader.present();
       var channel = this.subscription.RequestSubscriptionAsync(channelName);
       this.subscribeList.push(channel);
       this.chanelList.splice(index, 1);
@@ -205,7 +211,7 @@ export class SettingsPage {
           File.removeFile(cordova.file.dataDirectory + "Server", "User.json").then((res) => {
           })
           this.FirstName = null;
-          this.UserID=0;
+          this.UserID = 0;
           this.subscribeList = [];
           this.InvalidateChannelListAsync(this.UserID);
         })
