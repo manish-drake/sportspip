@@ -243,7 +243,7 @@ export class HomePage {
                     });
                 })
             }).catch((err) => {
-                console.log('server Matrix header error: ' + err);
+                console.log('server Matrix header error: ' +  JSON.stringify(err));
             });
         });
     }
@@ -299,7 +299,7 @@ export class HomePage {
                     })
             }
             else {
-                alert("Your subscription authoraization is still pending"); 
+                alert("Your subscription authoraization is still pending");
                 loader.dismiss();
             }
         });
@@ -310,7 +310,7 @@ export class HomePage {
 
     newMatrix() {
         var data = this.storagefactory.ComposeNewMatrix();
-        console.log(data);
+
         var result = data.Matrix;
         this.storagefactory.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices");
 
