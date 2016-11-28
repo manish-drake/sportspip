@@ -56,9 +56,12 @@ export class CompareviewComponent {
     ngAfterViewInit() {
         this.video = this.videoElement.nativeElement;
 
-        this.video.addEventListener('ended', () => {
-            this.playPauseButtonIcon = "play";
-            clearInterval(this.timelineInterval);
+        this.video.addEventListener('ended', () => {            
+            var val = this.markers.find(x => x.checked == true);
+            if (val == undefined) {
+                this.playPauseButtonIcon = "play";
+                clearInterval(this.timelineInterval);
+            }
         })
 
         this.video.addEventListener('error', (error) => {
@@ -116,7 +119,6 @@ export class CompareviewComponent {
             }
 
             if (this.markers != undefined) {
-                this.PlayMarker();
                 this.PlayStoryBoard();
             }
         }, delay);
@@ -216,14 +218,25 @@ export class CompareviewComponent {
     }
 
     formatPoistionInMiliSecond(pos) {
-        var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
-        return positionInMilliseconds;
+        if (pos == "00:00:00") {
+            return 0;
+        }
+        else {
+            var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
+            return positionInMilliseconds;
+        }
     }
 
     formatDurationInMiliSecond(dur) {
         if (dur != undefined) {
-            var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-2)) * 100000;
-            return durationInMilliseconds;
+            if (dur.length == 16) {
+                var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-7));
+                return durationInMilliseconds;
+            }
+            else {
+                var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-2)) * 100000;
+                return durationInMilliseconds;
+            }
         }
     }
 
@@ -297,7 +310,7 @@ export class CompareviewComponent {
             this.video.play();
             this.playPauseButtonIcon = "pause";
             this.timelineInterval = setInterval(() => {
-
+                this.PlayMarker();
                 var factor = (100000 / this.video.duration) * this.video.currentTime;
                 this.sliderValue = factor;
                 this.timelinePosition = this.formatTime(this.video.currentTime);
