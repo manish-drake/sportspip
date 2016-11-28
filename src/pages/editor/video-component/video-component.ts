@@ -47,9 +47,9 @@ export class VideoComponent {
         this.loadObjects();
         this.evaluateMarkerPosition();
         this.video.addEventListener('ended', () => {
-            this.playPauseButtonIcon = 'play';
             var val = this.markers.find(x => x.checked == true);
             if(val==undefined){
+                this.playPauseButtonIcon = 'play';
                 clearInterval(this.timelineInterval);
             }
         })
