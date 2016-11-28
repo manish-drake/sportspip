@@ -71,6 +71,7 @@ export class Subscription {
             .map(res => res.json())
             .map(us => {
                 var data = JSON.parse(us);
+                console.log(data);
                 var user = { Name: data.Returns.Name, FirstName: data.Returns.FirstName, LastName: data.Returns.LastName, Email: data.Returns.Email, UserId: data.Returns.ID }
                 return user;
             }).toPromise();

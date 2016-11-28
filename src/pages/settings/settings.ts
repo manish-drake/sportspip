@@ -76,7 +76,7 @@ export class SettingsPage {
       var channel = this.subscription.RequestSubscriptionAsync(channelName, this.UserID);
       this.subscribeList.push(channel);
       this.chanelList.splice(index, 1);
-      this.GetserverHeader();
+      this.GetserverHeader(channelName);
     }
   }
 
@@ -121,7 +121,7 @@ export class SettingsPage {
     modal.present();
   }
 
-  GetserverHeader() {
+  GetserverHeader(channelname) {
     //stub
     // this.http.get("assets/Header.xml")
     //   .subscribe(res => {
@@ -137,7 +137,7 @@ export class SettingsPage {
         Observable.interval(2000)
           .take(1).map((x) => x + 5)
           .subscribe((x) => {
-            this.SaveServerHeaders();
+            this.SaveServerHeaders(channelname);
           })
       }).toPromise();
   }
@@ -151,18 +151,20 @@ export class SettingsPage {
   }
 
   //server header
-  SaveServerHeaders() {
+  SaveServerHeaders(channel) {
     this.http.get(cordova.file.dataDirectory + "/header.xml").subscribe(data => {
-
       var headerList = JSON.parse(data.text());
       headerList.forEach(header => {
         var result = header;
-        var item = {
-          Title: result.Title, DateCreated: result.DateCreated.toString(), Name: result.UploadIndex.toString(), Channel: result.ChannelName,
-          ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadIndex, Duration: result.Duration,
-          Views: result.Views
-        };
-        this.Header.push(item);
+        if (result.ChannelName == channel) {
+          var item = {
+            Title: result.Title, DateCreated: result.DateCreated.toString(), Name: result.UploadIndex.toString(), Channel: result.ChannelName,
+            ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadIndex, Duration: result.Duration,
+            Views: result.Views
+          };
+          this.Header.push(item);
+        }
+
       });
       this.SaveDownloadedHeaders(this.Header);
     })
