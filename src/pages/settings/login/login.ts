@@ -56,8 +56,10 @@ export class Login {
             this.subscription.RegisterAsync(firstname, lastname, email).then((user) => {
                 this.storageFactory.SaveUserAsync(user);
                 this.dismiss(user);
+            }).catch((err) => {
+                console.log("Registration error: " + err);
+                this.errorMessege = "Registration failed";
             });
-
         }
     }
 
@@ -66,6 +68,9 @@ export class Login {
             this.subscription.LoginAsync(email, pwd).then((user) => {
                 this.storageFactory.SaveUserAsync(user);
                 this.dismiss(user);
+            }).catch((err) => {
+                console.log('Login error: ' + err);
+                this.errorMessege = "Either Email or Password is incorrect";
             });
         }
     }
