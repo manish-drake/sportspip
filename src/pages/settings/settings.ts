@@ -68,29 +68,33 @@ export class SettingsPage {
       this.presentLoginModal();
     }
     else {
-      let loader = this.loadingCtrl.create({
-        content: "Subscribing..",
-        duration: 2000
+      this.subscription.RequestSubscriptionAsync(channelName, this.UserID).then((data) => {
+        this.chanelList = [];
+        this.subscribeList = [];
+        this.createSettingsasync()
+        let loader = this.loadingCtrl.create({
+          content: "Subscribing..",
+          duration: 2000
+        });
+        loader.present();
+        this.GetserverHeader(channelName);
       });
-      loader.present();
-
-      // this.subscription.RequestSubscriptionAsync(channelName, this.UserID).then((data) => {
-      //   this.subscribeList.push(data);
-      //   this.chanelList.splice(index, 1);
-      //   this.GetserverHeader();
-      // });
-      var channel = this.subscription.RequestSubscriptionAsync(channelName, this.UserID);
-
-      this.subscribeList.push(channel);
-      this.chanelList.splice(index, 1);
-      this.GetserverHeader();
+      // var channel = this.subscription.RequestSubscriptionAsync(channelName, this.UserID);
+      // this.subscribeList.push(channel);
+      // this.chanelList.splice(index, 1);
+      // this.GetserverHeader(channelName);
     }
   }
 
-  UnSubscribeList(index) {
-    this.subscribeList.splice(index, 1);
-    this.chanelList = [];
-    this.InvalidateChannelListAsync(this.UserID);
+  UnSubscribeList(index, channelName) {
+    this.subscription.RemoveSubscriptionAsync(channelName, this.UserID).then((data) => {
+      this.chanelList = [];
+      this.subscribeList = [];
+      this.createSettingsasync()
+      File.removeDir(cordova.file.dataDirectory + "Server/", channelName).then(() => {
+        alert("successfully removed..")
+      })
+    });
   }
 
   ionViewDidLoad() {
@@ -128,7 +132,7 @@ export class SettingsPage {
     modal.present();
   }
 
-  GetserverHeader() {
+  GetserverHeader(channelname) {
     //stub
     // this.http.get("assets/Header.xml")
     //   .subscribe(res => {
@@ -137,39 +141,43 @@ export class SettingsPage {
     //   })
 
     //server
+    console.log("saving headers list file..");
     this.http.get("http://sportspipservice.cloudapp.net:10106/IMobile/getmtxhdrs")
-      .map(res => {
+      .subscribe(res => {
         var headerData = JSON.parse(res.text());
         this.Save(headerData, "header.xml");
         Observable.interval(2000)
           .take(1).map((x) => x + 5)
           .subscribe((x) => {
-            this.SaveServerHeaders();
-          })
-      }).toPromise();
+            console.log("saving headers list file..")
+            this.SaveServerHeaders(channelname);
+          });
+      });
   }
 
   Save(blob, filename) {
     File.createFile(cordova.file.dataDirectory, filename, true).then(() => {
       File.writeFile(cordova.file.dataDirectory, filename, blob, true).then(() => {
-
+        console.log("saving headers list file..");
       })
     })
   }
 
   //server header
-  SaveServerHeaders() {
+  SaveServerHeaders(channel) {
     this.http.get(cordova.file.dataDirectory + "/header.xml").subscribe(data => {
-
       var headerList = JSON.parse(data.text());
       headerList.forEach(header => {
         var result = header;
-        var item = {
-          Title: result.Title, DateCreated: result.DateCreated.toString(), Name: result.UploadIndex.toString(), Channel: result.ChannelName,
-          ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadIndex, Duration: result.Duration,
-          Views: result.Views
-        };
-        this.Header.push(item);
+        if (result.ChannelName == channel) {
+          var item = {
+            Title: result.Title, DateCreated: result.DateCreated.toString(), Name: result.UploadIndex.toString(), Channel: result.ChannelName,
+            ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadIndex, Duration: result.Duration,
+            Views: result.Views
+          };
+          this.Header.push(item);
+        }
+
       });
       this.SaveDownloadedHeaders(this.Header);
     })
@@ -197,13 +205,13 @@ export class SettingsPage {
         .take(1).map((x) => x + 5)
         .subscribe((x) => {
           this.storagefactory.SaveRoamingHeader(res, res.Channel, res.Sport, res.Name);
-          this.DownloadThumbnailAsync(res.Channel, res.Name);
+          this.DownloadThumbnailAsync(res.Channel, res.Name,res.ThumbnailSource);
         })
     })
   }
 
-  DownloadThumbnailAsync(channelName, matrixName) {
-    this.packages.DownloadThumbnailfromServer("Harvest", "636049183928404138");
+  DownloadThumbnailAsync(channelName, matrixName,thumb) {
+    this.packages.DownloadThumbnailfromServer(channelName, matrixName,thumb);
   }
 
 

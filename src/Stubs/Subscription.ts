@@ -29,7 +29,13 @@ export class Subscription {
                 var data = JSON.parse(us);
                 data.Returns.forEach(sbchn => {
                     var subscription =
-                        { ChannelName: sbchn.Channel.Name, Description: sbchn.Channel.Description, IsAuthorized: sbchn.IsAuthorized, DtExpiry: sbchn.DtExpiry, IsMatrixUploader: sbchn.IsMatrixUploader }
+                        {
+                            ChannelName: sbchn.Channel.Name,
+                            Description: sbchn.Channel.Description,
+                            IsAuthorized: sbchn.IsAuthorized,
+                            DtExpiry: sbchn.DtExpiry,
+                            IsMatrixUploader: sbchn.IsMatrixUploader
+                        }
                     subscriptionList.push(subscription);
                 });
                 return subscriptionList;
@@ -37,20 +43,40 @@ export class Subscription {
     }
 
     RequestSubscriptionAsync(channelName, userid) {
-        // return this.http.get("http://sportspipservice.cloudapp.net:10106/IMobile/subscriptions/" + channelName + "?uid=" + userid + "")
-        //     .map(res => res.json())
-        //     .map(us => {
-        //         var data = JSON.parse(us);
-        //         console.log(data);
-        //         var subscription =
-        //             { ChannelName: channelName, IsPrivate: false, Description: "Tennis,Badminton,serve", IsAuthorized: true, DtExpiry: new Date(), IsMatrixUploader: false };
-        //         return subscription;
-        //     }).toPromise();
+        return this.http.get("http://sportspipservice.cloudapp.net:10106/IMobile/subscriptions/create/"+channelName+"?uid="+userid+"")
+            .map(res => res.json())
+            .map(us => {
+                var data = JSON.parse(us);
+                var subscription =
+                    {
+                        ChannelName: channelName,
+                        Description: data.Returns.Channel.Description,
+                        IsAuthorized: data.Returns.IsAuthorized,
+                        DtExpiry: data.Returns.DtExpiry,
+                        IsMatrixUploader: data.Returns.IsMatrixUploader
+                    };
+                return subscription;
+            }).toPromise();
 
-        var subscription =
-            { ChannelName: channelName, IsPrivate: false, Description: "Tennis,Badminton,serve", IsAuthorized: true, DtExpiry: new Date(), IsMatrixUploader: false };
-        return subscription;
+        // var subscription =
+        //     {
+        //         ChannelName: channelName,
+        //         Description: "Tennis",
+        //         IsAuthorized: true,
+        //         DtExpiry: new Date(),
+        //         IsMatrixUploader: true
+        //     };
+        // return subscription;
+    }
 
+    RemoveSubscriptionAsync(channelName, userid) {
+        return this.http.get("http://sportspipservice.cloudapp.net:10106/IMobile/subscriptions/remove/" + channelName + "?uid=" + userid + "")
+            .map(res => res.json())
+            .map(us => {
+                var data = JSON.parse(us);
+                console.log(us);
+                return true;
+            }).toPromise();
     }
 
     RegisterAsync(firstName, lastName, email) {
@@ -71,6 +97,7 @@ export class Subscription {
             .map(res => res.json())
             .map(us => {
                 var data = JSON.parse(us);
+                console.log(data);
                 var user = { Name: data.Returns.Name, FirstName: data.Returns.FirstName, LastName: data.Returns.LastName, Email: data.Returns.Email, UserId: data.Returns.ID }
                 return user;
             }).toPromise();

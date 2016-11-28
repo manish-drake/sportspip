@@ -30,7 +30,7 @@
 						<ion-icon item-left name="person"></ion-icon>
 						<h2>{{subList.ChannelName}}</h2>
 						<p>{{subList.Description}}</p>
-						<button (click)="UnSubscribeList(i)" ion-fab mini item-right>
+						<button (click)="UnSubscribeList(i,subList.ChannelName)" ion-fab mini item-right>
 							<ion-icon name="close"></ion-icon>
 							</button>
 					</ion-item>

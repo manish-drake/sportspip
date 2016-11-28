@@ -34,7 +34,7 @@ export class StorageFactory {
                                 File.createFile(fileLocation, "Header.xml", true).then(() => {
                                     File.writeFile(fileLocation, "Header.xml", content, true)
                                         .then(function (success) {
-
+                                            console.log("server header saved ..")
                                         })
 
                                 })
@@ -163,7 +163,7 @@ export class StorageFactory {
                     "_Duration": "00:00:00",
                     "_DateCreated": new Date().toString(),
                     "_Sport": "Tennis",
-                    "Channel": "Local",
+                    "_Channel": "Local",
                     "Matrix.Children": {
                         "View":
                         {
@@ -179,13 +179,12 @@ export class StorageFactory {
     }
 
     ComposeMatrixHeader(fromMatrix) {
-        console.log(fromMatrix["Matrix.Children"]);
-
+        console.log(fromMatrix["Matrix.Children"]["View"]["Content"].Capture._Kernal)
         var header = {
             Title: fromMatrix._Title,
             DateCreated: fromMatrix._DateCreated,
             Name: fromMatrix._Name,
-            Channel: fromMatrix.Channel,
+            Channel: fromMatrix._Channel,
             ThumbnailSource: "636049183928404138",
             Sport: fromMatrix._Sport,
             Skill: fromMatrix._Skill,

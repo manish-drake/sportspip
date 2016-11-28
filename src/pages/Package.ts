@@ -28,7 +28,7 @@ export class Package {
                 console.log("header moving..");
                 var header = JSON.parse(result.text());
                 header.Name = this.fileName;
-                header.DateCreated=Date.now().toString();
+                header.DateCreated = Date.now().toString();
                 this.channelName = header.Channel;
 
                 this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
@@ -45,8 +45,8 @@ export class Package {
                                 var matrixdata = parser.xml2js(data["_body"]);
                                 var matrix = matrixdata.Matrix;
                                 matrix._Name = this.fileName;
-                                matrix.Channel = this.channelName;
-                                this.storagefactory.SaveMatrixAsync(matrixdata, matrix.Channel, matrix._Sport, matrix._Name, "Matrices");
+                                matrix._Channel = this.channelName;
+                                this.storagefactory.SaveMatrixAsync(matrixdata, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
                                 console.log("mtx moved");
                             })
                             break;
@@ -79,8 +79,8 @@ export class Package {
                     var oldPath = cordova.file.dataDirectory + "Server/" + channelName + "/Tennis/Matrices/" + fileName + "/";
                     File.copyFile(oldPath, "Header.xml", matrixPath, "Header.xml").then(() => {
                         const ft = new FileTransfer();
-                        // var url = encodeURI("https://drake.blob.core.windows.net/matrices/" + channelName + "/" + fileName + ".sar");
-                        var url = encodeURI("https://drake.blob.core.windows.net/matrices/Harvest/636049183928404138.sar");
+                        var url = encodeURI("https://sportspipstorage.blob.core.windows.net/matrices/" + channelName + "/" + fileName + ".sar");
+                        // var url = encodeURI("https://drake.blob.core.windows.net/matrices/Harvest/636049183928404138.sar");
                         ft.download(
                             url,
                             NewPath + "m1.zip",
@@ -100,6 +100,16 @@ export class Package {
 
     }
 
+     AuthenticateUser(channel) {
+        return this.http.get("http://sportspipservice.cloudapp.net:10106/IMobile/users/auth/" + channel + "?uid=58")
+            .map(res => res.json())
+            .map(us => {
+                console.log('Authenticatnig user..');
+                var data = JSON.parse(us);
+                return data.Returns;
+            }).toPromise();
+    }
+
     unzipPackage() {
         this.platform.ready().then(() => {
             var PathToFileInString = cordova.file.dataDirectory + "Temp/m1.zip";
@@ -109,12 +119,12 @@ export class Package {
 
     }
 
-    DownloadThumbnailfromServer(channelName, matrixName) {
+    DownloadThumbnailfromServer(channelName, matrixName,thumb) {
         const ft = new FileTransfer();
         var url = encodeURI("https://drake.blob.core.windows.net/thumbnails/" + channelName + "/" + matrixName + ".jpg");
         ft.download(
             url,
-            cordova.file.applicationStorageDirectory + matrixName + ".jpg",
+            cordova.file.applicationStorageDirectory + thumb + ".jpg",
             function (entry) {
                 console.log("download complete: " + entry.toURL());
             },
@@ -134,7 +144,7 @@ export class Package {
 
     }
 
-     FormatDuration(dur) {
+    FormatDuration(dur) {
         if (dur != null) {
             var hrs = Number(dur.slice(0, 2));
             var h = (hrs == 0) ? "" : hrs + 'h ';

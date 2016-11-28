@@ -94,47 +94,51 @@ export class ChannelCollectionPage {
     });
     loader.present();
 
-    var authenticate = this.AuthenticateUser();
-    if (authenticate) {
+    this.packages.AuthenticateUser(channelName).then(data => {
+      if (data) {
+        Observable.interval(1000)
+          .take(1).map((x) => x + 5)
+          .subscribe((x) => {
+            this.packages.DownloadServerHeader(fileName, channelName);
+            console.log("Download");
+          })
 
-      Observable.interval(1000)
-        .take(1).map((x) => x + 5)
-        .subscribe((x) => {
-          this.packages.DownloadServerHeader(fileName, channelName);
-          console.log("Download");
-        })
+        Observable.interval(2000)
+          .take(3).map((x) => x + 5)
+          .subscribe((x) => {
+            this.packages.unzipPackage();
+            console.log("unzip");
+          })
 
-      Observable.interval(2000)
-        .take(3).map((x) => x + 5)
-        .subscribe((x) => {
-          this.packages.unzipPackage();
-          console.log("unzip");
-        })
+        Observable.interval(4000)
+          .take(1).map((x) => x + 5)
+          .subscribe((x) => {
+            this.packages.MoveToLocalCollection(channelName);
+            console.log("matrix moved");
+          })
 
-      Observable.interval(4000)
-        .take(1).map((x) => x + 5)
-        .subscribe((x) => {
-          this.packages.MoveToLocalCollection(channelName);
-          console.log("matrix moved");
-        })
-    }
-    Observable.interval(6000)
-      .take(1).map((x) => x + 5)
-      .subscribe((x) => {
-        this.DeleteChannelMatrix(fileName, channelName, index);
-        console.log("delete server header");
+        Observable.interval(6000)
+          .take(1).map((x) => x + 5)
+          .subscribe((x) => {
+            this.DeleteChannelMatrix(fileName, channelName, index);
+            console.log("delete server header");
+            loader.dismiss();
+          })
+
+        Observable.interval(7000)
+          .take(1).map((x) => x + 5)
+          .subscribe((x) => {
+            this.platform.ready().then(() => {
+              File.removeRecursively("file:/storage/emulated/0/DCIM/", "Temp").then(() => {
+                console.log("delete temp");
+              });
+            })
+          })
+      } else {
+        alert("Your subscription authoraization is still pending");
         loader.dismiss();
-      })
-
-    Observable.interval(7000)
-      .take(1).map((x) => x + 5)
-      .subscribe((x) => {
-        this.platform.ready().then(() => {
-          File.removeRecursively("file:/storage/emulated/0/DCIM/", "Temp").then(() => {
-            console.log("delete temp");
-          });
-        })
-      })
+      }
+    });
   }
 
   AuthenticateUser() {
@@ -149,12 +153,6 @@ export class ChannelCollectionPage {
         text: 'Download',
         handler: () => {
           this.DownloadServerHeaderAsync(DirName, channel, index);
-          // let alert = this.alertCtrl.create({
-          //   title: 'Not Downloaded!',
-          //   subTitle: 'Download is not possible right now.',
-          //   buttons: ['OK']
-          // });
-          // alert.present();
         }
       }, {
         text: 'Delete',
