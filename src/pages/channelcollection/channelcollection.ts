@@ -56,7 +56,6 @@ export class ChannelCollectionPage {
                 Views: result.Clips
               };
               this.channelMatrices.push(item);
-              console.log(this.channelMatrices.length);
             });
         });
 

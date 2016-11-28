@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ionicframework.sportspip439155" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>sportspip</name>
+<widget id="com.ionicframework.sportspip439155" version="0.0.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>Sports PIP</name>
   <description>Sports PIP APP</description>
   <author email="manish@drake.in" href="http://sportspip.com/">cougar</author>
   <content src="index.html"/>

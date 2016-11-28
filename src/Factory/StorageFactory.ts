@@ -179,7 +179,6 @@ export class StorageFactory {
     }
 
     ComposeMatrixHeader(fromMatrix) {
-        console.log(fromMatrix["Matrix.Children"]["View"]["Content"].Capture._Kernal)
         var header = {
             Title: fromMatrix._Title,
             DateCreated: fromMatrix._DateCreated,
@@ -190,7 +189,7 @@ export class StorageFactory {
             Skill: fromMatrix._Skill,
             UploadID: "0",
             Duration: fromMatrix._Duration,
-            Views: fromMatrix["Matrix.Children"].View.Lenght
+            Views: fromMatrix["Matrix.Children"].View.length
         };
 
         return header;

@@ -100,7 +100,7 @@ export class Package {
 
     }
 
-     AuthenticateUser(channel) {
+    AuthenticateUser(channel) {
         return this.http.get("http://sportspipservice.cloudapp.net:10106/IMobile/users/auth/" + channel + "?uid=58")
             .map(res => res.json())
             .map(us => {
@@ -119,7 +119,8 @@ export class Package {
 
     }
 
-    DownloadThumbnailfromServer(channelName, matrixName,thumb) {
+    DownloadThumbnailfromServer(channelName, matrixName, thumb) {
+        console.log(thumb);
         const ft = new FileTransfer();
         var url = encodeURI("https://drake.blob.core.windows.net/thumbnails/" + channelName + "/" + matrixName + ".jpg");
         ft.download(
