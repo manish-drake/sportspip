@@ -60,7 +60,7 @@ export class HomePage {
         this.channels = [];
         this.localMatrices = [];
         if (this.platform.is('cordova')) {
-            this.DisplayServerHeader();
+            this.GetServerHeader();
             this.GetLocalMatrixHeader();
         }
     }
@@ -183,7 +183,7 @@ export class HomePage {
     }
 
     retrunThumbnailPath(name) {
-        return "url(" + cordova.file.applicationStorageDirectory + "636049183928404138" + ".jpg" + ")";
+        return "url(" + cordova.file.applicationStorageDirectory + name + ".jpg" + ")";
     }
 
     GetLocalMatrixHeader() {
@@ -196,7 +196,7 @@ export class HomePage {
                                 .subscribe(data => {
                                     //deserialiae server header  
                                     var result = JSON.parse(data.text());
-                                    console.log(result);
+                                    // console.log(result);
                                     var item = {
                                         Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
                                         ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
@@ -207,6 +207,8 @@ export class HomePage {
                         });
                     });
                 })
+            }).catch((err) => {
+                console.log('Local Matrix header error: ' + err);
             });
         });
     }
@@ -220,7 +222,7 @@ export class HomePage {
     }
 
     //Display Server Header
-    DisplayServerHeader() {
+    GetServerHeader() {
         this.platform.ready().then(() => {
             File.listDir(cordova.file.dataDirectory, "Server/").then((success) => {
                 success.forEach((channelName) => {
@@ -240,6 +242,8 @@ export class HomePage {
                         });
                     });
                 })
+            }).catch((err) => {
+                console.log('server Matrix header error: ' + err);
             });
         });
     }
@@ -251,66 +255,64 @@ export class HomePage {
             duration: 300000
         });
         loader.present();
+        this.packages.AuthenticateUser(channelName).then(data => {
+            if (!data) {
+                Observable.interval(1000)
+                    .take(1).map((x) => x + 5)
+                    .subscribe((x) => {
+                        this.packages.DownloadServerHeader(fileName, channelName);
+                        console.log("Download");
+                    })
+                Observable.interval(2000)
+                    .take(3).map((x) => x + 5)
+                    .subscribe((x) => {
+                        this.packages.unzipPackage();
+                        console.log("unzip");
+                    })
 
-        var authenticate = this.AuthenticateUser();
-        if (authenticate) {
+                Observable.interval(4000)
+                    .take(1).map((x) => x + 5)
+                    .subscribe((x) => {
+                        this.packages.MoveToLocalCollection(channelName);
+                    })
 
-            Observable.interval(1000)
-                .take(1).map((x) => x + 5)
-                .subscribe((x) => {
-                    this.packages.DownloadServerHeader(fileName, channelName);
-                    console.log("Download");
-                })
-            Observable.interval(2000)
-                .take(3).map((x) => x + 5)
-                .subscribe((x) => {
-                    this.packages.unzipPackage();
-                    console.log("unzip");
-                })
+                Observable.interval(5000)
+                    .take(1).map((x) => x + 5)
+                    .subscribe((x) => {
+                        this.localMatrices = [];
+                        this.GetLocalMatrixHeader();
+                    })
+                Observable.interval(6000)
+                    .take(1).map((x) => x + 5)
+                    .subscribe((x) => {
+                        this.deleteServerHeader(fileName, index, value, channelName)
+                    })
+                Observable.interval(7000)
+                    .take(1).map((x) => x + 5)
+                    .subscribe((x) => {
+                        this.platform.ready().then(() => {
+                            File.removeRecursively(cordova.file.dataDirectory, "Temp").then(() => {
+                                loader.dismiss();
+                                this.selectedSegment = "local";
+                            });
+                        })
+                    })
+            }
+            else {
+                alert("Your subscription authoraization is still pending"); 
+                loader.dismiss();
+            }
+        });
 
-            Observable.interval(4000)
-                .take(1).map((x) => x + 5)
-                .subscribe((x) => {
-                    this.packages.MoveToLocalCollection(channelName);
-                    console.log("matrix moved");
-                })
-        }
-        Observable.interval(5000)
-            .take(1).map((x) => x + 5)
-            .subscribe((x) => {
-                this.localMatrices = [];
-                this.GetLocalMatrixHeader();
-                console.log("local header");
-            })
-        Observable.interval(6000)
-            .take(1).map((x) => x + 5)
-            .subscribe((x) => {
-                this.deleteServerHeader(fileName, index, value, channelName)
-                console.log("delete server header");
-            })
-        Observable.interval(7000)
-            .take(1).map((x) => x + 5)
-            .subscribe((x) => {
-                this.platform.ready().then(() => {
-                    File.removeRecursively(cordova.file.dataDirectory, "Temp").then(() => {
-                        console.log("delete temp");
-                        loader.dismiss();
-                        this.selectedSegment = "local";
-                    });
-                })
-            })
-    }
 
-    AuthenticateUser() {
-        console.log('Authenticatnig user..');
-        return true;
+
     }
 
     newMatrix() {
         var data = this.storagefactory.ComposeNewMatrix();
         console.log(data);
         var result = data.Matrix;
-        this.storagefactory.SaveMatrixAsync(data, result.Channel, result._Sport, result._Name, "Matrices");
+        this.storagefactory.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices");
 
         var headerContent = this.storagefactory.ComposeMatrixHeader(result);
         this.storagefactory.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")

@@ -20,7 +20,7 @@ declare var cordova: any;
 @Component({
   selector: 'page-editor',
   templateUrl: 'editor.html',
-  providers: [StorageFactory,Connection]
+  providers: [StorageFactory, Connection]
 })
 
 export class EditorPage {
@@ -84,13 +84,13 @@ export class EditorPage {
 
   saveMatrix() {
     if (this.platform.is('cordova')) {
-      console.log(this.matrix.Channel);
-      this.http.get(cordova.file.dataDirectory + "Local/" + this.matrix.Channel + "/Tennis/Matrices/" + this.matrix._Name + "/" + this.matrix._Name + ".mtx")
+      this.http.get(cordova.file.dataDirectory + "Local/" + this.matrix._Channel + "/Tennis/Matrices/" + this.matrix._Name + "/" + this.matrix._Name + ".mtx")
         .subscribe(data => {
           var res = JSON.parse(data.text());
           var matrix = res.Matrix;
+          console.log(matrix);
           matrix['Matrix.Children'].View = this.views;
-          this.storagefactory.SaveMatrixAsync(res, matrix.Channel, matrix._Sport, matrix._Name, "Matrices");
+          this.storagefactory.SaveMatrixAsync(res, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
 
           var header = this.storagefactory.ComposeMatrixHeader(matrix);
           this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
@@ -151,9 +151,11 @@ export class EditorPage {
             handler: () => {
               this.views.splice(index, 1);
               if (this.selectedViewIndex == 0) {
+                console.log("0");
                 this.showViewSegment(0);
               }
               else {
+                console.log("0");
                 this.showViewSegment(index - 1)
               }
               this.evaluateCaptureViews();
