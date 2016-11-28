@@ -48,33 +48,23 @@ export class VideoComponent {
         this.evaluateMarkerPosition();
         this.video.addEventListener('ended', () => {
             this.playPauseButtonIcon = 'play';
-            clearInterval(this.timelineInterval);
+            var val = this.markers.find(x => x.checked == true);
+            if(val==undefined){
+                clearInterval(this.timelineInterval);
+            }
         })
 
         this.video.addEventListener('error', (error) => {
             console.log('Error in video Elmnt:' + error);
             // this.videoSrcAvailable = false;
         })
-        // var markerCheckInterval = setInterval(() => {
-        //     this.markers.forEach(element => {
-        //         if (element.checked) {
-        //             alert('checked');
-        //             element.checked = false;
-        //         }
-        //     });
-        //     clearInterval(markerCheckInterval);
-        // });
 
         setInterval(() => {
             this.timelineDuration = this.formatTime(this.video.duration);
             this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
             if (this.markers != undefined) {
-                // this.evaluateMarkerPosition();
-
-                this.PlayMarker();
                 this.PlayStoryBoard();
             }
-
         }, 1 / 60);
     }
 
@@ -89,14 +79,25 @@ export class VideoComponent {
     }
 
     formatPoistionInMiliSecond(pos) {
-        var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
-        return positionInMilliseconds;
+        if (pos == "00:00:00") {
+            return 0;
+        }
+        else {
+            var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
+            return positionInMilliseconds;
+        }
     }
 
     formatDurationInMiliSecond(dur) {
         if (dur != undefined) {
-            var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-2)) * 100000;
-            return durationInMilliseconds;
+            if (dur.length == 16) {
+                var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-7));
+                return durationInMilliseconds;
+            }
+            else {
+                var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-2)) * 100000;
+                return durationInMilliseconds;
+            }
         }
     }
 
@@ -128,6 +129,7 @@ export class VideoComponent {
             this.playPauseButtonIcon = 'pause';
             var delay = 1 / 60;
             this.timelineInterval = setInterval(() => {
+                this.PlayMarker();
                 var factor = (100000 / this.video.duration) * this.video.currentTime;
                 this.sliderValue = factor;
                 this.timelinePosition = this.formatTime(this.video.currentTime);
@@ -198,19 +200,18 @@ export class VideoComponent {
     }
 
     PlayMarker() {
-
         var val = this.markers.find(x => x.checked == true)
         if (val != undefined) {
 
             var positionMS = this.formatPoistionInMiliSecond(val._Position);
-            var durationMS = this.formatDurationInMiliSecond(val._Duration)
+            var durationMS = this.formatDurationInMiliSecond(val._Duration);
 
-            var totalMarkerDur = durationMS + positionMS;
-            var totalDuartion = this.formatTime(totalMarkerDur / 10000000);
+            var endMarkerDur = durationMS + positionMS;
+            var endPlayDur = this.formatTime(endMarkerDur / 10000000);
 
             var fp = positionMS / 10000000;
 
-            if (this.formatTime(this.video.currentTime) >= totalDuartion) {
+            if (this.formatTime(this.video.currentTime) == endPlayDur) {
                 this.video.pause();
                 this.video.currentTime = fp;
                 this.video.play();
@@ -321,6 +322,7 @@ export class VideoComponent {
     updateSelection(i, isSelect) {
 
         this.markers.forEach((marker, index) => {
+
             if (i != index) {
                 marker.checked = false;
                 this.video.pause();
@@ -334,7 +336,6 @@ export class VideoComponent {
                 else {
                     marker.checked = true;
                     this.index = 0;
-
                     this.timelinePosition = marker._Position;
                     var positionMS = this.formatPoistionInMiliSecond(marker._Position);
                     var formatPosition = positionMS / 10000000;
