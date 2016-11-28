@@ -56,6 +56,9 @@ export class Login {
             this.subscription.RegisterAsync(firstname, lastname, email).then((user) => {
                 this.storageFactory.SaveUserAsync(user);
                 this.dismiss(user);
+            }).catch((err) => {
+                console.log("Registration error: " + err);
+                this.errorMessege = "Registration failed";
             });
         }
     }
