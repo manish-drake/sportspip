@@ -65,8 +65,6 @@ export class CompareviewComponent {
             console.log('Video Error: ' + error);
             // this.videoSrcAvailable = false;
         })
-        // this.markers = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
-
 
         this.loadViewData();
         var markerCheckInterval = setInterval(() => {
