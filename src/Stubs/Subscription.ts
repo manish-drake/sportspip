@@ -22,26 +22,35 @@ export class Subscription {
     }
 
     GetSubscriptionList(userid) {
+        var subscriptionList = [];
         return this.http.get("http://sportspipservice.cloudapp.net:10106/IMobile/subscriptions/list?uid=" + userid + "")
             .map(res => res.json())
             .map(us => {
                 var data = JSON.parse(us);
-                if (data instanceof Array) {
-                    data.forEach(sbchn => {
-                        console.log(sbchn);
-                    });
-                    // var subscription = [
-                    //     { ChannelName: "SportsPIP", IsPrivate: false, Description: "Football-Handball", IsAuthorized: true, DtExpiry: new Date(), IsMatrixUploader: true },
-                    //     { ChannelName: "Harvest", IsPrivate: false, Description: "Tennis,Badminton", IsAuthorized: true, DtExpiry: new Date(), IsMatrixUploader: false }
-                    // ];
-                }
+                data.Returns.forEach(sbchn => {
+                    var subscription =
+                        { ChannelName: sbchn.Channel.Name, Description: sbchn.Channel.Description, IsAuthorized: sbchn.IsAuthorized, DtExpiry: sbchn.DtExpiry, IsMatrixUploader: sbchn.IsMatrixUploader }
+                    subscriptionList.push(subscription);
+                });
+                return subscriptionList;
             }).toPromise();
     }
 
-    RequestSubscriptionAsync(channelName) {
+    RequestSubscriptionAsync(channelName, userid) {
+        // return this.http.get("http://sportspipservice.cloudapp.net:10106/IMobile/subscriptions/" + channelName + "?uid=" + userid + "")
+        //     .map(res => res.json())
+        //     .map(us => {
+        //         var data = JSON.parse(us);
+        //         console.log(data);
+        //         var subscription =
+        //             { ChannelName: channelName, IsPrivate: false, Description: "Tennis,Badminton,serve", IsAuthorized: true, DtExpiry: new Date(), IsMatrixUploader: false };
+        //         return subscription;
+        //     }).toPromise();
+
         var subscription =
             { ChannelName: channelName, IsPrivate: false, Description: "Tennis,Badminton,serve", IsAuthorized: true, DtExpiry: new Date(), IsMatrixUploader: false };
         return subscription;
+
     }
 
     RegisterAsync(firstName, lastName, email) {

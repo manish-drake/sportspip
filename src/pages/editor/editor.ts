@@ -311,7 +311,6 @@ export class EditorPage {
     modal.present();
 
     modal.onDidDismiss((views) => {
-      alert(views);
       if (views != null) {
         this.views = views;
         this.saveMatrix();

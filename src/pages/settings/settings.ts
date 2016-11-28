@@ -46,7 +46,7 @@ export class SettingsPage {
   InvalidateSubscribeListAsync(userId) {
     this.subscribeList = [];
     this.subscription.GetSubscriptionList(userId).then((data) => {
-
+      this.subscribeList = data;
     });
   }
 
@@ -73,12 +73,18 @@ export class SettingsPage {
         duration: 2000
       });
       loader.present();
-      var channel = this.subscription.RequestSubscriptionAsync(channelName);
+
+      // this.subscription.RequestSubscriptionAsync(channelName, this.UserID).then((data) => {
+      //   this.subscribeList.push(data);
+      //   this.chanelList.splice(index, 1);
+      //   this.GetserverHeader();
+      // });
+      var channel = this.subscription.RequestSubscriptionAsync(channelName, this.UserID);
+
       this.subscribeList.push(channel);
       this.chanelList.splice(index, 1);
       this.GetserverHeader();
     }
-
   }
 
   UnSubscribeList(index) {
