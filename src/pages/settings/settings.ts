@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController, PopoverController, ViewController, Platform, AlertController } from 'ionic-angular';
+import { NavController, ModalController, PopoverController, ViewController, Platform, AlertController, LoadingController } from 'ionic-angular';
 import { File } from 'ionic-native';
 import { Login } from '../settings/login/login'
 import { Subscription } from '../../Stubs/Subscription';
@@ -38,7 +38,8 @@ export class SettingsPage {
     private packages: Package,
     private modalCtrl: ModalController,
     private popoverCtrl: PopoverController,
-    private platform: Platform) {
+    private platform: Platform,
+    private loadingCtrl: LoadingController) {
 
   }
 
@@ -67,13 +68,19 @@ export class SettingsPage {
       this.presentLoginModal();
     }
     else {
+      let loader = this.loadingCtrl.create({
+        content: "Subscribing..",
+        duration: 2000
+      });
+      loader.present();
+
       // this.subscription.RequestSubscriptionAsync(channelName, this.UserID).then((data) => {
       //   this.subscribeList.push(data);
       //   this.chanelList.splice(index, 1);
       //   this.GetserverHeader();
       // });
-
       var channel = this.subscription.RequestSubscriptionAsync(channelName, this.UserID);
+
       this.subscribeList.push(channel);
       this.chanelList.splice(index, 1);
       this.GetserverHeader(channelName);
