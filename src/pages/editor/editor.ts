@@ -316,7 +316,7 @@ export class EditorPage {
       if (views != null) {
         this.views = views;
         this.saveMatrix();
-        this.connection.transferMatrix(this.matrix._Name);
+        this.connection.transferMatrix(this.matrix._Channel, this.matrix._Sport, this.matrix._Name);
       }
     });
 

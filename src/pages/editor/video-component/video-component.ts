@@ -55,7 +55,8 @@ export class VideoComponent {
         })
 
         this.video.addEventListener('error', (error) => {
-            console.log('Error in video Elmnt:' + error);
+            console.log('Error in video Elmnt:' + JSON.stringify(error));
+            // alert('Error in video Elmnt:' + JSON.stringify(error));
             // this.videoSrcAvailable = false;
         })
 
@@ -70,12 +71,12 @@ export class VideoComponent {
 
 
     returnVidPath(filename) {
-        if (this.platform.is('cordova')) {
+        // if (this.platform.is('cordova')) {
             return cordova.file.applicationStorageDirectory + filename;
-        }
-        else {
-            return 'assets/' + filename;
-        }
+        // }
+        // else {
+        //     return 'assets/' + filename;
+        // }
     }
 
     formatPoistionInMiliSecond(pos) {

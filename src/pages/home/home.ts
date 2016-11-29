@@ -243,7 +243,7 @@ export class HomePage {
                     });
                 })
             }).catch((err) => {
-                console.log('server Matrix header error: ' +  JSON.stringify(err));
+                console.log('server Matrix header error: ' + JSON.stringify(err));
             });
         });
     }

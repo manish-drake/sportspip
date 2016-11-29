@@ -5,7 +5,7 @@
 		</ion-title>
 		<ion-buttons end>
 			<button ion-button icon-only (click)="openConnectivity()"><ion-icon name="wifi"></ion-icon><span></span></button>
-			<button ion-button icon-only (click)="openSettings()"><ion-icon name="settings"></ion-icon></button>
+			<button ion-button icon-only (click)="openSettings()"><ion-icon name="person"></ion-icon></button>
 			<button ion-button icon-only (click)="presentPopover($event)"><ion-icon name="more"></ion-icon></button>
 		</ion-buttons>
 	</ion-navbar>
@@ -32,7 +32,7 @@
 	<div [ngSwitch]="selectedSegment">
 		<div *ngSwitchCase="'local'" style="position: relative;">
 			<ion-row>
-				<ion-col center text-right>
+				<ion-col no-padding center text-right>
 					<button ion-button clear *ngIf="localMatrices.length > 0" (click)="openCollection()">View All</button>
 				</ion-col>
 			</ion-row>
@@ -77,10 +77,10 @@
 		<div *ngSwitchCase="'server'" style="position: relative;">
 			<ion-item-group *ngFor="let channel of channels|groupBy:'Channel'">
 				<ion-row *ngIf="channel.value.length > 0">
-					<ion-col center>
+					<ion-col no-padding center>
 						<ion-title>{{channel.key}}</ion-title>
 					</ion-col>
-					<ion-col text-right>
+					<ion-col no-padding text-right>
 						<button ion-button clear (click)="openChannelCollection(channel.key)">View All</button>
 					</ion-col>
 				</ion-row>

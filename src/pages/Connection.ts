@@ -4,7 +4,7 @@ import { Platform } from 'ionic-angular';
 
 import X2JS from 'x2js';
 
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http, Headers, RequestOptions, Response } from '@angular/http';
 
 declare var chrome: any;
 declare var cordova: any;
@@ -25,10 +25,12 @@ export class Connection {
                 var binaryData = (info.data);
                 var dataStr = '';
                 var ui8 = new Uint8Array(binaryData);
-                for (var i = 39; i < ui8.length; i++) {
+                for (var i = 0; i < ui8.length; i++) {
                     dataStr = dataStr + String.fromCharCode(ui8[i]);
                 }
                 var parser = new X2JS();
+                // var data = parser.xml2js(dataStr);
+
                 var data = parser.xml2js('<Server name="DESKTOP-TBMV3MR" Name="DESKTOP-TBMV3MR" Information="Pro Matrix Server: DESKTOP-TBMV3MR" ID="4613d979dd574b89b55edfb5be9a896f" Location="192.168.10.7" Genre="Pro" Filename="" />');
                 if (data == null) return;
                 var server = data.Server;
@@ -75,16 +77,45 @@ export class Connection {
         }
     }
 
-    transferMatrix(fileName) {
+    transferMatrix(channel, sport, fileName) {
         var server = Connection.connectedServer.Address;
-        this.http.get(cordova.file.applicationStorageDirectory + fileName).subscribe(success => {
-            let headers = new Headers({ 'Content-Type': 'multipart/form-data' }); // ... Set content type to JSON
-            let options = new RequestOptions({ headers: headers });
-            this.http.post("http://" + server + ":10080/imatrix/matrices/" + fileName + "/videos", success.text(), options)
-                .subscribe(res => {
-                    alert(res);
-                })
-        })
+        // this.http.get(cordova.file.applicationStorageDirectory + fileName).subscribe(success => {
+        //     alert("success: " + success);
+        //     let headers = new Headers({ 'Content-Type': 'multipart/form-data' }); // ... Set content type to JSON
+        //     let options = new RequestOptions({ headers: headers });
+        //     this.http.post("http://" + server + ":10080/imatrix/matrices/" + fileName + "/videos", success.text(), options)
+        //         .subscribe(res => {
+        //             alert(res);
+        //         })
+        // });
+
+        this.platform.ready().then(() => {
+            const fs: string = cordova.file.dataDirectory;
+            var urlPath = fs + "Local/" + channel + "/" + sport + "/Matrices/" + fileName + ".mtx";
+            // alert(urlPath);
+
+            this.http.get(urlPath)
+                .map((res: Response) => res.json())
+                .subscribe(
+                data => {
+                    alert("success: " + data);
+                    let headers = new Headers({ 'Content-Type': 'multipart/form-data' }); // ... Set content type to JSON
+                    let options = new RequestOptions({ headers: headers });
+                    this.http.post("http://" + server + ":10080/imatrix/matrices/" + fileName + "/videos", data.text(), options)
+                        .subscribe(res => {
+                            // alert(res);
+                        })
+                },
+                err => {
+                    console.error(err);
+                    // alert(err);
+                },
+                () => {
+                    console.log('done');
+                    // alert("Done");
+                }
+                );
+        });
     }
 
     close() {
