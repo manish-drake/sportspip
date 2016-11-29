@@ -53,6 +53,8 @@ export class HomePage {
         private packages: Package,
         private loadingCtrl: LoadingController,
         private connection: Connection) {
+
+
     }
 
     ionViewDidEnter() {
@@ -200,7 +202,7 @@ export class HomePage {
                                     var item = {
                                         Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
                                         ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
-                                        Views: result.Clips
+                                        Views: result.Views
                                     };
                                     this.localMatrices.push(item);
                                 });
@@ -243,9 +245,14 @@ export class HomePage {
                     });
                 })
             }).catch((err) => {
-                console.log('server Matrix header error: ' +  JSON.stringify(err));
+                console.log('server Matrix header error: ' + JSON.stringify(err));
             });
         });
+    }
+
+    AuthenticateUser() {
+        console.log('Authenticatnig user..');
+        return true;
     }
 
 
@@ -255,57 +262,55 @@ export class HomePage {
             duration: 300000
         });
         loader.present();
-        this.packages.AuthenticateUser(channelName).then(data => {
-            if (!data) {
-                Observable.interval(1000)
-                    .take(1).map((x) => x + 5)
-                    .subscribe((x) => {
-                        this.packages.DownloadServerHeader(fileName, channelName);
-                        console.log("Download");
-                    })
-                Observable.interval(2000)
-                    .take(3).map((x) => x + 5)
-                    .subscribe((x) => {
-                        this.packages.unzipPackage();
-                        console.log("unzip");
-                    })
+        var authenticate = this.AuthenticateUser();
+        if (authenticate) {
 
-                Observable.interval(4000)
-                    .take(1).map((x) => x + 5)
-                    .subscribe((x) => {
-                        this.packages.MoveToLocalCollection(channelName);
-                    })
+            Observable.interval(500)
+                .take(1).map((x) => x + 5)
+                .subscribe((x) => {
+                    this.packages.DownloadServerHeader(fileName, channelName);
+                    console.log("Download");
+                })
 
-                Observable.interval(6000)
-                    .take(1).map((x) => x + 5)
-                    .subscribe((x) => {
-                        this.localMatrices = [];
-                        this.GetLocalMatrixHeader();
-                    })
-                Observable.interval(7000)
-                    .take(1).map((x) => x + 5)
-                    .subscribe((x) => {
-                        this.deleteServerHeader(fileName, index, value, channelName)
-                    })
-                Observable.interval(8000)
-                    .take(1).map((x) => x + 5)
-                    .subscribe((x) => {
-                        this.platform.ready().then(() => {
-                            File.removeRecursively(cordova.file.dataDirectory, "Temp").then(() => {
-                                loader.dismiss();
-                                this.selectedSegment = "local";
-                            });
-                        })
-                    })
-            }
-            else {
-                alert("Your subscription authoraization is still pending");
-                loader.dismiss();
-            }
-        });
+            // this.packages.DownloadServerHeader(fileName, channelName);
+            Observable.interval(2000)
+                .take(3).map((x) => x + 5)
+                .subscribe((x) => {
+                    this.packages.unzipPackage();
+                    console.log("unzip");
+                })
 
-
-
+            Observable.interval(4000)
+                .take(1).map((x) => x + 5)
+                .subscribe((x) => {
+                    this.packages.MoveToLocalCollection(channelName);
+                    console.log("matrix moved");
+                })
+        }
+        Observable.interval(5000)
+            .take(1).map((x) => x + 5)
+            .subscribe((x) => {
+                this.localMatrices = [];
+                this.GetLocalMatrixHeader();
+                console.log("local header");
+            })
+        Observable.interval(6000)
+            .take(1).map((x) => x + 5)
+            .subscribe((x) => {
+                this.deleteServerHeader(fileName, index, value, channelName)
+                console.log("delete server header");
+            })
+        Observable.interval(7000)
+            .take(1).map((x) => x + 5)
+            .subscribe((x) => {
+                this.platform.ready().then(() => {
+                    File.removeRecursively(cordova.file.dataDirectory, "Temp").then(() => {
+                        console.log("delete temp");
+                        loader.dismiss();
+                        this.selectedSegment = "local";
+                    });
+                })
+            })
     }
 
     newMatrix() {

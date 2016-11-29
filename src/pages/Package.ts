@@ -71,37 +71,36 @@ export class Package {
     }
 
     DownloadServerHeader(fileName, channelName) {
-        this.platform.ready().then(() => {
-            File.createDir(cordova.file.dataDirectory, "Temp", true).then(() => {
-                var NewPath = cordova.file.dataDirectory + "Temp/";
-                File.createDir(NewPath, "matrix1", true).then(() => {
-                    var matrixPath = NewPath + "matrix1/";
-                    var oldPath = cordova.file.dataDirectory + "Server/" + channelName + "/Tennis/Matrices/" + fileName + "/";
-                    File.copyFile(oldPath, "Header.xml", matrixPath, "Header.xml").then(() => {
-                        const ft = new FileTransfer();
-                        var url = encodeURI("https://sportspipstorage.blob.core.windows.net/matrices/" + channelName + "/" + fileName + ".sar");
-                        // var url = encodeURI("https://drake.blob.core.windows.net/matrices/Harvest/636049183928404138.sar");
-                        ft.download(
-                            url,
-                            NewPath + "m1.zip",
-                            function (entry) {
-                                console.log("download complete: " + entry.toURL());
-                            },
-                            function (error) {
-                                console.log("download error source " + error.source);
-                                console.log("download error target " + error.target);
-                                console.log("download error code" + error.code);
-                            },
-                            true);
-                    })
+       File.createDir(cordova.file.dataDirectory, "Temp", true).then(() => {
+            var NewPath = cordova.file.dataDirectory + "Temp/";
+            File.createDir(NewPath, "matrix1", true).then(() => {
+                var matrixPath = NewPath + "matrix1/";
+                var oldPath = cordova.file.dataDirectory + "Server/" + channelName + "/Tennis/Matrices/" + fileName + "/";
+                File.copyFile(oldPath, "Header.xml", matrixPath, "Header.xml").then(() => {
+                    const ft = new FileTransfer();
+                    var url = encodeURI("https://sportspipstorage.blob.core.windows.net/matrices/" + channelName + "/" + fileName + ".sar");
+                    // var url = encodeURI("https://drake.blob.core.windows.net/matrices/Harvest/636049183928404138.sar");
+                    ft.download(
+                        url,
+                        NewPath + "m1.zip",
+                        function (entry) {
+                            console.log("download complete: " + entry.toURL());
+                        },
+                        function (error) {
+                            console.log("download error source " + error.source);
+                            console.log("download error target " + error.target);
+                            console.log("download error code" + error.code);
+                            return;
+                        },
+                        true);
                 })
             })
         })
 
     }
 
-    AuthenticateUser(channel) {
-        return this.http.get("http://sportspipservice.cloudapp.net:10106/IMobile/users/auth/" + channel + "?uid=58")
+    AuthenticateUser(channel,userid) {
+        return this.http.get("http://sportspipservice.cloudapp.net:10106/IMobile/users/auth/" + channel + "?uid="+userid+"")
             .map(res => res.json())
             .map(us => {
                 console.log('Authenticatnig user..');
@@ -111,21 +110,17 @@ export class Package {
     }
 
     unzipPackage() {
-        this.platform.ready().then(() => {
-            var PathToFileInString = cordova.file.dataDirectory + "Temp/m1.zip";
-            var PathToResultZip = cordova.file.dataDirectory + "Temp/matrix1";
-            zip.unzip(PathToFileInString, PathToResultZip);
-        })
-
+        var PathToFileInString = cordova.file.dataDirectory + "Temp/m1.zip";
+        var PathToResultZip = cordova.file.dataDirectory + "Temp/matrix1";
+        zip.unzip(PathToFileInString, PathToResultZip);
     }
 
-    DownloadThumbnailfromServer(channelName, matrixName, thumb) {
-        console.log(thumb);
+    DownloadThumbnailfromServer(channelName, matrixName) {
         const ft = new FileTransfer();
-        var url = encodeURI("https://drake.blob.core.windows.net/thumbnails/" + channelName + "/" + matrixName + ".jpg");
+        var url = encodeURI("https://sportspipstorage.blob.core.windows.net/thumbnails/" + channelName + "/" + matrixName + ".jpg");
         ft.download(
             url,
-            cordova.file.applicationStorageDirectory + thumb + ".jpg",
+            cordova.file.applicationStorageDirectory + matrixName + ".jpg",
             function (entry) {
                 console.log("download complete: " + entry.toURL());
             },

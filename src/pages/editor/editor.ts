@@ -88,11 +88,10 @@ export class EditorPage {
         .subscribe(data => {
           var res = JSON.parse(data.text());
           var matrix = res.Matrix;
-          console.log(matrix);
           matrix['Matrix.Children'].View = this.views;
           this.storagefactory.SaveMatrixAsync(res, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
-
           var header = this.storagefactory.ComposeMatrixHeader(matrix);
+          console.log(header);
           this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
         });
     }

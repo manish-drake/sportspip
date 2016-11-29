@@ -74,10 +74,10 @@ export class SettingsPage {
         this.createSettingsasync()
         let loader = this.loadingCtrl.create({
           content: "Subscribing..",
-          duration: 2000
+          duration: 300000
         });
         loader.present();
-        this.GetserverHeader(channelName);
+        this.GetserverHeader(channelName, loader);
       });
       // var channel = this.subscription.RequestSubscriptionAsync(channelName, this.UserID);
       // this.subscribeList.push(channel);
@@ -132,7 +132,7 @@ export class SettingsPage {
     modal.present();
   }
 
-  GetserverHeader(channelname) {
+  GetserverHeader(channelname, loader) {
     //stub
     // this.http.get("assets/Header.xml")
     //   .subscribe(res => {
@@ -150,7 +150,7 @@ export class SettingsPage {
           .take(1).map((x) => x + 5)
           .subscribe((x) => {
             console.log("saving headers list file..")
-            this.SaveServerHeaders(channelname);
+            this.SaveServerHeaders(channelname, loader);
           });
       });
   }
@@ -164,7 +164,7 @@ export class SettingsPage {
   }
 
   //server header
-  SaveServerHeaders(channel) {
+  SaveServerHeaders(channel, loader) {
     this.http.get(cordova.file.dataDirectory + "/header.xml").subscribe(data => {
       var headerList = JSON.parse(data.text());
       headerList.forEach(header => {
@@ -179,7 +179,7 @@ export class SettingsPage {
         }
 
       });
-      this.SaveDownloadedHeaders(this.Header);
+      this.SaveDownloadedHeaders(this.Header, loader);
     })
   }
 
@@ -199,19 +199,20 @@ export class SettingsPage {
   // }
 
   //Save Downloaded Header
-  SaveDownloadedHeaders(HeaderList) {
+  SaveDownloadedHeaders(HeaderList, loader) {
     HeaderList.forEach((res) => {
       Observable.interval(2000)
         .take(1).map((x) => x + 5)
         .subscribe((x) => {
           this.storagefactory.SaveRoamingHeader(res, res.Channel, res.Sport, res.Name);
-          this.DownloadThumbnailAsync(res.Channel, res.Name,res.ThumbnailSource);
+          this.DownloadThumbnailAsync(res.Channel, res.Name);
         })
     })
+    loader.dismiss();
   }
 
-  DownloadThumbnailAsync(channelName, matrixName,thumb) {
-    this.packages.DownloadThumbnailfromServer(channelName, matrixName,thumb);
+  DownloadThumbnailAsync(channelName, matrixName) {
+    this.packages.DownloadThumbnailfromServer(channelName, matrixName);
   }
 
 

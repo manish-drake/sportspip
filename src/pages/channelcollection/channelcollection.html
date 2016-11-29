@@ -21,7 +21,7 @@
 		<div class="item" *ngFor="let matrix of channelMatrices; let i = index">
 			<ion-card (click)="channelMatrixPressed(i,matrix.Channel,matrix.Name,matrix.Title)" (press)="channelMatrixPressed(i,matrix.Channel,matrix.Name,matrix.Title)">
 				<ion-row>
-					<ion-col no-padding [style.background-image]="retrunThumbnailPath(matrix.ThumbnailSource)" 
+					<ion-col no-padding [style.background-image]="retrunThumbnailPath(matrix.UploadID)" 
 					style="position: relative; height: 120px;background-size: cover;background-color:lightgray;background-position: center;">
 						<ion-row center style="position: absolute;top: 0;font-size: 2.0em;width: 100%;height: 100%;font-weight: bold;background-color: rgba(0,0,0,0.2);">
 							<ion-col center text-center>
