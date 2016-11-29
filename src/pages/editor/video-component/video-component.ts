@@ -20,7 +20,7 @@ export class VideoComponent {
 
     sliderValue: any = 0;
     timelinePosition: any;
-    timelineDuration: any = "00:00:00.00";
+    timelineDuration: any;
     repeatColor: any = "inactive";
     playPauseButtonIcon: string = "play";
     volumeButtonIcon: string = "volume-up";
@@ -45,10 +45,13 @@ export class VideoComponent {
         this.video = this.videoElement.nativeElement;
 
         this.loadObjects();
-
+        this.evaluateMarkerPosition();
         this.video.addEventListener('ended', () => {
-            this.playPauseButtonIcon = 'play';
-            clearInterval(this.timelineInterval);
+            var val = this.markers.find(x => x.checked == true);
+            if (val == undefined) {
+                this.playPauseButtonIcon = 'play';
+                clearInterval(this.timelineInterval);
+            }
         })
 
         this.video.addEventListener('error', (error) => {
@@ -60,13 +63,11 @@ export class VideoComponent {
             this.timelineDuration = this.formatTime(this.video.duration);
             this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
             if (this.markers != undefined) {
-                this.evaluateMarkerPosition();
-                this.PlayMarker();
                 this.PlayStoryBoard();
             }
-
         }, 1 / 60);
     }
+
 
     returnVidPath(filename) {
         if (this.platform.is('cordova')) {
@@ -78,13 +79,26 @@ export class VideoComponent {
     }
 
     formatPoistionInMiliSecond(pos) {
-        var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
-        return positionInMilliseconds;
+        if (pos == "00:00:00") {
+            return 0;
+        }
+        else {
+            var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
+            return positionInMilliseconds;
+        }
     }
 
     formatDurationInMiliSecond(dur) {
-        var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-2)) * 100000;
-        return durationInMilliseconds;
+        if (dur != undefined) {
+            if (dur.length == 16) {
+                var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-7));
+                return durationInMilliseconds;
+            }
+            else {
+                var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-2)) * 100000;
+                return durationInMilliseconds;
+            }
+        }
     }
 
     formatTime(time) {
@@ -101,9 +115,9 @@ export class VideoComponent {
     sliderValueChange() {
         this.timelinePosition = this.formatTime(this.video.currentTime);
         var factor = this.video.duration * (this.sliderValue / 100000);
+        this.video.currentTime = factor;
         this.timelinePosition = this.formatTime(factor);
     }
-    currentTime: any = 0;
 
     playPause() {
         if (this.video.paused == true) {
@@ -116,11 +130,13 @@ export class VideoComponent {
             this.playPauseButtonIcon = 'pause';
             var delay = 1 / 60;
             this.timelineInterval = setInterval(() => {
-                var num = this.video.currentTime;
-                this.currentTime = num.toFixed(1);
                 var factor = (100000 / this.video.duration) * this.video.currentTime;
                 this.sliderValue = factor;
                 this.timelinePosition = this.formatTime(this.video.currentTime);
+                if (this.timelinePosition == this.timelineDuration) {
+                    this.playPauseButtonIcon = 'play';
+                }
+                this.PlayMarker();
             }, delay);
         } else {
             this.video.pause();
@@ -188,19 +204,18 @@ export class VideoComponent {
     }
 
     PlayMarker() {
-
         var val = this.markers.find(x => x.checked == true)
         if (val != undefined) {
 
             var positionMS = this.formatPoistionInMiliSecond(val._Position);
-            var durationMS = this.formatDurationInMiliSecond(val._Duration)
+            var durationMS = this.formatDurationInMiliSecond(val._Duration);
 
-            var totalMarkerDur = durationMS + positionMS;
-            var totalDuartion = this.formatTime(totalMarkerDur / 10000000);
+            var endMarkerDur = durationMS + positionMS;
+            var endPlayDur = this.formatTime(endMarkerDur / 10000000);
 
             var fp = positionMS / 10000000;
 
-            if (this.formatTime(this.video.currentTime) >= totalDuartion) {
+            if (this.formatTime(this.video.currentTime) == endPlayDur) {
                 this.video.pause();
                 this.video.currentTime = fp;
                 this.video.play();
@@ -219,7 +234,7 @@ export class VideoComponent {
             this.index = 1;
         }
         else if (marker == undefined) {
-
+            console.log("no marker selected");
             this.markers.forEach(mar => {
                 this.InvalidateObjects(mar);
                 this.RemoveObjects();
@@ -265,11 +280,13 @@ export class VideoComponent {
                         if (val instanceof Array) {
                             val.forEach(val => {
                                 this.markersobjects.push({ key, val });
+                                console.log(this.markersobjects.length, "markerobject");
                             });
                         }
                         else {
                             this.markersDirectory.push(selctedMarker);
                             this.markersobjects.push({ key, val, totalDuartion });
+                            console.log(this.markersobjects.length, "markerobject");
                         }
                     }
                 }
@@ -288,22 +305,30 @@ export class VideoComponent {
     onResize(event) { this.evaluateMarkerPosition(); }
 
     evaluateMarkerPosition() {
-        var markersContainerWidth = this.markersContainer.nativeElement.clientWidth;
-        var durationInMilliseconds = this.formatDurationInMiliSecond(this.timelineDuration);
-        var factor = markersContainerWidth / durationInMilliseconds;
+        var interval = setInterval(() => {
+            if (this.markers != undefined) {
+                var markersContainerWidth = this.markersContainer.nativeElement.clientWidth;
+                var durationInMilliseconds = this.formatDurationInMiliSecond(this.timelineDuration);
+                if (markersContainerWidth != 0 && this.timelineDuration != undefined) {
+                    var factor = markersContainerWidth / durationInMilliseconds;
 
-        this.markers.forEach(marker => {
-            var pos = marker._Position;
-            var positionInMilliseconds = this.formatPoistionInMiliSecond(pos);
-            marker.Left = positionInMilliseconds * factor + 'px';
-        });
+                    this.markers.forEach(marker => {
+                        var pos = marker._Position;
+                        var positionInMilliseconds = this.formatPoistionInMiliSecond(pos);
+                        marker.Left = positionInMilliseconds * factor + 'px';
+                    });
+                    clearInterval(interval);
 
-        // return positionInMilliseconds * factor + 'px';
+                    // return positionInMilliseconds * factor + 'px';
+                }
+            }
+        }, 1 / 60)
     }
 
     updateSelection(i, isSelect) {
 
         this.markers.forEach((marker, index) => {
+
             if (i != index) {
                 marker.checked = false;
                 this.video.pause();
@@ -317,7 +342,6 @@ export class VideoComponent {
                 else {
                     marker.checked = true;
                     this.index = 0;
-
                     this.timelinePosition = marker._Position;
                     var positionMS = this.formatPoistionInMiliSecond(marker._Position);
                     var formatPosition = positionMS / 10000000;
@@ -333,8 +357,12 @@ export class VideoComponent {
 
     addMarker() {
         var currentPosition = this.timelinePosition + '00000';
+        alert('currentPosition' + currentPosition);
+        alert('happy');
         var canAddMarker = this.checkPosition(currentPosition);
+        alert('canAddMarker' + canAddMarker);
         if (canAddMarker) {
+            alert('canAddMarker' + canAddMarker);
             var name = 'Marker ' + (this.markers.length + 1);
             this.markers.push({ _Duration: '00:00:03', _Name: name, _Position: currentPosition, _Speed: 1, _name: name });
             this.evaluateMarkerPosition();
@@ -349,21 +377,30 @@ export class VideoComponent {
             alert.present();
         }
     }
-
+    samePosition: number = 0;
     checkPosition(position) {
-        var samePosition: number = 0;
+        alert("ssss");
+        // var samePosition: number = 0;
+        alert("samePosition" + this.samePosition);
+        alert("this.markers.length" + this.markers.length);
         if (this.markers.length > 3) {
+            alert("if");
             this.markers.forEach((marker) => {
                 if (position == marker._Position)
-                    samePosition++;
+                    this.samePosition++;
             });
-            if (samePosition >= 4)
+            if (this.samePosition >= 4) {
+                alert("if if");
                 return false;
-            else
+            }
+            else {
+                alert("if else");
                 return true;
+            }
         }
-        else
-            return true;
+        else {
+            alert("else"); return true;
+        }
     }
 
     deleteMarker(i) {
@@ -417,10 +454,9 @@ export class VideoComponent {
             }
             else {
                 this.objects.push({ key, val });
-                console.log(this.objects.length);
             }
         }
-        console.log(this.objects);
+        console.log(this.objects.length, "markerobject");
     }
     //Code for objects end
 }

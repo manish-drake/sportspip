@@ -74,7 +74,7 @@ export class SettingsPage {
         this.createSettingsasync()
         let loader = this.loadingCtrl.create({
           content: "Subscribing..",
-          duration: 300000
+          duration: 5000
         });
         loader.present();
         this.GetserverHeader(channelName, loader);
@@ -91,7 +91,7 @@ export class SettingsPage {
       this.chanelList = [];
       this.subscribeList = [];
       this.createSettingsasync()
-      File.removeDir(cordova.file.dataDirectory + "Server/", channelName).then(() => {
+      File.removeDir(cordova.file.dataDirectory + "Server", channelName).then(() => {
         alert("successfully removed..")
       })
     });
@@ -208,7 +208,6 @@ export class SettingsPage {
           this.DownloadThumbnailAsync(res.Channel, res.Name);
         })
     })
-    loader.dismiss();
   }
 
   DownloadThumbnailAsync(channelName, matrixName) {

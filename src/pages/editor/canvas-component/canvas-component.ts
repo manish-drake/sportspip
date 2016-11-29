@@ -38,9 +38,9 @@ export class CanvasComponent {
     for (var key in this.objs) {
       var val = this.objs[key];
       //for maximum duration
-      var objBehaviors = val.Behaviors;
+      var objBehaviors = val.Behaviors.Span;
       if (objBehaviors != undefined) {
-        if (objBehaviors.Span != undefined) this.returnMaxDuration(objBehaviors);
+        if (objBehaviors != undefined) this.returnMaxDuration(objBehaviors);
       }
       this.PlayStoryBoard();
     }

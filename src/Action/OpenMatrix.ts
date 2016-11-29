@@ -12,21 +12,18 @@ export class OpenMatrix {
     }
 
     run(matrixName, Channel) {
-        this.platform.ready().then(() => {
-            this.http.get(cordova.file.dataDirectory + "Local/" + Channel + "/Tennis/Matrices/" + matrixName + "/" + matrixName + ".mtx")
-                .catch(err => new Observable(observer => {
-                    console.log("mtx not found");
-                    this.createNew(matrixName, Channel);
-                }))
-                .subscribe(data => {
-                    console.log("open matrix");
-                    var res = JSON.parse(data.text());
-                    console.log(res.Matrix._Name);
-                    this.navCtrl.push(EditorPage, {
-                        matrixData: res.Matrix
-                    });
+        this.http.get(cordova.file.dataDirectory + "Local/" + Channel + "/Tennis/Matrices/" + matrixName + "/" + matrixName + ".mtx")
+            .catch(err => new Observable(observer => {
+                console.log("mtx not found");
+                this.createNew(matrixName, Channel);
+            }))
+            .subscribe(data => {
+                console.log("open matrix");
+                var res = JSON.parse(data.text());
+                this.navCtrl.push(EditorPage, {
+                    matrixData: res.Matrix
                 });
-        });
+            });
     }
 
     createNew(matrixName, Channel) {

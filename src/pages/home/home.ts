@@ -61,10 +61,8 @@ export class HomePage {
         console.log("main page");
         this.channels = [];
         this.localMatrices = [];
-        if (this.platform.is('cordova')) {
-            this.GetServerHeader();
-            this.GetLocalMatrixHeader();
-        }
+        this.GetServerHeader();
+        this.GetLocalMatrixHeader();
     }
 
     ionViewDidLoad() {
@@ -237,7 +235,7 @@ export class HomePage {
                                     var item = {
                                         Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
                                         ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
-                                        Views: result.Clips
+                                        Views: result.Views
                                     };
                                     this.channels.push(item);
                                 });
@@ -265,7 +263,7 @@ export class HomePage {
         var authenticate = this.AuthenticateUser();
         if (authenticate) {
 
-            Observable.interval(500)
+            Observable.interval(2000)
                 .take(1).map((x) => x + 5)
                 .subscribe((x) => {
                     this.packages.DownloadServerHeader(fileName, channelName);
@@ -273,34 +271,34 @@ export class HomePage {
                 })
 
             // this.packages.DownloadServerHeader(fileName, channelName);
-            Observable.interval(2000)
+            Observable.interval(3000)
                 .take(3).map((x) => x + 5)
                 .subscribe((x) => {
                     this.packages.unzipPackage();
                     console.log("unzip");
                 })
 
-            Observable.interval(4000)
+            Observable.interval(5000)
                 .take(1).map((x) => x + 5)
                 .subscribe((x) => {
                     this.packages.MoveToLocalCollection(channelName);
                     console.log("matrix moved");
                 })
         }
-        Observable.interval(5000)
+        Observable.interval(6000)
             .take(1).map((x) => x + 5)
             .subscribe((x) => {
                 this.localMatrices = [];
                 this.GetLocalMatrixHeader();
                 console.log("local header");
             })
-        Observable.interval(6000)
+        Observable.interval(7000)
             .take(1).map((x) => x + 5)
             .subscribe((x) => {
                 this.deleteServerHeader(fileName, index, value, channelName)
                 console.log("delete server header");
             })
-        Observable.interval(7000)
+        Observable.interval(8000)
             .take(1).map((x) => x + 5)
             .subscribe((x) => {
                 this.platform.ready().then(() => {
