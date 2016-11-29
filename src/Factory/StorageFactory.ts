@@ -98,7 +98,7 @@ export class StorageFactory {
                                 File.createFile(fileLocation, "Header.xml", true).then(() => {
                                     File.writeFile(fileLocation, "Header.xml", content, true)
                                         .then(function (success) {
-                                            console.log("saved local");
+                                            console.log("saved local header");
                                         })
                                 })
                             })
@@ -188,10 +188,9 @@ export class StorageFactory {
             Sport: fromMatrix._Sport,
             Skill: fromMatrix._Skill,
             UploadID: "0",
-            Duration: fromMatrix._Duration
-            // Views: fromMatrix["Matrix.Children"].View.length
-        };
-
+            Duration: fromMatrix._Duration,
+            Views:"1"
+        }; 
         return header;
 
     }

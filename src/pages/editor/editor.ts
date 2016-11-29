@@ -5,14 +5,13 @@ import { NavController, NavParams, AlertController, ModalController, Platform, A
 import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError } from 'ionic-native';
 
 import { Http } from '@angular/http';
-
+import { Connection } from '../../pages/Connection'
 import { StorageFactory } from '../../Factory/StorageFactory';
 
 import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 import { Compareview } from '../editor/compareview/compareview'
 import { Swipeview } from '../editor/swipeview/swipeview'
 import { Ipcameras } from '../editor/ipcameras/ipcameras'
-import { Connection } from '../../pages/Connection'
 declare var navigator: any;
 declare var cordova: any;
 
@@ -20,7 +19,7 @@ declare var cordova: any;
 @Component({
   selector: 'page-editor',
   templateUrl: 'editor.html',
-  providers: [StorageFactory, Connection]
+  providers: [StorageFactory, Connection],
 })
 
 export class EditorPage {
@@ -34,12 +33,14 @@ export class EditorPage {
     private alertCtrl: AlertController,
     private modalCtrl: ModalController,
     private platform: Platform,
-    private http: Http,
     private connection: Connection,
+    private http: Http,
     private storagefactory: StorageFactory,
     private app: App) {
-    this.matrix = params.get("matrixData");
-    console.log(this.matrix);
+    if (params.data != null) {
+      this.matrix = params.data.matrixData;
+      console.log(this.matrix);
+    }
   }
 
   // ionViewDidLoad() {
@@ -52,7 +53,7 @@ export class EditorPage {
 
   ngOnInit() {
     if (this.matrix["Matrix.Children"]["View"] instanceof Array) {
-      this.views = this.matrix["Matrix.Children"]["View"]
+      this.views = this.matrix["Matrix.Children"]["View"];
     }
     else {
       this.views.push(this.matrix["Matrix.Children"]["View"]);
@@ -88,7 +89,6 @@ export class EditorPage {
         .subscribe(data => {
           var res = JSON.parse(data.text());
           var matrix = res.Matrix;
-          console.log(matrix);
           matrix['Matrix.Children'].View = this.views;
           this.storagefactory.SaveMatrixAsync(res, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
 
@@ -151,11 +151,9 @@ export class EditorPage {
             handler: () => {
               this.views.splice(index, 1);
               if (this.selectedViewIndex == 0) {
-                console.log("0");
                 this.showViewSegment(0);
               }
               else {
-                console.log("0");
                 this.showViewSegment(index - 1)
               }
               this.evaluateCaptureViews();
@@ -180,17 +178,16 @@ export class EditorPage {
     var canvasView = {
       "Content": {
         "PIP": {
-          "PIP.Objects": {},
+          "PIP.Objects": "",
           "_name": "d002b8ed5fe24f57aab501f05398262c",
           "_CanvasBackgroundBrush": "#FFFFFFFF",
           "_CanvasBackgroundOpacity": "1"
         }
       },
-      "_name": "View " + this.selectedViewIndex,
-      "_Title": "View " + this.selectedViewIndex,
+      "_name": "View " + (this.selectedViewIndex + 1),
+      "_Title": "View " + (this.selectedViewIndex + 1),
       "_Source": 'Canvas'
     }
-    console.log(canvasView);
     this.views[this.selectedViewIndex] = canvasView;
   }
 
@@ -332,13 +329,13 @@ export class EditorPage {
           "View.ChronoMarker": "",
           "_name": "ba160173f284474c9412192dcd77cb1c",
           "_Kernel": fileName,
-          "_Title": "View " + this.selectedViewIndex,
+          "_Title": "View " + (this.selectedViewIndex + 1),
           "_Name": "ba160173f284474c9412192dcd77cb1c",
           "_IsActive": "False"
         }
       },
-      "_name": "View " + this.selectedViewIndex,
-      "_Title": "View " + this.selectedViewIndex,
+      "_name": "View " + (this.selectedViewIndex + 1),
+      "_Title": "View " + (this.selectedViewIndex + 1),
       "_Source": "Local"
     }
     this.views[this.selectedViewIndex] = localView;

@@ -41,11 +41,15 @@ export class VideoComponent {
     markers = [];
 
     ngAfterViewInit() {
-        this.markers = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
+        var chronoMarker = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
+        if (chronoMarker != undefined) {
+            this.markers = chronoMarker;
+            this.evaluateMarkerPosition();
+        }
         this.video = this.videoElement.nativeElement;
 
         this.loadObjects();
-        this.evaluateMarkerPosition();
+
         this.video.addEventListener('ended', () => {
             var val = this.markers.find(x => x.checked == true);
             if (val == undefined) {
@@ -63,6 +67,7 @@ export class VideoComponent {
         setInterval(() => {
             this.timelineDuration = this.formatTime(this.video.duration);
             this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
+
             if (this.markers != undefined) {
                 this.PlayStoryBoard();
             }
@@ -235,7 +240,7 @@ export class VideoComponent {
             this.index = 1;
         }
         else if (marker == undefined) {
-
+            console.log("no marker selected");
             this.markers.forEach(mar => {
                 this.InvalidateObjects(mar);
                 this.RemoveObjects();
@@ -281,11 +286,13 @@ export class VideoComponent {
                         if (val instanceof Array) {
                             val.forEach(val => {
                                 this.markersobjects.push({ key, val });
+                                console.log(this.markersobjects.length, "markerobject");
                             });
                         }
                         else {
                             this.markersDirectory.push(selctedMarker);
                             this.markersobjects.push({ key, val, totalDuartion });
+                            console.log(this.markersobjects.length, "markerobject");
                         }
                     }
                 }
@@ -359,7 +366,7 @@ export class VideoComponent {
         var currentPosition = this.timelinePosition + '00000';
         if (this.markers == undefined) {
             console.log("markers are undefined");
-            this.markers=[];
+            this.markers = [];
             var name = 'Marker 1';
             this.markers.push({ _Duration: '00:00:03', _Name: name, _Position: currentPosition, _Speed: 1, _name: name });
             this.saveMarkers();
@@ -399,10 +406,12 @@ export class VideoComponent {
                 if (position == marker._Position)
                     samePosition++;
             });
-            if (samePosition >= 4)
+            if (samePosition >= 4) {
                 return false;
-            else
+            }
+            else {
                 return true;
+            }
         }
         else {
             return true;
@@ -448,21 +457,23 @@ export class VideoComponent {
     loadObjects() {
         var objs = this.view["Content"]["Capture"]["Marker"]["Marker.Objects"];
 
-        for (var key in objs) {
-            // skip loop if the property is from prototype
-            if (!objs.hasOwnProperty(key)) continue;
-            var val = objs[key];
+        if (objs != undefined) {
+            for (var key in objs) {
+                // skip loop if the property is from prototype
+                if (!objs.hasOwnProperty(key)) continue;
+                var val = objs[key];
 
-            if (val instanceof Array) {
-                val.forEach(val => {
+                if (val instanceof Array) {
+                    val.forEach(val => {
+                        this.objects.push({ key, val });
+                    });
+                }
+                else {
                     this.objects.push({ key, val });
-                });
+                }
             }
-            else {
-                this.objects.push({ key, val });
-            }
+            console.log(this.objects.length, "markerobject");
         }
-        console.log(this.objects);
     }
     //Code for objects end
 }

@@ -59,7 +59,7 @@ export class Connection {
             var onReceiveError = function (errorinfo) {
                 console.log('onReceiveError:');
                 console.log(errorinfo);
-                alert('onReceiveError:' + errorinfo);
+                // alert('onReceiveError:' + errorinfo);
             }
             chrome.sockets.udp.create({}, function (createInfo) {
                 Connection.socketId = createInfo.socketId;
