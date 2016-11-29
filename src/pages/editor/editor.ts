@@ -5,7 +5,7 @@ import { NavController, NavParams, AlertController, ModalController, Platform, A
 import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError } from 'ionic-native';
 
 import { Http } from '@angular/http';
-
+import { Connection } from '../../pages/Connection'
 import { StorageFactory } from '../../Factory/StorageFactory';
 
 import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
@@ -19,7 +19,7 @@ declare var cordova: any;
 @Component({
   selector: 'page-editor',
   templateUrl: 'editor.html',
-  providers: [StorageFactory],
+  providers: [StorageFactory, Connection],
 })
 
 export class EditorPage {
@@ -33,11 +33,14 @@ export class EditorPage {
     private alertCtrl: AlertController,
     private modalCtrl: ModalController,
     private platform: Platform,
+    private connection: Connection,
     private http: Http,
     private storagefactory: StorageFactory,
     private app: App) {
-    this.matrix = params.get("matrixData");
-    console.log(this.matrix);
+    if (params.data != null) {
+      this.matrix = params.data.matrixData;
+      console.log(this.matrix);
+    }
   }
 
   // ionViewDidLoad() {
@@ -50,10 +53,10 @@ export class EditorPage {
 
   ngOnInit() {
     if (this.matrix["Matrix.Children"]["View"] instanceof Array) {
-      this.views = this.matrix["Matrix.Children"].View;
+      this.views = this.matrix["Matrix.Children"]["View"];
     }
     else {
-      this.views.push(this.matrix["Matrix.Children"].View);
+      this.views.push(this.matrix["Matrix.Children"]["View"]);
     }
     this.showViewSegment(this.selectedViewIndex);
     this.evaluateCaptureViews();
@@ -298,10 +301,20 @@ export class EditorPage {
   // Code for Camera Recording Starts
 
   IPCamCapture() {
-    this.navCtrl.push(Ipcameras, {
+    var modal = this.modalCtrl.create(Ipcameras, {
       matrix: this.matrix,
       views: this.views,
       selectedViewIndex: this.selectedViewIndex
+    });
+
+    modal.present();
+
+    modal.onDidDismiss((views) => {
+      if (views != null) {
+        this.views = views;
+        this.saveMatrix();
+        this.connection.transferMatrix(this.matrix._Channel, this.matrix._Sport, this.matrix._Name);
+      }
     });
   }
 

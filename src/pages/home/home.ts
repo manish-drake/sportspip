@@ -263,14 +263,14 @@ export class HomePage {
         var authenticate = this.AuthenticateUser();
         if (authenticate) {
 
-            Observable.interval(2000)
-                .take(1).map((x) => x + 5)
-                .subscribe((x) => {
-                    this.packages.DownloadServerHeader(fileName, channelName);
-                    console.log("Download");
-                })
+            // Observable.interval(1000)
+            //     .take(1).map((x) => x + 5)
+            //     .subscribe((x) => {
+            //         this.packages.DownloadServerHeader(fileName, channelName);
+            //         console.log("Download");
+            //     })
 
-            // this.packages.DownloadServerHeader(fileName, channelName);
+            this.packages.DownloadServerHeader(fileName, channelName);
             Observable.interval(3000)
                 .take(3).map((x) => x + 5)
                 .subscribe((x) => {
@@ -278,27 +278,27 @@ export class HomePage {
                     console.log("unzip");
                 })
 
-            Observable.interval(5000)
+            Observable.interval(6000)
                 .take(1).map((x) => x + 5)
                 .subscribe((x) => {
                     this.packages.MoveToLocalCollection(channelName);
                     console.log("matrix moved");
                 })
         }
-        Observable.interval(6000)
+        Observable.interval(8000)
             .take(1).map((x) => x + 5)
             .subscribe((x) => {
                 this.localMatrices = [];
                 this.GetLocalMatrixHeader();
                 console.log("local header");
             })
-        Observable.interval(7000)
+        Observable.interval(9000)
             .take(1).map((x) => x + 5)
             .subscribe((x) => {
                 this.deleteServerHeader(fileName, index, value, channelName)
                 console.log("delete server header");
             })
-        Observable.interval(8000)
+        Observable.interval(10000)
             .take(1).map((x) => x + 5)
             .subscribe((x) => {
                 this.platform.ready().then(() => {

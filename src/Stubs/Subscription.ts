@@ -73,7 +73,7 @@ export class Subscription {
         return this.http.get("http://sportspipservice.cloudapp.net:10106/IMobile/subscriptions/remove/" + channelName + "?uid=" + userid + "")
             .map(res => res.json())
             .map(us => {
-                var data = JSON.parse(us);
+                // var data = JSON.parse(us);
                 console.log(us);
                 return true;
             }).toPromise();
