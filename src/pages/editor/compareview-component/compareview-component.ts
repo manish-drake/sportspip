@@ -56,7 +56,7 @@ export class CompareviewComponent {
     ngAfterViewInit() {
         this.video = this.videoElement.nativeElement;
 
-        this.video.addEventListener('ended', () => {            
+        this.video.addEventListener('ended', () => {
             var val = this.markers.find(x => x.checked == true);
             if (val == undefined) {
                 this.playPauseButtonIcon = "play";
@@ -309,12 +309,16 @@ export class CompareviewComponent {
             this.playPauseChild.emit('play');
             this.video.play();
             this.playPauseButtonIcon = "pause";
+            var delay = 1 / 60;
             this.timelineInterval = setInterval(() => {
-                this.PlayMarker();
                 var factor = (100000 / this.video.duration) * this.video.currentTime;
                 this.sliderValue = factor;
                 this.timelinePosition = this.formatTime(this.video.currentTime);
-            }, 1);
+                if (this.timelinePosition == this.timelineDuration) {
+                    this.playPauseButtonIcon = 'play';
+                }
+                this.PlayMarker();
+            }, delay);
         } else {
             this.playPauseChild.emit('pause');
             this.video.pause();
