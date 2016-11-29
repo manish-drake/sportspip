@@ -319,12 +319,6 @@ export class EditorPage {
         this.connection.transferMatrix(this.matrix._Channel, this.matrix._Sport, this.matrix._Name);
       }
     });
-
-    // this.navCtrl.push(Ipcameras, {
-    //   matrix: this.matrix,
-    //   views: this.views,
-    //   selectedViewIndex: this.selectedViewIndex
-    // });
   }
 
   CreateVideoView(fileName) {

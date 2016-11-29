@@ -362,6 +362,7 @@ export class VideoComponent {
             this.markers=[];
             var name = 'Marker 1';
             this.markers.push({ _Duration: '00:00:03', _Name: name, _Position: currentPosition, _Speed: 1, _name: name });
+            this.saveMarkers();
             this.evaluateMarkerPosition();
             console.log("..Marker Added");
         }
@@ -370,6 +371,7 @@ export class VideoComponent {
             if (canAddMarker) {
                 var name = 'Marker ' + (this.markers.length + 1);
                 this.markers.push({ _Duration: '00:00:03', _Name: name, _Position: currentPosition, _Speed: 1, _name: name });
+                this.saveMarkers();
                 this.evaluateMarkerPosition();
                 console.log("..Marker Added");
             }
@@ -382,6 +384,11 @@ export class VideoComponent {
                 alert.present();
             }
         }
+    }
+
+    saveMarkers(){
+        // console.log(this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"]);
+        console.log(this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"]);
     }
 
     canAddMarker(position) {
