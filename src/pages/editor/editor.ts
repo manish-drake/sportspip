@@ -186,8 +186,8 @@ export class EditorPage {
           "_CanvasBackgroundOpacity": "1"
         }
       },
-      "_name": "View " + this.selectedViewIndex,
-      "_Title": "View " + this.selectedViewIndex,
+      "_name": "View " + (this.selectedViewIndex + 1),
+      "_Title": "View " + (this.selectedViewIndex + 1),
       "_Source": 'Canvas'
     }
     console.log(canvasView);
@@ -338,13 +338,13 @@ export class EditorPage {
           "View.ChronoMarker": "",
           "_name": "ba160173f284474c9412192dcd77cb1c",
           "_Kernel": fileName,
-          "_Title": "View " + this.selectedViewIndex,
+          "_Title": "View " + (this.selectedViewIndex + 1),
           "_Name": "ba160173f284474c9412192dcd77cb1c",
           "_IsActive": "False"
         }
       },
-      "_name": "View " + this.selectedViewIndex,
-      "_Title": "View " + this.selectedViewIndex,
+      "_name": "View " + (this.selectedViewIndex + 1),
+      "_Title": "View " + (this.selectedViewIndex + 1),
       "_Source": "Local"
     }
     this.views[this.selectedViewIndex] = localView;
