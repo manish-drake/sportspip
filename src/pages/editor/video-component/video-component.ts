@@ -48,7 +48,7 @@ export class VideoComponent {
         this.evaluateMarkerPosition();
         this.video.addEventListener('ended', () => {
             var val = this.markers.find(x => x.checked == true);
-            if(val==undefined){
+            if (val == undefined) {
                 this.playPauseButtonIcon = 'play';
                 clearInterval(this.timelineInterval);
             }
@@ -116,6 +116,7 @@ export class VideoComponent {
     sliderValueChange() {
         this.timelinePosition = this.formatTime(this.video.currentTime);
         var factor = this.video.duration * (this.sliderValue / 100000);
+        this.video.currentTime = factor;
         this.timelinePosition = this.formatTime(factor);
     }
 
@@ -130,10 +131,13 @@ export class VideoComponent {
             this.playPauseButtonIcon = 'pause';
             var delay = 1 / 60;
             this.timelineInterval = setInterval(() => {
-                this.PlayMarker();
                 var factor = (100000 / this.video.duration) * this.video.currentTime;
                 this.sliderValue = factor;
                 this.timelinePosition = this.formatTime(this.video.currentTime);
+                if (this.timelinePosition == this.timelineDuration) {
+                    this.playPauseButtonIcon = 'play';
+                }
+                this.PlayMarker();
             }, delay);
         } else {
             this.video.pause();
