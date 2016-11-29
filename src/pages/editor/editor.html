@@ -1,12 +1,12 @@
-<ion-header>
-	<ion-navbar color="primary" no-border-bottom>
+<ion-header no-shadow>
+	<ion-navbar color="primary" no-border>
 		<ion-title>{{matrix._Title}}</ion-title>
 		<ion-buttons end>
 			<button ion-button icon-left clear (click)="presentInfoModal()" style="text-transform: initial;"><ion-icon name="list-box"></ion-icon>Info</button>
 		</ion-buttons>
 	</ion-navbar>
-	<ion-toolbar style="min-height:auto" no-border-bottom>
-		<ion-segment no-margin [(ngModel)]="selectedViewIndex">
+	<ion-toolbar no-border>
+		<ion-segment [(ngModel)]="selectedViewIndex">
 			<ion-segment-button *ngFor="let view of views; let i = index" [value]="i" (click)="showViewSegment(i)" (press)="deleteView(i)">
 				View {{i+1}}
 			</ion-segment-button>
@@ -17,7 +17,7 @@
 	</ion-toolbar>
 </ion-header>
 
-<ion-content style="background:#eee;" [ngSwitch]="selectedViewIndex">
+<ion-content style="background:#f6f6f6;" [ngSwitch]="selectedViewIndex">
 	<div style="height:100%;" *ngFor="let view of views; let i = index" [hidden]="hideViewSegment(selectedViewIndex,i)" [ngSwitch]="view._Source">
 		<!--ViewCanvasTemplate-->
 		<canvas-component *ngSwitchCase="'Canvas'" [view]="view"></canvas-component>
@@ -89,11 +89,11 @@
 	</div>
 </ion-content>
 
-<ion-footer>
-	<ion-toolbar>
+<ion-footer no-shadow>
+	<ion-toolbar no-border-top>
 		<ion-buttons end>
 			<button ion-button icon-only color="primary" *ngIf="countOfCaptureViews>1" (click)="openCompareView()"><ion-icon name="grid"></ion-icon></button>
-			<button ion-button icon-only color="primary" (click)="openSwipeView()"><ion-icon name="move"></ion-icon></button>
+			<!--<button ion-button icon-only color="primary" (click)="openSwipeView()"><ion-icon name="move"></ion-icon></button>-->
 		</ion-buttons>
 	</ion-toolbar>
 </ion-footer>
