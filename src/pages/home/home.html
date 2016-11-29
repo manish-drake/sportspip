@@ -1,17 +1,23 @@
-<ion-header>
-	<ion-navbar color="primary" no-border-bottom>
+<ion-header no-shadow>
+	<ion-navbar color="primary" no-border>
 		<ion-title start>
 			Sports PIP
 		</ion-title>
 		<ion-buttons end>
 			<button ion-button icon-only (click)="openConnectivity()"><ion-icon name="wifi"></ion-icon><span></span></button>
-			<button ion-button icon-only (click)="openSettings()"><ion-icon name="settings"></ion-icon></button>
+			<button ion-button icon-only (click)="openSettings()"><ion-icon name="person"></ion-icon></button>
 			<button ion-button icon-only (click)="presentPopover($event)"><ion-icon name="more"></ion-icon></button>
 		</ion-buttons>
 	</ion-navbar>
+	<ion-toolbar color="primary" no-border>
+		<ion-segment color="light" [(ngModel)]="selectedSegment">
+			<ion-segment-button value="local">Matrices</ion-segment-button>
+			<ion-segment-button value="server">Channels</ion-segment-button>
+		</ion-segment>
+	</ion-toolbar>
 </ion-header>
 
-<ion-content style="background:#f1f1f1;">
+<ion-content style="background:#f4f4f4;">
 
 	<!-- Real floating action button, fixed. It will not scroll with the content -->
 	<ion-fab bottom right>
@@ -22,17 +28,10 @@
 		<button ion-fab color="light" (click)="testOpenMatrix()">M</button>
 	</ion-fab>-->
 
-	<ion-toolbar no-border>
-		<ion-segment [(ngModel)]="selectedSegment">
-			<ion-segment-button value="local">Matrices</ion-segment-button>
-			<ion-segment-button value="server">Channels</ion-segment-button>
-		</ion-segment>
-	</ion-toolbar>
-
 	<div [ngSwitch]="selectedSegment">
 		<div *ngSwitchCase="'local'" style="position: relative;">
 			<ion-row>
-				<ion-col center text-right>
+				<ion-col no-padding center text-right>
 					<button ion-button clear *ngIf="localMatrices.length > 0" (click)="openCollection()">View All</button>
 				</ion-col>
 			</ion-row>
@@ -77,10 +76,10 @@
 		<div *ngSwitchCase="'server'" style="position: relative;">
 			<ion-item-group *ngFor="let channel of channels|groupBy:'Channel'">
 				<ion-row *ngIf="channel.value.length > 0">
-					<ion-col center>
+					<ion-col no-padding center>
 						<ion-title>{{channel.key}}</ion-title>
 					</ion-col>
-					<ion-col text-right>
+					<ion-col no-padding text-right>
 						<button ion-button clear (click)="openChannelCollection(channel.key)">View All</button>
 					</ion-col>
 				</ion-row>

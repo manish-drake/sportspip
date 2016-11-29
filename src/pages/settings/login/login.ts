@@ -28,7 +28,6 @@ export class Login {
 
     constructor(private viewCtrl: ViewController, private subscription: Subscription, private storageFactory: StorageFactory) {
         this.IsLoginAvailable = "Login";
-        this.errorMessege = " ";
     }
     dismiss(user) {
         this.viewCtrl.dismiss(user);
@@ -41,13 +40,13 @@ export class Login {
         console.log('Hello Register Page');
         this.LoginAvailable = false;
         this.IsLoginAvailable = "Sign Up";
-        this.errorMessege = " ";
+        this.errorMessege = "";
     }
     presentLogin() {
         console.log('Hello Login Page');
         this.LoginAvailable = true;
         this.IsLoginAvailable = "Log in";
-        this.errorMessege = " ";
+        this.errorMessege = "";
     }
 
     Register(email, firstname, lastname) {

@@ -4,9 +4,9 @@
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header>
+<ion-header no-shadow>
 
-  <ion-toolbar color="primary">
+  <ion-toolbar color="white">
     <ion-buttons start>
       <button ion-button icon-only [disabled]="isRecording" (click)="loadIPCams()"><ion-icon name="refresh"></ion-icon></button>
     </ion-buttons>
@@ -19,7 +19,7 @@
 </ion-header>
 
 
-<ion-content style="background:#eee;">
+<ion-content style="background:#f4f4f4;">
 
   <ion-item>
     <ion-label item-left>Rec. Duration: {{recordingDuration}}sec</ion-label>

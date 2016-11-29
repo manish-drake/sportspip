@@ -55,7 +55,8 @@ export class VideoComponent {
         })
 
         this.video.addEventListener('error', (error) => {
-            console.log('Error in video Elmnt:' + error);
+            console.log('Error in video Elmnt:' + JSON.stringify(error));
+            // alert('Error in video Elmnt:' + JSON.stringify(error));
             // this.videoSrcAvailable = false;
         })
 
@@ -70,12 +71,12 @@ export class VideoComponent {
 
 
     returnVidPath(filename) {
-        if (this.platform.is('cordova')) {
-            return cordova.file.applicationStorageDirectory + filename;
-        }
-        else {
-            return 'assets/' + filename;
-        }
+        // if (this.platform.is('cordova')) {
+        return cordova.file.applicationStorageDirectory + filename;
+        // }
+        // else {
+        //     return 'assets/' + filename;
+        // }
     }
 
     formatPoistionInMiliSecond(pos) {
@@ -354,27 +355,39 @@ export class VideoComponent {
     }
 
     addMarker() {
+        console.log("Add Marker..");
         var currentPosition = this.timelinePosition + '00000';
-        var canAddMarker = this.checkPosition(currentPosition);
-        if (canAddMarker) {
-            var name = 'Marker ' + (this.markers.length + 1);
+        if (this.markers == undefined) {
+            console.log("markers are undefined");
+            this.markers=[];
+            var name = 'Marker 1';
             this.markers.push({ _Duration: '00:00:03', _Name: name, _Position: currentPosition, _Speed: 1, _name: name });
             this.evaluateMarkerPosition();
-            console.log(this.markers);
+            console.log("..Marker Added");
         }
         else {
-            let alert = this.alertCtrl.create({
-                title: 'Limit Reached',
-                subTitle: 'Only 4 markers can be added on same position.',
-                buttons: ['OK']
-            });
-            alert.present();
+            var canAddMarker = this.canAddMarker(currentPosition);
+            if (canAddMarker) {
+                var name = 'Marker ' + (this.markers.length + 1);
+                this.markers.push({ _Duration: '00:00:03', _Name: name, _Position: currentPosition, _Speed: 1, _name: name });
+                this.evaluateMarkerPosition();
+                console.log("..Marker Added");
+            }
+            else {
+                let alert = this.alertCtrl.create({
+                    title: 'Limit Reached',
+                    subTitle: 'Only 4 markers can be added on same position.',
+                    buttons: ['OK']
+                });
+                alert.present();
+            }
         }
     }
 
-    checkPosition(position) {
+    canAddMarker(position) {
         var samePosition: number = 0;
         if (this.markers.length > 3) {
+            console.log("MoreThan 4 markers present");
             this.markers.forEach((marker) => {
                 if (position == marker._Position)
                     samePosition++;
@@ -384,8 +397,9 @@ export class VideoComponent {
             else
                 return true;
         }
-        else
+        else {
             return true;
+        }
     }
 
     deleteMarker(i) {
