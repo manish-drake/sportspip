@@ -41,15 +41,9 @@ export class VideoComponent {
     markers = [];
 
     ngAfterViewInit() {
-        var chronoMarker = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
-        if (chronoMarker != undefined) { 
-            this.markers = chronoMarker;
-            this.evaluateMarkerPosition();
-        }
-        this.video = this.videoElement.nativeElement;
-
         this.loadObjects();
-
+        this.LoadMarkers();
+        this.video = this.videoElement.nativeElement;
         this.video.addEventListener('ended', () => {
             var val = this.markers.find(x => x.checked == true);
             if (val == undefined) {
@@ -72,6 +66,16 @@ export class VideoComponent {
                 this.PlayStoryBoard();
             }
         }, 1 / 60);
+    }
+
+    LoadMarkers() {
+        var chronoMarker = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
+        if (chronoMarker != undefined) {
+
+            if (chronoMarker instanceof Array) this.markers = chronoMarker;
+            else this.markers.push(chronoMarker);
+            this.evaluateMarkerPosition();
+        }
     }
 
 
@@ -285,13 +289,11 @@ export class VideoComponent {
                         if (val instanceof Array) {
                             val.forEach(val => {
                                 this.markersobjects.push({ key, val });
-                                console.log(this.markersobjects.length, "markerobject");
                             });
                         }
                         else {
                             this.markersDirectory.push(selctedMarker);
                             this.markersobjects.push({ key, val, totalDuartion });
-                            console.log(this.markersobjects.length, "markerobject");
                         }
                     }
                 }
@@ -460,7 +462,6 @@ export class VideoComponent {
 
     loadObjects() {
         var objs = this.view["Content"]["Capture"]["Marker"]["Marker.Objects"];
-
         if (objs != undefined) {
             for (var key in objs) {
                 // skip loop if the property is from prototype
@@ -470,13 +471,15 @@ export class VideoComponent {
                 if (val instanceof Array) {
                     val.forEach(val => {
                         this.objects.push({ key, val });
+                        console.log(this.objects.length, "object");
                     });
                 }
                 else {
                     this.objects.push({ key, val });
+                    console.log(this.objects.length, "object");
                 }
             }
-            console.log(this.objects.length, "markerobject");
+
         }
     }
     //Code for objects end

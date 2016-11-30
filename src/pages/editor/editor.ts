@@ -52,19 +52,19 @@ export class EditorPage {
   }
 
   ngAfterViewInit() {
+    this.selectedViewIndex=0;
     if (this.matrix["Matrix.Children"]["View"] instanceof Array) {
       this.views = this.matrix["Matrix.Children"]["View"];
     }
     else {
       this.views.push(this.matrix["Matrix.Children"]["View"]);
     }
-    this.showViewSegment(this.selectedViewIndex);
     this.evaluateCaptureViews();
   }
 
   saveMatrix() {
     if (this.platform.is('cordova')) {
-      File.readAsText(cordova.file.dataDirectory + "Local/" + this.matrix._Channel + "/Tennis/Matrices/" + this.matrix._Name ,this.matrix._Name + ".mtx")
+      File.readAsText(cordova.file.dataDirectory + "Local/" + this.matrix._Channel + "/Tennis/Matrices/" + this.matrix._Name, this.matrix._Name + ".mtx")
         .then(data => {
           var res = JSON.parse(data.toString());
           var matrix = res.Matrix;

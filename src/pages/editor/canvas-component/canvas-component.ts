@@ -33,27 +33,33 @@ export class CanvasComponent {
   objDirectory = [];
 
   ngAfterViewInit() {
+    // this.isTimelineAvailable = true;
     this.timelineDuration = "00:00:00.00";
-    this.objs = this.view["Content"]["PIP"]["PIP.Objects"];
-    for (var key in this.objs) {
-      var val = this.objs[key];
-      //for maximum duration
-      var objBehaviors = val.Behaviors;
-      if (objBehaviors != undefined) {
-        console.log("max duration");
-        if (objBehaviors.Span != undefined){
-           this.returnMaxDuration(objBehaviors);
-        }
-      }
-      // this.PlayStoryBoard();
-    }
+    this.loadObjects()
   }
 
+  loadObjects() {
+    var objs = this.view["Content"]["PIP"]["PIP.Objects"];
+    for (var key in objs) {
+      // skip loop if the property is from prototype
+      if (!objs.hasOwnProperty(key)) continue;
+      var val = objs[key];
+      if (val instanceof Array) {
+        val.forEach(val => {
+          var objBehaviors = val.Behaviors;
+          if (objBehaviors != undefined) {
+            this.returnMaxDuration(objBehaviors);
+          }
+        });
+      }
+    }
+    this.PlayStoryBoard();
+  }
+
+
   returnMaxDuration(objBehaviors) {
-     console.log("return max duration");
-    this.isTimelineAvailable = true;    
-    var objduration = objBehaviors;
-    if (objduration.Span._Duration > this.timelineDuration) { this.timelineDuration = objduration.Span._Duration;}
+    this.isTimelineAvailable = true;
+    if (objBehaviors.Span._Duration > this.timelineDuration) { this.timelineDuration = objBehaviors.Span._Duration; }
     var durationInMS = (this.formatDurationInMiliSecond(this.timelineDuration)) / 10000000;
     this.duration = durationInMS;
     this.timelineDuration = this.formatTime(this.duration);
@@ -86,8 +92,8 @@ export class CanvasComponent {
       this.objects = [];
       this.objDirectory = [];
     }
-    // this.PlayStoryBoard();
-    // this.RemoveObjects();
+    this.PlayStoryBoard();
+    this.RemoveObjects();
   }
 
   formatPoistionInMiliSecond(pos) {
@@ -119,9 +125,9 @@ export class CanvasComponent {
         var factor = this.duration * (this.sliderValue / 10000);
         this.timelinePosition = this.formatTime(factor);
 
-        // this.PlayStoryBoard();
-        // this.RemoveObjects();
-        // this.ClearInterval();
+        this.PlayStoryBoard();
+        this.RemoveObjects();
+        this.ClearInterval();
       }, 1 / 60);
     }
     else {
@@ -131,22 +137,22 @@ export class CanvasComponent {
   }
 
   PlayStoryBoard() {
-
-    for (var key in this.objs) {
-
+    var objs = this.view["Content"]["PIP"]["PIP.Objects"];
+    for (var key in objs) {
       // skip loop if the property is from prototype
-      var val = this.objs[key];
-      var objBehaviors = val.Behaviors;
-      if (!this.objs.hasOwnProperty(key)) continue;
+      var val = objs[key];
+      if (!objs.hasOwnProperty(key)) continue;
 
       if (val instanceof Array) {
+        console.log()
         val.forEach(val => {
+          var objbeh = val.Behaviors.Span;
           if (this.IsObjectExist(val) == -1) {
-            if (val.Behaviors.Span._Position == "00:00:00") {
+            if (objbeh._Position == "00:00:00") {
               this.objDirectory.push(val);
               this.objects.push({ key, val });
             } else {
-              var positionInMS = (this.formatPoistionInMiliSecond(val.Behaviors.Span._Position)) / 10000000;
+              var positionInMS = (this.formatPoistionInMiliSecond(objbeh._Position)) / 10000000;
               if (this.formatTime(positionInMS) == this.timelinePosition) {
                 this.objDirectory.push(val);
                 this.objects.push({ key, val });
@@ -156,19 +162,18 @@ export class CanvasComponent {
           }
         });
       }
-      else if (objBehaviors.Span._Position == "00:00:00") {
-        if (this.IsObjectExist(val) == -1) {
-          this.objDirectory.push(val);
-          this.objects.push({ key, val });
-        }
-      }
-      else if (objBehaviors != undefined) {
-        if (this.IsObjectExist(val) == -1) {
-          var positionInMS = (this.formatPoistionInMiliSecond(objBehaviors.Span._Position)) / 10000000;
-          if (this.formatTime(positionInMS) == this.timelinePosition) {
+      else if (val.Behaviors.Span != undefined) {
+        if (val.Behaviors.Span._Position == "00:00:00") {
+          if (this.IsObjectExist(val) == -1) {
             this.objDirectory.push(val);
             this.objects.push({ key, val });
           }
+        }
+      }
+      else if (val.Behaviors.Span == undefined) {
+        if (this.IsObjectExist(val) == -1) {
+          this.objDirectory.push(val);
+          this.objects.push({ key, val });
         }
       }
     }

@@ -128,7 +128,7 @@ export class SettingsPage {
         this.InvalidateSubscribeListAsync(this.UserID);
         this.InvalidateChannelListAsync(this.UserID);
         let loader = this.loadingCtrl.create({
-          content: "fetching required data..",
+          content: "Fetching Required Data..",
           duration: 10000
         });
         loader.present();

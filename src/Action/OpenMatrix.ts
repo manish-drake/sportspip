@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NavController, Platform } from 'ionic-angular';
 import { EditorPage } from '../pages/editor/editor';
+import { AppVersion, File } from 'ionic-native';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { StorageFactory } from '../Factory/StorageFactory';
@@ -12,14 +13,14 @@ export class OpenMatrix {
     }
 
     run(matrixName, Channel) {
-        this.http.get(cordova.file.dataDirectory + "Local/" + Channel + "/Tennis/Matrices/" + matrixName + "/" + matrixName + ".mtx")
+        File.readAsText(cordova.file.dataDirectory + "Local/" + Channel + "/Tennis/Matrices/" + matrixName , matrixName + ".mtx")
             .catch(err => new Observable(observer => {
                 console.log("mtx not found");
                 this.createNew(matrixName, Channel);
             }))
-            .subscribe(data => {
+            .then(data => {
                 console.log("open matrix");
-                var res = JSON.parse(data.text());
+                var res = JSON.parse(data.toString());
                 this.navCtrl.push(EditorPage, {
                     matrixData: res.Matrix
                 });
