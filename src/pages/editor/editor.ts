@@ -52,7 +52,6 @@ export class EditorPage {
   }
 
   ngAfterViewInit() {
-    this.selectedViewIndex=0;
     if (this.matrix["Matrix.Children"]["View"] instanceof Array) {
       this.views = this.matrix["Matrix.Children"]["View"];
     }
@@ -70,7 +69,6 @@ export class EditorPage {
           var matrix = res.Matrix;
           matrix['Matrix.Children'].View = this.views;
           this.storagefactory.SaveMatrixAsync(res, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
-
           // var header = this.storagefactory.ComposeMatrixHeader(matrix);
           // this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
         });

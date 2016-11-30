@@ -21,6 +21,7 @@ import { Compareview } from '../pages/editor/compareview/compareview'
 import { CompareviewComponent, CaptureViewsPopover } from '../pages/editor/Compareview-Component/Compareview-Component'
 import { Swipeview } from '../pages/editor/swipeview/swipeview'
 
+
 @NgModule({
   declarations: [
     sportspip,

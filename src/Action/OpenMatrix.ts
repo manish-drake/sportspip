@@ -13,14 +13,14 @@ export class OpenMatrix {
     }
 
     run(matrixName, Channel) {
-        File.readAsText(cordova.file.dataDirectory + "Local/" + Channel + "/Tennis/Matrices/" + matrixName , matrixName + ".mtx")
+        this.http.get(cordova.file.dataDirectory + "Local/" + Channel + "/Tennis/Matrices/" + matrixName + "/" + matrixName + ".mtx")
             .catch(err => new Observable(observer => {
                 console.log("mtx not found");
                 this.createNew(matrixName, Channel);
             }))
-            .then(data => {
+            .subscribe(data => {
                 console.log("open matrix");
-                var res = JSON.parse(data.toString());
+                var res = JSON.parse(data.text());
                 this.navCtrl.push(EditorPage, {
                     matrixData: res.Matrix
                 });
