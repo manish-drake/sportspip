@@ -38,18 +38,22 @@ export class CanvasComponent {
     for (var key in this.objs) {
       var val = this.objs[key];
       //for maximum duration
-      var objBehaviors = val.Behaviors.Span;
+      var objBehaviors = val.Behaviors;
       if (objBehaviors != undefined) {
-        if (objBehaviors != undefined) this.returnMaxDuration(objBehaviors);
+        console.log("max duration");
+        if (objBehaviors.Span != undefined){
+           this.returnMaxDuration(objBehaviors);
+        }
       }
-      this.PlayStoryBoard();
+      // this.PlayStoryBoard();
     }
   }
 
   returnMaxDuration(objBehaviors) {
+     console.log("return max duration");
     this.isTimelineAvailable = true;    
-    var objduration = objBehaviors.Span._Duration;
-    if (objduration > this.timelineDuration) { this.timelineDuration = objduration; }
+    var objduration = objBehaviors;
+    if (objduration.Span._Duration > this.timelineDuration) { this.timelineDuration = objduration.Span._Duration;}
     var durationInMS = (this.formatDurationInMiliSecond(this.timelineDuration)) / 10000000;
     this.duration = durationInMS;
     this.timelineDuration = this.formatTime(this.duration);
@@ -82,8 +86,8 @@ export class CanvasComponent {
       this.objects = [];
       this.objDirectory = [];
     }
-    this.PlayStoryBoard();
-    this.RemoveObjects();
+    // this.PlayStoryBoard();
+    // this.RemoveObjects();
   }
 
   formatPoistionInMiliSecond(pos) {
@@ -115,9 +119,9 @@ export class CanvasComponent {
         var factor = this.duration * (this.sliderValue / 10000);
         this.timelinePosition = this.formatTime(factor);
 
-        this.PlayStoryBoard();
-        this.RemoveObjects();
-        this.ClearInterval();
+        // this.PlayStoryBoard();
+        // this.RemoveObjects();
+        // this.ClearInterval();
       }, 1 / 60);
     }
     else {

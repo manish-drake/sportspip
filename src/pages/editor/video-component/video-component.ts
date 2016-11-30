@@ -42,7 +42,7 @@ export class VideoComponent {
 
     ngAfterViewInit() {
         var chronoMarker = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
-        if (chronoMarker != undefined) {
+        if (chronoMarker != undefined) { 
             this.markers = chronoMarker;
             this.evaluateMarkerPosition();
         }

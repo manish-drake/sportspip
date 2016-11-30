@@ -15,8 +15,8 @@
 			/>
 			<text *ngSwitchCase="'RichTextObject'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.font-size]="obj.val._FontSize"
 				[attr.fill]="clrCvt(obj.val._Foreground)" [attr.opacity]="obj.val._Opacity">Canvas</text>
-			<image *ngSwitchCase="'Picture'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
-				xlink:href="assets/sample.jpg" />
+			<!--<image *ngSwitchCase="'Picture'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
+				xlink:href="assets/sample.jpg" />-->
 			<defs *ngSwitchCase="'Arrow'">
 				<marker id="arrow" viewBox="0 0 14 14" markerWidth="6" markerHeight="6" refX="9" refY="6" orient="auto">
 					<path d="M0,0 L0,12 L12,6 L0,0" [attr.fill]="clrCvt(obj.val._Stroke)"></path>
@@ -26,17 +26,6 @@
 				[attr.y2]="obj.val._Y2" [attr.stroke]="clrCvt(obj.val._Stroke)" [attr.stroke-width]="obj.val._StrokeThickness" [attr.opacity]="obj.val._Opacity"
 			/>
 			<image *ngSwitchCase="'Ink'" #Ink x="0" y="0" width="100%" height="100%" xlink:href="assets/inksample.gif" />
-			<!--<foreignObject *ngSwitchCase="'Video'" [attr.x]="obj.val.Left" [attr.y]="obj.val.Top" [attr.width]="obj.val.Width" [attr.height]="obj.val.Height" style="background-color:green">
-					<xhtml:body>
-						<video src="assets/sample.mp4" loop="true" x="0" y="0" [attr.width]="obj.val.Width" [attr.height]="obj.val.Height" controls></video>
-					</xhtml:body>
-				</foreignObject>
-				<foreignObject *ngSwitchCase="'Audio'" [attr.x]="obj.val.Left" [attr.y]="obj.val.Top" [attr.width]="obj.val.Width" [attr.height]="obj.val.Height" style="background-color:red">
-					<xhtml:body>
-						<button ion-button icon-only color="dark"><ion-icon name="musical-note"></ion-icon></button>
-						<audio src="assets/sample.mp3" loop="true" controls></audio>
-					</xhtml:body>
-				</foreignObject>-->
 		</svg>
 	</ion-row>
 	<ion-row *ngIf="isTimelineAvailable" style="height: auto; flex: 0 0 auto;" color="dark">

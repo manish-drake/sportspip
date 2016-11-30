@@ -161,15 +161,15 @@ export class HomePage {
     DuplicateMatrix(channelName, matrixname) {
         var name = Date.now().toString();
         this.platform.ready().then(() => {
-            this.http.get(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/Matrices/" + matrixname + "/Header.xml")
-                .subscribe(res => {
-                    var header = JSON.parse(res.text());
+            File.readAsText(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/Matrices/" + matrixname, "Header.xml")
+                .then(res => {
+                    var header = JSON.parse(res.toString());
                     header.Name = name;
                     this.storagefactory.SaveLocalHeader(header, channelName, header.Sport, name, "Matrices");
                 })
-            this.http.get(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/Matrices/" + matrixname + "/" + matrixname + ".mtx")
-                .subscribe(res => {
-                    var matrix = JSON.parse(res.text());
+            File.readAsText(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/Matrices/" + matrixname, matrixname + ".mtx")
+                .then(res => {
+                    var matrix = JSON.parse(res.toString());
                     matrix.Matrix._Name = name;
                     this.storagefactory.SaveMatrixAsync(matrix, channelName, matrix.Matrix._Sport, name, "Matrices");
                 })
@@ -192,11 +192,11 @@ export class HomePage {
                 success.forEach((channelName) => {
                     File.listDir(cordova.file.dataDirectory, "Local/" + channelName.name + "/Tennis/Matrices/").then((success) => {
                         success.forEach((res) => {
-                            this.http.get(cordova.file.dataDirectory + "Local/" + channelName.name + "/Tennis/Matrices/" + res.name + "/Header.xml")
-                                .subscribe(data => {
+                            File.readAsText(cordova.file.dataDirectory + "Local/" + channelName.name + "/Tennis/Matrices/" + res.name, "Header.xml")
+                                .then(data => {
                                     //deserialiae server header  
-                                    var result = JSON.parse(data.text());
-                                    // console.log(result);
+                                    var result = JSON.parse(data.toString());
+                                    console.log(result);
                                     var item = {
                                         Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
                                         ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
@@ -228,10 +228,10 @@ export class HomePage {
                 success.forEach((channelName) => {
                     File.listDir(cordova.file.dataDirectory, "Server/" + channelName.name + "/Tennis/Matrices/").then((success) => {
                         success.forEach((res) => {
-                            this.http.get(cordova.file.dataDirectory + "Server/" + channelName.name + "/Tennis/Matrices/" + res.name + "/Header.xml")
-                                .subscribe(data => {
+                            File.readAsText(cordova.file.dataDirectory + "Server/" + channelName.name + "/Tennis/Matrices/" + res.name, "Header.xml")
+                                .then(data => {
                                     // deserialiae server header  
-                                    var result = JSON.parse(data.text());
+                                    var result = JSON.parse(data.toString());
                                     var item = {
                                         Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
                                         ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
@@ -248,57 +248,50 @@ export class HomePage {
         });
     }
 
-    AuthenticateUser() {
-        console.log('Authenticatnig user..');
-        return true;
-    }
-
-
     DownloadServerHeaderAsync(fileName, channelName, index, value) {
         let loader = this.loadingCtrl.create({
             content: 'Downloading..',
             duration: 300000
         });
         loader.present();
+
         var authenticate = this.AuthenticateUser();
         if (authenticate) {
 
-            // Observable.interval(1000)
-            //     .take(1).map((x) => x + 5)
-            //     .subscribe((x) => {
-            //         this.packages.DownloadServerHeader(fileName, channelName);
-            //         console.log("Download");
-            //     })
-
-            this.packages.DownloadServerHeader(fileName, channelName);
-            Observable.interval(3000)
+            Observable.interval(1000)
+                .take(1).map((x) => x + 5)
+                .subscribe((x) => {
+                    this.packages.DownloadServerHeader(fileName, channelName);
+                    console.log("Download");
+                })
+            Observable.interval(2000)
                 .take(3).map((x) => x + 5)
                 .subscribe((x) => {
                     this.packages.unzipPackage();
                     console.log("unzip");
                 })
 
-            Observable.interval(6000)
+            Observable.interval(4000)
                 .take(1).map((x) => x + 5)
                 .subscribe((x) => {
                     this.packages.MoveToLocalCollection(channelName);
                     console.log("matrix moved");
                 })
         }
-        Observable.interval(8000)
+        Observable.interval(5000)
             .take(1).map((x) => x + 5)
             .subscribe((x) => {
                 this.localMatrices = [];
                 this.GetLocalMatrixHeader();
                 console.log("local header");
             })
-        Observable.interval(9000)
+        Observable.interval(6000)
             .take(1).map((x) => x + 5)
             .subscribe((x) => {
                 this.deleteServerHeader(fileName, index, value, channelName)
                 console.log("delete server header");
             })
-        Observable.interval(10000)
+        Observable.interval(7000)
             .take(1).map((x) => x + 5)
             .subscribe((x) => {
                 this.platform.ready().then(() => {
@@ -310,6 +303,12 @@ export class HomePage {
                 })
             })
     }
+
+    AuthenticateUser() {
+        console.log('Authenticatnig user..');
+        return true;
+    }
+
 
     newMatrix() {
         var data = this.storagefactory.ComposeNewMatrix();

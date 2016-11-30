@@ -39,7 +39,7 @@
 				<div class="item" *ngFor='let matrix of localMatrices | slice: 0:12; let i = index'>
 					<ion-card (click)="openMatrix(matrix.Name,matrix.Channel)" (press)="matrixPressed(i,matrix.Name,matrix.Channel,matrix.Title)">
 						<ion-row>
-							<ion-col no-padding [style.background-image]="retrunThumbnailPath(matrix.ThumbnailSource)" style="height: 120px;background-size: cover;background-color:lightgray;background-position: center;">
+							<ion-col no-padding [style.background-image]="retrunThumbnailPath(matrix.UploadID)" style="height: 120px;background-size: cover;background-color:lightgray;background-position: center;">
 							</ion-col>
 						</ion-row>
 						<ion-row>
@@ -59,6 +59,7 @@
 										</ion-col>
 										<ion-col no-padding center text-right style="flex: 0 0 auto; width: auto;">
 											<!--<p>{{formatDuration(matrix.Duration)}}</p>-->
+											<p>{{matrix.Views}}</p>
 										</ion-col>
 									</ion-row>
 								</ion-card-content>
@@ -113,6 +114,7 @@
 											</ion-col>
 											<ion-col no-padding center text-right style="flex: 0 0 auto; width: auto;">
 												<!--<p>{{formatDuration(matrix.Duration)}}</p>-->
+												<p>{{matrix.Views}}</p>
 											</ion-col>
 										</ion-row>
 									</ion-card-content>
