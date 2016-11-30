@@ -1,4 +1,8 @@
 page-editor {
+    .segment{
+    background: color($colors, primary);
+  }
+  
     ::-webkit-scrollbar,
     *::-webkit-scrollbar {
     display: none;

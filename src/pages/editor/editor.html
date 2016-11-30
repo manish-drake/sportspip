@@ -1,20 +1,16 @@
-<ion-header no-shadow>
+<ion-header>
 	<ion-navbar color="primary" no-border>
 		<ion-title>{{matrix._Title}}</ion-title>
 		<ion-buttons end>
 			<button ion-button icon-left clear (click)="presentInfoModal()" style="text-transform: initial;"><ion-icon name="list-box"></ion-icon>Info</button>
 		</ion-buttons>
 	</ion-navbar>
-	<ion-toolbar no-border>
-		<ion-segment [(ngModel)]="selectedViewIndex">
+		<ion-segment color="light" class="segment" [(ngModel)]="selectedViewIndex">
 			<ion-segment-button *ngFor="let view of views; let i = index" [value]="i" (click)="showViewSegment(i)" (press)="deleteView(i)">
 				View {{i+1}}
 			</ion-segment-button>
+			<button ion-button icon-only clear color="light" (click)="addView()"><ion-icon name="add-circle"></ion-icon></button>
 		</ion-segment>
-		<ion-buttons end>
-			<button ion-button icon-only clear (click)="addView()"><ion-icon name="add-circle"></ion-icon></button>
-		</ion-buttons>
-	</ion-toolbar>
 </ion-header>
 
 <ion-content style="background:#f6f6f6;" [ngSwitch]="selectedViewIndex">
@@ -26,24 +22,20 @@
 		<!--viewOptions-->
 		<ion-row *ngSwitchCase="'(Blank)'" style="height:100%;">
 			<ion-col no-padding center text-center>
-				<ion-grid no-padding style="max-width:500px ;margin-left: auto;margin-right: auto;">
+				<ion-grid no-padding style="max-width:450px ;margin-left: auto;margin-right: auto;">
 					<ion-row>
 						<ion-col no-padding width-50>
 							<ion-card (click)="addBlankCanvas()">
 								<ion-item>
-									<ion-avatar item-left style="font-size: 24px;">
-										<ion-icon name="easel" item-left></ion-icon>
-									</ion-avatar>
-									<h2 class="textTrim">Blank Canvas</h2>
+									<ion-icon name="easel" item-left></ion-icon>
+									Blank Canvas
 								</ion-item>
 							</ion-card>
 						</ion-col>
 						<ion-col no-padding width-50>
 							<ion-card (click)="chooseVideo()">
 								<ion-item>
-									<ion-avatar item-left style="font-size: 24px;">
-										<ion-icon name="ios-film" item-left></ion-icon>
-									</ion-avatar>
+									<ion-icon name="ios-film" item-left></ion-icon>
 									<h2 class="textTrim">Add Video</h2>
 								</ion-item>
 							</ion-card>
@@ -53,9 +45,7 @@
 						<ion-col no-padding width-50>
 							<ion-card (click)="import()">
 								<ion-item>
-									<ion-avatar item-left style="font-size: 24px;">
-										<ion-icon name="log-in" item-left></ion-icon>
-									</ion-avatar>
+									<ion-icon name="log-in" item-left></ion-icon>
 									<h2 class="textTrim">Import</h2>
 								</ion-item>
 							</ion-card>
@@ -63,9 +53,7 @@
 						<ion-col no-padding width-50>
 							<ion-card (click)="recordVideo()">
 								<ion-item>
-									<ion-avatar item-left style="font-size: 24px;">
-										<ion-icon name="videocam" item-left></ion-icon>
-									</ion-avatar>
+									<ion-icon name="videocam" item-left></ion-icon>
 									<h2 class="textTrim">Record Video</h2>
 								</ion-item>
 							</ion-card>
@@ -75,10 +63,8 @@
 						<ion-col no-padding>
 							<ion-card *ngIf="views.length==1" (click)="IPCamCapture()">
 								<ion-item>
-									<ion-avatar item-left style="font-size: 24px;">
-										<ion-icon name="wifi" item-left></ion-icon>
-									</ion-avatar>
-									<h2 class="textTrim">Capture IP Cams</h2>
+									<ion-icon name="wifi" item-left></ion-icon>
+									<h2 class="textTrim">Capture IP Cameras</h2>
 								</ion-item>
 							</ion-card>
 						</ion-col>

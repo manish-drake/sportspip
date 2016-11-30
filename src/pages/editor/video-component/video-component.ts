@@ -240,7 +240,6 @@ export class VideoComponent {
             this.index = 1;
         }
         else if (marker == undefined) {
-            console.log("no marker selected");
             this.markers.forEach(mar => {
                 this.InvalidateObjects(mar);
                 this.RemoveObjects();
@@ -369,6 +368,7 @@ export class VideoComponent {
             this.markers = [];
             var name = 'Marker 1';
             this.markers.push({ _Duration: '00:00:03', _Name: name, _Position: currentPosition, _Speed: 1, _name: name });
+            this.saveMarkers();
             this.evaluateMarkerPosition();
             console.log("..Marker Added");
         }
@@ -377,6 +377,7 @@ export class VideoComponent {
             if (canAddMarker) {
                 var name = 'Marker ' + (this.markers.length + 1);
                 this.markers.push({ _Duration: '00:00:03', _Name: name, _Position: currentPosition, _Speed: 1, _name: name });
+                this.saveMarkers();
                 this.evaluateMarkerPosition();
                 console.log("..Marker Added");
             }
@@ -391,6 +392,15 @@ export class VideoComponent {
         }
     }
 
+    saveMarkers() {
+        // console.log("Saving markers..");
+        // var ViewChronoMarker = this.view["Content"]["Capture"]["View.ChronoMarker"];
+        // console.log("View.ChronoMarker: " + ViewChronoMarker);
+        // var ChronoMarker = { ChronoMarker: this.markers };
+
+        //     var markersObj = this.view["Content"]["Capture"]["View.ChronoMarker"].push(ChronoMarker);
+        //     console.log(this.view["Content"]["Capture"]["View.ChronoMarker"]);
+    }
 
     canAddMarker(position) {
         var samePosition: number = 0;
