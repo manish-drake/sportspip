@@ -1,4 +1,7 @@
 page-home {
+  .segment{
+    background: color($colors, primary);
+  }
   .items {
 	display: flex;
 	flex-wrap: wrap;

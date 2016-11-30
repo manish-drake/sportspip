@@ -1,7 +1,7 @@
-<ion-grid style="height: 100%;">
+<ion-grid style="height: 100%;" padding>
 	<ion-row style="height: 100%;position: relative;">
 		<svg viewBox="0 0 1920 1080" height="100%" width="100%" style="position:absolute">
-			<rect #canvasappearence x="0" y="0" width="1920" height="1080" fill="White" stroke="lightgray" stroke-width="1" />
+			<rect #canvasappearence x="0" y="0" width="1920" height="1080" fill="White" stroke="lightgray" stroke-width="1.5" />
 		</svg>
 		<svg *ngFor="let obj of objects;" [ngSwitch]="obj.key" viewBox="0 0 1920 1080" height="100%" width="100%" style="position:absolute">
 			<rect *ngSwitchCase="'Rectangle'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
@@ -62,7 +62,7 @@
 								<button no-margin ion-button icon-only clear (click)="playPause()"><ion-icon name="{{playPauseButtonIcon}}"></ion-icon></button>
 							</ion-col>
 							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
-								<button no-margin ion-button icon-only clear small color="{{repeatColor}}" ><ion-icon name="repeat"></ion-icon></button>
+								<button no-margin ion-button icon-only clear small color="{{repeatColor}}"><ion-icon name="repeat"></ion-icon></button>
 							</ion-col>
 							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
 								<button no-margin ion-button icon-only clear small (click)="rewindframe()"><ion-icon name="rewind"></ion-icon></button>

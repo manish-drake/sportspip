@@ -1,20 +1,16 @@
-<ion-header no-shadow>
+<ion-header>
 	<ion-navbar color="primary" no-border>
 		<ion-title>{{matrix._Title}}</ion-title>
 		<ion-buttons end>
 			<button ion-button icon-left clear (click)="presentInfoModal()" style="text-transform: initial;"><ion-icon name="list-box"></ion-icon>Info</button>
 		</ion-buttons>
 	</ion-navbar>
-	<ion-toolbar no-border>
-		<ion-segment [(ngModel)]="selectedViewIndex">
+		<ion-segment color="light" class="segment" [(ngModel)]="selectedViewIndex">
 			<ion-segment-button *ngFor="let view of views; let i = index" [value]="i" (click)="showViewSegment(i)" (press)="deleteView(i)">
 				View {{i+1}}
 			</ion-segment-button>
+			<button ion-button icon-only clear color="light" (click)="addView()"><ion-icon name="add-circle"></ion-icon></button>
 		</ion-segment>
-		<ion-buttons end>
-			<button ion-button icon-only clear (click)="addView()"><ion-icon name="add-circle"></ion-icon></button>
-		</ion-buttons>
-	</ion-toolbar>
 </ion-header>
 
 <ion-content style="background:#f6f6f6;" [ngSwitch]="selectedViewIndex">
