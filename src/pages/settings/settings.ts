@@ -74,10 +74,10 @@ export class SettingsPage {
         this.createSettingsasync()
         let loader = this.loadingCtrl.create({
           content: "Subscribing..",
-          duration: 5000
+          duration: 6000
         });
         loader.present();
-        this.GetserverHeader(channelName, loader);
+        this.GetserverHeader(channelName);
       });
       // var channel = this.subscription.RequestSubscriptionAsync(channelName, this.UserID);
       // this.subscribeList.push(channel);
@@ -99,7 +99,7 @@ export class SettingsPage {
 
   ionViewDidLoad() {
     console.log('Hello Settings Page');
-    this.createSettingsasync()
+    this.createSettingsasync();
   }
 
   createSettingsasync() {
@@ -127,12 +127,25 @@ export class SettingsPage {
         this.SetUserAcync(data);
         this.InvalidateSubscribeListAsync(this.UserID);
         this.InvalidateChannelListAsync(this.UserID);
+        let loader = this.loadingCtrl.create({
+          content: "fetching required data..",
+          duration: 10000
+        });
+        loader.present();
+        Observable.interval(2000)
+          .take(1).map((x) => x + 5)
+          .subscribe((x) => {
+            this.subscribeList.forEach(sub => {
+              this.GetserverHeader(sub.ChannelName)       
+            });
+          });
+
       }
     });
     modal.present();
   }
 
-  GetserverHeader(channelname, loader) {
+  GetserverHeader(channelname) {
     //stub
     // this.http.get("assets/Header.xml")
     //   .subscribe(res => {
@@ -150,7 +163,7 @@ export class SettingsPage {
           .take(1).map((x) => x + 5)
           .subscribe((x) => {
             console.log("saving headers list file..")
-            this.SaveServerHeaders(channelname, loader);
+            this.SaveServerHeaders(channelname);
           });
       });
   }
@@ -164,14 +177,14 @@ export class SettingsPage {
   }
 
   //server header
-  SaveServerHeaders(channel, loader) {
+  SaveServerHeaders(channel) {
     this.http.get(cordova.file.dataDirectory + "/header.xml").subscribe(data => {
       var headerList = JSON.parse(data.text());
       headerList.forEach(header => {
         var result = header;
         if (result.ChannelName == channel) {
           var item = {
-            Title: result.Title, DateCreated: result.DateCreated.toString(), Name: result.UploadIndex.toString(), Channel: result.ChannelName,
+            Title: result.Title, DateCreated: result.DateCreated, Name: result.UploadIndex, Channel: result.ChannelName,
             ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadIndex, Duration: result.Duration,
             Views: result.Views
           };
@@ -179,7 +192,7 @@ export class SettingsPage {
         }
 
       });
-      this.SaveDownloadedHeaders(this.Header, loader);
+      this.SaveDownloadedHeaders(this.Header);
     })
   }
 
@@ -199,7 +212,7 @@ export class SettingsPage {
   // }
 
   //Save Downloaded Header
-  SaveDownloadedHeaders(HeaderList, loader) {
+  SaveDownloadedHeaders(HeaderList) {
     HeaderList.forEach((res) => {
       Observable.interval(2000)
         .take(1).map((x) => x + 5)

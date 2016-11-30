@@ -51,7 +51,7 @@ export class EditorPage {
     this.saveMatrix();
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     if (this.matrix["Matrix.Children"]["View"] instanceof Array) {
       this.views = this.matrix["Matrix.Children"]["View"];
     }
@@ -62,38 +62,17 @@ export class EditorPage {
     this.evaluateCaptureViews();
   }
 
-  CreateThumbnail(name) {
-    var blob: any;
-
-    var sourcePath = cordova.file.applicationStorageDirectory + name;
-    navigator.createThumbnail(sourcePath, function (err, imageData) {
-      console.log(err);
-      blob = imageData;
-      console.log(blob);
-    });
-    // var sliced = name.slice(0, -4);
-    // Observable.interval(2000)
-    //     .take(1).map((x) => x + 5)
-    //     .subscribe((x) => {
-    //         var data = this.b64toBlob(blob, 'image/jpeg', 1024);
-    //         File.createFile(cordova.file.applicationStorageDirectory, sliced + ".jpg", true).then(() => {
-    //             File.writeFile(cordova.file.applicationStorageDirectory, sliced + ".jpg", data, true).then(() => {
-    //             })
-    //         })
-    //     })
-  }
-
   saveMatrix() {
     if (this.platform.is('cordova')) {
-      this.http.get(cordova.file.dataDirectory + "Local/" + this.matrix._Channel + "/Tennis/Matrices/" + this.matrix._Name + "/" + this.matrix._Name + ".mtx")
-        .subscribe(data => {
-          var res = JSON.parse(data.text());
+      File.readAsText(cordova.file.dataDirectory + "Local/" + this.matrix._Channel + "/Tennis/Matrices/" + this.matrix._Name ,this.matrix._Name + ".mtx")
+        .then(data => {
+          var res = JSON.parse(data.toString());
           var matrix = res.Matrix;
           matrix['Matrix.Children'].View = this.views;
           this.storagefactory.SaveMatrixAsync(res, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
 
-          var header = this.storagefactory.ComposeMatrixHeader(matrix);
-          this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
+          // var header = this.storagefactory.ComposeMatrixHeader(matrix);
+          // this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
         });
     }
   }
