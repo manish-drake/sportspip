@@ -45,7 +45,7 @@ export class MatrixInfoPage {
         console.log('Hello Matrixinfo Page');
     }
 
-    dismiss() {
+    ionViewWillUnload() {
         if (this.validatematrixInfo()) {
             this.platform.ready().then(() => {
                 File.readAsText(cordova.file.dataDirectory + "Local/" + this.matrixData._Channel + "/Tennis/Matrices/" + this.matrixData._Name, this.matrixData._Name + ".mtx")
@@ -59,8 +59,11 @@ export class MatrixInfoPage {
                         this.storagefactory.SaveMatrixAsync(res, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
                     });
             });
-            this.viewCtrl.dismiss();
         }
+    }
+
+    dismiss() {
+        this.viewCtrl.dismiss();
     }
 
     validatematrixInfo() {

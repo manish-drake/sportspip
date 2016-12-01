@@ -235,7 +235,8 @@ export class HomePage {
                                     var result = JSON.parse(data.toString());
                                     var item = {
                                         Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
-                                        ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
+                                        ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID,
+                                        Duration: result.Duration,
                                         Views: result.Views
                                     };
                                     this.channels.push(item);

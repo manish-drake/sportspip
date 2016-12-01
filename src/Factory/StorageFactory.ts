@@ -189,7 +189,7 @@ export class StorageFactory {
             Skill: fromMatrix._Skill,
             UploadID: "0",
             Duration: fromMatrix._Duration,
-            Views:"1"
+            Views:fromMatrix["Matrix.Children"].View.length
         }; 
         return header;
 

@@ -141,6 +141,7 @@ export class Package {
     }
 
     FormatDuration(dur) {
+        alert(dur)
         if (dur != null) {
             var hrs = Number(dur.slice(0, 2));
             var h = (hrs == 0) ? "" : hrs + 'h ';
