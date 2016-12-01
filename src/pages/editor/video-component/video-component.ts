@@ -36,20 +36,12 @@ export class VideoComponent {
 
     video: HTMLVideoElement;
 
-    // timelineInterval: any = null;
-
     markers = [];
 
     ngAfterViewInit() {
-        var chronoMarker = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
-        if (chronoMarker != undefined) { 
-            this.markers = chronoMarker;
-            this.evaluateMarkerPosition();
-        }
-        this.video = this.videoElement.nativeElement;
-
         this.loadObjects();
-
+        this.LoadMarkers();
+        this.video = this.videoElement.nativeElement;
         this.video.addEventListener('timeupdate', () => {
             var factor = (100000 / this.video.duration) * this.video.currentTime;
             this.sliderValue = factor;
@@ -58,13 +50,13 @@ export class VideoComponent {
                 this.playPauseButtonIcon = 'play';
             }
             this.PlayMarker();
+            this.PlayStoryBoard();
         });
 
         this.video.addEventListener('ended', () => {
             var val = this.markers.find(x => x.checked == true);
             if (val == undefined) {
                 this.playPauseButtonIcon = 'play';
-                // clearInterval(this.timelineInterval);
             }
         })
 
@@ -74,26 +66,26 @@ export class VideoComponent {
         })
 
         var interval = setInterval(() => {
-            console.log(this.timelineDuration);
-            console.log(this.viewBoxSize);
-
             if (this.timelineDuration == undefined || this.timelineDuration == "00:00:00.00" || this.viewBoxSize == "0 0 0 0") {
                 this.timelineDuration = this.formatTime(this.video.duration);
                 this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
-
-                console.log(this.timelineDuration);
-                console.log(this.viewBoxSize);
             }
             else {
-                console.log(this.timelineDuration);
-                console.log(this.viewBoxSize);
                 clearInterval(interval);
+                this.evaluateMarkerPosition();
             }
-
-            // if (this.markers != undefined) {
-            //     this.PlayStoryBoard();
-            // }
         }, 1 / 60);
+    }
+
+
+    LoadMarkers() {
+        var chronoMarker = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
+        if (chronoMarker != undefined) {
+
+            if (chronoMarker instanceof Array) this.markers = chronoMarker;
+            else this.markers.push(chronoMarker);
+            this.evaluateMarkerPosition();
+        }
     }
 
     playPause() {
@@ -104,20 +96,9 @@ export class VideoComponent {
             }
             this.video.play();
             this.playPauseButtonIcon = 'pause';
-            // var delay = 1 / 60;
-            // this.timelineInterval = setInterval(() => {
-            //     var factor = (100000 / this.video.duration) * this.video.currentTime;
-            //     this.sliderValue = factor;
-            //     this.timelinePosition = this.formatTime(this.video.currentTime);
-            //     if (this.timelinePosition == this.timelineDuration) {
-            //         this.playPauseButtonIcon = 'play';
-            //     }
-            //     this.PlayMarker();
-            // }, delay);
         } else {
             this.video.pause();
             this.playPauseButtonIcon = 'play';
-            // clearInterval(this.timelineInterval);
         }
     }
 
@@ -234,8 +215,6 @@ export class VideoComponent {
     PlayMarker() {
         var val = this.markers.find(x => x.checked == true)
         if (val != undefined) {
-            this.PlayStoryBoard();
-
             var positionMS = this.formatPoistionInMiliSecond(val._Position);
             var durationMS = this.formatDurationInMiliSecond(val._Duration);
 
@@ -308,13 +287,11 @@ export class VideoComponent {
                         if (val instanceof Array) {
                             val.forEach(val => {
                                 this.markersobjects.push({ key, val });
-                                console.log(this.markersobjects.length, "markerobject");
                             });
                         }
                         else {
                             this.markersDirectory.push(selctedMarker);
                             this.markersobjects.push({ key, val, totalDuartion });
-                            console.log(this.markersobjects.length, "markerobject");
                         }
                     }
                 }
@@ -480,7 +457,6 @@ export class VideoComponent {
 
     loadObjects() {
         var objs = this.view["Content"]["Capture"]["Marker"]["Marker.Objects"];
-
         if (objs != undefined) {
             for (var key in objs) {
                 // skip loop if the property is from prototype
@@ -490,13 +466,15 @@ export class VideoComponent {
                 if (val instanceof Array) {
                     val.forEach(val => {
                         this.objects.push({ key, val });
+                        console.log(this.objects.length, "object");
                     });
                 }
                 else {
                     this.objects.push({ key, val });
+                    console.log(this.objects.length, "object");
                 }
             }
-            console.log(this.objects.length, "markerobject");
+
         }
     }
     //Code for objects end

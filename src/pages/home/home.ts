@@ -59,6 +59,7 @@ export class HomePage {
 
     ionViewDidEnter() {
         console.log("main page");
+        this.selectedSegment = "local";
         this.channels = [];
         this.localMatrices = [];
         this.GetServerHeader();
@@ -196,7 +197,7 @@ export class HomePage {
                                 .then(data => {
                                     //deserialiae server header  
                                     var result = JSON.parse(data.toString());
-                                    console.log(result);
+                                    // console.log(result);
                                     var item = {
                                         Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
                                         ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
@@ -298,7 +299,6 @@ export class HomePage {
                     File.removeRecursively(cordova.file.dataDirectory, "Temp").then(() => {
                         console.log("delete temp");
                         loader.dismiss();
-                        this.selectedSegment = "local";
                     });
                 })
             })

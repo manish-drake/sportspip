@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ViewController, NavParams, Platform } from 'ionic-angular';
 import { Http } from '@angular/http';
-
+import { File } from 'ionic-native';
 import { StorageFactory } from '../../../Factory/StorageFactory';
 import { Package } from '../../../pages/Package';
 
@@ -48,9 +48,9 @@ export class MatrixInfoPage {
     dismiss() {
         if (this.validatematrixInfo()) {
             this.platform.ready().then(() => {
-                this.http.get(cordova.file.dataDirectory + "Local/" + this.matrixData._Channel + "/Tennis/Matrices/" + this.matrixData._Name + "/" + this.matrixData._Name + ".mtx")
-                    .subscribe(data => {
-                        var res = JSON.parse(data.text());
+                File.readAsText(cordova.file.dataDirectory + "Local/" + this.matrixData._Channel + "/Tennis/Matrices/" + this.matrixData._Name, this.matrixData._Name + ".mtx")
+                    .then(data => {
+                        var res = JSON.parse(data.toString());
                         var matrix = res.Matrix;
                         matrix._Title = this.matrixData._Title;
                         matrix._Sport = this.matrixData._Sport;
