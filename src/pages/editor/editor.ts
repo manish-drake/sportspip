@@ -24,7 +24,7 @@ declare var cordova: any;
 
 export class EditorPage {
 
-  selectedViewIndex: number = 0;
+  selectedViewIndex: number;
 
   matrix: any;
   views = [];
@@ -52,6 +52,7 @@ export class EditorPage {
   }
 
   ngAfterViewInit() {
+    this.selectedViewIndex = 0;
     if (this.matrix["Matrix.Children"]["View"] instanceof Array) {
       this.views = this.matrix["Matrix.Children"]["View"];
     }
