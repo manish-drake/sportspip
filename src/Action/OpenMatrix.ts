@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NavController, Platform } from 'ionic-angular';
 import { EditorPage } from '../pages/editor/editor';
-import { AppVersion, File } from 'ionic-native';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { StorageFactory } from '../Factory/StorageFactory';

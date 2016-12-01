@@ -24,18 +24,12 @@ export class VideoComponent {
     repeatColor: any = "inactive";
     playPauseButtonIcon: string = "play";
     volumeButtonIcon: string = "volume-up";
-
     videoSrcAvailable: boolean = true;
-
     markersDirectory = [];
     index = 0;
-
     viewBoxSize: any;
-
     markersobjects = [];
-
     video: HTMLVideoElement;
-
     markers = [];
 
     ngAfterViewInit() {
@@ -257,7 +251,6 @@ export class VideoComponent {
     }
 
     PlayStoryBoard() {
-
         var marker = this.markers.find(x => x.checked == true)
         if (marker != undefined && this.index == 0) {
 
