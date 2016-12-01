@@ -284,7 +284,6 @@ export class EditorPage {
       views: this.views,
       selectedViewIndex: this.selectedViewIndex
     });
-
     modal.present();
 
     modal.onDidDismiss((views) => {

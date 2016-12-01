@@ -24,24 +24,19 @@ export class VideoComponent {
     repeatColor: any = "inactive";
     playPauseButtonIcon: string = "play";
     volumeButtonIcon: string = "volume-up";
-
     videoSrcAvailable: boolean = true;
-
     markersDirectory = [];
     index = 0;
-
     viewBoxSize: any;
-
     markersobjects = [];
-
     video: HTMLVideoElement;
-
     markers = [];
 
     ngAfterViewInit() {
         this.loadObjects();
         this.LoadMarkers();
         this.video = this.videoElement.nativeElement;
+        
         this.video.addEventListener('timeupdate', () => {
             var factor = (100000 / this.video.duration) * this.video.currentTime;
             this.sliderValue = factor;
@@ -232,7 +227,6 @@ export class VideoComponent {
     }
 
     PlayStoryBoard() {
-
         var marker = this.markers.find(x => x.checked == true)
         if (marker != undefined && this.index == 0) {
 
@@ -338,7 +332,6 @@ export class VideoComponent {
                 marker.checked = false;
                 this.video.pause();
                 this.playPauseButtonIcon = 'play';
-                // clearInterval(this.timelineInterval);
             }
             else {
                 if (isSelect) {

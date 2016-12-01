@@ -2,14 +2,12 @@ import { Component, ViewChild, Input, ElementRef, Output, EventEmitter } from '@
 
 import { AlertController, ModalController, Platform, PopoverController, ViewController, NavParams } from 'ionic-angular';
 
-import { Compareviewservice } from './compareviewservice'
-
 declare var cordova: any;
 
 @Component({
     selector: 'compareview-component',
     templateUrl: 'compareview-component.html',
-    providers: [Compareviewservice]
+    providers: [CompareviewComponent]
 })
 
 export class CompareviewComponent {
@@ -18,11 +16,23 @@ export class CompareviewComponent {
     @Input() views: any;
     @Input() isSelected: boolean;
 
-    @Output() playPauseChild: EventEmitter<string> = new EventEmitter<string>();
-
-
     isLinked: boolean = false;
     linkUnlinkIcon: string = "remove";
+
+    @ViewChild('video') videoElement: ElementRef;
+
+    @ViewChild('fadableTitle') fadableTitle: ElementRef;
+
+    video: HTMLVideoElement;
+
+    constructor(private alertCtrl: AlertController,
+        private modalCtrl: ModalController,
+        private platform: Platform,
+        private popoverCtrl: PopoverController) {
+
+        this.playPauseButtonIcon = "play";
+        this.timelinePosition = this.formatTime(0);
+    }
 
     sliderValue: any = 0;
     timelinePosition: any;
@@ -32,44 +42,48 @@ export class CompareviewComponent {
     videoSrcAvailable: boolean = true;
     markersDirectory = [];
     index = 0;
+    markersobjects = [];
     viewBoxSize: any;
 
-    constructor(private alertCtrl: AlertController,
-        private modalCtrl: ModalController,
-        private platform: Platform,
-        private popoverCtrl: PopoverController,
-        private compareviewservice: Compareviewservice) {
-
-        this.playPauseButtonIcon = "play";
-        this.timelinePosition = this.formatTime(0);
-    }
-
-
-    @ViewChild('video') videoElement: ElementRef;
-
-    @ViewChild('fadableTitle') fadableTitle: ElementRef;
-
-    video: HTMLVideoElement;
-
-    timelineInterval: any = null;
-
     ngAfterViewInit() {
+        this.loadObjects();
+        this.LoadMarkers();
         this.video = this.videoElement.nativeElement;
+
+        this.video.addEventListener('timeupdate', () => {
+            var factor = (100000 / this.video.duration) * this.video.currentTime;
+            this.sliderValue = factor;
+            this.timelinePosition = this.formatTime(this.video.currentTime);
+            if (this.timelinePosition == this.timelineDuration) {
+                this.playPauseButtonIcon = 'play';
+            }
+            this.PlayMarker();
+            this.PlayStoryBoard();
+        });
 
         this.video.addEventListener('ended', () => {
             var val = this.markers.find(x => x.checked == true);
             if (val == undefined) {
-                this.playPauseButtonIcon = "play";
-                clearInterval(this.timelineInterval);
+                this.playPauseButtonIcon = 'play';
             }
-        })
+        });
 
         this.video.addEventListener('error', (error) => {
             console.log('Video Error: ' + error);
             // this.videoSrcAvailable = false;
         })
 
-        this.loadViewData();
+        var interval = setInterval(() => {
+            if (this.timelineDuration == undefined || this.timelineDuration == "00:00:00.00" || this.viewBoxSize == "0 0 0 0") {
+                this.timelineDuration = this.formatTime(this.video.duration);
+                this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
+            }
+            else {
+                clearInterval(interval);
+                this.evaluateMarkerPosition();
+            }
+        }, 1 / 60);
+
         var markerCheckInterval = setInterval(() => {
             this.markers.forEach(element => {
                 if (element.checked = true) {
@@ -80,7 +94,16 @@ export class CompareviewComponent {
         })
 
         this.fade(this.fadableTitle.nativeElement);
-        this.evaluateMarkerPosition();
+    }
+
+    LoadMarkers() {
+        var chronoMarker = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
+        if (chronoMarker != undefined) {
+
+            if (chronoMarker instanceof Array) this.markers = chronoMarker;
+            else this.markers.push(chronoMarker);
+            this.evaluateMarkerPosition();
+        }
     }
 
     fade(element) {
@@ -96,150 +119,6 @@ export class CompareviewComponent {
         }, 30);
     }
 
-    clearViewData() {
-        this.markers = [];
-        this.objects = [];
-        // this.markersObjects = [];
-    }
-
-    loadViewData() {
-        this.markers = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
-        this.loadObjects();
-        // this.loadMarkerObjects();
-        var delay = 1 / 60;
-        setInterval(() => {
-            this.timelineDuration = this.formatTime(this.video.duration);
-            this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
-            // this.evaluateMarkerPosition();
-
-            if (!this.isSelected) {
-                this.video.pause();
-                this.playPauseButtonIcon = "play";
-                clearInterval(this.timelineInterval);
-            }
-
-            if (this.markers != undefined) {
-                this.PlayStoryBoard();
-            }
-        }, delay);
-    }
-
-    PlayMarker() {
-
-        var val = this.markers.find(x => x.checked == true)
-        if (val != undefined) {
-            var positionMS = this.formatPoistionInMiliSecond(val._Position);
-            var durationMS = this.formatDurationInMiliSecond(val._Duration)
-
-            var totalMarkerDur = durationMS + positionMS;
-            var totalDuartion = this.formatTime(totalMarkerDur / 10000000);
-
-            var fp = positionMS / 10000000;
-
-            if (this.formatTime(this.video.currentTime) >= totalDuartion) {
-                this.video.pause();
-                this.video.currentTime = fp;
-                this.video.play();
-            }
-        }
-    }
-
-    PlayStoryBoard() {
-
-        var marker = this.markers.find(x => x.checked == true)
-        if (marker != undefined && this.index == 0) {
-
-            this.objectss = [];
-            this.markersDirectory = [];
-            this.InvalidateObjects(marker);
-            this.index = 1;
-        }
-        else if (marker == undefined) {
-
-            this.markers.forEach(mar => {
-                this.InvalidateObjects(mar);
-                this.RemoveObjects();
-            });
-        }
-    }
-
-    RemoveObjects() {
-        var objects = this.objectss.find(x => x.totalDuartion == this.formatTime(this.video.currentTime))
-        if (objects != null) {
-            this.objectss.splice(objects, 1);
-        }
-    }
-
-    InvalidateObjects(selctedMarker) {
-        var objs = selctedMarker["Marker.Objects"];
-
-        if (selctedMarker._Position == "00:00:00") {
-            if (this.IsMarkerObjectExist(selctedMarker) == -1) {
-                var durationMS = this.formatDurationInMiliSecond(selctedMarker._Duration);
-                var positionMS = 0;
-                var totalDuartion = this.formatTime((durationMS + positionMS) / 10000000);
-                this.markersDirectory.push(selctedMarker);
-                for (var key in objs) {
-                    if (!objs.hasOwnProperty(key)) continue;
-                    var val = objs[key];
-                    if (val instanceof Array) val.forEach(val => { this.objectss.push({ key, val, totalDuartion }); });
-                    else this.objectss.push({ key, val, totalDuartion });
-                }
-            }
-        }
-        else {
-            var durationMS = this.formatDurationInMiliSecond(selctedMarker._Duration);
-            var positionMS = this.formatPoistionInMiliSecond(selctedMarker._Position);
-            if (this.formatTime(this.video.currentTime) >= selctedMarker._Position) {
-                var totalDuartion = this.formatTime((durationMS + positionMS) / 10000000);
-
-                if (this.IsMarkerObjectExist(selctedMarker) == -1) {
-                    for (var key in objs) {
-                        if (!objs.hasOwnProperty(key)) continue;
-                        var val = objs[key];
-
-                        if (val instanceof Array) {
-                            val.forEach(val => {
-                                this.objectss.push({ key, val });
-                            });
-                        }
-                        else {
-                            this.markersDirectory.push(selctedMarker);
-                            this.objectss.push({ key, val, totalDuartion });
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    IsMarkerObjectExist(selctedMarker) {
-        return this.markersDirectory.indexOf(selctedMarker)
-    }
-
-    formatPoistionInMiliSecond(pos) {
-        if (pos == "00:00:00") {
-            return 0;
-        }
-        else {
-            var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
-            return positionInMilliseconds;
-        }
-    }
-
-    formatDurationInMiliSecond(dur) {
-        if (dur != undefined) {
-            if (dur.length == 16) {
-                var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-7));
-                return durationInMilliseconds;
-            }
-            else {
-                var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-2)) * 100000;
-                return durationInMilliseconds;
-            }
-        }
-    }
-
     presentViewPopover(event) {
         let popover = this.popoverCtrl.create(CaptureViewsPopover, {
             views: this.views,
@@ -250,10 +129,15 @@ export class CompareviewComponent {
         popover.onDidDismiss(data => {
             if (data != null) {
                 this.view = data;
-                this.clearViewData();
-                this.loadViewData();
+                this.reloadViewData();
             }
-        })
+        });
+    }
+    reloadViewData() {
+        this.markers = [];
+        this.objects = [];
+        this.loadObjects();
+        this.LoadMarkers();
     }
 
     updateLink() {
@@ -264,10 +148,34 @@ export class CompareviewComponent {
         }
         else {
             console.log(this.views);
-            this.isLinked = false;
+            this.isLinked  = false;
             this.linkUnlinkIcon = "remove";
         }
+ 
+    }
 
+    playPauseParent() {
+        if (this.isLinked) {
+            //
+            this.playPause();
+        }
+        else {
+            this.playPause();
+        }
+    }
+
+    playPause() {
+        if (this.video.paused == true) {
+            if (this.formatTime(this.video.currentTime) == this.timelineDuration) {
+                this.markersobjects = [];
+                this.markersDirectory = [];
+            }
+            this.video.play();
+            this.playPauseButtonIcon = 'pause';
+        } else {
+            this.video.pause();
+            this.playPauseButtonIcon = 'play';
+        }
     }
 
     returnVidPath(filename) {
@@ -295,36 +203,7 @@ export class CompareviewComponent {
         var factor = this.video.duration * (this.sliderValue / 100000);
         this.video.currentTime = factor;
         this.timelinePosition = this.formatTime(factor);
-    }
-
-    playPause() {
-        this.compareviewservice.play();
-
-        if (this.video.paused == true) {
-
-            if (this.formatTime(this.video.currentTime) == this.timelineDuration) {
-                this.objectss = [];
-                this.markersDirectory = [];
-            }
-            this.playPauseChild.emit('play');
-            this.video.play();
-            this.playPauseButtonIcon = "pause";
-            var delay = 1 / 60;
-            this.timelineInterval = setInterval(() => {
-                var factor = (100000 / this.video.duration) * this.video.currentTime;
-                this.sliderValue = factor;
-                this.timelinePosition = this.formatTime(this.video.currentTime);
-                if (this.timelinePosition == this.timelineDuration) {
-                    this.playPauseButtonIcon = 'play';
-                }
-                this.PlayMarker();
-            }, delay);
-        } else {
-            this.playPauseChild.emit('pause');
-            this.video.pause();
-            this.playPauseButtonIcon = "play";
-            clearInterval(this.timelineInterval);
-        }
+        this.PlayStoryBoard();
     }
 
     playbackRateVideo() {
@@ -391,7 +270,6 @@ export class CompareviewComponent {
                 marker.checked = false;
                 this.video.pause();
                 this.playPauseButtonIcon = 'play';
-                clearInterval(this.timelineInterval);
             }
             else {
                 if (isSelect) {
@@ -428,22 +306,137 @@ export class CompareviewComponent {
 
     loadObjects() {
         var objs = this.view["Content"]["Capture"]["Marker"]["Marker.Objects"];
+        if (objs != undefined) {
+            for (var key in objs) {
+                // skip loop if the property is from prototype
+                if (!objs.hasOwnProperty(key)) continue;
+                var val = objs[key];
 
-        for (var key in objs) {
-            // skip loop if the property is from prototype
-            if (!objs.hasOwnProperty(key)) continue;
-            var val = objs[key];
-
-            if (val instanceof Array) {
-                val.forEach(val => {
+                if (val instanceof Array) {
+                    val.forEach(val => {
+                        this.objects.push({ key, val });
+                        console.log(this.objects.length, "object");
+                    });
+                }
+                else {
                     this.objects.push({ key, val });
-                });
-            }
-            else {
-                this.objects.push({ key, val });
+                    console.log(this.objects.length, "object");
+                }
             }
         }
-        console.log(this.objects);
+    }
+
+    PlayMarker() {
+        var val = this.markers.find(x => x.checked == true)
+        if (val != undefined) {
+            var positionMS = this.formatPoistionInMiliSecond(val._Position);
+            var durationMS = this.formatDurationInMiliSecond(val._Duration);
+
+            var endMarkerDur = durationMS + positionMS;
+            var endPlayDur = this.formatTime(endMarkerDur / 10000000);
+
+            var fp = positionMS / 10000000;
+
+            if (this.formatTime(this.video.currentTime) == endPlayDur) {
+                this.video.pause();
+                this.video.currentTime = fp;
+                this.video.play();
+            }
+        }
+    }
+
+    PlayStoryBoard() {
+        var marker = this.markers.find(x => x.checked == true)
+        if (marker != undefined && this.index == 0) {
+
+            this.markersobjects = [];
+            this.markersDirectory = [];
+            this.InvalidateObjects(marker);
+            this.index = 1;
+        }
+        else if (marker == undefined) {
+            this.markers.forEach(mar => {
+                this.InvalidateObjects(mar);
+                this.RemoveObjects();
+            });
+        }
+    }
+
+    RemoveObjects() {
+        var objects = this.markersobjects.find(x => this.formatTime(this.video.currentTime) >= x.totalDuartion)
+        if (objects != null) {
+            this.markersobjects.splice(objects, 1);
+        }
+    }
+
+    InvalidateObjects(selctedMarker) {
+        var objs = selctedMarker["Marker.Objects"];
+
+        if (selctedMarker._Position == "00:00:00") {
+            if (this.IsMarkerObjectExist(selctedMarker) == -1) {
+                var durationMS = this.formatDurationInMiliSecond(selctedMarker._Duration);
+                var positionMS = 0;
+                var totalDuartion = this.formatTime((durationMS + positionMS) / 10000000);
+                this.markersDirectory.push(selctedMarker);
+                for (var key in objs) {
+                    if (!objs.hasOwnProperty(key)) continue;
+                    var val = objs[key];
+                    if (val instanceof Array) val.forEach(val => { this.markersobjects.push({ key, val, totalDuartion }); });
+                    else this.markersobjects.push({ key, val, totalDuartion });
+                }
+            }
+        }
+        else {
+            var durationMS = this.formatDurationInMiliSecond(selctedMarker._Duration);
+            var positionMS = this.formatPoistionInMiliSecond(selctedMarker._Position);
+            if (this.formatTime(this.video.currentTime) >= selctedMarker._Position) {
+                var totalDuartion = this.formatTime((durationMS + positionMS) / 10000000);
+
+                if (this.IsMarkerObjectExist(selctedMarker) == -1) {
+                    for (var key in objs) {
+                        if (!objs.hasOwnProperty(key)) continue;
+                        var val = objs[key];
+
+                        if (val instanceof Array) {
+                            val.forEach(val => {
+                                this.markersobjects.push({ key, val });
+                            });
+                        }
+                        else {
+                            this.markersDirectory.push(selctedMarker);
+                            this.markersobjects.push({ key, val, totalDuartion });
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    IsMarkerObjectExist(selctedMarker) {
+        return this.markersDirectory.indexOf(selctedMarker)
+    }
+
+    formatPoistionInMiliSecond(pos) {
+        if (pos == "00:00:00") {
+            return 0;
+        }
+        else {
+            var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
+            return positionInMilliseconds;
+        }
+    }
+
+    formatDurationInMiliSecond(dur) {
+        if (dur != undefined) {
+            if (dur.length == 16) {
+                var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-7));
+                return durationInMilliseconds;
+            }
+            else {
+                var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-2)) * 100000;
+                return durationInMilliseconds;
+            }
+        }
     }
 
     // markersObjects = []

@@ -19,7 +19,8 @@ export class Compareview {
 
   selectedIndex: number = 0;
 
-  constructor(public navCtrl: NavController, private navParams: NavParams) {
+  constructor(public navCtrl: NavController,
+    private navParams: NavParams) {
     this.ionViewDidLoad();
   }
 
@@ -41,10 +42,6 @@ export class Compareview {
 
   componentSelection(i) {
     this.selectedIndex = i;
-  }
-
-  playPause(ev) {
-
   }
 
 }
