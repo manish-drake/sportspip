@@ -182,57 +182,72 @@ export class EditorPage {
 
   chooseVideo() {
     if (this.platform.is('cordova')) {
-      FileChooser.open().then(uri => {
-        console.log(uri);
+      this.checkPermissions();
+    }
+  }
 
-        (<any>window).FilePath.resolveNativePath(uri, (fileUrl) => {
-          console.log(fileUrl);
+  checkPermissions() {
+    var permissions = cordova.plugins.permissions;
+    permissions.hasPermission(permissions.READ_EXTERNAL_STORAGE, (status) => {
+      if (status.hasPermission) {
+        this.startChoosingFile();
+      }
+      else {
+        permissions.requestPermission(permissions.READ_EXTERNAL_STORAGE, (status2) => {
+          if (status2.hasPermission) {
+            this.startChoosingFile();
+          }
+          else {
+            console.log('permission is not turned on');
+            permissionNotGranted();
+          }
+        }, ((err) => {
+          console.log('permission is not turned on: ' + err);
+          permissionNotGranted();
+        }));
+      }
+    }, ((err) => {
+      console.log('permission is not turned on: ' + err);
+      permissionNotGranted();
+    }));
 
-          var path = fileUrl.substr(0, fileUrl.lastIndexOf('/') + 1);
-          var fileName = fileUrl.substr(fileUrl.lastIndexOf('/') + 1);
+    var permissionNotGranted = function () {
+      let alert = this.alertCtrl.create({
+        title: 'Storage read permission issue',
+        buttons: ['OK']
+      });
+      alert.present();
+    }
+  }
+
+  startChoosingFile() {
+    FileChooser.open().then(uri => {
+      console.log(uri);
+
+      FilePath.resolveNativePath(uri)
+        .then(filePath => {
+          console.log(filePath);
+          var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+          var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
 
           File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName).then(_ => {
-            console.log('Successfully copied video')
-
+            console.log('Successfully copied video');
             this.CreateVideoView(fileName);
           }).catch(err => {
             console.log('Failed copying video:' + err)
             this.chooseVideoErrorMsg(err);
           });
 
-        }, (err) => {
+        })
+        .catch(err => {
           console.log(err);
           this.chooseVideoErrorMsg('Failed Resolving nativepath:' + err);
         });
 
-
-
-        // FilePath.resolveNativePath(uri)
-        //   .then(filePath => {
-        //     console.log(filePath);
-
-        //     var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-        //     var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
-
-        //     File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName).then(_ => {
-        //       console.log('Successfully copied video')
-
-        //       this.CreateVideoView(fileName);
-        //     }).catch(err => {
-        //       console.log('Failed copying video:' + err)
-        //       this.chooseVideoErrorMsg(err);
-        //     });
-        //   })
-        //   .catch(err => {
-        //     console.log(err);
-        //     this.chooseVideoErrorMsg('Failed Resolving nativepath:' + err);
-        //   });
-
-      }).catch(err => {
-        console.log(err);
-        this.chooseVideoErrorMsg('Error opening file chooser:' + err);
-      });
-    }
+    }).catch(err => {
+      console.log(err);
+      this.chooseVideoErrorMsg('Error opening file chooser:' + err);
+    });
   }
 
   chooseVideoErrorMsg(err) {
