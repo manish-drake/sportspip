@@ -3,7 +3,7 @@
 <ion-grid *ngIf="videoSrcAvailable" no-padding style="height: 100%;">
 	<ion-row style="height: 100%;position: relative;">
 		<video #video preload="auto" style="position: absolute; background-color:black;" [src]="returnVidPath(view.Content.Capture._Kernel)"
-			width="100%" height="100%"></video> 
+			width="100%" height="100%"></video>
 		<svg *ngFor="let obj of objects;" [ngSwitch]="obj.key" [attr.viewBox]="viewBoxSize" height="100%" width="100%" style="position:absolute">
 			<rect *ngSwitchCase="'Rectangle'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
 				[attr.fill]="clrCvt(obj.val._Fill)" [attr.stroke]="clrCvt(obj.val._Stroke)" [attr.stroke-width]="obj.val._StrokeThickness"
@@ -29,7 +29,7 @@
 			<image *ngSwitchCase="'Ink'" #Ink x="0" y="0" width="100%" height="100%" xlink:href="assets/inksample.gif" />
 		</svg>
 		<template></template>
-		<div  style="position:absolute;height:100%;width:100%;">
+		<div style="position:absolute;height:100%;width:100%;">
 			<div>
 				<svg *ngFor="let obj of markersobjects;" [ngSwitch]="obj.key" [attr.viewBox]="viewBoxSize" height="100%" width="100%" style="position:absolute">
 					<rect *ngSwitchCase="'Rectangle'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
@@ -66,7 +66,8 @@
 						<ion-row>
 							<ion-col #markersContainer no-padding (window:resize)="onResize($event)" style="height:28px;">
 								<button ion-button icon-only clear color="inactive" *ngFor="let marker of markers;let i = index" [class.markerselected]="marker.checked"
-									[style.left]="marker.Left" style="width:18px;height:26px;margin:0 -9px;" (click)="updateSelection(i,marker.checked)" (press)="deleteMarker(i)">
+									[style.left]="marker.Left" style="width:18px;height:26px;margin:0 -9px;" (click)="updateSelection(i,marker.checked)"
+									(press)="deleteMarker(i)">
 										<ion-icon name="pin"></ion-icon>
 										</button>
 							</ion-col>

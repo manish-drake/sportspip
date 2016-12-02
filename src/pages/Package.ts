@@ -57,10 +57,12 @@ export class Package {
                             break;
                         case ".gif":
                         case ".rtf":
-                            File.copyFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.applicationStorageDirectory, file.name);
+                            File.moveFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.applicationStorageDirectory, file.name);
                             break;
                         case ".jpg":
-                            File.copyFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.applicationStorageDirectory, file.name);
+                            console.log("image moving...");
+                            File.moveFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.applicationStorageDirectory, file.name);
+                            console.log("image moved");
                             break;
                         default:
                     }
@@ -71,7 +73,7 @@ export class Package {
     }
 
     DownloadServerHeader(fileName, channelName) {
-       File.createDir(cordova.file.dataDirectory, "Temp", true).then(() => {
+        File.createDir(cordova.file.dataDirectory, "Temp", true).then(() => {
             var NewPath = cordova.file.dataDirectory + "Temp/";
             File.createDir(NewPath, "matrix1", true).then(() => {
                 var matrixPath = NewPath + "matrix1/";
@@ -99,8 +101,8 @@ export class Package {
 
     }
 
-    AuthenticateUser(channel,userid) {
-        return this.http.get("http://sportspipservice.cloudapp.net:10106/IMobile/users/auth/" + channel + "?uid="+userid+"")
+    AuthenticateUser(channel, userid) {
+        return this.http.get("http://sportspipservice.cloudapp.net:10106/IMobile/users/auth/" + channel + "?uid=" + userid + "")
             .map(res => res.json())
             .map(us => {
                 console.log('Authenticatnig user..');

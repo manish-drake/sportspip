@@ -38,7 +38,7 @@ export class VideoComponent {
 
         this.video = this.videoElement.nativeElement;
 
-        // this.OnVideoMatadataLoad();
+        this.OnVideoMatadataLoad();
         this.OnVideotimeupdate();
         this.OnVideoEnded();
         this.OnVideoError();
@@ -101,14 +101,11 @@ export class VideoComponent {
         var chronoMarker = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
         if (chronoMarker != undefined) {
             if (chronoMarker instanceof Array) {
-                // this.markers = chronoMarker;
-                chronoMarker.forEach(element => {
-                    this.markers.push(element);
+                chronoMarker.forEach(marker => {
+                    this.markers.push(marker);
                 });
             }
-            else {
-                this.markers.push(chronoMarker);
-            }
+            else this.markers.push(chronoMarker);
             this.evaluateMarkerPosition();
         }
     }
@@ -135,6 +132,17 @@ export class VideoComponent {
         else {
             return 'assets/' + filename;
         }
+    }
+
+     returnimagePath(filename) {
+         console.log(filename);
+          return "file:/storage/emulated/0/DCIM/636160004487756115.jpg";
+        // if (this.platform.is('cordova')) {
+        //     return cordova.file.applicationStorageDirectory + filename;
+        // }
+        // else {
+        //     return 'assets/' + filename;
+        // }
     }
 
     formatPoistionInMiliSecond(pos) {

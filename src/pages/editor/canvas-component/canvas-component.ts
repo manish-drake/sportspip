@@ -47,10 +47,18 @@ export class CanvasComponent {
       if (keyVal instanceof Array) {
         keyVal.forEach(val => {
           var objBehaviors = val.Behaviors;
-          if (objBehaviors != undefined) {
+          if (objBehaviors.Span != undefined) {
+            // console.log("array: " +JSON.stringify(val));
             this.returnMaxDuration(objBehaviors);
           }
         });
+      }
+      else {
+        // console.log("objects: " + JSON.stringify(keyVal));
+        var objBehaviors = keyVal.Behaviors;
+        if (objBehaviors.Span != undefined) {
+          this.returnMaxDuration(objBehaviors);
+        }
       }
     }
     this.PlayStoryBoard();
@@ -58,7 +66,7 @@ export class CanvasComponent {
 
 
   returnMaxDuration(objBehaviors) {
-    // this.isTimelineAvailable = true;
+    this.isTimelineAvailable = true;
     if (objBehaviors.Span._Duration > this.timelineDuration) { this.timelineDuration = objBehaviors.Span._Duration; }
     var durationInMS = (this.formatDurationInMiliSecond(this.timelineDuration)) / 10000000;
     this.duration = durationInMS;
@@ -74,14 +82,16 @@ export class CanvasComponent {
   }
 
   formatTime(time) {
-    var hrs = Math.floor(time / 3600);
-    var hours = (hrs >= 10) ? hrs : "0" + hrs;
-    var min = Math.floor(time / 60);
-    var minutes = (min >= 10) ? min : "0" + min;
-    var sec = Math.floor(time % 60);
-    var seconds = (sec >= 10) ? sec : "0" + sec;
-    var milliseconds = time.toFixed(2).substr(-2);
-    return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+    if (time != null) {
+      var hrs = Math.floor(time / 3600);
+      var hours = (hrs >= 10) ? hrs : "0" + hrs;
+      var min = Math.floor(time / 60);
+      var minutes = (min >= 10) ? min : "0" + min;
+      var sec = Math.floor(time % 60);
+      var seconds = (sec >= 10) ? sec : "0" + sec;
+      var milliseconds = time.toFixed(2).substr(-2);
+      return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+    }
   }
 
 
@@ -144,38 +154,41 @@ export class CanvasComponent {
       if (!objs.hasOwnProperty(key)) continue;
 
       if (val instanceof Array) {
-        console.log()
         val.forEach(val => {
-          var objbeh = val.Behaviors.Span;
-          if (this.IsObjectExist(val) == -1) {
-            if (objbeh._Position == "00:00:00") {
-              this.objDirectory.push(val);
-              this.objects.push({ key, val });
-            } else {
-              var positionInMS = (this.formatPoistionInMiliSecond(objbeh._Position)) / 10000000;
-              if (this.formatTime(positionInMS) == this.timelinePosition) {
+          console.log("arrya: " + val);
+          if (val.Behaviors.Span != undefined) {
+            var objbeh = val.Behaviors.Span;
+            if (this.IsObjectExist(val) == -1) {
+              if (objbeh._Position == "00:00:00") {
                 this.objDirectory.push(val);
                 this.objects.push({ key, val });
+              } else {
+                var positionInMS = (this.formatPoistionInMiliSecond(objbeh._Position)) / 10000000;
+                if (this.formatTime(positionInMS) == this.timelinePosition) {
+                  this.objDirectory.push(val);
+                  this.objects.push({ key, val });
+                }
               }
-            }
 
+            }
           }
         });
       }
-      else if (val.Behaviors.Span != undefined) {
-        if (val.Behaviors.Span._Position == "00:00:00") {
+      else
+        if (val.Behaviors.Span != undefined) {
+          if (this.IsObjectExist(val) == -1) {
+            if (val.Behaviors.Span._Position == "00:00:00") {
+              this.objDirectory.push(val);
+              this.objects.push({ key, val });
+            }
+          }
+        }
+        else if (val.Behaviors.Span == undefined) {
           if (this.IsObjectExist(val) == -1) {
             this.objDirectory.push(val);
             this.objects.push({ key, val });
           }
         }
-      }
-      else if (val.Behaviors.Span == undefined) {
-        if (this.IsObjectExist(val) == -1) {
-          this.objDirectory.push(val);
-          this.objects.push({ key, val });
-        }
-      }
     }
   }
 
@@ -185,11 +198,14 @@ export class CanvasComponent {
 
   returnTotalDuration(objBehaviors) {
     if (objBehaviors.Span != undefined) {
+      console.log(this.objects.length);
+      console.log("valueeeee :  "+objBehaviors.Span);
       var durationInMS = this.formatDurationInMiliSecond(objBehaviors.Span._Duration);
       var positionInMS = this.formatPoistionInMiliSecond(objBehaviors.Span._Position);
       var totalDur = (durationInMS + positionInMS) / 10000000;
       return totalDur
     }
+    return null;
   }
 
   RemoveObjects() {
