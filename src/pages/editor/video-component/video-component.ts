@@ -38,10 +38,14 @@ export class VideoComponent {
 
         this.video = this.videoElement.nativeElement;
 
-        this.OnVideoMatadataLoad();
-        this.OnVideotimeupdate();
-        this.OnVideoEnded();
-        this.OnVideoError();
+
+
+        this.video.addEventListener('loadedmetadata', () => { this.OnVideoMatadataLoad(); });
+
+        this.video.addEventListener('ended', () => { this.OnVideoEnded(); });
+
+        this.video.addEventListener('error', (error) => { this.OnVideoError(error) });
+
 
         var interval = setInterval(() => {
             if (this.timelineDuration == undefined || this.timelineDuration == "00:00:00.00" || this.viewBoxSize == "0 0 0 0") {
@@ -56,46 +60,24 @@ export class VideoComponent {
     }
 
     OnVideoMatadataLoad() {
-        this.video.addEventListener('loadedmetadata', () => {
-            this.video.currentTime = 1;
-            this.video.setAttribute('preload', "auto");
-            this.video.play();
-            this.video.pause();
-        })
-
-    }
-
-    OnVideotimeupdate() {
-        this.video.addEventListener('timeupdate', () => {
-            var factor = (100000 / this.video.duration) * this.video.currentTime;
-            this.sliderValue = factor;
-            this.timelinePosition = this.formatTime(this.video.currentTime);
-            if (this.timelinePosition == this.timelineDuration) {
-                this.playPauseButtonIcon = 'play';
-            }
-            this.PlayMarker();
-            this.PlayStoryBoard();
-        });
+        this.video.currentTime = 1;
+        this.video.setAttribute('preload', "auto");
+        this.video.play();
+        this.video.pause();
     }
 
     OnVideoEnded() {
-        this.video.addEventListener('ended', () => {
-            var val = this.markers.find(x => x.checked == true);
-            if (val == undefined) {
-                this.playPauseButtonIcon = 'play';
-            }
-        })
-
+        var val = this.markers.find(x => x.checked == true);
+        if (val == undefined) {
+            this.playPauseButtonIcon = 'play';
+            clearInterval(this.timelineInterval);
+        }
     }
 
-    OnVideoError() {
-        this.video.addEventListener('error', (error) => {
-            console.log('Error in video Elmnt:' + JSON.stringify(error));
-            // this.videoSrcAvailable = false;
-        })
-
+    OnVideoError(error) {
+        console.log('Error in video Elmnt:' + JSON.stringify(error));
+        // this.videoSrcAvailable = false;
     }
-
 
     LoadMarkers() {
         var chronoMarker = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
@@ -110,20 +92,40 @@ export class VideoComponent {
         }
     }
 
+    timelineInterval: any;
+
     playPause() {
         if (this.video.paused == true) {
+            this.timelineInterval = setInterval(() => {
+                var factor = (100000 / this.video.duration) * this.video.currentTime;
+                this.sliderValue = factor;
+                this.timelinePosition = this.formatTime(this.video.currentTime);
+                if (this.timelinePosition == this.timelineDuration) {
+                    this.playPauseButtonIcon = 'play';
+                }
+                this.PlayMarker();
+                this.PlayStoryBoard();
+            }, 1 / 60);
+            this.playPauseButtonIcon = 'pause';
+            this.video.play();
             if (this.formatTime(this.video.currentTime) == this.timelineDuration) {
                 this.markersobjects = [];
                 this.markersDirectory = [];
             }
-            this.video.play();
-            this.playPauseButtonIcon = 'pause';
         } else {
-            this.video.pause();
             this.playPauseButtonIcon = 'play';
+            clearInterval(this.timelineInterval);
+            this.video.pause();
         }
     }
 
+    sliderValueChange() {
+        this.timelinePosition = this.formatTime(this.video.currentTime);
+        var factor = this.video.duration * (this.sliderValue / 100000);
+        this.video.currentTime = factor;
+        this.timelinePosition = this.formatTime(factor);
+        this.PlayStoryBoard();
+    }
 
     returnVidPath(filename) {
         if (this.platform.is('cordova')) {
@@ -134,9 +136,9 @@ export class VideoComponent {
         }
     }
 
-     returnimagePath(filename) {
-         console.log(filename);
-          return "file:/storage/emulated/0/DCIM/636160004487756115.jpg";
+    returnimagePath(filename) {
+        console.log(filename);
+        return "file:/storage/emulated/0/DCIM/636160004487756115.jpg";
         // if (this.platform.is('cordova')) {
         //     return cordova.file.applicationStorageDirectory + filename;
         // }
@@ -177,14 +179,6 @@ export class VideoComponent {
         var seconds = (sec >= 10) ? sec : "0" + sec;
         var milliseconds = time.toFixed(2).substr(-2);
         return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
-    }
-
-    sliderValueChange() {
-        this.timelinePosition = this.formatTime(this.video.currentTime);
-        var factor = this.video.duration * (this.sliderValue / 100000);
-        this.video.currentTime = factor;
-        this.timelinePosition = this.formatTime(factor);
-        this.PlayStoryBoard();
     }
 
     repeatVideo() {
@@ -260,6 +254,7 @@ export class VideoComponent {
                 this.video.pause();
                 this.video.currentTime = fp;
                 this.video.play();
+                this.playPauseButtonIcon = "pause";
             }
         }
     }
@@ -365,19 +360,19 @@ export class VideoComponent {
     updateSelection(i, isSelect) {
 
         this.markers.forEach((marker, index) => {
-
             if (i != index) {
                 marker.checked = false;
-                this.video.pause();
-                this.playPauseButtonIcon = 'play';
+                // this.playPauseButtonIcon = 'play';
+                // this.video.pause();
+                // clearInterval(this.timelineInterval);
             }
             else {
                 if (isSelect) {
                     marker.checked = false;
                 }
                 else {
-                    this.video.pause();
-                    this.playPauseButtonIcon = 'play';
+                    // this.video.pause();
+                    // this.playPauseButtonIcon = 'play';
                     marker.checked = true;
                     this.index = 0;
                     this.timelinePosition = marker._Position;

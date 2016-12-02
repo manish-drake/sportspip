@@ -27,7 +27,7 @@
 			/>
 			<image *ngSwitchCase="'Ink'" #Ink x="0" y="0" width="100%" height="100%" xlink:href="assets/inksample.gif" />
 		</svg>
-		<div  style="position:absolute;height:100%;width:100%;"> 
+		<div style="position:absolute;height:100%;width:100%;">
 			<div>
 				<svg *ngFor="let obj of objectss;" [ngSwitch]="obj.key" [attr.viewBox]="viewBoxSize" height="100%" width="100%" style="position:absolute">
 					<rect *ngSwitchCase="'Rectangle'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
@@ -58,7 +58,7 @@
 		<button ion-button icon-right small (click)="presentViewPopover($event)" style="position:absolute; left:5px; top:5px; background-color:rgba(0,0,0,0.4);color:white;">
 			{{view._Title}}<ion-icon name="arrow-dropdown"></ion-icon>
 		</button>
-		<button ion-button small  (click)="updateLink()" style="position:absolute; right:5px; top:5px; background-color:rgba(0,0,0,0.4);color:white;font-size:22px;">
+		<button ion-button small (click)="updateLink()" style="position:absolute; right:5px; top:5px; background-color:rgba(0,0,0,0.4);color:white;font-size:22px;">
 			<ion-icon name="{{linkUnlinkIcon}}"></ion-icon>
 		</button>
 		<div *ngIf="isSelected" text-center style="position:absolute; right:5px; bottom:5px; display:block;">
@@ -77,11 +77,12 @@
 		<ion-col no-padding>
 			<ion-grid no-padding>
 				<ion-row>
-					<ion-col padding-left padding-right>
+					<ion-col padding-horizontal>
 						<ion-row>
-							<ion-col #markersContainer no-padding (window:resize)="onResize($event)" style="height:28px;">
-								<button ion-button icon-only clear color="inactive"  *ngFor="let marker of markers;let i = index" [class.markerselected]="marker.checked"
-									[style.left]="marker.Left" style="width:18px;height:26px;margin:0 -9px;" (click)="updateSelection(i,marker.checked)" (press)="deleteMarker(i)">
+							<ion-col #markersContainer no-padding (window:resize)="onResize($event)">
+								<button ion-button icon-only clear color="inactive" *ngFor="let marker of markers;let i = index" [class.markerselected]="marker.checked"
+									[style.left]="marker.Left" style="width:18px;height:26px;margin:0 -9px;" (click)="updateSelection(i,marker.checked)"
+									(press)="deleteMarker(i)">
 										<ion-icon name="pin"></ion-icon>
 										</button>
 							</ion-col>
@@ -93,16 +94,12 @@
 						</ion-row>
 					</ion-col>
 				</ion-row>
-				<ion-row>
-					<ion-col>
-						<ion-row>
-							<ion-col no-padding style="width: 100%; color: gray;">
-								{{timelinePosition}}
-							</ion-col>
-							<ion-col no-padding style="width: auto; flex: 0 0 auto; color: gray;">
-								{{timelineDuration}}
-							</ion-col>
-						</ion-row>
+				<ion-row padding-horizontal>
+					<ion-col no-padding  style="width: 100%; color: gray;">
+						{{timelinePosition}}
+					</ion-col>
+					<ion-col no-padding style="width: auto; flex: 0 0 auto; color: gray;">
+						{{timelineDuration}}
 					</ion-col>
 				</ion-row>
 			</ion-grid>

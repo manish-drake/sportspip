@@ -47,19 +47,16 @@
 							</ion-col>
 						</ion-row>
 						<ion-row>
+							<ion-col no-padding center text-center style="width:100%;">
+								<button no-margin ion-button icon-only clear color="{{repeatColor}}"><ion-icon name="repeat"></ion-icon></button>
+							</ion-col>
 							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
 								<button no-margin ion-button icon-only clear (click)="playPause()"><ion-icon name="{{playPauseButtonIcon}}"></ion-icon></button>
 							</ion-col>
-							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
-								<button no-margin ion-button icon-only clear small color="{{repeatColor}}"><ion-icon name="repeat"></ion-icon></button>
+							<ion-col no-padding center text-center style="width:100%;">
+								<button no-margin ion-button icon-only clear (click)="rewindframe()"><ion-icon name="rewind"></ion-icon></button>
+								<button no-margin ion-button icon-only clear (click)="forwardframe()"><ion-icon name="fastforward"></ion-icon></button>
 							</ion-col>
-							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
-								<button no-margin ion-button icon-only clear small (click)="rewindframe()"><ion-icon name="rewind"></ion-icon></button>
-							</ion-col>
-							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
-								<button no-margin ion-button icon-only clear small (click)="forwardframe()"><ion-icon name="fastforward"></ion-icon></button>
-							</ion-col>
-							<ion-col no-padding center width="100%"></ion-col>
 						</ion-row>
 					</ion-col>
 				</ion-row>

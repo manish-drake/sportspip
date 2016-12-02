@@ -135,15 +135,30 @@ export class HomePage {
         this.channels.splice(index, 1);
     }
 
+    channelMatrixClicked(index, name, value, channel, title) {
+        let confirm = this.alertCtrl.create({
+            title: ' Download Confirmation?',
+            buttons: [
+                {
+                    text: 'Cancel',
+                    handler: () => { console.log('Cancel clicked'); }
+                },
+                {
+                    text: 'Download',
+                    handler: () => {
+                        console.log('Download clicked');
+                        this.DownloadServerHeaderAsync(name, channel, index, value);
+                    }
+                }
+            ]
+        });
+        confirm.present();
+    }
+
     channelMatrixPressed(index, name, value, channel, title) {
         let actionSheet = this.actionSheetCtrl.create({
             title: title,
             buttons: [{
-                text: 'Download',
-                handler: () => {
-                    this.DownloadServerHeaderAsync(name, channel, index, value);
-                }
-            }, {
                 text: 'Delete',
                 role: 'destructive',
                 handler: () => {

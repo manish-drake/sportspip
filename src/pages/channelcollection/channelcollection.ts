@@ -141,15 +141,30 @@ export class ChannelCollectionPage {
     return true;
   }
 
+  channelMatrixClicked(index, channel, DirName, title) {
+    let confirm = this.alertCtrl.create({
+      title: ' Download Confirmation?',
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => { console.log('Cancel clicked'); }
+        },
+        {
+          text: 'Download',
+          handler: () => {
+            console.log('Download clicked');
+            this.DownloadServerHeaderAsync(DirName, channel, index);
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
   channelMatrixPressed(index, channel, DirName, title) {
     let actionSheet = this.actionSheetCtrl.create({
       title: title,
       buttons: [{
-        text: 'Download',
-        handler: () => {
-          this.DownloadServerHeaderAsync(DirName, channel, index);
-        }
-      }, {
         text: 'Delete',
         role: 'destructive',
         handler: () => {
