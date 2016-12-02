@@ -38,10 +38,13 @@ export class VideoComponent {
 
         this.video = this.videoElement.nativeElement;
 
-        this.OnVideoMatadataLoad();
-        this.OnVideotimeupdate();
-        this.OnVideoEnded();
-        this.OnVideoError();
+        this.video.addEventListener('loadedmetadata', () => { this.OnVideoMatadataLoad(); });
+
+        this.video.addEventListener('timeupdate', () => { this.OnVideotimeupdate(); });
+
+        this.video.addEventListener('ended', () => { this.OnVideoEnded(); });
+
+        this.video.addEventListener('error', (error) => { this.OnVideoError(error)});
 
         var interval = setInterval(() => {
             if (this.timelineDuration == undefined || this.timelineDuration == "00:00:00.00" || this.viewBoxSize == "0 0 0 0") {
@@ -56,51 +59,38 @@ export class VideoComponent {
     }
 
     OnVideoMatadataLoad() {
-        this.video.addEventListener('loadedmetadata', () => {
-            this.video.currentTime = 1;
-            this.video.setAttribute('preload', "auto");
-            this.video.play();
-            this.video.pause();
-        })
-
+        this.video.currentTime = 1;
+        this.video.setAttribute('preload', "auto");
+        this.video.play();
+        this.video.pause();
     }
 
     OnVideotimeupdate() {
-        this.video.addEventListener('timeupdate', () => {
-            var factor = (100000 / this.video.duration) * this.video.currentTime;
-            this.sliderValue = factor;
-            this.timelinePosition = this.formatTime(this.video.currentTime);
-            if (this.timelinePosition == this.timelineDuration) {
-                this.playPauseButtonIcon = 'play';
-            }
-            this.PlayMarker();
-            this.PlayStoryBoard();
-        });
+        var factor = (100000 / this.video.duration) * this.video.currentTime;
+        this.sliderValue = factor;
+        this.timelinePosition = this.formatTime(this.video.currentTime);
+        if (this.timelinePosition == this.timelineDuration) {
+            this.playPauseButtonIcon = 'play';
+        }
+        this.PlayMarker();
+        this.PlayStoryBoard();
     }
 
     OnVideoEnded() {
-        this.video.addEventListener('ended', () => {
-            var val = this.markers.find(x => x.checked == true);
-            if (val == undefined) {
-                this.playPauseButtonIcon = 'play';
-            }
-        })
-
+        var val = this.markers.find(x => x.checked == true);
+        if (val == undefined) {
+            this.playPauseButtonIcon = 'play';
+        }
     }
 
-    OnVideoError() {
-        this.video.addEventListener('error', (error) => {
-            console.log('Error in video Elmnt:' + JSON.stringify(error));
-            // this.videoSrcAvailable = false;
-        })
-
+    OnVideoError(error) {
+        console.log('Error in video Elmnt:' + JSON.stringify(error));
+        // this.videoSrcAvailable = false;
     }
-
 
     LoadMarkers() {
         var chronoMarker = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
         if (chronoMarker != undefined) {
-
             if (chronoMarker instanceof Array) this.markers = chronoMarker;
             else this.markers.push(chronoMarker);
             this.evaluateMarkerPosition();
@@ -120,7 +110,6 @@ export class VideoComponent {
             this.playPauseButtonIcon = 'play';
         }
     }
-
 
     returnVidPath(filename) {
         if (this.platform.is('cordova')) {

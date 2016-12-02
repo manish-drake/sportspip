@@ -28,7 +28,6 @@
 			/>
 			<image *ngSwitchCase="'Ink'" #Ink x="0" y="0" width="100%" height="100%" xlink:href="assets/inksample.gif" />
 		</svg>
-		<template></template>
 		<div  style="position:absolute;height:100%;width:100%;">
 			<div>
 				<svg *ngFor="let obj of markersobjects;" [ngSwitch]="obj.key" [attr.viewBox]="viewBoxSize" height="100%" width="100%" style="position:absolute">

@@ -1,4 +1,4 @@
-import { Component, ViewChild, Input, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, Input, ElementRef } from '@angular/core';
 
 import { AlertController, ModalController, Platform, PopoverController, ViewController, NavParams } from 'ionic-angular';
 
@@ -50,28 +50,13 @@ export class CompareviewComponent {
         this.LoadMarkers();
         this.video = this.videoElement.nativeElement;
 
-        this.video.addEventListener('timeupdate', () => {
-            var factor = (100000 / this.video.duration) * this.video.currentTime;
-            this.sliderValue = factor;
-            this.timelinePosition = this.formatTime(this.video.currentTime);
-            if (this.timelinePosition == this.timelineDuration) {
-                this.playPauseButtonIcon = 'play';
-            }
-            this.PlayMarker();
-            this.PlayStoryBoard();
-        });
+        this.video.addEventListener('loadedmetadata', () => { this.OnVideoMatadataLoad(); });
 
-        this.video.addEventListener('ended', () => {
-            var val = this.markers.find(x => x.checked == true);
-            if (val == undefined) {
-                this.playPauseButtonIcon = 'play';
-            }
-        });
+        this.video.addEventListener('timeupdate', () => { this.OnVideotimeupdate(); });
 
-        this.video.addEventListener('error', (error) => {
-            console.log('Video Error: ' + error);
-            // this.videoSrcAvailable = false;
-        })
+        this.video.addEventListener('ended', () => { this.OnVideoEnded(); });
+
+        this.video.addEventListener('error', (error) => { this.OnVideoError(error) });
 
         var interval = setInterval(() => {
             if (this.timelineDuration == undefined || this.timelineDuration == "00:00:00.00" || this.viewBoxSize == "0 0 0 0") {
@@ -96,6 +81,36 @@ export class CompareviewComponent {
         this.fade(this.fadableTitle.nativeElement);
     }
 
+    OnVideoMatadataLoad() {
+        this.video.currentTime = 1;
+        this.video.setAttribute('preload', "auto");
+        this.video.play();
+        this.video.pause();
+    }
+
+    OnVideotimeupdate() {
+        var factor = (100000 / this.video.duration) * this.video.currentTime;
+        this.sliderValue = factor;
+        this.timelinePosition = this.formatTime(this.video.currentTime);
+        if (this.timelinePosition == this.timelineDuration) {
+            this.playPauseButtonIcon = 'play';
+        }
+        this.PlayMarker();
+        this.PlayStoryBoard();
+    }
+
+    OnVideoEnded() {
+        var val = this.markers.find(x => x.checked == true);
+        if (val == undefined) {
+            this.playPauseButtonIcon = 'play';
+        }
+    }
+
+    OnVideoError(error) {
+        console.log('Error in video Elmnt:' + JSON.stringify(error));
+        // this.videoSrcAvailable = false;
+    }
+
     LoadMarkers() {
         var chronoMarker = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
         if (chronoMarker != undefined) {
@@ -118,10 +133,10 @@ export class CompareviewComponent {
             op -= op * 0.01;
         }, 30);
     }
-
+ 
     presentViewPopover(event) {
         let popover = this.popoverCtrl.create(CaptureViewsPopover, {
-            views: this.views,
+           views: this.views,
             view: this.view
         });
         popover.present({ ev: event });
