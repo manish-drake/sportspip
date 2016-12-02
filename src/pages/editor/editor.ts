@@ -55,9 +55,11 @@ export class EditorPage {
     this.selectedViewIndex = 0;
     if (this.matrix["Matrix.Children"]["View"] instanceof Array) {
       this.views = this.matrix["Matrix.Children"]["View"];
+      console.log("Array");
     }
     else {
       this.views.push(this.matrix["Matrix.Children"]["View"]);
+       console.log("Objects");
     }
     this.evaluateCaptureViews();
   }

@@ -91,8 +91,15 @@ export class VideoComponent {
     LoadMarkers() {
         var chronoMarker = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
         if (chronoMarker != undefined) {
-            if (chronoMarker instanceof Array) this.markers = chronoMarker;
-            else this.markers.push(chronoMarker);
+            if (chronoMarker instanceof Array) {
+                // this.markers = chronoMarker;
+                chronoMarker.forEach(element => {
+                    this.markers.push(element);
+                });
+            }
+            else {
+                this.markers.push(chronoMarker);
+            }
             this.evaluateMarkerPosition();
         }
     }
@@ -474,12 +481,10 @@ export class VideoComponent {
                 if (val instanceof Array) {
                     val.forEach(val => {
                         this.objects.push({ key, val });
-                        console.log(this.objects.length, "object");
                     });
                 }
                 else {
                     this.objects.push({ key, val });
-                    console.log(this.objects.length, "object");
                 }
             }
 

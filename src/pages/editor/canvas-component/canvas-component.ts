@@ -43,9 +43,9 @@ export class CanvasComponent {
     for (var key in objs) {
       // skip loop if the property is from prototype
       if (!objs.hasOwnProperty(key)) continue;
-      var val = objs[key];
-      if (val instanceof Array) {
-        val.forEach(val => {
+      var keyVal = objs[key];
+      if (keyVal instanceof Array) {
+        keyVal.forEach(val => {
           var objBehaviors = val.Behaviors;
           if (objBehaviors != undefined) {
             this.returnMaxDuration(objBehaviors);
@@ -58,7 +58,7 @@ export class CanvasComponent {
 
 
   returnMaxDuration(objBehaviors) {
-    this.isTimelineAvailable = true;
+    // this.isTimelineAvailable = true;
     if (objBehaviors.Span._Duration > this.timelineDuration) { this.timelineDuration = objBehaviors.Span._Duration; }
     var durationInMS = (this.formatDurationInMiliSecond(this.timelineDuration)) / 10000000;
     this.duration = durationInMS;
