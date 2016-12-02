@@ -2,8 +2,8 @@
 
 <ion-grid *ngIf="videoSrcAvailable" no-padding style="height: 100%;">
 	<ion-row style="height: 100%;position: relative;">
-		<video #video preload="auto" style="position: absolute; background-color:black;" [src]="returnVidPath(view.Content.Capture._Kernel)"
-			width="100%" height="100%"></video> 
+		<video #video preload="auto" style="position: absolute; background-color:black;" poster="assets/sample.jpg" [src]="returnVidPath(view.Content.Capture._Kernel)"
+			width="100%" height="100%"></video>
 		<svg *ngFor="let obj of objects;" [ngSwitch]="obj.key" [attr.viewBox]="viewBoxSize" height="100%" width="100%" style="position:absolute">
 			<rect *ngSwitchCase="'Rectangle'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
 				[attr.fill]="clrCvt(obj.val._Fill)" [attr.stroke]="clrCvt(obj.val._Stroke)" [attr.stroke-width]="obj.val._StrokeThickness"
@@ -28,7 +28,7 @@
 			/>
 			<image *ngSwitchCase="'Ink'" #Ink x="0" y="0" width="100%" height="100%" xlink:href="assets/inksample.gif" />
 		</svg>
-		<div  style="position:absolute;height:100%;width:100%;">
+		<div style="position:absolute;height:100%;width:100%;">
 			<div>
 				<svg *ngFor="let obj of markersobjects;" [ngSwitch]="obj.key" [attr.viewBox]="viewBoxSize" height="100%" width="100%" style="position:absolute">
 					<rect *ngSwitchCase="'Rectangle'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
@@ -63,9 +63,10 @@
 				<ion-row>
 					<ion-col padding-left padding-right>
 						<ion-row>
-							<ion-col #markersContainer no-padding (window:resize)="onResize($event)" style="height:28px;">
+							<ion-col #markersContainer no-padding (window:resize)="onResize($event)">
 								<button ion-button icon-only clear color="inactive" *ngFor="let marker of markers;let i = index" [class.markerselected]="marker.checked"
-									[style.left]="marker.Left" style="width:18px;height:26px;margin:0 -9px;" (click)="updateSelection(i,marker.checked)" (press)="deleteMarker(i)">
+									[style.left]="marker.Left" style="width:18px;height:26px;margin:0 -9px;" (click)="updateSelection(i,marker.checked)"
+									(press)="deleteMarker(i)">
 										<ion-icon name="pin"></ion-icon>
 										</button>
 							</ion-col>
@@ -77,42 +78,43 @@
 						</ion-row>
 					</ion-col>
 				</ion-row>
+				<ion-row padding-horizontal>
+					<ion-col no-padding style="width: 100%; color: gray;">
+						{{timelinePosition}}
+					</ion-col>
+					<ion-col no-padding style="width: auto; flex: 0 0 auto; color: gray;">
+						{{timelineDuration}}
+					</ion-col>
+				</ion-row>
 				<ion-row>
-					<ion-col>
+					<ion-col no-padding style="width: 100%;">
 						<ion-row>
-							<ion-col no-padding style="width: 100%; color: gray;">
-								{{timelinePosition}}
+							<ion-col no-padding>
+								<button no-margin ion-button icon-only clear (click)="MuteVideo()"> <ion-icon name="{{volumeButtonIcon}}"></ion-icon></button>
 							</ion-col>
-							<ion-col no-padding style="width: auto; flex: 0 0 auto; color: gray;">
-								{{timelineDuration}}
+							<ion-col no-padding>
+								<button no-margin ion-button icon-only clear (click)="playbackRateVideo()" style="width:50px;">{{video.playbackRate}}x</button>
 							</ion-col>
-						</ion-row>
-						<ion-row>
-							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
-								<button no-margin ion-button icon-only clear (click)="playPause()"><ion-icon name="{{playPauseButtonIcon}}"></ion-icon></button>
-							</ion-col>
-							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
-								<button no-margin ion-button icon-only clear small color="{{repeatColor}}" (click)="repeatVideo()"><ion-icon name="repeat"></ion-icon></button>
-							</ion-col>
-							<ion-col no-padding center text-center style="width:auto;flex: 0 0 auto;">
-								<button no-margin ion-button icon-only clear small (click)="playbackRateVideo()" style="width:50px;">{{video.playbackRate}}x</button>
-							</ion-col>
-							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
-								<button no-margin ion-button icon-only clear small (click)="previousVideoFrame()"><ion-icon name="rewind"></ion-icon></button>
-							</ion-col>
-							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
-								<button no-margin ion-button icon-only clear small (click)="nextVideoFrame()"><ion-icon name="fastforward"></ion-icon></button>
-							</ion-col>
-							<ion-col no-padding center width="100%"></ion-col>
-							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
-								<button no-margin ion-button icon-only clear small (click)="MuteVideo()"> <ion-icon name="{{volumeButtonIcon}}"></ion-icon></button>
+							<ion-col no-padding>
+								<button no-margin ion-button icon-only clear color="{{repeatColor}}" (click)="repeatVideo()"><ion-icon name="repeat"></ion-icon></button>
 							</ion-col>
 						</ion-row>
 					</ion-col>
-					<ion-col padding-left center text-center style="width:auto;flex:0 0 auto;">
-						<button ion-fab mini (click)="addMarker()">
+					<ion-col no-padding center style="width: auto; flex: 0 0 auto;">
+						<button no-margin ion-button icon-only clear (click)="playPause()"><ion-icon name="{{playPauseButtonIcon}}"></ion-icon></button>
+					</ion-col>
+					<ion-col no-padding style="width: 100%;">
+						<ion-row>
+							<ion-col no-padding text-center style="width: 100%;">
+								<button no-margin ion-button icon-only clear (click)="previousVideoFrame()"><ion-icon name="rewind"></ion-icon></button>
+								<button no-margin ion-button icon-only clear (click)="nextVideoFrame()"><ion-icon name="fastforward"></ion-icon></button>
+							</ion-col>
+							<ion-col no-padding center text-center style="width:auto;flex:0 0 auto;">
+								<button ion-button icon-only clear no-margin (click)="addMarker()">
 							<ion-icon name="pin"></ion-icon>
 							</button>
+							</ion-col>
+						</ion-row>
 					</ion-col>
 				</ion-row>
 			</ion-grid>

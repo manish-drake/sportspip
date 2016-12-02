@@ -15,14 +15,13 @@ export class CanvasComponent {
   timelinePosition: any;
   sliderValue: any = 0;
   duration: any;
-  isTimelineAvailable: boolean;
+  isTimelineAvailable: boolean = false;
 
   constructor() {
     this.timelinePosition = "00:00:00:00";
     this.playPauseButtonIcon = "play";
     this.repeatColor = "inactive";
     this.volumeButtonIcon = "volume-up";
-    this.isTimelineAvailable = false;
   }
 
   objects = [];
@@ -33,7 +32,6 @@ export class CanvasComponent {
   objDirectory = [];
 
   ngAfterViewInit() {
-    // this.isTimelineAvailable = true;
     this.timelineDuration = "00:00:00.00";
     this.loadObjects()
   }

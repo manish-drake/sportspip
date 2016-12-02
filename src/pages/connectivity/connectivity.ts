@@ -24,7 +24,7 @@ declare var chrome: any;
 export class Connectivity {
     servers = Connection.servers;
 
-    isConnectivityEnabled: boolean = true;
+    isConnectivityEnabled: boolean;
 
     constructor(public navCtrl: NavController,
         private connection: Connection,
@@ -34,6 +34,7 @@ export class Connectivity {
 
     ionViewDidLoad() {
         console.log('Hello Connectivity Page');
+        this.isConnectivityEnabled = true;
     }
 
     connectivityChanged(isOn) {

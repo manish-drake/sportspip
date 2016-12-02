@@ -9,14 +9,14 @@
   <ion-navbar color="primary">
     <ion-title>Connection</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="refreshConnection()"><ion-icon name="refresh"></ion-icon></button>
+      <button ion-button icon-only *ngIf="isConnectivityEnabled" (click)="refreshConnection()"><ion-icon name="refresh"></ion-icon></button>
     </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content style="background:#f4f4f4;">
+<ion-content style="background:#f4f4f4;" style="position: relative;">
   <ion-item no-lines style="background:transparent;">
     <ion-label>Connectivity</ion-label>
     <ion-toggle [(ngModel)]="isConnectivityEnabled" (ngModelChange)="connectivityChanged(isConnectivityEnabled)"></ion-toggle>
@@ -68,5 +68,11 @@
       </ion-card>
     </ion-list>
   </div>
+  <ion-row style="position: absolute; height:80%; color: gray;">
+			<ion-col text-center center >
+				<span *ngIf="servers.length == 0 && isConnectivityEnabled">No server found</span>
+        <span *ngIf="!isConnectivityEnabled">Connectivity is off</span>
+			</ion-col>
+		</ion-row>
 
 </ion-content>

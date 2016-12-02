@@ -52,8 +52,6 @@ export class CompareviewComponent {
 
         this.video.addEventListener('loadedmetadata', () => { this.OnVideoMatadataLoad(); });
 
-        this.video.addEventListener('timeupdate', () => { this.OnVideotimeupdate(); });
-
         this.video.addEventListener('ended', () => { this.OnVideoEnded(); });
 
         this.video.addEventListener('error', (error) => { this.OnVideoError(error) });
@@ -88,21 +86,11 @@ export class CompareviewComponent {
         this.video.pause();
     }
 
-    OnVideotimeupdate() {
-        var factor = (100000 / this.video.duration) * this.video.currentTime;
-        this.sliderValue = factor;
-        this.timelinePosition = this.formatTime(this.video.currentTime);
-        if (this.timelinePosition == this.timelineDuration) {
-            this.playPauseButtonIcon = 'play';
-        }
-        this.PlayMarker();
-        this.PlayStoryBoard();
-    }
-
     OnVideoEnded() {
         var val = this.markers.find(x => x.checked == true);
         if (val == undefined) {
             this.playPauseButtonIcon = 'play';
+            clearInterval(this.timelineInterval);
         }
     }
 
@@ -179,18 +167,39 @@ export class CompareviewComponent {
         }
     }
 
+    timelineInterval: any;
+
     playPause() {
         if (this.video.paused == true) {
+            this.timelineInterval = setInterval(() => {
+                var factor = (100000 / this.video.duration) * this.video.currentTime;
+                this.sliderValue = factor;
+                this.timelinePosition = this.formatTime(this.video.currentTime);
+                if (this.timelinePosition == this.timelineDuration) {
+                    this.playPauseButtonIcon = 'play';
+                }
+                this.PlayMarker();
+                this.PlayStoryBoard();
+            }, 1 / 60);
+            this.playPauseButtonIcon = 'pause';
+            this.video.play();
             if (this.formatTime(this.video.currentTime) == this.timelineDuration) {
                 this.markersobjects = [];
                 this.markersDirectory = [];
             }
-            this.video.play();
-            this.playPauseButtonIcon = 'pause';
         } else {
-            this.video.pause();
             this.playPauseButtonIcon = 'play';
+            clearInterval(this.timelineInterval);
+            this.video.pause();
         }
+    }
+
+    sliderValueChange() {
+        this.timelinePosition = this.formatTime(this.video.currentTime);
+        var factor = this.video.duration * (this.sliderValue / 100000);
+        this.video.currentTime = factor;
+        this.timelinePosition = this.formatTime(factor);
+        this.PlayStoryBoard();
     }
 
     returnVidPath(filename) {
@@ -211,14 +220,6 @@ export class CompareviewComponent {
         var seconds = (sec >= 10) ? sec : "0" + sec;
         var milliseconds = time.toFixed(2).substr(-2);
         return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
-    }
-
-    sliderValueChange() {
-        this.timelinePosition = this.formatTime(this.video.currentTime);
-        var factor = this.video.duration * (this.sliderValue / 100000);
-        this.video.currentTime = factor;
-        this.timelinePosition = this.formatTime(factor);
-        this.PlayStoryBoard();
     }
 
     playbackRateVideo() {
@@ -252,9 +253,7 @@ export class CompareviewComponent {
     }
 
     evaluateMarkerPosition() {
-
         var interval = setInterval(() => {
-
             var markersContainerWidth = this.markersContainer.nativeElement.clientWidth;
             var durationInMilliseconds = this.formatDurationInMiliSecond(this.timelineDuration);
             if (markersContainerWidth != 0 && this.timelineDuration != undefined) {
@@ -275,16 +274,10 @@ export class CompareviewComponent {
         // return positionInMilliseconds * factor + 'px';
     }
 
-
-
-
     updateSelection(i, isSelect) {
-
         this.markers.forEach((marker, index) => {
             if (i != index) {
                 marker.checked = false;
-                this.video.pause();
-                this.playPauseButtonIcon = 'play';
             }
             else {
                 if (isSelect) {
@@ -356,6 +349,7 @@ export class CompareviewComponent {
                 this.video.pause();
                 this.video.currentTime = fp;
                 this.video.play();
+                this.playPauseButtonIcon = "pause";
             }
         }
     }
