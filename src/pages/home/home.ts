@@ -74,6 +74,12 @@ export class HomePage {
         this.connection.scanUdp();
     }
 
+    showSegment(segment) {
+        if (segment != this.selectedSegment) {
+            this.selectedSegment = segment;
+        }
+    }
+
     openConnectivity() {
         this.navCtrl.push(Connectivity);
     }

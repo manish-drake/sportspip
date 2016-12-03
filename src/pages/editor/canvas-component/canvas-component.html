@@ -1,4 +1,4 @@
-<ion-grid style="height: 100%;" padding>
+<ion-grid style="height: 100%;">
 	<ion-row style="height: 100%;position: relative;">
 		<svg viewBox="0 0 1920 1080" height="100%" width="100%" style="position:absolute">
 			<rect #canvasappearence x="0" y="0" width="1920" height="1080" fill="White" stroke="lightgray" stroke-width="1.5" />
@@ -30,37 +30,39 @@
 	</ion-row>
 	<ion-row *ngIf="isTimelineAvailable" style="height: auto; flex: 0 0 auto;">
 		<ion-col no-padding>
-			<ion-grid no-padding>
-				<ion-row padding-left padding-right>
-					<ion-col no-padding>
-						<ion-range style="padding:0;height:25px" min="0" max="10000" step="0.01" [(ngModel)]="sliderValue" (ionChange)="sliderValueChange()"></ion-range>
-					</ion-col>
-				</ion-row>
-				<ion-row>
-					<ion-col>
-						<ion-row>
-							<ion-col no-padding style="width: 100%; color: gray;">
-								{{timelinePosition}}
-							</ion-col>
-							<ion-col no-padding style="width: auto; flex: 0 0 auto; color: gray;">
-								{{timelineDuration}}
-							</ion-col>
-						</ion-row>
-						<ion-row>
-							<ion-col no-padding center text-center style="width:100%;">
-								<button no-margin ion-button icon-only clear color="{{repeatColor}}"><ion-icon name="repeat"></ion-icon></button>
-							</ion-col>
-							<ion-col no-padding center style="width:auto;flex: 0 0 auto;">
-								<button no-margin ion-button icon-only clear (click)="playPause()"><ion-icon name="{{playPauseButtonIcon}}"></ion-icon></button>
-							</ion-col>
-							<ion-col no-padding center text-center style="width:100%;">
-								<button no-margin ion-button icon-only clear (click)="rewindframe()"><ion-icon name="rewind"></ion-icon></button>
-								<button no-margin ion-button icon-only clear (click)="forwardframe()"><ion-icon name="fastforward"></ion-icon></button>
-							</ion-col>
-						</ion-row>
-					</ion-col>
-				</ion-row>
-			</ion-grid>
+			<ion-row style="position: relative;">
+				<ion-col padding-horizontal no-padding style="position:absolute;color: gray;margin-top:22px;">
+					<span>{{timelinePosition}}</span>
+					<span style="float:right;">00:00:00.00</span>
+					<!--{{timelineDuration}}-->
+				</ion-col>
+				<ion-col padding-horizontal no-padding>
+					<ion-range style="padding:0;margin-top:10px; height:10px" min="0" max="10000" step="0.01" [(ngModel)]="sliderValue" (ionChange)="sliderValueChange()"></ion-range>
+				</ion-col>
+			</ion-row>
+			<ion-row>
+				<ion-col no-padding center style="width: 100%;">
+					<ion-row>
+						<ion-col no-padding center style="width: 100%;"></ion-col>
+						<ion-col no-padding center style="width: auto; flex: 0 0 auto;">
+							<button no-margin ion-button icon-only clear (click)="rewindframe()"><ion-icon name="rewind"></ion-icon></button>
+						</ion-col>
+					</ion-row>
+				</ion-col>
+				<ion-col no-padding center style="width: auto; flex: 0 0 auto;">
+					<button no-margin ion-button icon-only clear large (click)="playPause()"><ion-icon name="{{playPauseButtonIcon}}"></ion-icon></button>
+				</ion-col>
+				<ion-col no-padding center style="width: 100%;">
+					<ion-row>
+						<ion-col no-padding center text-center style="width:auto;flex:0 0 auto;">
+							<button no-margin ion-button icon-only clear (click)="forwardframe()"><ion-icon name="fastforward"></ion-icon></button>
+							<button no-margin ion-button icon-only clear color="{{repeatColor}}"><ion-icon name="repeat"></ion-icon></button>
+						</ion-col>
+						<ion-col no-padding center style="width: 100%;color: gray;">
+						</ion-col>
+					</ion-row>
+				</ion-col>
+			</ion-row>
 		</ion-col>
 	</ion-row>
 </ion-grid>

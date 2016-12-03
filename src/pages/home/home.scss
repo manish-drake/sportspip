@@ -2,6 +2,9 @@ page-home {
   .segment{
     background: color($colors, primary);
   }
+  .selectedsegment{
+    background-color:color($colors, primary);box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.30); color: white;
+}
   .items {
 	display: flex;
 	flex-wrap: wrap;
