@@ -36,10 +36,16 @@
 							</ion-card>
 						</ion-col>
 						<ion-col no-padding width-50>
-							<ion-card (click)="chooseVideo()">
+							<!--<ion-card (click)="chooseVideo()">
 								<ion-item>
 									<ion-icon name="ios-film" item-left></ion-icon>
 									<h2 class="textTrim">Add Video</h2>
+								</ion-item>
+							</ion-card>-->
+							<ion-card (click)="recordVideo()">
+								<ion-item>
+									<ion-icon name="videocam" item-left></ion-icon>
+									<h2 class="textTrim">Record Video</h2>
 								</ion-item>
 							</ion-card>
 						</ion-col>
@@ -54,16 +60,6 @@
 							</ion-card>
 						</ion-col>
 						<ion-col no-padding width-50>
-							<ion-card (click)="recordVideo()">
-								<ion-item>
-									<ion-icon name="videocam" item-left></ion-icon>
-									<h2 class="textTrim">Record Video</h2>
-								</ion-item>
-							</ion-card>
-						</ion-col>
-					</ion-row>
-					<ion-row>
-						<ion-col no-padding>
 							<ion-card *ngIf="views.length==1" (click)="IPCamCapture()">
 								<ion-item>
 									<ion-icon name="wifi" item-left></ion-icon>
@@ -72,6 +68,11 @@
 							</ion-card>
 						</ion-col>
 					</ion-row>
+					<!--<ion-row>
+						<ion-col no-padding>
+							
+						</ion-col>
+					</ion-row>-->
 				</ion-grid>
 			</ion-col>
 		</ion-row>

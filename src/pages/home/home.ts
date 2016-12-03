@@ -66,6 +66,10 @@ export class HomePage {
         this.GetLocalMatrixHeader();
     }
 
+    ionViewWillEnter(){
+
+    }
+
     ionViewDidLoad() {
         this.connection.scanUdp();
     }
@@ -199,7 +203,10 @@ export class HomePage {
     }
 
     retrunThumbnailPath(name) {
-        return "url(" + cordova.file.applicationStorageDirectory + "image" + ".jpg" + ")";
+        return "url(" + cordova.file.applicationStorageDirectory + name + ".jpg" + ")";
+    }
+    retrunLocalThumbnailPath(name) {
+        return "url(" + cordova.file.applicationStorageDirectory + name + ".jpg" + ")";
     }
 
     GetLocalMatrixHeader() {
@@ -332,7 +339,7 @@ export class HomePage {
         var result = data.Matrix;
         this.storagefactory.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices");
 
-        var headerContent = this.storagefactory.ComposeMatrixHeader(result);
+        var headerContent = this.storagefactory.ComposeNewMatrixHeader (result);
         this.storagefactory.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
 
         this.navCtrl.push(EditorPage, {

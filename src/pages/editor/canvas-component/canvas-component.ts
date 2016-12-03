@@ -196,11 +196,10 @@ export class CanvasComponent {
 
   returnTotalDuration(objBehaviors) {
     if (objBehaviors.Span != undefined) {
-      console.log(this.objects.length);
-      console.log("valueeeee :  "+objBehaviors.Span);
       var durationInMS = this.formatDurationInMiliSecond(objBehaviors.Span._Duration);
       var positionInMS = this.formatPoistionInMiliSecond(objBehaviors.Span._Position);
       var totalDur = (durationInMS + positionInMS) / 10000000;
+      console.log(this.formatTime(totalDur));
       return totalDur
     }
     return null;

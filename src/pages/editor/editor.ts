@@ -7,11 +7,13 @@ import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, Captur
 import { Http } from '@angular/http';
 import { Connection } from '../../pages/Connection'
 import { StorageFactory } from '../../Factory/StorageFactory';
+import { ModelFactory } from '../../Factory/modelFactory';
 
 import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 import { Compareview } from '../editor/compareview/compareview'
 import { Swipeview } from '../editor/swipeview/swipeview'
 import { Ipcameras } from '../editor/ipcameras/ipcameras'
+import { Observable } from 'rxjs/Rx';
 declare var navigator: any;
 declare var cordova: any;
 
@@ -19,7 +21,7 @@ declare var cordova: any;
 @Component({
   selector: 'page-editor',
   templateUrl: 'editor.html',
-  providers: [StorageFactory, Connection],
+  providers: [StorageFactory, Connection, ModelFactory],
 })
 
 export class EditorPage {
@@ -36,16 +38,13 @@ export class EditorPage {
     private connection: Connection,
     private http: Http,
     private storagefactory: StorageFactory,
+    private modelFactory: ModelFactory,
     private app: App) {
     if (params.data != null) {
       this.matrix = params.data.matrixData;
       console.log(this.matrix);
     }
   }
-
-  // ionViewDidLoad() {
-  //   alert('ionViewDidLoad');
-  // }
 
   ionViewWillUnload() {
     this.saveMatrix();
@@ -71,17 +70,36 @@ export class EditorPage {
           var res = JSON.parse(data.toString());
           var matrix = res.Matrix;
           matrix['Matrix.Children'].View = this.views;
+          var name = this.GetThumbName(matrix);
+
           this.storagefactory.SaveMatrixAsync(res, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
           var header = this.storagefactory.ComposeMatrixHeader(matrix);
+          header.ThumbnailSource = name;
           this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
         });
     }
   }
 
+  GetThumbName(matrix) {
+    var thumb: any;
+    matrix['Matrix.Children'].View.forEach(view => {
+      if (name == undefined) {
+        if (view.Content.Capture._Kernel != undefined) {
+          var name = view.Content.Capture._Kernel;
+          thumb = Date.now().toString();
+          this.modelFactory.CreateThumbnail(name, thumb);
+        }
+      }
+    });
+    return thumb;
+  }
+
+
   presentInfoModal() {
     let modal = this.modalCtrl.create(MatrixInfoPage, {
       matrixData: this.matrix
     });
+
     modal.present();
   }
 

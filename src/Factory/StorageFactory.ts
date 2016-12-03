@@ -184,13 +184,30 @@ export class StorageFactory {
             DateCreated: fromMatrix._DateCreated,
             Name: fromMatrix._Name,
             Channel: fromMatrix._Channel,
-            ThumbnailSource: "636049183928404138",
+            ThumbnailSource: "thumbnail",
             Sport: fromMatrix._Sport,
             Skill: fromMatrix._Skill,
             UploadID: "0",
             Duration: fromMatrix._Duration,
-            Views:fromMatrix["Matrix.Children"].View.length
-        }; 
+            Views: fromMatrix["Matrix.Children"].View.length
+        };
+        return header;
+
+    }
+
+    ComposeNewMatrixHeader(fromMatrix) {
+        var header = {
+            Title: fromMatrix._Title,
+            DateCreated: fromMatrix._DateCreated,
+            Name: fromMatrix._Name,
+            Channel: fromMatrix._Channel,
+            ThumbnailSource: "thumbnail",
+            Sport: fromMatrix._Sport,
+            Skill: fromMatrix._Skill,
+            UploadID: "0",
+            Duration: fromMatrix._Duration,
+            Views: "1"
+        };
         return header;
 
     }

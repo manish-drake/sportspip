@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, DoCheck } from '@angular/core';
 import { NavController, ToastController } from 'ionic-angular';
 
 import { Connection } from '../../pages/Connection';
@@ -21,7 +21,7 @@ declare var chrome: any;
 })
 
 
-export class Connectivity {
+export class Connectivity implements DoCheck {
     servers = Connection.servers;
 
     isConnectivityEnabled: boolean;
@@ -30,6 +30,14 @@ export class Connectivity {
         private connection: Connection,
         private toastCtrl: ToastController) {
 
+    }
+
+    ngDoCheck() {
+        setTimeout(() => {
+            if (this.servers.length == 0) {
+                this.refreshConnection();
+            }
+        }, 1000);
     }
 
     ionViewDidLoad() {
