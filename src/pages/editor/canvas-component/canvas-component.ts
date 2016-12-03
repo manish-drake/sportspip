@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 
+import { Platform } from 'ionic-angular'
+
 @Component({
   selector: 'canvas-component',
   templateUrl: 'canvas-component.html'
@@ -17,7 +19,7 @@ export class CanvasComponent {
   duration: any;
   isTimelineAvailable: boolean = false;
 
-  constructor() {
+  constructor(private platform: Platform) {
     this.timelinePosition = "00:00:00:00";
     this.playPauseButtonIcon = "play";
     this.repeatColor = "inactive";
@@ -64,7 +66,9 @@ export class CanvasComponent {
 
 
   returnMaxDuration(objBehaviors) {
-    this.isTimelineAvailable = true;
+    if (this.platform.is('cordova')) {
+      this.isTimelineAvailable = true;
+    }
     if (objBehaviors.Span._Duration > this.timelineDuration) { this.timelineDuration = objBehaviors.Span._Duration; }
     var durationInMS = (this.formatDurationInMiliSecond(this.timelineDuration)) / 10000000;
     this.duration = durationInMS;
@@ -197,7 +201,7 @@ export class CanvasComponent {
   returnTotalDuration(objBehaviors) {
     if (objBehaviors.Span != undefined) {
       console.log(this.objects.length);
-      console.log("valueeeee :  "+objBehaviors.Span);
+      console.log("valueeeee :  " + objBehaviors.Span);
       var durationInMS = this.formatDurationInMiliSecond(objBehaviors.Span._Duration);
       var positionInMS = this.formatPoistionInMiliSecond(objBehaviors.Span._Position);
       var totalDur = (durationInMS + positionInMS) / 10000000;

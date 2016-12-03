@@ -59,65 +59,55 @@
 	</ion-row>
 	<ion-row *ngIf="videoSrcAvailable" style="height: auto; flex: 0 0 auto;" color="dark">
 		<ion-col no-padding>
-			<ion-grid no-padding>
-				<ion-row>
-					<ion-col padding-left padding-right>
-						<ion-row>
-							<ion-col #markersContainer no-padding (window:resize)="onResize($event)">
-								<button ion-button icon-only clear color="inactive" *ngFor="let marker of markers;let i = index" [class.markerselected]="marker.checked"
-									[style.left]="marker.Left" style="width:18px;height:26px;margin:0 -9px;" (click)="updateSelection(i,marker.checked)"
-									(press)="deleteMarker(i)">
+			<ion-row>
+				<ion-col padding-horizontal>
+					<ion-row>
+						<ion-col no-padding #markersContainer (window:resize)="onResize($event)">
+							<button ion-button icon-only no-margin clear color="inactive" *ngFor="let marker of markers;let i = index" [class.markerselected]="marker.checked"
+								[style.left]="marker.Left" style="width:18px;height:26px;margin:0 -9px;" (click)="updateSelection(i,marker.checked)"
+								(press)="deleteMarker(i)">
 										<ion-icon name="pin"></ion-icon>
 										</button>
-							</ion-col>
-						</ion-row>
-						<ion-row>
-							<ion-col no-padding>
-								<ion-range style="padding:0;height:25px" min="0" max="100000" step="0.01" [(ngModel)]="sliderValue" (ionChange)="sliderValueChange()"></ion-range>
-							</ion-col>
-						</ion-row>
-					</ion-col>
-				</ion-row>
-				<ion-row padding-horizontal>
-					<ion-col no-padding style="width: 100%; color: gray;">
-						{{timelinePosition}}
-					</ion-col>
-					<ion-col no-padding style="width: auto; flex: 0 0 auto; color: gray;">
-						{{timelineDuration}}
-					</ion-col>
-				</ion-row>
-				<ion-row>
-					<ion-col no-padding style="width: 100%;">
-						<ion-row>
-							<ion-col no-padding>
-								<button no-margin ion-button icon-only clear (click)="MuteVideo()"> <ion-icon name="{{volumeButtonIcon}}"></ion-icon></button>
-							</ion-col>
-							<ion-col no-padding>
-								<button no-margin ion-button icon-only clear (click)="playbackRateVideo()" style="width:50px;">{{video.playbackRate}}x</button>
-							</ion-col>
-							<ion-col no-padding>
-								<button no-margin ion-button icon-only clear color="{{repeatColor}}" (click)="repeatVideo()"><ion-icon name="repeat"></ion-icon></button>
-							</ion-col>
-						</ion-row>
-					</ion-col>
-					<ion-col no-padding center style="width: auto; flex: 0 0 auto;">
-						<button no-margin ion-button icon-only clear (click)="playPause()"><ion-icon name="{{playPauseButtonIcon}}"></ion-icon></button>
-					</ion-col>
-					<ion-col no-padding style="width: 100%;">
-						<ion-row>
-							<ion-col no-padding text-center style="width: 100%;">
-								<button no-margin ion-button icon-only clear (click)="previousVideoFrame()"><ion-icon name="rewind"></ion-icon></button>
-								<button no-margin ion-button icon-only clear (click)="nextVideoFrame()"><ion-icon name="fastforward"></ion-icon></button>
-							</ion-col>
-							<ion-col no-padding center text-center style="width:auto;flex:0 0 auto;">
-								<button ion-button icon-only clear no-margin (click)="addMarker()">
-							<ion-icon name="pin"></ion-icon>
-							</button>
-							</ion-col>
-						</ion-row>
-					</ion-col>
-				</ion-row>
-			</ion-grid>
+						</ion-col>
+					</ion-row>
+					<ion-row style="position: relative;">
+						<ion-col no-padding style="position:absolute;color: gray;margin-top:22px;">
+							<span>{{timelinePosition}}</span>
+							<span style="float:right;">{{timelineDuration}}</span>
+						</ion-col>
+						<ion-col no-padding>
+							<ion-range style="padding:0;margin-top:10px; height:10px" min="0" max="100000" step="0.01" [(ngModel)]="sliderValue" (ionChange)="sliderValueChange()"></ion-range>
+						</ion-col>
+					</ion-row>
+				</ion-col>
+			</ion-row>
+			<ion-row>
+				<ion-col no-padding center style="width: 100%;">
+					<ion-row>
+						<ion-col no-padding center style="width: 100%;"></ion-col>
+						<ion-col no-padding center style="width: auto; flex: 0 0 auto;">
+							<button no-margin ion-button icon-only clear (click)="playbackRateVideo()" style="width:40px;" text-lowercase text-nowrap><b>{{video.playbackRate}}x</b></button>
+							<button no-margin ion-button icon-only clear (click)="previousVideoFrame()"><ion-icon name="rewind"></ion-icon></button>
+						</ion-col>
+					</ion-row>
+				</ion-col>
+				<ion-col no-padding center style="width: auto; flex: 0 0 auto;">
+					<button no-margin ion-button icon-only clear large (click)="playPause()"><ion-icon name="{{playPauseButtonIcon}}"></ion-icon></button>
+				</ion-col>
+				<ion-col no-padding center style="width: 100%;">
+					<ion-row>
+						<ion-col no-padding center text-center style="width:auto;flex:0 0 auto;">
+							<button no-margin ion-button icon-only clear (click)="nextVideoFrame()"><ion-icon name="fastforward"></ion-icon></button>
+							<button no-margin ion-button icon-only clear color="{{repeatColor}}" (click)="repeatVideo()"><ion-icon name="repeat"></ion-icon></button>
+						</ion-col>
+						<ion-col no-padding center style="width: 100%;color: gray;">
+						</ion-col>
+						<ion-col padding-horizontal style="width:auto;flex:0 0 auto;">
+							<button no-margin ion-button icon-only clear (click)="addMarker()"><ion-icon name="pin"></ion-icon></button>
+						</ion-col>
+					</ion-row>
+				</ion-col>
+			</ion-row>
 		</ion-col>
 	</ion-row>
 </ion-grid>

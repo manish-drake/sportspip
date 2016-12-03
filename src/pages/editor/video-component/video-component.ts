@@ -23,7 +23,6 @@ export class VideoComponent {
     timelineDuration: any;
     repeatColor: any = "inactive";
     playPauseButtonIcon: string = "play";
-    volumeButtonIcon: string = "volume-up";
     videoSrcAvailable: boolean = true;
     markersDirectory = [];
     index = 0;
@@ -229,16 +228,6 @@ export class VideoComponent {
         this.video.playbackRate = speed;
     }
 
-    MuteVideo() {
-        if (this.video.muted == false) {
-            this.video.muted = true;
-            this.volumeButtonIcon = "volume-off";
-        } else {
-            this.video.muted = false;
-            this.volumeButtonIcon = "volume-up";
-        }
-    }
-
     PlayMarker() {
         var val = this.markers.find(x => x.checked == true)
         if (val != undefined) {
@@ -250,7 +239,7 @@ export class VideoComponent {
 
             var fp = positionMS / 10000000;
 
-            if (this.formatTime(this.video.currentTime) == endPlayDur) {
+            if (this.formatTime(this.video.currentTime) >= endPlayDur) {
                 this.video.pause();
                 this.video.currentTime = fp;
                 this.video.play();

@@ -89,17 +89,15 @@
 						</ion-row>
 						<ion-row>
 							<ion-col no-padding>
-								<ion-range style="padding:0;height:25px" min="0" max="100000" step="0.01" [(ngModel)]="sliderValue" (ionChange)="sliderValueChange()"></ion-range>
+								<ion-range style="padding:0;margin-top:10px; height:10px" min="0" max="100000" step="0.01" [(ngModel)]="sliderValue" (ionChange)="sliderValueChange()"></ion-range>
 							</ion-col>
 						</ion-row>
 					</ion-col>
 				</ion-row>
 				<ion-row padding-horizontal>
-					<ion-col no-padding  style="width: 100%; color: gray;">
-						{{timelinePosition}}
-					</ion-col>
-					<ion-col no-padding style="width: auto; flex: 0 0 auto; color: gray;">
-						{{timelineDuration}}
+					<ion-col no-padding style="color: gray;">
+						<span>{{timelinePosition}}</span>
+						<span style="float:right;">{{timelineDuration}}</span>
 					</ion-col>
 				</ion-row>
 			</ion-grid>
