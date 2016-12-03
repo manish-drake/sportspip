@@ -19,7 +19,7 @@
 </ion-header>
 
 
-<ion-content style="background:#f4f4f4;">
+<ion-content style="background:#f4f4f4;" style="position: relative;">
 
   <ion-item>
     <ion-label item-left>Rec. Duration: {{recordingDuration}}sec</ion-label>
@@ -28,13 +28,6 @@
         <ion-label range-right>45s</ion-label>
       </ion-range>
   </ion-item>
-
-  <ion-row center *ngIf="ipCams.length==0" style="position: absolute;margin-top:50%; color: gray;">
-    <ion-col text-center center>
-      no IP camera present
-    </ion-col>
-  </ion-row>
-
   <ion-list>
     <ion-card *ngFor="let cam of ipCams">
       <ion-item>
@@ -45,6 +38,12 @@
       />
     </ion-card>
   </ion-list>
+
+  <ion-row center *ngIf="ipCams.length==0" style="position: absolute;top:40%; color: gray;">
+    <ion-col text-center center>
+      <h5>No IP Camera found</h5>
+    </ion-col>
+  </ion-row>
 
   <ion-fab bottom left (click)="presentSettingsModal()">
     <button ion-fab mini><ion-icon name="md-settings"></ion-icon></button>

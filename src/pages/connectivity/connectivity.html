@@ -68,10 +68,10 @@
       </ion-card>
     </ion-list>
   </div>
-  <ion-row style="position: absolute; height:80%; color: gray;">
+  <ion-row style="position: absolute; height:80%;color: gray;">
 			<ion-col text-center center >
-				<span *ngIf="servers.length == 0 && isConnectivityEnabled">No server found</span>
-        <span *ngIf="!isConnectivityEnabled">Connectivity is off</span>
+				<span *ngIf="servers.length == 0 && isConnectivityEnabled"><h5>No server found</h5></span>
+        <span *ngIf="!isConnectivityEnabled"><h5>Connectivity is off</h5></span>
 			</ion-col>
 		</ion-row>
 

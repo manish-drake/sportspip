@@ -50,7 +50,8 @@
     "cordova-plugin-media-capture",
     "http://github.com/don/cordova-filechooser.git",
     "cordova-plugin-chrome-apps-sockets-udp",
-    "cordova-plugin-chrome-apps-sockets-tcp"
+    "cordova-plugin-chrome-apps-sockets-tcp",
+    "cordova-plugin-android-permissions"
   ],
   "cordovaPlatforms": []
 }

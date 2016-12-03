@@ -10,8 +10,8 @@
 		</ion-buttons>
 	</ion-navbar>
 	<ion-segment color="light" class="segment" [(ngModel)]="selectedSegment">
-		<ion-segment-button value="local">Matrices</ion-segment-button>
-		<ion-segment-button value="server">Channels</ion-segment-button>
+		<ion-segment-button value="local" color="primary" style="font-size:16px;">Matrices</ion-segment-button>
+		<ion-segment-button value="server" color="primary" style="font-size:16px;">Channels</ion-segment-button>
 	</ion-segment>
 </ion-header>
 
@@ -22,9 +22,9 @@
 		<button ion-fab (click)="newMatrix()"><ion-icon name="add"></ion-icon></button>
 	</ion-fab>
 	<!--(For testing only) - Open matrix file placed in assets-->
-	<ion-fab bottom center>
+	<!--<ion-fab bottom center>
 		<button ion-fab color="light" (click)="testOpenMatrix()">M</button>
-	</ion-fab>
+	</ion-fab>-->
 
 	<div *ngSwitchCase="'local'" style="position: relative; height:100%;">
 		<ion-row>
@@ -65,9 +65,9 @@
 				</ion-card>
 			</div>
 		</div>
-		<ion-row center *ngIf="!(localMatrices.length > 0)" style="position: absolute;height:100%; color: gray;">
+		<ion-row center *ngIf="!(localMatrices.length > 0)" style="position: absolute;height:100%;color: gray;">
 			<ion-col text-center center>
-				No matrix exists
+				<h5>No matrix exists</h5>
 			</ion-col>
 		</ion-row>
 	</div>
@@ -100,7 +100,7 @@
 								<ion-card-content style="padding:5px 10px 2px 10px ">
 									<ion-row>
 										<ion-col no-padding style="width: 100%;font-size: 18px;overflow: hidden;text-overflow: ellipsis;">
-											{{matrix.Title}}
+											{{matrix.Name}}
 										</ion-col>
 										<ion-col no-padding center text-right style="flex: 0 0 auto; width: auto;">
 											<!--<p>{{FormatDate(matrix.DateCreated)}}</p>-->
@@ -122,10 +122,11 @@
 				</div>
 			</div>
 		</ion-item-group>
-		<ion-row center *ngIf="!(localMatrices.length > 0)" style="position: absolute;height:100%; color: gray;">
+		<ion-row center *ngIf="!(channels.length > 0)" style="position: absolute; height:100%;color: gray;">
 			<ion-col text-center center>
-				No matrix exist
+				<h5>No channel exists</h5>
 			</ion-col>
 		</ion-row>
 	</div>
+
 </ion-content>
