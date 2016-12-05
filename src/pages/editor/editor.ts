@@ -1,6 +1,6 @@
 import { Component, Injectable } from '@angular/core';
 
-import { NavController, ViewController, NavParams, AlertController, ModalController, Platform, App } from 'ionic-angular';
+import { NavController, ViewController, NavParams, AlertController, ModalController, ModalOptions, Platform, App } from 'ionic-angular';
 
 import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError, FilePath } from 'ionic-native';
 
@@ -84,7 +84,7 @@ export class EditorPage {
             });
 
         });
-    }else this.navCtrl.pop();
+    } else this.navCtrl.pop();
   }
 
   GetThumbName(matrix) {
@@ -208,20 +208,27 @@ export class EditorPage {
 
   chooseVideo() {
     if (this.platform.is('cordova')) {
-      this.checkPermissions();
+      FileChooser.open().then(uri => {
+        console.log(uri);
+        this.checkPermissions(uri);
+      })
+        .catch(err => {
+          console.log(err);
+          this.chooseVideoErrorMsg('Error opening file chooser:' + err);
+        });
     }
   }
 
-  checkPermissions() {
+  checkPermissions(uri) {
     var permissions = cordova.plugins.permissions;
     permissions.hasPermission(permissions.READ_EXTERNAL_STORAGE, (status) => {
       if (status.hasPermission) {
-        this.startChoosingFile();
+        this.startChoosingFile(uri);
       }
       else {
         permissions.requestPermission(permissions.READ_EXTERNAL_STORAGE, (status2) => {
           if (status2.hasPermission) {
-            this.startChoosingFile();
+            this.startChoosingFile(uri);
           }
           else {
             console.log('permission is not turned on');
@@ -246,34 +253,35 @@ export class EditorPage {
     }
   }
 
-  startChoosingFile() {
-    FileChooser.open().then(uri => {
-      console.log(uri);
+  startChoosingFile(uri) {
+    // FileChooser.open().then(uri => {
+    //   console.log(uri);
 
-      FilePath.resolveNativePath(uri)
-        .then(filePath => {
-          console.log(filePath);
-          var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-          var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
+    FilePath.resolveNativePath(uri)
+      .then(filePath => {
+        console.log(filePath);
+        var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+        var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
 
-          File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName).then(_ => {
-            console.log('Successfully copied video');
-            this.CreateVideoView(fileName);
-          }).catch(err => {
-            console.log('Failed copying video:' + err)
-            this.chooseVideoErrorMsg(err);
-          });
-
-        })
-        .catch(err => {
-          console.log(err);
-          this.chooseVideoErrorMsg('Failed Resolving nativepath:' + err);
+        File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName).then(_ => {
+          console.log('Successfully copied video');
+          this.CreateVideoView(fileName);
+        }).catch(err => {
+          console.log('Failed copying video:' + err)
+          this.chooseVideoErrorMsg(err);
         });
 
-    }).catch(err => {
-      console.log(err);
-      this.chooseVideoErrorMsg('Error opening file chooser:' + err);
-    });
+      })
+      .catch(err => {
+        console.log(err);
+        this.chooseVideoErrorMsg('Failed Resolving nativepath:' + err);
+      });
+
+    // })
+    // .catch(err => {
+    //   console.log(err);
+    //   this.chooseVideoErrorMsg('Error opening file chooser:' + err);
+    // });
   }
 
   chooseVideoErrorMsg(err) {
@@ -321,7 +329,7 @@ export class EditorPage {
           console.log('Failed saving video' + err)
           let alert = this.alertCtrl.create({
             title: 'Failed saving video!',
-            subTitle: err,
+            subTitle: JSON.stringify(err),
             buttons: ['OK']
           });
           alert.present();
@@ -342,14 +350,17 @@ export class EditorPage {
       alert.present();
     }
   }
+
   // Code for Camera Recording Starts
 
   IPCamCapture() {
+    let modalOptions: ModalOptions = { showBackdrop: false, enableBackdropDismiss: false };
+
     var modal = this.modalCtrl.create(Ipcameras, {
       matrix: this.matrix,
       views: this.views,
       selectedViewIndex: this.selectedViewIndex
-    });
+    }, modalOptions);
     modal.present();
 
     modal.onDidDismiss((views) => {
