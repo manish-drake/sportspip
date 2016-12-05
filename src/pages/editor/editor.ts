@@ -8,12 +8,11 @@ import { Http } from '@angular/http';
 import { Connection } from '../../pages/Connection'
 import { StorageFactory } from '../../Factory/StorageFactory';
 import { ModelFactory } from '../../Factory/modelFactory';
-
+import { Observable } from 'rxjs/Rx';
 import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 import { Compareview } from '../editor/compareview/compareview'
 import { Swipeview } from '../editor/swipeview/swipeview'
 import { Ipcameras } from '../editor/ipcameras/ipcameras'
-import { Observable } from 'rxjs/Rx';
 declare var navigator: any;
 declare var cordova: any;
 
@@ -46,19 +45,13 @@ export class EditorPage {
     }
   }
 
-  ionViewWillUnload() {
-    this.saveMatrix();
-  }
-
   ngAfterViewInit() {
     this.selectedViewIndex = 0;
     if (this.matrix["Matrix.Children"]["View"] instanceof Array) {
       this.views = this.matrix["Matrix.Children"]["View"];
-      console.log("Array");
     }
     else {
       this.views.push(this.matrix["Matrix.Children"]["View"]);
-      console.log("Objects");
     }
     this.evaluateCaptureViews();
   }
@@ -70,11 +63,20 @@ export class EditorPage {
           var res = JSON.parse(data.toString());
           var matrix = res.Matrix;
           matrix['Matrix.Children'].View = this.views;
+
           var name = this.GetThumbName(matrix);
+
           this.storagefactory.SaveMatrixAsync(res, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
           var header = this.storagefactory.ComposeMatrixHeader(matrix);
           header.ThumbnailSource = name;
           this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
+
+          Observable.interval(1000)
+            .take(1).map((x) => x + 5)
+            .subscribe((x) => {
+              this.navCtrl.pop();
+            });
+
         });
     }
   }
@@ -84,10 +86,7 @@ export class EditorPage {
     var name: any;
     matrix['Matrix.Children'].View.forEach(view => {
       if (name == undefined) {
-        if (view.Content.Capture === undefined) {
-          console.log("sorry no Capture found");
-        }
-        else {
+        if (view.Content !== undefined) {
           name = view.Content.Capture._Kernel;
           thumb = Date.now().toString();
           this.modelFactory.CreateThumbnail(name, thumb);
@@ -253,7 +252,6 @@ export class EditorPage {
 
           File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName).then(_ => {
             console.log('Successfully copied video');
-            this.saveMatrix()
             this.CreateVideoView(fileName);
           }).catch(err => {
             console.log('Failed copying video:' + err)
@@ -301,7 +299,6 @@ export class EditorPage {
 
       File.moveFile(path, fileName, cordova.file.applicationStorageDirectory, fileName)
         .then(_ => {
-          this.saveMatrix()
           console.log('Successfully saved video')
           // var server = Connection.connectedServer.Address;
           // this.http.get(cordova.file.applicationStorageDirectory + fileName).subscribe(success => {
