@@ -126,7 +126,7 @@ export class SettingsPage {
       if (data != null) {
         this.SetUserAcync(data);
         this.InvalidateSubscribeListAsync(this.UserID);
-        this.InvalidateChannelListAsync(this.UserID);
+        this.InvalidateChannelListAsync(this.UserID); 
         let loader = this.loadingCtrl.create({
           content: "Fetching Required Data..",
           duration: 10000

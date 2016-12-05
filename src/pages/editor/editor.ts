@@ -71,7 +71,6 @@ export class EditorPage {
           var matrix = res.Matrix;
           matrix['Matrix.Children'].View = this.views;
           var name = this.GetThumbName(matrix);
-
           this.storagefactory.SaveMatrixAsync(res, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
           var header = this.storagefactory.ComposeMatrixHeader(matrix);
           header.ThumbnailSource = name;
@@ -81,11 +80,15 @@ export class EditorPage {
   }
 
   GetThumbName(matrix) {
-    var thumb: any;
+    var thumb = "thumbnail";
+    var name: any;
     matrix['Matrix.Children'].View.forEach(view => {
       if (name == undefined) {
-        if (view.Content.Capture._Kernel != undefined) {
-          var name = view.Content.Capture._Kernel;
+        if (view.Content.Capture === undefined) {
+          console.log("sorry no Capture found");
+        }
+        else {
+          name = view.Content.Capture._Kernel;
           thumb = Date.now().toString();
           this.modelFactory.CreateThumbnail(name, thumb);
         }
@@ -250,6 +253,7 @@ export class EditorPage {
 
           File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName).then(_ => {
             console.log('Successfully copied video');
+            this.saveMatrix()
             this.CreateVideoView(fileName);
           }).catch(err => {
             console.log('Failed copying video:' + err)
@@ -297,6 +301,7 @@ export class EditorPage {
 
       File.moveFile(path, fileName, cordova.file.applicationStorageDirectory, fileName)
         .then(_ => {
+          this.saveMatrix()
           console.log('Successfully saved video')
           // var server = Connection.connectedServer.Address;
           // this.http.get(cordova.file.applicationStorageDirectory + fileName).subscribe(success => {
