@@ -1,10 +1,11 @@
 <ion-header no-shadow>
 
-	<ion-toolbar hideBackButton="true" color="primary" no-border-bottom>
-		<ion-buttons start>
-			<button ion-button icon-only clear (click)="saveMatrix()"><ion-icon name="arrow-back"></ion-icon></button>
+	<ion-toolbar color="primary" no-border-bottom>
+		<ion-buttons>
+			<button (click)="saveMatrix()" icon-only ion-button><ion-icon name="arrow-back"></ion-icon></button>
+			<button (click)="saveMatrix()" ion-button><span style="text-transform: capitalize; font-size:20px">{{matrix._Title}}</span></button>
 		</ion-buttons>
-		<ion-title>{{matrix._Title}}</ion-title>
+		<!--<ion-title>{{matrix._Title}}</ion-title>-->
 		<ion-buttons end>
 			<button ion-button icon-only clear *ngIf="countOfCaptureViews>1" (click)="openCompareView()"><ion-icon name="grid"></ion-icon></button>
 			<!--<button ion-button icon-only color="primary" (click)="openSwipeView()"><ion-icon name="move"></ion-icon></button>-->
