@@ -7,7 +7,7 @@ import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, Captur
 import { Http } from '@angular/http';
 import { Connection } from '../../pages/Connection'
 import { StorageFactory } from '../../Factory/StorageFactory';
-// import { ModelFactory } from '../../Factory/modelFactory';
+import { ModelFactory } from '../../Factory/modelFactory';
 import { Observable } from 'rxjs/Rx';
 import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 import { Compareview } from '../editor/compareview/compareview'
@@ -20,7 +20,7 @@ declare var cordova: any;
 @Component({
   selector: 'page-editor',
   templateUrl: 'editor.html',
-  providers: [StorageFactory, Connection],
+  providers: [StorageFactory, Connection,ModelFactory],
 })
 
 export class EditorPage {
@@ -37,6 +37,7 @@ export class EditorPage {
     private platform: Platform,
     private connection: Connection,
     private http: Http,
+    private modelFactory:ModelFactory,
     private storagefactory: StorageFactory,
     private app: App) {
     if (params.data != null) {
@@ -101,7 +102,7 @@ export class EditorPage {
         if (view.Content !== undefined) {
           name = view.Content.Capture._Kernel;
           thumb = Date.now().toString();
-          // this.modelFactory.CreateThumbnail(name, thumb);
+          this.modelFactory.CreateThumbnail(name, thumb);
         }
       }
     });

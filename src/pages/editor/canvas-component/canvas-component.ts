@@ -138,7 +138,7 @@ export class CanvasComponent {
 
       this.timelineInterval = setInterval(() => {
 
-        this.sliderValue = this.sliderValue + 5;
+        this.sliderValue = this.sliderValue + 80;
         var factor = this.duration * (this.sliderValue / 10000);
         this.timelinePosition = this.formatTime(factor);
 
