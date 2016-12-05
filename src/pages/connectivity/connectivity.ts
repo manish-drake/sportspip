@@ -50,8 +50,10 @@ export class Connectivity implements DoCheck {
             this.connection.scanUdp();
             let toast = this.toastCtrl.create({
                 message: 'Connectivity is now on.',
-                duration: 2000,
-                position: 'top'
+                duration: 1500,
+                position: 'bottom',
+                showCloseButton: true,
+                closeButtonText: 'Ok'
             });
             toast.present(toast);
         }
@@ -59,8 +61,10 @@ export class Connectivity implements DoCheck {
             this.connection.close();
             let toast = this.toastCtrl.create({
                 message: 'Connectivity closed.',
-                duration: 2000,
-                position: 'top'
+                duration: 1500,
+                position: 'bottom',
+                showCloseButton: true,
+                closeButtonText: 'Ok'
             });
             toast.present(toast);
         }
@@ -70,8 +74,10 @@ export class Connectivity implements DoCheck {
 
         let toast = this.toastCtrl.create({
             message: 'Connections reloaded.',
-            duration: 2000,
-            position: 'top'
+            duration: 1500,
+            position: 'bottom',
+            showCloseButton: true,
+            closeButtonText: 'Ok'
         });
         toast.present(toast);
 
