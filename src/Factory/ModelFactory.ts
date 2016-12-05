@@ -7,6 +7,9 @@ import 'rxjs/Rx';
 
 @Injectable()
 export class ModelFactory {
+
+    constructor() { }
+
     CreateThumbnail(name, thumbname) {
         var blob: any;
         var sourcePath = cordova.file.applicationStorageDirectory + name;
@@ -44,5 +47,5 @@ export class ModelFactory {
         var blob = new Blob(byteArrays, { type: contentType });
         return blob;
     }
-    
+
 }

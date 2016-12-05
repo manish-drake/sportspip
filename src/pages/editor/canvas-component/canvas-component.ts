@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 import { Platform } from 'ionic-angular'
+declare var cordova: any;
 
 @Component({
   selector: 'canvas-component',
@@ -36,6 +37,10 @@ export class CanvasComponent {
   ngAfterViewInit() {
     this.timelineDuration = "00:00:00.00";
     this.loadObjects()
+  }
+
+  returnImage(name) {
+    return cordova.file.applicationStorageDirectory + name;
   }
 
   loadObjects() {

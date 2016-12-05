@@ -59,7 +59,7 @@ export class VideoComponent {
     }
 
     OnVideoMatadataLoad() {
-        this.video.currentTime = 1;
+        this.video.currentTime = .1;
         this.video.setAttribute('preload', "auto");
         this.video.play();
         this.video.pause();
@@ -71,6 +71,10 @@ export class VideoComponent {
             this.playPauseButtonIcon = 'play';
             clearInterval(this.timelineInterval);
         }
+    }
+
+    returnImage(name) {
+        return cordova.file.applicationStorageDirectory + name;
     }
 
     OnVideoError(error) {
@@ -134,17 +138,6 @@ export class VideoComponent {
         else {
             return 'assets/' + filename;
         }
-    }
-
-    returnimagePath(filename) {
-        console.log(filename);
-        return "file:/storage/emulated/0/DCIM/636160004487756115.jpg";
-        // if (this.platform.is('cordova')) {
-        //     return cordova.file.applicationStorageDirectory + filename;
-        // }
-        // else {
-        //     return 'assets/' + filename;
-        // }
     }
 
     formatPoistionInMiliSecond(pos) {

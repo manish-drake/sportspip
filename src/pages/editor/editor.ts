@@ -1,6 +1,6 @@
 import { Component, Injectable } from '@angular/core';
 
-import { NavController, ViewController, NavParams, AlertController, ModalController, ModalOptions, Platform, App } from 'ionic-angular';
+import { NavController, ViewController, NavParams, AlertController, ModalController, ModalOptions, Platform, App, LoadingController } from 'ionic-angular';
 
 import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError, FilePath } from 'ionic-native';
 
@@ -32,8 +32,8 @@ export class EditorPage {
 
   constructor(public navCtrl: NavController, private params: NavParams,
     private alertCtrl: AlertController,
-    private viewctrl: ViewController,
     private modalCtrl: ModalController,
+    private loadingCtrl:LoadingController,
     private platform: Platform,
     private connection: Connection,
     private http: Http,
@@ -66,6 +66,11 @@ export class EditorPage {
     if (this.platform.is('cordova')) {
       File.readAsText(cordova.file.dataDirectory + "Local/" + this.matrix._Channel + "/Tennis/Matrices/" + this.matrix._Name, this.matrix._Name + ".mtx")
         .then(data => {
+           let loader = this.loadingCtrl.create({
+                content: "Saving..",
+                duration: 10000
+              });
+              loader.present();
           var res = JSON.parse(data.toString());
           var matrix = res.Matrix;
           matrix['Matrix.Children'].View = this.views;
@@ -81,6 +86,7 @@ export class EditorPage {
             .take(1).map((x) => x + 5)
             .subscribe((x) => {
               this.navCtrl.pop();
+               loader.dismiss();
             });
 
         });
