@@ -1,6 +1,6 @@
 import { Component, Injectable } from '@angular/core';
 
-import { NavController, NavParams, AlertController, ModalController, Platform, App } from 'ionic-angular';
+import { NavController, ViewController, NavParams, AlertController, ModalController, Platform, App } from 'ionic-angular';
 
 import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError, FilePath } from 'ionic-native';
 
@@ -32,6 +32,7 @@ export class EditorPage {
 
   constructor(public navCtrl: NavController, private params: NavParams,
     private alertCtrl: AlertController,
+    private viewctrl: ViewController,
     private modalCtrl: ModalController,
     private platform: Platform,
     private connection: Connection,
@@ -40,8 +41,14 @@ export class EditorPage {
     private app: App) {
     if (params.data != null) {
       this.matrix = params.data.matrixData;
-      console.log(this.matrix);
+      console.log("editor page: " + this.matrix);
     }
+
+    this.platform.registerBackButtonAction(() => {
+      let view = this.navCtrl.getActive();
+      if (view.instance instanceof EditorPage) this.saveMatrix();
+      else this.navCtrl.pop();
+    });
   }
 
   ngAfterViewInit() {
@@ -70,14 +77,14 @@ export class EditorPage {
           header.ThumbnailSource = name;
           this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
 
-          Observable.interval(1000)
+          Observable.interval(500)
             .take(1).map((x) => x + 5)
             .subscribe((x) => {
               this.navCtrl.pop();
             });
 
         });
-    }
+    }else this.navCtrl.pop();
   }
 
   GetThumbName(matrix) {
