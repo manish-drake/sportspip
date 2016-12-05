@@ -35,8 +35,7 @@ export class Connectivity implements DoCheck {
     ngDoCheck() {
         setTimeout(() => {
             if (this.servers.length == 0) {
-                this.connection.close();
-                this.connection.scanUdp();
+                this.servers = Connection.servers;
             }
         }, 1000);
     }

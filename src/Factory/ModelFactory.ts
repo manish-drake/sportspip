@@ -8,13 +8,12 @@ import 'rxjs/Rx';
 @Injectable()
 export class ModelFactory {
     CreateThumbnail(name, thumbname) {
-        console.log(name, thumbname);
         var blob: any;
         var sourcePath = cordova.file.applicationStorageDirectory + name;
         navigator.createThumbnail(sourcePath, function (err, imageData) {
             blob = imageData;
         });
-        Observable.interval(2000)
+        Observable.interval(1000)
             .take(1).map((x) => x + 5)
             .subscribe((x) => {
                 var data = this.b64toBlob(blob, 'image/jpeg', 1024);

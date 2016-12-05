@@ -1,13 +1,16 @@
 <ion-header no-shadow>
 
-	<ion-navbar color="primary" no-border-bottom>
+	<ion-toolbar hideBackButton="true" color="primary" no-border-bottom>
+		<ion-buttons start>
+			<button ion-button icon-only clear (click)="saveMatrix()"><ion-icon name="arrow-back"></ion-icon></button>
+		</ion-buttons>
 		<ion-title>{{matrix._Title}}</ion-title>
 		<ion-buttons end>
 			<button ion-button icon-only clear *ngIf="countOfCaptureViews>1" (click)="openCompareView()"><ion-icon name="grid"></ion-icon></button>
 			<!--<button ion-button icon-only color="primary" (click)="openSwipeView()"><ion-icon name="move"></ion-icon></button>-->
 			<button ion-button icon-only clear (click)="presentInfoModal()" style="text-transform: initial;"><ion-icon name="list-box"></ion-icon>Info</button>
 		</ion-buttons>
-	</ion-navbar>
+	</ion-toolbar>
 
 	<!--<ion-segment color="light" class="segment" [(ngModel)]="selectedViewIndex">
 		<ion-segment-button color="primary" style="font-size:16px;" *ngFor="let view of views; let i = index" [value]="i" (click)="showViewSegment(i)"
@@ -18,8 +21,7 @@
 	</ion-segment>-->
 	<ion-row>
 		<ion-col text-center center *ngFor="let view of views; let i = index" (click)="showViewSegment(i)" (press)="deleteView(i)"
-			[class.selectedview]="i == selectedViewIndex"
-			[class.view]="i != selectedViewIndex">
+			[class.selectedview]="i == selectedViewIndex" [class.view]="i != selectedViewIndex">
 			<span [hidden]="views.length > 5">View </span>{{i+1}}
 		</ion-col>
 		<button ion-button icon-only clear no-margin (click)="addView()"><ion-icon name="add-circle"></ion-icon></button>
