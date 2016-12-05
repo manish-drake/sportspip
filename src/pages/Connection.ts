@@ -76,6 +76,15 @@ export class Connection {
         }
     }
 
+    close() {
+        this.platform.ready().then(() => {
+            chrome.sockets.udp.close(Connection.socketId, function (info) {
+                Connection.servers.length = 0;
+                console.log('connection closed: ' + info);
+            })
+        });
+    }
+
     transferMatrix(channel, sport, fileName) {
         var serverAddress = Connection.connectedServer.Address;
         this.platform.ready().then(() => {
@@ -103,15 +112,6 @@ export class Connection {
                     // alert("Done");
                 }
                 );
-        });
-    }
-
-    close() {
-        this.platform.ready().then(() => {
-            chrome.sockets.udp.close(Connection.socketId, function (info) {
-                Connection.servers.length = 0;
-                console.log('connection closed: ' + info);
-            })
         });
     }
 

@@ -13,13 +13,12 @@
 		<ion-segment-button value="local" color="primary" style="font-size:16px;">Matrices</ion-segment-button>
 		<ion-segment-button value="server" color="primary" style="font-size:16px;">Channels</ion-segment-button>
 	</ion-segment>-->
-
 	<ion-row>
 		<ion-col text-center center (click)="showSegment('local')" [class.selectedsegment]="selectedSegment != 'local'">
-			Matrices
+			<b>Matrices</b>
 		</ion-col>
 		<ion-col text-center center (click)="showSegment('server')" [class.selectedsegment]="selectedSegment != 'server'">
-			Channels
+			<b>Channels</b>
 		</ion-col>
 	</ion-row>
 </ion-header>
@@ -36,11 +35,10 @@
 	</ion-fab>
 
 	<div *ngSwitchCase="'local'" style="position: relative; height:100%;">
-		<ion-row>
-			<ion-col no-padding center text-right>
-				<button ion-button clear *ngIf="localMatrices.length > 0" (click)="openCollection()">View All</button>
-			</ion-col>
-		</ion-row>
+		<button ion-item *ngIf="localMatrices.length > 0" style="background:transparent;" (click)="openCollection()">
+			All Matrices
+			<ion-badge item-right>{{localMatrices.length}}</ion-badge>
+			</button>
 		<div class="items">
 			<div class="item" *ngFor='let matrix of localMatrices | slice: 0:12; let i = index'>
 				<ion-card (click)="openMatrix(matrix.Name,matrix.Channel)" (press)="matrixPressed(i,matrix.Name,matrix.Channel,matrix.Title)">
@@ -76,21 +74,18 @@
 		</div>
 		<ion-row center *ngIf="!(localMatrices.length > 0)" style="position: absolute;height:100%;color: gray;">
 			<ion-col text-center center>
-				<h5>No matrix exists</h5>
+				<b>No matrix exists</b>
 			</ion-col>
 		</ion-row>
 	</div>
 
 	<div *ngSwitchCase="'server'" style="position: relative; height:100%;">
 		<ion-item-group *ngFor="let channel of channels|groupBy:'Channel'">
-			<ion-row *ngIf="channel.value.length > 0">
-				<ion-col no-padding center>
-					<ion-title>{{channel.key}}</ion-title>
-				</ion-col>
-				<ion-col no-padding text-right>
-					<button ion-button clear (click)="openChannelCollection(channel.key)">View All</button>
-				</ion-col>
-			</ion-row>
+
+			<button ion-item *ngIf="channel.value.length > 0" style="background:transparent;" (click)="openChannelCollection(channel.key)">
+			{{channel.key}}
+			<ion-badge item-right>{{channel.value.length}}</ion-badge>
+			</button>
 			<div class="items">
 				<div class="item" *ngFor="let matrix of channel.value | slice: 0:6; let i = index">
 
@@ -133,7 +128,7 @@
 		</ion-item-group>
 		<ion-row center *ngIf="!(channels.length > 0)" style="position: absolute; height:100%;color: gray;">
 			<ion-col text-center center>
-				<h5>No channel exists</h5>
+				<b>No channel exists</b>
 			</ion-col>
 		</ion-row>
 	</div>

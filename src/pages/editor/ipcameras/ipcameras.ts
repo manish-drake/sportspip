@@ -19,7 +19,7 @@ import { StorageFactory } from '../../../Factory/StorageFactory';
 declare var cordova: any;
 
 @Component({
-  selector: 'page-ipcamera',
+  selector: 'page-ipcameras',
   templateUrl: 'ipcameras.html',
   providers: [StorageFactory,Connection]
 })

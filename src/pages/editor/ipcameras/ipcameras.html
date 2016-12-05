@@ -6,7 +6,7 @@
 -->
 <ion-header no-shadow>
 
-  <ion-toolbar color="white">
+  <ion-toolbar color="primary">
     <ion-buttons start>
       <button ion-button icon-only [disabled]="isRecording" (click)="loadIPCams()"><ion-icon name="refresh"></ion-icon></button>
     </ion-buttons>
@@ -19,29 +19,33 @@
 </ion-header>
 
 
-<ion-content style="background:#f4f4f4;" style="position: relative;">
-
-  <ion-item>
-    <ion-label item-left>Rec. Duration: {{recordingDuration}}sec</ion-label>
-    <ion-range item-right min="5" max="45" step="5" snaps="true" [(ngModel)]="recordingDuration">
+<ion-content style="background:#eeeeee;" style="position: relative;">
+  <ion-row>
+    <ion-col center style="width:auto;flex:0 0 auto;min-width:160px;">
+      <b item-left>Rec. Duration </b>
+      <ion-badge>{{recordingDuration}} sec</ion-badge>
+    </ion-col>
+    <ion-col center style="width:100%;">
+      <ion-range min="5" max="45" step="5" snaps="true" [(ngModel)]="recordingDuration" style="padding:0;">
         <ion-label range-left>5s</ion-label>
         <ion-label range-right>45s</ion-label>
       </ion-range>
-  </ion-item>
-  <ion-list>
-    <ion-card *ngFor="let cam of ipCams">
-      <ion-item>
-        <b>{{cam._IPAdd}}</b>
-        <!--<ion-icon item-right name="arrow-dropdown"></ion-icon>-->
-      </ion-item>
-      <img [attr.src]="getIPCamPreview(cam._IPAdd)" style="max-height:350px;background-color: #cccccc;background-image: url(assets/sample.jpg);background-size: cover;background-position: center;"
-      />
-    </ion-card>
-  </ion-list>
+    </ion-col>
+  </ion-row>
+  <div class="items">
+    <div class="item" *ngFor="let cam of ipCams;let i = index">
+      <b margin-horizontal>{{cam._IPAdd}}</b>
+      <ion-card>
+        <img src="assets/sample.jpg" style="max-height:350px;" />
+        <img [attr.src]="getIPCamPreview(cam._IPAdd)" style="max-height:350px;background-color: #cccccc;background-image: url(assets/sample.jpg);background-size: cover;background-position: center;"
+        />
+      </ion-card>
+    </div>
+  </div>
 
   <ion-row center *ngIf="ipCams.length==0" style="position: absolute;top:40%; color: gray;">
     <ion-col text-center center>
-      <h5>No IP Camera found</h5>
+      <b>No IP Camera found</b>
     </ion-col>
   </ion-row>
 
