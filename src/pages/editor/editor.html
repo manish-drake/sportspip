@@ -4,7 +4,7 @@
 		<ion-buttons start>
 			<button ion-button icon-only clear (click)="saveMatrix()"><ion-icon name="arrow-back"></ion-icon></button>
 		</ion-buttons>
-		<ion-title>{{matrix._Title}}</ion-title>
+		<!--<ion-title>{{matrix._Title}}</ion-title>-->
 		<ion-buttons end>
 			<button ion-button icon-only clear *ngIf="countOfCaptureViews>1" (click)="openCompareView()"><ion-icon name="grid"></ion-icon></button>
 			<!--<button ion-button icon-only color="primary" (click)="openSwipeView()"><ion-icon name="move"></ion-icon></button>-->
@@ -77,7 +77,7 @@
 							<ion-card *ngIf="views.length==1" (click)="IPCamCapture()">
 								<ion-item>
 									<ion-icon name="wifi" item-left></ion-icon>
-									<h2 class="textTrim">Capture IP Cameras</h2>
+									<h2 class="textTrim">IP Cams Record</h2>
 								</ion-item>
 							</ion-card>
 						</ion-col>

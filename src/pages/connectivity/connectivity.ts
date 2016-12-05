@@ -43,6 +43,8 @@ export class Connectivity implements DoCheck {
     ionViewDidLoad() {
         console.log('Hello Connectivity Page');
         this.isConnectivityEnabled = true;
+        this.connection.close();
+        this.connection.scanUdp();
     }
 
     connectivityChanged(isOn) {
