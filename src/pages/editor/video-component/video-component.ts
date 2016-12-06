@@ -164,13 +164,10 @@ export class VideoComponent {
     }
 
     formatPoistionInMiliSecond(pos) {
-        if (pos == "00:00:00") {
-            return 0;
-        }
-        else {
-            var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
-            return positionInMilliseconds;
-        }
+        if (pos == "00:00:00") pos = "00:00:00.000000";
+        var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
+        return positionInMilliseconds;
+
     }
 
     formatDurationInMiliSecond(dur) {

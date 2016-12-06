@@ -33,8 +33,7 @@
 			<ion-row style="position: relative;">
 				<ion-col padding-horizontal no-padding style="position:absolute;color: gray;margin-top:22px;">
 					<span>{{timelinePosition}}</span>
-					<span style="float:right;">00:00:00.00</span>
-					<!--{{timelineDuration}}-->
+					<span style="float:right;">{{timelineDuration}}</span>
 				</ion-col>
 				<ion-col padding-horizontal no-padding>
 					<ion-range style="padding:0;margin-top:10px; height:10px" min="0" max="10000" step="0.01" [(ngModel)]="sliderValue" (ionChange)="sliderValueChange()"></ion-range>
