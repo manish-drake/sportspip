@@ -1,6 +1,6 @@
 import { Component, ViewChild, Input, ElementRef } from '@angular/core';
 
-import { AlertController, ModalController, Platform } from 'ionic-angular';
+import { AlertController, ModalController, Platform, Events } from 'ionic-angular';
 declare var cordova: any;
 
 @Component({
@@ -14,7 +14,10 @@ export class VideoComponent {
 
     @ViewChild('video') videoElement: ElementRef;
 
-    constructor(private alertCtrl: AlertController, private modalCtrl: ModalController, private platform: Platform) {
+    constructor(private alertCtrl: AlertController,
+        private modalCtrl: ModalController,
+        private platform: Platform,
+        private events: Events) {
         this.timelinePosition = this.formatTime(0);
     }
 
@@ -56,6 +59,12 @@ export class VideoComponent {
                 this.evaluateMarkerPosition();
             }
         }, 1 / 60);
+
+        this.events.subscribe('viewoutoffocus', () => {
+            if(!this.video.paused){
+                this.playPause();
+            }
+        });
     }
 
     OnVideoMatadataLoad() {
@@ -71,10 +80,6 @@ export class VideoComponent {
             this.playPauseButtonIcon = 'play';
             clearInterval(this.timelineInterval);
         }
-    }
-
-    returnImage(name) {
-        return cordova.file.applicationStorageDirectory + name;
     }
 
     OnVideoError(error) {
@@ -137,6 +142,24 @@ export class VideoComponent {
         }
         else {
             return 'assets/' + filename;
+        }
+    }
+
+    returnImagePath(name) {
+        if (this.platform.is('cordova')) {
+            return cordova.file.applicationStorageDirectory + name;
+        }
+        else {
+            return 'assets/sample.jpg';
+        }
+    }
+
+    returnInkPath(name) {
+        if (this.platform.is('cordova')) {
+            return cordova.file.applicationStorageDirectory + name + ".gif";
+        }
+        else {
+            return 'assets/inksample.gif';
         }
     }
 
@@ -341,7 +364,6 @@ export class VideoComponent {
     }
 
     updateSelection(i, isSelect) {
-
         this.markers.forEach((marker, index) => {
             if (i != index) {
                 marker.checked = false;

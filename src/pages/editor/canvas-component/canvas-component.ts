@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { Platform } from 'ionic-angular'
+import { Platform, Events } from 'ionic-angular'
 declare var cordova: any;
 
 @Component({
@@ -20,7 +20,7 @@ export class CanvasComponent {
   duration: any;
   isTimelineAvailable: boolean = false;
 
-  constructor(private platform: Platform) {
+  constructor(private platform: Platform,private events: Events) {
     this.timelinePosition = "00:00:00:00";
     this.playPauseButtonIcon = "play";
     this.repeatColor = "inactive";
@@ -36,12 +36,32 @@ export class CanvasComponent {
 
   ngAfterViewInit() {
     this.timelineDuration = "00:00:00.00";
-    this.loadObjects()
+    this.loadObjects();
+
+    this.events.subscribe('viewoutoffocus', () => {
+            if(this.playPauseButtonIcon == 'pause'){
+                this.playPause();
+            }
+        });
   }
 
-  returnImage(name) {
-    return cordova.file.applicationStorageDirectory + name;
+  returnImagePath(name) {
+    if (this.platform.is('cordova')) {
+      return cordova.file.applicationStorageDirectory + name;
+    }
+    else {
+      return 'assets/sample.jpg';
+    }
   }
+
+  returnInkPath(name) {
+        if (this.platform.is('cordova')) {
+            return cordova.file.applicationStorageDirectory + name +".gif";
+        }
+        else {
+            return 'assets/inksample.gif';
+        }
+    }
 
   loadObjects() {
     var objs = this.view["Content"]["PIP"]["PIP.Objects"];
@@ -68,7 +88,6 @@ export class CanvasComponent {
     }
     this.PlayStoryBoard();
   }
-
 
   returnMaxDuration(objBehaviors) {
     if (this.platform.is('cordova')) {
