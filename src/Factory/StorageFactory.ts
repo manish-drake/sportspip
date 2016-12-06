@@ -10,7 +10,6 @@ export class StorageFactory {
 
     constructor(private http: Http, private platform: Platform, private toastCtrl: ToastController, ) {
     }
-
     SaveRoamingHeader(content, channel, sport, matrixName) {
         this.SaveServerHeader(content, channel, sport, matrixName, "Matrices");
     }

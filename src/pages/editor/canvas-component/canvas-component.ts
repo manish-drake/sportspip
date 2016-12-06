@@ -36,7 +36,7 @@ export class CanvasComponent {
 
   ngAfterViewInit() {
     this.timelineDuration = "00:00:00.00";
-    this.loadObjects()
+    this.loadObjects();
   }
 
   returnImage(name) {
@@ -74,7 +74,7 @@ export class CanvasComponent {
     if (this.platform.is('cordova')) {
       this.isTimelineAvailable = true;
     }
-    if (objBehaviors.Span._Duration > this.timelineDuration) { this.timelineDuration = objBehaviors.Span._Duration; }
+    if (objBehaviors.Span._Duration >= this.timelineDuration) { this.timelineDuration = objBehaviors.Span._Duration; }
     var durationInMS = (this.formatDurationInMiliSecond(this.timelineDuration)) / 10000000;
     this.duration = durationInMS;
     this.timelineDuration = this.formatTime(this.duration);
@@ -114,12 +114,14 @@ export class CanvasComponent {
   }
 
   formatPoistionInMiliSecond(pos) {
+    if (pos == "00:00:00") pos = "00:00:00.000000";
     var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
     return positionInMilliseconds;
   }
 
   formatDurationInMiliSecond(dur) {
     if (dur != undefined) {
+      if (dur == "00:00:00") dur = "00:00:00.000000";
       var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-2)) * 100000;
       return durationInMilliseconds;
     }
@@ -137,8 +139,7 @@ export class CanvasComponent {
       }
 
       this.timelineInterval = setInterval(() => {
-
-        this.sliderValue = this.sliderValue + 80;
+        this.sliderValue = this.sliderValue + 50;
         var factor = this.duration * (this.sliderValue / 10000);
         this.timelinePosition = this.formatTime(factor);
 
@@ -162,7 +163,6 @@ export class CanvasComponent {
 
       if (val instanceof Array) {
         val.forEach(val => {
-          console.log("arrya: " + val);
           if (val.Behaviors.Span != undefined) {
             var objbeh = val.Behaviors.Span;
             if (this.IsObjectExist(val) == -1) {
@@ -171,7 +171,7 @@ export class CanvasComponent {
                 this.objects.push({ key, val });
               } else {
                 var positionInMS = (this.formatPoistionInMiliSecond(objbeh._Position)) / 10000000;
-                if (this.formatTime(positionInMS) == this.timelinePosition) {
+                if (this.timelinePosition >= this.formatTime(positionInMS)) {
                   this.objDirectory.push(val);
                   this.objects.push({ key, val });
                 }
@@ -208,16 +208,16 @@ export class CanvasComponent {
       var durationInMS = this.formatDurationInMiliSecond(objBehaviors.Span._Duration);
       var positionInMS = this.formatPoistionInMiliSecond(objBehaviors.Span._Position);
       var totalDur = (durationInMS + positionInMS) / 10000000;
-      console.log(this.formatTime(totalDur));
       return totalDur
     }
     return null;
   }
 
   RemoveObjects() {
-    var objects = this.objects.find(x => this.formatTime(this.returnTotalDuration(x.val.Behaviors)) == this.timelinePosition)
-    if (objects != undefined) {
-      var obj = this.objects.indexOf(objects);
+    var object = this.objects.find(x => this.timelinePosition >= this.formatTime(this.returnTotalDuration(x.val.Behaviors)))
+    if (object != undefined) {
+      console.log(object);
+      var obj = this.objects.indexOf(object);
       this.objects.splice(obj, 1);
     }
 

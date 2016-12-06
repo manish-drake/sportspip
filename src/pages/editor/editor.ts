@@ -7,7 +7,7 @@ import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, Captur
 import { Http } from '@angular/http';
 import { Connection } from '../../pages/Connection'
 import { StorageFactory } from '../../Factory/StorageFactory';
-import { ModelFactory } from '../../Factory/modelFactory';
+import { ModelFactory } from '../../Factory/ModelFactory';
 import { Observable } from 'rxjs/Rx';
 import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 import { Compareview } from '../editor/compareview/compareview'
