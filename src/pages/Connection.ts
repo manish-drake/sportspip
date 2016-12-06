@@ -88,14 +88,20 @@ export class Connection {
     transferMatrix(channel, sport, fileName) {
         var serverAddress = Connection.connectedServer.Address;
         this.platform.ready().then(() => {
-            const fs: string = cordova.file.dataDirectory;
-            var urlPath = fs + "Local/" + channel + "/" + sport + "/Matrices/" + fileName + "/" + fileName + ".mtx";
+            var urlPath = cordova.file.dataDirectory + "Local/" + channel + "/" + sport + "/Matrices/" + fileName + "/" + fileName + ".mtx";
             // alert(urlPath);
 
+            
             this.http.get(urlPath)
             .map((res: Response) => res.json())
                 .subscribe(
                 data => {
+                    alert(JSON.stringify(data));
+
+                    let parser: any = new X2JS();
+                    var xmlMatrix = parser.js2xml(data);
+                    alert(xmlMatrix);
+
                     let headers = new Headers({ 'Content-Type': 'application/xml' }); // ... Set content type to JSON
                     let options = new RequestOptions({ headers: headers });
                     this.http.post("http://" + serverAddress + ":10080/imatrix/matrices",  data, options)
@@ -105,11 +111,11 @@ export class Connection {
                 },
                 err => {
                     console.error(err);
-                    // alert(err);
+                    alert(err);
                 },
                 () => {
                     console.log('done');
-                    // alert("Done");
+                    alert("Done");
                 }
                 );
         });

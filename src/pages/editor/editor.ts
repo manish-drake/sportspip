@@ -1,6 +1,6 @@
 import { Component, Injectable } from '@angular/core';
 
-import { NavController,LoadingController, NavParams, AlertController, ModalController, Platform, App } from 'ionic-angular';
+import { NavController, ViewController, NavParams, AlertController, ModalController, ModalOptions, Platform, App, LoadingController } from 'ionic-angular';
 
 import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError, FilePath } from 'ionic-native';
 
@@ -213,43 +213,50 @@ export class EditorPage {
     alert.present();
   }
 
-  chooseVideo() {
+  evaluateReadPermissions() {
     if (this.platform.is('cordova')) {
-      this.checkPermissions();
+      var permissions = cordova.plugins.permissions;
+      permissions.hasPermission(permissions.READ_EXTERNAL_STORAGE, (status) => {
+        if (status.hasPermission) return true;
+        else return false
+      });
     }
   }
 
-  checkPermissions() {
-    var permissions = cordova.plugins.permissions;
-    permissions.hasPermission(permissions.READ_EXTERNAL_STORAGE, (status) => {
-      if (status.hasPermission) {
-        this.startChoosingFile();
-      }
-      else {
-        permissions.requestPermission(permissions.READ_EXTERNAL_STORAGE, (status2) => {
-          if (status2.hasPermission) {
-            this.startChoosingFile();
-          }
-          else {
-            console.log('permission is not turned on');
-            permissionNotGranted();
-          }
-        }, ((err) => {
-          console.log('permission is not turned on: ' + err);
-          permissionNotGranted();
-        }));
-      }
-    }, ((err) => {
-      console.log('permission is not turned on: ' + err);
-      permissionNotGranted();
-    }));
+  chooseVideo() {
+    if (this.platform.is('cordova')) {
+      var permissions = cordova.plugins.permissions;
+      permissions.hasPermission(permissions.READ_EXTERNAL_STORAGE, (status) => {
+        if (status.hasPermission) {
+          this.startChoosingFile();
+        }
+        else {
+          permissions.requestPermission(permissions.READ_EXTERNAL_STORAGE, (status2) => {
+            if (status2.hasPermission) {
+              this.startChoosingFile();
+            }
+            else {
+              console.log('permission is not turned on');
+              permissionNotGranted("");
+            }
+          }, ((err) => {
+            console.log('permission is not turned on: ' + err);
+            permissionNotGranted(err);
+          }));
+        }
+      }, ((err) => {
+        console.log('permission is not turned on: ' + err);
+        permissionNotGranted(err);
+      }));
 
-    var permissionNotGranted = function () {
-      let alert = this.alertCtrl.create({
-        title: 'Storage read permission issue',
-        buttons: ['OK']
-      });
-      alert.present();
+      var permissionNotGranted = function (err) {
+        let alert = this.alertCtrl.create({
+          title: 'Storage read permission issue',
+          subTitle: err,
+          buttons: ['OK']
+        });
+        alert.present();
+      }
     }
   }
 
@@ -328,7 +335,7 @@ export class EditorPage {
           console.log('Failed saving video' + err)
           let alert = this.alertCtrl.create({
             title: 'Failed saving video!',
-            subTitle: err,
+            subTitle: JSON.stringify(err),
             buttons: ['OK']
           });
           alert.present();
@@ -349,14 +356,17 @@ export class EditorPage {
       alert.present();
     }
   }
+
   // Code for Camera Recording Starts
 
   IPCamCapture() {
+    let modalOptions: ModalOptions = { showBackdrop: false, enableBackdropDismiss: false };
+
     var modal = this.modalCtrl.create(Ipcameras, {
       matrix: this.matrix,
       views: this.views,
       selectedViewIndex: this.selectedViewIndex
-    });
+    }, modalOptions);
     modal.present();
 
     modal.onDidDismiss((views) => {
