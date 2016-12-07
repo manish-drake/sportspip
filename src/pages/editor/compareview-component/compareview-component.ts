@@ -1,6 +1,9 @@
 import { Component, ViewChild, Input, ElementRef } from '@angular/core';
 
-import { AlertController, ModalController, Platform, PopoverController, ViewController, NavParams } from 'ionic-angular';
+import {
+    AlertController, ModalController, Platform,
+    PopoverController, ViewController, NavParams, Events
+} from 'ionic-angular';
 
 declare var cordova: any;
 
@@ -16,8 +19,8 @@ export class CompareviewComponent {
     @Input() views: any;
     @Input() isSelected: boolean;
 
-    isLinked: boolean = false;
-    linkUnlinkIcon: string = "remove";
+    isLinked: boolean = true;
+    linkUnlinkIcon: string = "link";
 
     @ViewChild('video') videoElement: ElementRef;
 
@@ -28,8 +31,8 @@ export class CompareviewComponent {
     constructor(private alertCtrl: AlertController,
         private modalCtrl: ModalController,
         private platform: Platform,
-        private popoverCtrl: PopoverController) {
-
+        private popoverCtrl: PopoverController,
+        private events: Events) {
         this.playPauseButtonIcon = "play";
         this.timelinePosition = this.formatTime(0);
     }
@@ -67,6 +70,32 @@ export class CompareviewComponent {
             }
         }, 1 / 60);
 
+        this.events.subscribe('playviews', (mode) => {
+            if (this.isLinked) {
+                if (mode == "pause") {
+                    if (!this.video.paused) {
+                        this.playPause();
+                    }
+                }
+                else if (mode == "play") {
+                    if (this.video.paused) {
+                        this.playPause();
+                    }
+                }}
+        });
+
+        this.events.subscribe('playbackspeedviews', (speed) => {
+            if (this.isLinked) {
+                this.video.playbackRate = speed;
+            }
+        });
+
+        this.events.subscribe('seekviews', () => {
+            if (this.isLinked) {
+                this.sliderValueChange();
+            }
+        });
+
         var markerCheckInterval = setInterval(() => {
             this.markers.forEach(element => {
                 if (element.checked = true) {
@@ -74,7 +103,7 @@ export class CompareviewComponent {
                 }
             });
             clearInterval(markerCheckInterval);
-        })
+        });
 
         this.fade(this.fadableTitle.nativeElement);
     }
@@ -121,10 +150,10 @@ export class CompareviewComponent {
             op -= op * 0.01;
         }, 30);
     }
- 
+
     presentViewPopover(event) {
         let popover = this.popoverCtrl.create(CaptureViewsPopover, {
-           views: this.views,
+            views: this.views,
             view: this.view
         });
         popover.present({ ev: event });
@@ -144,23 +173,27 @@ export class CompareviewComponent {
     }
 
     updateLink() {
-        if (!this.isLinked) {
+        if (this.isLinked) {
             console.log(this.views);
-            this.isLinked = true;
-            this.linkUnlinkIcon = "link";
+            this.isLinked = false;
+            this.linkUnlinkIcon = "remove";
+            if (!this.video.paused) {
+                this.playPause();
+            }
         }
         else {
             console.log(this.views);
-            this.isLinked  = false;
-            this.linkUnlinkIcon = "remove";
+            this.isLinked = true;
+            this.linkUnlinkIcon = "link";
+            this.events.publish('playviews', 'pause');
+            this.events.publish('playbackspeedviews', this.video.playbackRate);
         }
- 
     }
 
     playPauseParent() {
         if (this.isLinked) {
-            //
-            this.playPause();
+            var toDo = this.video.paused ? 'play' : 'pause';
+            this.events.publish('playviews', toDo);
         }
         else {
             this.playPause();
@@ -191,6 +224,15 @@ export class CompareviewComponent {
             this.playPauseButtonIcon = 'play';
             clearInterval(this.timelineInterval);
             this.video.pause();
+        }
+    }
+
+    parentSliderValueChange() {
+        if (this.isLinked) {
+            this.events.publish('seekviews');
+        }
+        else {
+            this.sliderValueChange();
         }
     }
 
@@ -241,7 +283,12 @@ export class CompareviewComponent {
                 speed = 1;
                 break;
         }
-        this.video.playbackRate = speed;
+        if (this.isLinked) {
+            this.events.publish('playbackspeedviews', speed);
+        }
+        else {
+            this.video.playbackRate = speed;
+        }
     }
 
     // Code for Markers starts
@@ -254,39 +301,42 @@ export class CompareviewComponent {
 
     evaluateMarkerPosition() {
         var interval = setInterval(() => {
-            var markersContainerWidth = this.markersContainer.nativeElement.clientWidth;
-            var durationInMilliseconds = this.formatDurationInMiliSecond(this.timelineDuration);
-            if (markersContainerWidth != 0 && this.timelineDuration != undefined) {
-                var factor = markersContainerWidth / durationInMilliseconds;
+            if (this.markers != undefined) {
+                var markersContainerWidth = this.markersContainer.nativeElement.clientWidth;
+                var durationInMilliseconds = this.formatDurationInMiliSecond(this.timelineDuration);
+                if (markersContainerWidth != 0 && this.timelineDuration != undefined) {
+                    var factor = markersContainerWidth / durationInMilliseconds;
 
-                this.markers.forEach(marker => {
-                    var pos = marker._Position;
-                    var positionInMilliseconds = this.formatPoistionInMiliSecond(pos);
-                    marker.Left = positionInMilliseconds * factor + 'px';
-                });
-                clearInterval(interval);
+                    this.markers.forEach(marker => {
+                        var pos = marker._Position;
+                        var positionInMilliseconds = this.formatPoistionInMiliSecond(pos);
+                        marker.Left = positionInMilliseconds * factor + 'px';
+                    });
+                    clearInterval(interval);
 
-                // return positionInMilliseconds * factor + 'px';
-
+                    // return positionInMilliseconds * factor + 'px';
+                }
             }
         }, 1 / 60)
-        // var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
-        // return positionInMilliseconds * factor + 'px';
     }
 
     updateSelection(i, isSelect) {
         this.markers.forEach((marker, index) => {
             if (i != index) {
                 marker.checked = false;
+                // this.playPauseButtonIcon = 'play';
+                // this.video.pause();
+                // clearInterval(this.timelineInterval);
             }
             else {
                 if (isSelect) {
                     marker.checked = false;
                 }
                 else {
+                    // this.video.pause();
+                    // this.playPauseButtonIcon = 'play';
                     marker.checked = true;
                     this.index = 0;
-
                     this.timelinePosition = marker._Position;
                     var positionMS = this.formatPoistionInMiliSecond(marker._Position);
                     var formatPosition = positionMS / 10000000;

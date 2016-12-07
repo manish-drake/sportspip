@@ -187,6 +187,7 @@ export class Ipcameras {
             clearInterval(interval);
             this.isRecording = false;
             this.viewCtrl.dismiss(this.views, this.recordingDuration);
+            
             this.transferMatrix(fileName, this.recordingDuration,"IP");
           }
         }, 1000);

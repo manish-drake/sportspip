@@ -1,6 +1,9 @@
 import { Component, Injectable } from '@angular/core';
 
-import { NavController, NavParams, AlertController, ModalController, ModalOptions, Platform, App, LoadingController } from 'ionic-angular';
+import {
+  NavController, NavParams, AlertController, ModalController, ModalOptions, Platform,
+  App, LoadingController, Events
+} from 'ionic-angular';
 
 import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError, FilePath } from 'ionic-native';
 
@@ -20,7 +23,7 @@ declare var cordova: any;
 @Component({
   selector: 'page-editor',
   templateUrl: 'editor.html',
-  providers: [StorageFactory, Connection,ModelFactory],
+  providers: [StorageFactory, Connection, ModelFactory],
 })
 
 export class EditorPage {
@@ -30,19 +33,21 @@ export class EditorPage {
   matrix: any;
   views = [];
 
-  constructor(public navCtrl: NavController, private params: NavParams,
+  constructor(public navCtrl: NavController,
+    private params: NavParams,
     private alertCtrl: AlertController,
     private modalCtrl: ModalController,
-    private loadingCtrl:LoadingController,
+    private loadingCtrl: LoadingController,
+    private modelFactory: ModelFactory,
     private platform: Platform,
     private connection: Connection,
     private http: Http,
-    private modelFactory:ModelFactory,
     private storagefactory: StorageFactory,
-    private app: App) {
+    private app: App,
+    private events: Events) {
     if (params.data != null) {
       this.matrix = params.data.matrixData;
-      console.log("editor page: " + this.matrix);
+      console.log("editor page: " + JSON.stringify(this.matrix));
     }
 
     this.platform.registerBackButtonAction(() => {
@@ -67,11 +72,11 @@ export class EditorPage {
     if (this.platform.is('cordova')) {
       File.readAsText(cordova.file.dataDirectory + "Local/" + this.matrix._Channel + "/Tennis/Matrices/" + this.matrix._Name, this.matrix._Name + ".mtx")
         .then(data => {
-           let loader = this.loadingCtrl.create({
-                content: "Saving..",
-                duration: 10000
-              });
-              loader.present();
+          let loader = this.loadingCtrl.create({
+            content: "Saving..",
+            duration: 10000
+          });
+          loader.present();
           var res = JSON.parse(data.toString());
           var matrix = res.Matrix;
           matrix['Matrix.Children'].View = this.views;
@@ -87,7 +92,7 @@ export class EditorPage {
             .take(1).map((x) => x + 5)
             .subscribe((x) => {
               this.navCtrl.pop();
-               loader.dismiss();
+              loader.dismiss();
             });
 
         });
@@ -121,6 +126,7 @@ export class EditorPage {
   showViewSegment(viewindex: number) {
     if (viewindex != this.selectedViewIndex) {
       this.selectedViewIndex = viewindex;
+      this.events.publish('viewoutoffocus');
     }
   }
 
@@ -411,6 +417,7 @@ export class EditorPage {
       }
     });
     console.log(captureViews);
+    this.events.publish('viewoutoffocus');
     this.navCtrl.push(Compareview, {
       captureViews: captureViews
     });

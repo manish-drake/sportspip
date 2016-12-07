@@ -16,7 +16,7 @@
 			<text *ngSwitchCase="'RichTextObject'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.font-size]="obj.val._FontSize"
 				[attr.fill]="clrCvt(obj.val._Foreground)" [attr.opacity]="obj.val._Opacity">Canvas</text>
 			<image *ngSwitchCase="'Picture'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
-				[attr.xlink:href]="returnImage(obj.val._Source)" />
+				[attr.xlink:href]="returnImagePath(obj.val._Source)" />
 			<defs *ngSwitchCase="'Arrow'">
 				<marker id="arrow" viewBox="0 0 14 14" markerWidth="6" markerHeight="6" refX="9" refY="6" orient="auto">
 					<path d="M0,0 L0,12 L12,6 L0,0" [attr.fill]="clrCvt(obj.val._Stroke)"></path>
@@ -25,8 +25,8 @@
 			<line *ngSwitchCase="'Arrow'" #arrow marker-end="url(#arrow)" [attr.x1]="obj.val._X1" [attr.y1]="obj.val._Y1" [attr.x2]="obj.val._X2"
 				[attr.y2]="obj.val._Y2" [attr.stroke]="clrCvt(obj.val._Stroke)" [attr.stroke-width]="obj.val._StrokeThickness" [attr.opacity]="obj.val._Opacity"
 			/>
-			<image *ngSwitchCase="'Ink'" #Ink x="0" y="0" width="100%" height="100%" [attr.xlink:href]="returnImage(obj.val._name)" />
-		</svg>
+			<image *ngSwitchCase="'Ink'" #Ink x="0" y="0" width="100%" height="100%" [attr.xlink:href]="returnInkPath(obj.val._name)"
+			/>
 	</ion-row>
 	<ion-row *ngIf="isTimelineAvailable" style="height: auto; flex: 0 0 auto;">
 		<ion-col no-padding>
