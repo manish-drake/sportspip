@@ -1,6 +1,6 @@
 import { Component, Injectable } from '@angular/core';
 
-import { NavController, ViewController, NavParams, AlertController, ModalController, ModalOptions, Platform, App, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ModalController, ModalOptions, Platform, App, LoadingController } from 'ionic-angular';
 
 import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError, FilePath } from 'ionic-native';
 
@@ -369,11 +369,11 @@ export class EditorPage {
     }, modalOptions);
     modal.present();
 
-    modal.onDidDismiss((views) => {
+    modal.onDidDismiss((views,duration) => {
       if (views != null) {
         this.views = views;
         this.saveMatrix();
-        this.connection.transferMatrix(this.matrix._Channel, this.matrix._Sport, this.matrix._Name);
+        // this.connection.transferMatrix(this.matrix._Name,duration);
       }
     });
   }

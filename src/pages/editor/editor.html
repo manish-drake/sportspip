@@ -34,7 +34,7 @@
 <ion-content style="background:whitesmoke;" [ngSwitch]="selectedViewIndex">
 	<div style="height:100%;" *ngFor="let view of views; let i = index" [hidden]="hideViewSegment(selectedViewIndex,i)" [ngSwitch]="view._Source">
 		<!--ViewCanvasTemplate-->
-		<!--<canvas-component *ngSwitchCase="'Canvas'" [view]="view"></canvas-component>-->
+		<canvas-component *ngSwitchCase="'Canvas'" [view]="view"></canvas-component>
 		<!--ViewVideoTemplate-->
 		<video-component *ngSwitchCase="'Local'" [view]="view"></video-component>
 		<!--viewOptions-->

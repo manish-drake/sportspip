@@ -36,9 +36,7 @@ export class VideoComponent {
         this.LoadMarkers();
 
         this.video = this.videoElement.nativeElement;
-
-
-
+        
         this.video.addEventListener('loadedmetadata', () => { this.OnVideoMatadataLoad(); });
 
         this.video.addEventListener('ended', () => { this.OnVideoEnded(); });

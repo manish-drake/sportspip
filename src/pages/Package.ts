@@ -29,8 +29,8 @@ export class Package {
                 var header = JSON.parse(result.text());
                 header.Name = this.fileName;
                 header.DateCreated = Date.now().toString();
+                header.ThumbnailSource = header.UploadID;
                 this.channelName = header.Channel;
-
                 this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
                 console.log("header moved");
             }));
@@ -57,7 +57,9 @@ export class Package {
                             break;
                         case ".gif":
                         case ".rtf":
+                            console.log("ink moving...");
                             File.moveFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.applicationStorageDirectory, file.name);
+                            console.log("ink moved...");
                             break;
                         case ".jpg":
                             console.log("image moving...");
