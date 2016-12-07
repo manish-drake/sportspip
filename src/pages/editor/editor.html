@@ -7,9 +7,8 @@
 		</ion-buttons>
 		<!--<ion-title>{{matrix._Title}}</ion-title>-->
 		<ion-buttons end>
-			<button ion-button icon-only clear *ngIf="countOfCaptureViews>1" (click)="openCompareView()"><ion-icon name="grid"></ion-icon></button>
-			<!--<button ion-button icon-only color="primary" (click)="openSwipeView()"><ion-icon name="move"></ion-icon></button>-->
 			<button ion-button icon-only clear (click)="presentInfoModal()" style="text-transform: initial;"><ion-icon name="list-box"></ion-icon>Info</button>
+			<button ion-button icon-only (click)="presentMoreActions($event)"><ion-icon name="more"></ion-icon></button>
 		</ion-buttons>
 	</ion-toolbar>
 
@@ -27,7 +26,6 @@
 		</ion-col>
 		<button ion-button icon-only clear no-margin (click)="addView()"><ion-icon name="add-circle"></ion-icon></button>
 	</ion-row>
-	<!--box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.30);-->
 
 </ion-header>
 

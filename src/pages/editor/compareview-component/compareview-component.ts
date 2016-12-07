@@ -81,7 +81,8 @@ export class CompareviewComponent {
                     if (this.video.paused) {
                         this.playPause();
                     }
-                }}
+                }
+            }
         });
 
         this.events.subscribe('playbackspeedviews', (speed) => {
@@ -90,8 +91,14 @@ export class CompareviewComponent {
             }
         });
 
-        this.events.subscribe('seekviews', () => {
-            if (this.isLinked) {
+        this.events.subscribe('seekviews', (change) => {
+            if (this.isLinked && !this.isSelected) {
+                var cT = Math.abs(this.video.currentTime + Number(change));
+                var factor = (100000 / this.video.duration) * cT;
+                this.sliderValue = factor;
+                this.sliderValueChange();
+            }
+            if (this.isLinked && this.isSelected) {
                 this.sliderValueChange();
             }
         });
@@ -110,6 +117,7 @@ export class CompareviewComponent {
 
     OnVideoMatadataLoad() {
         this.video.currentTime = 1;
+        this.oldCurrentTime = this.video.currentTime;
         this.video.setAttribute('preload', "auto");
         this.video.play();
         this.video.pause();
@@ -126,6 +134,94 @@ export class CompareviewComponent {
     OnVideoError(error) {
         console.log('Error in video Elmnt:' + JSON.stringify(error));
         // this.videoSrcAvailable = false;
+    }
+
+    updateLink() {
+        if (this.isLinked) {
+            console.log(this.views);
+            this.isLinked = false;
+            this.linkUnlinkIcon = "remove";
+            if (!this.video.paused) {
+                this.playPause();
+            }
+        }
+        else {
+            console.log(this.views);
+            this.isLinked = true;
+            this.linkUnlinkIcon = "link";
+            this.events.publish('playviews', 'pause');
+            this.events.publish('playbackspeedviews', this.video.playbackRate);
+        }
+    }
+
+    playPauseParent() {
+        if (this.isLinked) {
+            var toDo = this.video.paused ? 'play' : 'pause';
+            this.events.publish('playviews', toDo);
+        }
+        else {
+            this.playPause();
+        }
+    }
+
+    timelineInterval: any;
+
+    playPause() {
+        if (this.video.paused == true) {
+            this.timelineInterval = setInterval(() => {
+
+                this.oldCurrentTime = this.video.currentTime;
+
+                var factor = (100000 / this.video.duration) * this.video.currentTime;
+                this.sliderValue = factor;
+                this.timelinePosition = this.formatTime(this.video.currentTime);
+                if (this.timelinePosition == this.timelineDuration) {
+                    this.playPauseButtonIcon = 'play';
+                }
+                this.PlayMarker();
+                this.PlayStoryBoard();
+            }, 1 / 60);
+            this.playPauseButtonIcon = 'pause';
+            this.video.play();
+            if (this.formatTime(this.video.currentTime) == this.timelineDuration) {
+                this.markersobjects = [];
+                this.markersDirectory = [];
+            }
+        } else {
+            this.playPauseButtonIcon = 'play';
+            clearInterval(this.timelineInterval);
+            this.video.pause();
+        }
+    }
+
+    oldCurrentTime: number;
+
+    parentSliderValueChange() {
+        if (this.isLinked) {
+            var change = Number(this.video.currentTime - this.oldCurrentTime);
+            this.events.publish('seekviews', change);
+        }
+        else {
+            this.sliderValueChange();
+        }
+    }
+
+    sliderValueChange() {
+        this.oldCurrentTime = this.video.currentTime;
+        this.timelinePosition = this.formatTime(this.video.currentTime);
+        var factor = this.video.duration * (this.sliderValue / 100000);
+        this.video.currentTime = factor;
+        this.timelinePosition = this.formatTime(factor);
+        this.PlayStoryBoard();
+    }
+
+    returnVidPath(filename) {
+        if (this.platform.is('cordova')) {
+            return cordova.file.applicationStorageDirectory + filename;
+        }
+        else {
+            return 'assets/' + filename;
+        }
     }
 
     LoadMarkers() {
@@ -170,87 +266,6 @@ export class CompareviewComponent {
         this.objects = [];
         this.loadObjects();
         this.LoadMarkers();
-    }
-
-    updateLink() {
-        if (this.isLinked) {
-            console.log(this.views);
-            this.isLinked = false;
-            this.linkUnlinkIcon = "remove";
-            if (!this.video.paused) {
-                this.playPause();
-            }
-        }
-        else {
-            console.log(this.views);
-            this.isLinked = true;
-            this.linkUnlinkIcon = "link";
-            this.events.publish('playviews', 'pause');
-            this.events.publish('playbackspeedviews', this.video.playbackRate);
-        }
-    }
-
-    playPauseParent() {
-        if (this.isLinked) {
-            var toDo = this.video.paused ? 'play' : 'pause';
-            this.events.publish('playviews', toDo);
-        }
-        else {
-            this.playPause();
-        }
-    }
-
-    timelineInterval: any;
-
-    playPause() {
-        if (this.video.paused == true) {
-            this.timelineInterval = setInterval(() => {
-                var factor = (100000 / this.video.duration) * this.video.currentTime;
-                this.sliderValue = factor;
-                this.timelinePosition = this.formatTime(this.video.currentTime);
-                if (this.timelinePosition == this.timelineDuration) {
-                    this.playPauseButtonIcon = 'play';
-                }
-                this.PlayMarker();
-                this.PlayStoryBoard();
-            }, 1 / 60);
-            this.playPauseButtonIcon = 'pause';
-            this.video.play();
-            if (this.formatTime(this.video.currentTime) == this.timelineDuration) {
-                this.markersobjects = [];
-                this.markersDirectory = [];
-            }
-        } else {
-            this.playPauseButtonIcon = 'play';
-            clearInterval(this.timelineInterval);
-            this.video.pause();
-        }
-    }
-
-    parentSliderValueChange() {
-        if (this.isLinked) {
-            this.events.publish('seekviews');
-        }
-        else {
-            this.sliderValueChange();
-        }
-    }
-
-    sliderValueChange() {
-        this.timelinePosition = this.formatTime(this.video.currentTime);
-        var factor = this.video.duration * (this.sliderValue / 100000);
-        this.video.currentTime = factor;
-        this.timelinePosition = this.formatTime(factor);
-        this.PlayStoryBoard();
-    }
-
-    returnVidPath(filename) {
-        if (this.platform.is('cordova')) {
-            return cordova.file.applicationStorageDirectory + filename;
-        }
-        else {
-            return 'assets/' + filename;
-        }
     }
 
     formatTime(time) {
