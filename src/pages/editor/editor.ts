@@ -392,11 +392,11 @@ export class EditorPage {
     }, modalOptions);
     modal.present();
 
-    modal.onDidDismiss((views) => {
+    modal.onDidDismiss((views,duration) => {
       if (views != null) {
         this.views = views;
         this.saveMatrix();
-        this.connection.transferMatrix(this.matrix._Channel, this.matrix._Sport, this.matrix._Name);
+        // this.connection.transferMatrix(this.matrix._Name,duration);
       }
     });
   }

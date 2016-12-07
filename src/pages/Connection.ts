@@ -85,41 +85,22 @@ export class Connection {
         });
     }
 
-    transferMatrix(channel, sport, fileName) {
-        var serverAddress = Connection.connectedServer.Address;
-        this.platform.ready().then(() => {
-            var urlPath = cordova.file.dataDirectory + "Local/" + channel + "/" + sport + "/Matrices/" + fileName + "/" + fileName + ".mtx";
-            // alert(urlPath);
+    // transferMatrix(channel, sport, fileName) {
+    //     var serverAddress = Connection.connectedServer.Address;
+    //     this.platform.ready().then(() => {
 
-            
-            this.http.get(urlPath)
-            .map((res: Response) => res.json())
-                .subscribe(
-                data => {
-                    alert(JSON.stringify(data));
+    //         var val=this.
+    //         let parser: any = new X2JS();
+    //         var xmlMatrix = parser.js2xml(data);
+    //         let headers = new Headers({ 'Content-Type': 'application/xml' });
+    //         let options = new RequestOptions({ headers: headers });
 
-                    let parser: any = new X2JS();
-                    var xmlMatrix = parser.js2xml(data);
-                    alert(xmlMatrix);
-
-                    let headers = new Headers({ 'Content-Type': 'application/xml' }); // ... Set content type to JSON
-                    let options = new RequestOptions({ headers: headers });
-                    this.http.post("http://" + serverAddress + ":10080/imatrix/matrices",  data, options)
-                        .subscribe(res => {
-                            alert(res);
-                        })
-                },
-                err => {
-                    console.error(err);
-                    alert(err);
-                },
-                () => {
-                    console.log('done');
-                    alert("Done");
-                }
-                );
-        });
-    }
+    //         this.http.post("http://" + serverAddress + ":10080/imatrix/matrices/", xmlMatrix, options)
+    //             .subscribe(response => {
+    //                 alert(response.json());
+    //             })
+    //     });
+    // }
 
     connect(server) {
         Connection.servers.forEach((element, index) => {

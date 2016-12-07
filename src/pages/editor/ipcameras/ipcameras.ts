@@ -1,14 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController, ModalController, ViewController, AlertController, NavParams, LoadingController, Platform } from 'ionic-angular';
-
-import { Http } from '@angular/http';
-import X2JS from 'x2js';
-
+import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { Connection } from '../../../pages/Connection';
 import { Connectivity } from '../../connectivity/connectivity';
-
 import { StorageFactory } from '../../../Factory/StorageFactory';
-
+import X2JS from 'x2js';
 
 /*
   Generated class for the Ipcamera page.
@@ -21,14 +17,14 @@ declare var cordova: any;
 @Component({
   selector: 'page-ipcameras',
   templateUrl: 'ipcameras.html',
-  providers: [StorageFactory,Connection]
+  providers: [StorageFactory, Connection]
 })
 export class Ipcameras {
   matrix: any;
   views: any;
   selectedViewIndex: any;
 
-  constructor(public viewCtrl :ViewController,
+  constructor(public viewCtrl: ViewController,
     public navCtrl: NavController,
     private modalCtrl: ModalController,
     private http: Http,
@@ -190,7 +186,9 @@ export class Ipcameras {
           if (time >= this.recordingDuration) {
             clearInterval(interval);
             this.isRecording = false;
-            this.viewCtrl.dismiss(this.views);
+            this.viewCtrl.dismiss(this.views, this.recordingDuration);
+            
+            this.transferMatrix(fileName, this.recordingDuration,"IP");
           }
         }, 1000);
       })
@@ -206,25 +204,104 @@ export class Ipcameras {
       });
   }
 
-  createViews(fileName) {
-    if (this.ipCams.length == 1) {
-      this.createVideoView(fileName + "_1.mp4");
-    }
-    else {
-      this.ipCams.forEach((element, index) => {
-        if (index == 0) {
-          this.createVideoView(fileName + "_1.mp4");
-        }
-        else {
-          this.selectedViewIndex++;
-          this.addView();
-          this.createVideoView(fileName + "_" + (index + 1) + ".mp4");
-        }
-      });
-    }
+  //............................matrix transfer code.........................................
+
+  transferMatrix(fileName, duration,source) {
+    var serverAddress = Connection.connectedServer.Address;
+    this.platform.ready().then(() => {
+
+      this.createClips(fileName, duration,source);
+      let parser: any = new X2JS();
+      var xmlMatrix = parser.js2xml(this.data);
+
+      let headers = new Headers({ 'Content-Type': 'application/xml' });
+      let options = new RequestOptions({ headers: headers });
+
+      this.http.post("http://" + serverAddress + ":10080/imatrix/matrices/", xmlMatrix, options)
+        .subscribe(response => {
+          console.log("matrix successfully sent");
+        })
+    });
   }
 
-  dismiss(){
+  data: any;
+
+  createClips(fileName, duration,source) {
+    this.data = this.createNewIPMatrix(fileName, duration,source);
+
+    this.ipCams.forEach((element, index) => {
+      var name = fileName + "_" + (index + 1) + ".mp4"
+      var view = "View" + " " + (index + 1);
+      this.CreateClip(name, view, this.data);
+    });
+  }
+
+  createNewIPMatrix(fileName, duration,source) {
+    var name = Date.now().toString();
+    let data =
+      {
+        "Matrix": {
+          "_Name": fileName,
+          "_Title": "Title1",
+          "_Sport": "Tennis",
+          "_Skill": "Serve",
+          "_PIN": " ",
+          "_DateModified": name,
+          "_Duration": duration,
+          "_Location": "Field",
+          "_HasTransferred": false,
+          "_Source": source,
+          "Clips": {
+            "Clip": []
+          }
+        }
+      };
+    return data;
+
+  }
+
+
+  CreateClip(kernel, view, data) {
+    var clip = {
+      "_Name": kernel,
+      "_name": "",
+      "_Key": view,
+      "_Duration": "0"
+    }
+    data.Matrix.Clips.Clip.push(clip);
+  }
+
+  //..............................matrix transfered.......................................
+
+  createViews(fileName) {
+    this.ipCams.forEach((element, index) => {
+      if (index > 0) {
+        this.selectedViewIndex++;
+        this.addView();
+      }
+      this.createVideoView(fileName + "_" + (index + 1) + ".mp4");
+    });
+  }
+
+  //  createViews(fileName) {
+  //   if (this.ipCams.length == 1) {
+  //     this.createVideoView(fileName + "_1.mp4");
+  //   }
+  //   else {
+  //     this.ipCams.forEach((element, index) => {
+  //       if (index == 0) {
+  //         this.createVideoView(fileName + "_1.mp4");
+  //       }
+  //       else {
+  //         this.selectedViewIndex++;
+  //         this.addView();
+  //         this.createVideoView(fileName + "_" + (index + 1) + ".mp4");
+  //       }
+  //     });
+  //   }
+  // }
+
+  dismiss() {
     this.viewCtrl.dismiss(null);
   }
 
