@@ -12,7 +12,7 @@ import { ChannelCollectionPage, PopoverPage2 } from '../pages/channelcollection/
 import { OrderBy } from '../GroupBy/OrderBy';
 import { GroupBy } from '../GroupBy/GroupBy';
 
-import { EditorPage } from '../pages/editor/editor';
+import { EditorPage, EditorActionsPopover } from '../pages/editor/editor';
 import { MatrixInfoPage } from '../pages/editor/matrixinfo/matrixinfo';
 import { Ipcameras, IpCamSettingsModal } from '../pages/editor/ipcameras/ipcameras'
 import { VideoComponent } from '../pages/editor/video-component/video-component'
@@ -38,7 +38,7 @@ import { Swipeview } from '../pages/editor/swipeview/swipeview'
     GroupBy,
     OrderBy,
 
-    EditorPage,
+    EditorPage, EditorActionsPopover,
     MatrixInfoPage,
     Ipcameras, IpCamSettingsModal,
     VideoComponent,
@@ -58,7 +58,7 @@ import { Swipeview } from '../pages/editor/swipeview/swipeview'
     Connectivity,
 
     MoreActionsPopover,
-    EditorPage,
+    EditorPage, EditorActionsPopover,
     MatrixInfoPage,
     Ipcameras, IpCamSettingsModal,
     SettingsPage,

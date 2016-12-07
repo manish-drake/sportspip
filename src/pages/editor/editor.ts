@@ -2,10 +2,10 @@ import { Component, Injectable } from '@angular/core';
 
 import {
   NavController, NavParams, AlertController, ModalController, ModalOptions, Platform,
-  App, LoadingController, Events
+  App, LoadingController, Events, PopoverController, ViewController
 } from 'ionic-angular';
 
-import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError, FilePath } from 'ionic-native';
+import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError, FilePath, } from 'ionic-native';
 
 import { Http } from '@angular/http';
 import { Connection } from '../../pages/Connection'
@@ -44,7 +44,8 @@ export class EditorPage {
     private http: Http,
     private storagefactory: StorageFactory,
     private app: App,
-    private events: Events) {
+    private events: Events,
+    private popoverCtrl: PopoverController) {
     if (params.data != null) {
       this.matrix = params.data.matrixData;
       console.log("editor page: " + JSON.stringify(this.matrix));
@@ -66,6 +67,22 @@ export class EditorPage {
       this.views.push(this.matrix["Matrix.Children"]["View"]);
     }
     this.evaluateCaptureViews();
+  }
+
+  presentMoreActions(event) {
+    let popover = this.popoverCtrl.create(EditorActionsPopover, { countOfCaptureViews: this.countOfCaptureViews });
+    popover.present({ ev: event });
+
+    popover.onDidDismiss((data) => {
+      if (data != null) {
+        if (data == "compareviews") {
+          this.openCompareView();
+        }
+        if (data == "swipeviews") {
+          this.openSwipeView();
+        }
+      }
+    });
   }
 
   saveMatrix() {
@@ -445,5 +462,32 @@ export class EditorPage {
     this.navCtrl.push(Swipeview, {
       captureViews: captureViews
     });
+  }
+}
+
+@Component({
+  template: `
+    <ion-list no-lines>
+    <button ion-item [disabled]="countOfCaptureViews==0" (click)="dismiss('compareviews')">
+      <ion-icon item-left name="grid"></ion-icon>Compare Views
+      </button>
+    <button ion-item (click)="dismiss('swipeviews')">
+      <ion-icon item-left name="move"></ion-icon>Swipe Views
+      </button>
+    </ion-list>
+  `
+})
+export class EditorActionsPopover {
+
+  countOfCaptureViews:any;
+
+  constructor(public viewCtrl: ViewController, private navParams: NavParams) {
+    if(this.navParams.data!=null){
+      this.countOfCaptureViews = this.navParams.data.countOfCaptureViews;
+    }
+  }
+
+  dismiss(ev) {
+    this.viewCtrl.dismiss(ev);
   }
 }
