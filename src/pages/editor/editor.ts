@@ -47,7 +47,7 @@ export class EditorPage {
     private events: Events) {
     if (params.data != null) {
       this.matrix = params.data.matrixData;
-      console.log("editor page: " + JSON.stringify(this.matrix));
+      console.log("editor page: " + this.matrix);
     }
 
     this.platform.registerBackButtonAction(() => {
@@ -375,7 +375,7 @@ export class EditorPage {
     }, modalOptions);
     modal.present();
 
-    modal.onDidDismiss((views,duration) => {
+    modal.onDidDismiss((views, duration) => {
       if (views != null) {
         this.views = views;
         this.saveMatrix();

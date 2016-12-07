@@ -4,6 +4,7 @@ import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { Connection } from '../../../pages/Connection';
 import { Connectivity } from '../../connectivity/connectivity';
 import { StorageFactory } from '../../../Factory/StorageFactory';
+import { Transfer } from '../../../Action/Transfer';
 import X2JS from 'x2js';
 
 /*
@@ -17,7 +18,7 @@ declare var cordova: any;
 @Component({
   selector: 'page-ipcameras',
   templateUrl: 'ipcameras.html',
-  providers: [StorageFactory, Connection]
+  providers: [StorageFactory, Connection,Transfer]
 })
 export class Ipcameras {
   matrix: any;
@@ -28,6 +29,7 @@ export class Ipcameras {
     public navCtrl: NavController,
     private modalCtrl: ModalController,
     private http: Http,
+    private transfer:Transfer,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private platform: Platform,
@@ -187,8 +189,8 @@ export class Ipcameras {
             clearInterval(interval);
             this.isRecording = false;
             this.viewCtrl.dismiss(this.views, this.recordingDuration);
-            
-            this.transferMatrix(fileName, this.recordingDuration,"IP");
+
+            this.transfer.transferMatrix(fileName, this.recordingDuration, "IP",this.ipCams.length);
           }
         }, 1000);
       })
@@ -206,11 +208,11 @@ export class Ipcameras {
 
   //............................matrix transfer code.........................................
 
-  transferMatrix(fileName, duration,source) {
+  transferMatrix(fileName, duration, source) {
     var serverAddress = Connection.connectedServer.Address;
     this.platform.ready().then(() => {
 
-      this.createClips(fileName, duration,source);
+      this.createClips(fileName, duration, source);
       let parser: any = new X2JS();
       var xmlMatrix = parser.js2xml(this.data);
 
@@ -226,8 +228,8 @@ export class Ipcameras {
 
   data: any;
 
-  createClips(fileName, duration,source) {
-    this.data = this.createNewIPMatrix(fileName, duration,source);
+  createClips(fileName, duration, source) {
+    this.data = this.createNewIPMatrix(fileName, duration, source);
 
     this.ipCams.forEach((element, index) => {
       var name = fileName + "_" + (index + 1) + ".mp4"
@@ -236,7 +238,7 @@ export class Ipcameras {
     });
   }
 
-  createNewIPMatrix(fileName, duration,source) {
+  createNewIPMatrix(fileName, duration, source) {
     var name = Date.now().toString();
     let data =
       {
