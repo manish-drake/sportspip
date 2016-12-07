@@ -20,9 +20,16 @@ export class OpenMatrix {
             .subscribe(data => {
                 console.log("open matrix");
                 var res = JSON.parse(data.text());
-                this.navCtrl.push(EditorPage, {
-                    matrixData: res.Matrix
-                });
+                var view = res.Matrix["Matrix.Children"].View[0];
+                if (view._Source == "IP") {
+                    alert("You Can not open IPCams Matrix");
+                }
+                else {
+                    this.navCtrl.push(EditorPage, {
+                        matrixData: res.Matrix
+                    });
+
+                }
             });
     }
 

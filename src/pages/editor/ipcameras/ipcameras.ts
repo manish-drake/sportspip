@@ -18,7 +18,7 @@ declare var cordova: any;
 @Component({
   selector: 'page-ipcameras',
   templateUrl: 'ipcameras.html',
-  providers: [StorageFactory, Connection,Transfer]
+  providers: [StorageFactory, Connection, Transfer]
 })
 export class Ipcameras {
   matrix: any;
@@ -29,7 +29,7 @@ export class Ipcameras {
     public navCtrl: NavController,
     private modalCtrl: ModalController,
     private http: Http,
-    private transfer:Transfer,
+    private transfer: Transfer,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private platform: Platform,
@@ -91,7 +91,12 @@ export class Ipcameras {
         data => {
           let parser: any = new X2JS();
           var jsonData = parser.xml2js(data);
-          this.ipCams = jsonData.Cams.IPCam;
+          if (jsonData.Cams.IPCam instanceof Array)
+            this.ipCams = jsonData.Cams.IPCam;
+          else {
+            this.ipCams.push(jsonData.Cams.IPCam);
+          }
+
         },
         err => console.error('There was an error: ' + err),
         () => console.log('Random Quote Complete')
@@ -188,9 +193,9 @@ export class Ipcameras {
           if (time >= this.recordingDuration) {
             clearInterval(interval);
             this.isRecording = false;
-            this.viewCtrl.dismiss(this.views, this.recordingDuration);
+            this.transfer.transferMatrix(fileName, this.recordingDuration, "IP", this.ipCams.length);
+            this.viewCtrl.dismiss(this.views);
 
-            this.transfer.transferMatrix(fileName, this.recordingDuration, "IP",this.ipCams.length);
           }
         }, 1000);
       })
@@ -206,74 +211,74 @@ export class Ipcameras {
       });
   }
 
-  //............................matrix transfer code.........................................
+  // //............................matrix transfer code.........................................
 
-  transferMatrix(fileName, duration, source) {
-    var serverAddress = Connection.connectedServer.Address;
-    this.platform.ready().then(() => {
+  // transferMatrix(fileName, duration, source) {
+  //   var serverAddress = Connection.connectedServer.Address;
+  //   this.platform.ready().then(() => {
 
-      this.createClips(fileName, duration, source);
-      let parser: any = new X2JS();
-      var xmlMatrix = parser.js2xml(this.data);
+  //     this.createClips(fileName, duration, source);
+  //     let parser: any = new X2JS();
+  //     var xmlMatrix = parser.js2xml(this.data);
 
-      let headers = new Headers({ 'Content-Type': 'application/xml' });
-      let options = new RequestOptions({ headers: headers });
+  //     let headers = new Headers({ 'Content-Type': 'application/xml' });
+  //     let options = new RequestOptions({ headers: headers });
 
-      this.http.post("http://" + serverAddress + ":10080/imatrix/matrices/", xmlMatrix, options)
-        .subscribe(response => {
-          console.log("matrix successfully sent");
-        })
-    });
-  }
+  //     this.http.post("http://" + serverAddress + ":10080/imatrix/matrices/", xmlMatrix, options)
+  //       .subscribe(response => {
+  //         console.log("matrix successfully sent");
+  //       })
+  //   });
+  // }
 
-  data: any;
+  // data: any;
 
-  createClips(fileName, duration, source) {
-    this.data = this.createNewIPMatrix(fileName, duration, source);
+  // createClips(fileName, duration, source) {
+  //   this.data = this.createNewIPMatrix(fileName, duration, source);
 
-    this.ipCams.forEach((element, index) => {
-      var name = fileName + "_" + (index + 1) + ".mp4"
-      var view = "View" + " " + (index + 1);
-      this.CreateClip(name, view, this.data);
-    });
-  }
+  //   this.ipCams.forEach((element, index) => {
+  //     var name = fileName + "_" + (index + 1) + ".mp4"
+  //     var view = "View" + " " + (index + 1);
+  //     this.CreateClip(name, view, this.data);
+  //   });
+  // }
 
-  createNewIPMatrix(fileName, duration, source) {
-    var name = Date.now().toString();
-    let data =
-      {
-        "Matrix": {
-          "_Name": fileName,
-          "_Title": "Title1",
-          "_Sport": "Tennis",
-          "_Skill": "Serve",
-          "_PIN": " ",
-          "_DateModified": name,
-          "_Duration": duration,
-          "_Location": "Field",
-          "_HasTransferred": false,
-          "_Source": source,
-          "Clips": {
-            "Clip": []
-          }
-        }
-      };
-    return data;
+  // createNewIPMatrix(fileName, duration, source) {
+  //   var name = Date.now().toString();
+  //   let data =
+  //     {
+  //       "Matrix": {
+  //         "_Name": fileName,
+  //         "_Title": "Title1",
+  //         "_Sport": "Tennis",
+  //         "_Skill": "Serve",
+  //         "_PIN": " ",
+  //         "_DateModified": name,
+  //         "_Duration": duration,
+  //         "_Location": "Field",
+  //         "_HasTransferred": false,
+  //         "_Source": source,
+  //         "Clips": {
+  //           "Clip": []
+  //         }
+  //       }
+  //     };
+  //   return data;
 
-  }
+  // }
 
 
-  CreateClip(kernel, view, data) {
-    var clip = {
-      "_Name": kernel,
-      "_name": "",
-      "_Key": view,
-      "_Duration": "0"
-    }
-    data.Matrix.Clips.Clip.push(clip);
-  }
+  // CreateClip(kernel, view, data) {
+  //   var clip = {
+  //     "_Name": kernel,
+  //     "_name": "",
+  //     "_Key": view,
+  //     "_Duration": "0"
+  //   }
+  //   data.Matrix.Clips.Clip.push(clip);
+  // }
 
-  //..............................matrix transfered.......................................
+  // //..............................matrix transfered.......................................
 
   createViews(fileName) {
     this.ipCams.forEach((element, index) => {
@@ -325,7 +330,7 @@ export class Ipcameras {
       },
       "_name": "View " + this.selectedViewIndex,
       "_Title": "View " + this.selectedViewIndex,
-      "_Source": "Local"
+      "_Source": "IP"
     }
     this.views[this.selectedViewIndex] = localView;
   }

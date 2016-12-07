@@ -80,7 +80,6 @@ export class EditorPage {
           var res = JSON.parse(data.toString());
           var matrix = res.Matrix;
           matrix['Matrix.Children'].View = this.views;
-
           var name = this.GetThumbName(matrix);
 
           this.storagefactory.SaveMatrixAsync(res, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
@@ -105,9 +104,12 @@ export class EditorPage {
     matrix['Matrix.Children'].View.forEach(view => {
       if (name == undefined) {
         if (view.Content !== undefined) {
-          name = view.Content.Capture._Kernel;
-          thumb = Date.now().toString();
-          this.modelFactory.CreateThumbnail(name, thumb);
+          if (view.Content.Capture != undefined) {
+            console.log("enter........")
+            name = view.Content.Capture._Kernel;
+            thumb = Date.now().toString();
+            this.modelFactory.CreateThumbnail(name, thumb);
+          }
         }
       }
     });
@@ -375,7 +377,7 @@ export class EditorPage {
     }, modalOptions);
     modal.present();
 
-    modal.onDidDismiss((views, duration) => {
+    modal.onDidDismiss((views) => {
       if (views != null) {
         this.views = views;
         this.saveMatrix();

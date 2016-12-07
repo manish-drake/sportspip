@@ -39,7 +39,7 @@ export class VideoComponent {
         this.LoadMarkers();
 
         this.video = this.videoElement.nativeElement;
-        
+
         this.video.addEventListener('loadedmetadata', () => { this.OnVideoMatadataLoad(); });
 
         this.video.addEventListener('ended', () => { this.OnVideoEnded(); });
@@ -59,7 +59,7 @@ export class VideoComponent {
         }, 1 / 60);
 
         this.events.subscribe('viewoutoffocus', () => {
-            if(!this.video.paused){
+            if (!this.video.paused) {
                 this.playPause();
             }
         });

@@ -9,6 +9,7 @@ export class Transfer {
     data: any;
 
     constructor(private platform: Platform, private http: Http) {
+        
     }
 
     //............................matrix transfer code.........................................
@@ -65,7 +66,6 @@ export class Transfer {
                 }
             };
         return data;
-
     }
 
 
