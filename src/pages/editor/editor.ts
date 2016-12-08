@@ -379,7 +379,7 @@ export class EditorPage {
   // Code for Camera Recording Starts
 
   IPCamCapture() {
-    let modalOptions: ModalOptions = { showBackdrop: false, enableBackdropDismiss: false };
+    let modalOptions: ModalOptions = { showBackdrop: true, enableBackdropDismiss: false };
 
     var modal = this.modalCtrl.create(Ipcameras, {
       matrix: this.matrix,

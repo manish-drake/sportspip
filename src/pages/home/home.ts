@@ -109,6 +109,17 @@ export class HomePage {
         this.openmatrix.run(matrixName, Channel);
     }
 
+    doRefreshLocal(refresher) {
+        console.log('Begin async operation', refresher);
+        this.localMatrices = [];
+        
+        setTimeout(() => {
+            console.log('Async operation has ended');
+            refresher.complete();
+            this.GetLocalMatrixHeader();
+        }, 2000);
+    }
+
     matrixPressed(index, Name, channel, title) {
         let actionSheet = this.actionSheetCtrl.create({
             title: title,
