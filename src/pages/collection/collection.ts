@@ -38,10 +38,10 @@ export class CollectionPage {
         success.forEach((channelName) => {
           File.listDir(cordova.file.dataDirectory, "Local/" + channelName.name + "/Tennis/Matrices/").then((success) => {
             success.forEach((res) => {
-              this.http.get(cordova.file.dataDirectory + "Local/" + channelName.name + "/Tennis/Matrices/" + res.name + "/Header.xml")
-                .subscribe(data => {
+              File.readAsText(cordova.file.dataDirectory + "Local/" + channelName.name + "/Tennis/Matrices/" + res.name, "Header.xml")
+                .then(data => {
                   //deserialiae server header  
-                  var result = JSON.parse(data.text());
+                  var result = JSON.parse(data.toString());
                   // var result = header.Header;
                   var item = {
                     Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
@@ -80,15 +80,15 @@ export class CollectionPage {
   DuplicateMatrix(matrixname, channelName) {
     var name = Date.now().toString();
     this.platform.ready().then(() => {
-      this.http.get(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/Matrices/" + matrixname + "/Header.xml")
-        .subscribe(res => {
-          var header = JSON.parse(res.text());
+      File.readAsText(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/Matrices/" + matrixname, "Header.xml")
+        .then(res => {
+          var header = JSON.parse(res.toString());
           header.Name = name;
           this.storagefactory.SaveLocalHeader(header, channelName, header.Sport, name, "Matrices");
         })
-      this.http.get(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/Matrices /" + matrixname + "/" + matrixname + ".mtx")
-        .subscribe(res => {
-          var matrix = JSON.parse(res.text());
+      File.readAsText(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/Matrices /" + matrixname, matrixname + ".mtx")
+        .then(res => {
+          var matrix = JSON.parse(res.toString());
           matrix.Matrix._Name = name;
           this.storagefactory.SaveMatrixAsync(matrix, channelName, matrix.Matrix._Sport, name, "Matrices");
         })

@@ -99,11 +99,11 @@ export class EditorPage {
           var matrix = res.Matrix;
           matrix['Matrix.Children'].View = this.views;
 
-          var name = this.GetThumbName(matrix);
+          var thumbName = this.GetThumbName(matrix);
 
           this.storagefactory.SaveMatrixAsync(res, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
           var header = this.storagefactory.ComposeMatrixHeader(matrix);
-          header.ThumbnailSource = name;
+          header.ThumbnailSource = thumbName;
           this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
 
           Observable.interval(500)
@@ -339,16 +339,16 @@ export class EditorPage {
   captureSuccess(MediaFiles) {
     MediaFiles.forEach(mediaFile => {
       var fileUrl = mediaFile.localURL;
-      console.log(mediaFile);
 
       var path = fileUrl.substr(0, fileUrl.lastIndexOf('/') + 1);
       var fileName = fileUrl.substr(fileUrl.lastIndexOf('/') + 1);
 
-      File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName)
+      File.moveFile (path, fileName, cordova.file.applicationStorageDirectory, fileName)
         .then(_ => {
           this.CreateVideoView(fileName);
           console.log('Successfully saved video')
-          this.backGroundTransferProcess.TransferVideo(fileName);
+          if (Connection.connectedServer != null)
+            this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address);
         })
         .catch(err => {
           console.log('Failed saving video' + err)
