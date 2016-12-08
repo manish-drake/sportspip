@@ -6,7 +6,7 @@ import X2JS from 'x2js';
 
 @Injectable()
 export class BackGroundTransferProcessIP {
-    data: any;
+    private data: any;
 
     constructor(private platform: Platform, private http: Http) {
         
@@ -14,11 +14,11 @@ export class BackGroundTransferProcessIP {
 
     //............................matrix transfer code.........................................
 
-    transferMatrix(fileName, duration, source, CamsCount) {
+    transferMatrix(fileName, duration, CamsCount) {
         var serverAddress = Connection.connectedServer.Address;
         this.platform.ready().then(() => {
 
-            this.createClips(fileName, duration, source, CamsCount);
+            this.createClips(fileName, duration, CamsCount);
             let parser: any = new X2JS();
             var xmlMatrix = parser.js2xml(this.data);
 
@@ -32,8 +32,8 @@ export class BackGroundTransferProcessIP {
         });
     }
 
-    private createClips(fileName, duration, source, CamsCount) {
-        this.data = this.createNewIPMatrix(fileName, duration, source);
+    private createClips(fileName, duration, CamsCount) {
+        this.data = this.createNewIPMatrix(fileName, duration);
         var i = 1;
         while (i <=  CamsCount) {
             var name = fileName + "_" + i + ".mp4"
@@ -43,7 +43,7 @@ export class BackGroundTransferProcessIP {
         }
     }
 
-    private createNewIPMatrix(fileName, duration, source) {
+    private createNewIPMatrix(fileName, duration) {
         var name = Date.now().toString();
         let data =
             {
@@ -57,7 +57,7 @@ export class BackGroundTransferProcessIP {
                     "_Duration": duration,
                     "_Location": "Field",
                     "_HasTransferred": false,
-                    "_Source": source,
+                    "_Source": "IP",
                     "Clips": {
                         "Clip": []
                     }

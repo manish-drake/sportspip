@@ -24,9 +24,9 @@ export class Package {
     MoveToLocalCollection(channelName) {
         this.fileName = Date.now().toString();
         this.platform.ready().then(() => {
-            this.http.get(cordova.file.dataDirectory + "Temp/matrix1/Header.xml").subscribe((result => {
+           File.readAsText(cordova.file.dataDirectory + "Temp/matrix1","Header.xml").then((result => {
                 console.log("header moving..");
-                var header = JSON.parse(result.text());
+                var header = JSON.parse(result.toString());
                 header.Name = this.fileName;
                 header.DateCreated = Date.now().toString();
                 header.ThumbnailSource = header.UploadID;

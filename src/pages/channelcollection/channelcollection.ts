@@ -45,10 +45,10 @@ export class ChannelCollectionPage {
     this.platform.ready().then(() => {
       File.listDir(cordova.file.dataDirectory, "Server/" + channel + "/Tennis/Matrices/").then((success) => {
         success.forEach((res) => {
-          this.http.get(cordova.file.dataDirectory + "Server/" + channel + "/Tennis/Matrices/" + res.name + "/Header.xml")
-            .subscribe(data => {
+          File.readAsText(cordova.file.dataDirectory + "Server/" + channel + "/Tennis/Matrices/" + res.name , "Header.xml")
+            .then(data => {
               //deserialiae server header  
-              var result = JSON.parse(data.text());
+              var result = JSON.parse(data.toString());
               // var result = header.Header;
               var item = {
                 Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,

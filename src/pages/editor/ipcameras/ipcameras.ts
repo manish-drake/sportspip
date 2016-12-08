@@ -197,7 +197,7 @@ export class Ipcameras {
           if (time >= this.recordingDuration) {
             clearInterval(interval);
             this.isRecording = false;
-            this.backGroundTransferProcessIP.transferMatrix(fileName, this.recordingDuration, "IP", this.ipCams.length);
+            this.backGroundTransferProcessIP.transferMatrix(fileName, this.recordingDuration, this.ipCams.length);
             this.viewCtrl.dismiss(this.views);
 
           }
