@@ -8,6 +8,7 @@
 
   <ion-toolbar color="primary">
     <ion-buttons start>
+      <button ion-button disabled>{{ipCams.length}}</button>
       <button ion-button icon-only [disabled]="isRecording" (click)="loadIPCams()"><ion-icon name="refresh"></ion-icon></button>
     </ion-buttons>
     <ion-title>IP Cams Capture</ion-title>
@@ -34,11 +35,10 @@
   </ion-row>
   <div class="items">
     <div class="item" *ngFor="let cam of ipCams;let i = index">
-      <b margin-horizontal>{{cam._IPAdd}}</b>
-      <ion-card>
-        <img src="assets/sample.jpg" style="max-height:350px;" />
-        <img [attr.src]="getIPCamPreview(cam._IPAdd)" style="max-height:350px;background-color: #cccccc;background-image: url(assets/sample.jpg);ackground-repeat:no;background-size: cover;background-position: center;"
-        />
+      <ion-card style="position: relative;max-height:350px;min-height:100px;
+      background-color: #cccccc;background-image: url(assets/sample.jpg);background-repeat:no;background-size: cover;background-position: center;">
+        <img [attr.src]="getIPCamPreview(cam._IPAdd)"/>
+        <b style="position: absolute;top: 10px; margin: 0 10px;font-size: 1.0em;;font-weight: bold;color: #fff;">{{cam._IPAdd}}</b>
       </ion-card>
     </div>
   </div>

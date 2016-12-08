@@ -4,11 +4,10 @@ page-ipcameras {
 	flex-wrap: wrap;
 }
 .items .item {
-	flex: 1 0 auto;
+	flex: 1 0 100%;
   box-sizing: border-box;
-   max-width: calc(100%);
 }
-@media (min-width: 310px) {
+@media (min-width: 410px) {
   .items .item {
     max-width: calc(50%);
   }

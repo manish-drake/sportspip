@@ -66,7 +66,7 @@ export class HomePage {
         this.GetLocalMatrixHeader();
     }
 
-    ionViewWillEnter(){
+    ionViewWillEnter() {
 
     }
 
@@ -107,6 +107,17 @@ export class HomePage {
 
     openMatrix(matrixName, Channel) {
         this.openmatrix.run(matrixName, Channel);
+    }
+
+    doRefreshLocal(refresher) {
+        console.log('Begin async operation', refresher);
+        this.localMatrices = [];
+        
+        setTimeout(() => {
+            console.log('Async operation has ended');
+            refresher.complete();
+            this.GetLocalMatrixHeader();
+        }, 2000);
     }
 
     matrixPressed(index, Name, channel, title) {
@@ -211,7 +222,7 @@ export class HomePage {
     retrunThumbnailPath(name) {
         return "url(" + cordova.file.applicationStorageDirectory + name + ".jpg" + ")";
     }
-    
+
     GetLocalMatrixHeader() {
         this.platform.ready().then(() => {
             File.listDir(cordova.file.dataDirectory, "Local/").then((success) => {
@@ -342,7 +353,7 @@ export class HomePage {
         var result = data.Matrix;
         this.storagefactory.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices");
 
-        var headerContent = this.storagefactory.ComposeNewMatrixHeader (result);
+        var headerContent = this.storagefactory.ComposeNewMatrixHeader(result);
         this.storagefactory.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
 
         this.navCtrl.push(EditorPage, {

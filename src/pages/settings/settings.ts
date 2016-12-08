@@ -43,6 +43,11 @@ export class SettingsPage {
 
   }
 
+  ionViewDidLoad() {
+    console.log('Hello Settings Page');
+    this.createSettingsasync();
+  }
+
   InvalidateSubscribeListAsync(userId) {
     this.subscribeList = [];
     this.subscription.GetSubscriptionList(userId).then((data) => {
@@ -95,11 +100,6 @@ export class SettingsPage {
         alert("successfully removed..")
       })
     });
-  }
-
-  ionViewDidLoad() {
-    console.log('Hello Settings Page');
-    this.createSettingsasync();
   }
 
   createSettingsasync() {

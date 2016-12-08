@@ -24,13 +24,12 @@
 			</ion-col>
 		</ion-row>
 		<div class="items">
-			<div class="item" *ngFor="let subList of subscribeList;let i = index">
+			<div class="item1" *ngFor="let subList of subscribeList;let i = index">
 				<ion-card>
 					<ion-item>
-						<ion-icon item-left name="person"></ion-icon>
 						<h2>{{subList.ChannelName}}</h2>
 						<p>{{subList.Description}}</p>
-						<button (click)="UnSubscribeList(i,subList.ChannelName)" ion-fab mini item-right>
+						<button ion-button icon-only large item-right clear color="inactive" (click)="UnSubscribeList(i,subList.ChannelName)" style=" margin:0 -5px 0 0;">
 							<ion-icon name="close"></ion-icon>
 							</button>
 					</ion-item>
@@ -44,20 +43,19 @@
 				<h5>Available Channels</h5>
 			</ion-col>
 		</ion-row>
-		<ion-row>
-			<div class="items">
-				<div class="item" *ngFor='let chanList of chanelList;let i = index'>
-					<ion-card>
-						<ion-item>
-							<ion-icon item-left name="person"></ion-icon>
-							<h2>{{chanList.ChannelName}}</h2>
-							<button (click)="SubscribeList(i,chanList.ChannelName)" ion-fab mini item-right>
-                    					<ion-icon name="add"></ion-icon>
-                  					</button>
-						</ion-item>
-					</ion-card>
-				</div>
+		<div class="items">
+			<div class="item1" *ngFor='let chanList of chanelList;let i = index'>
+				<ion-card>
+					<ion-item>
+						<h2>{{chanList.ChannelName}}</h2>
+						<button ion-button icon-only large item-right clear (click)="SubscribeList(i,chanList.ChannelName)" style=" margin:-10px -5px -10px 0;">
+							<ion-icon name="add-circle"></ion-icon>
+							</button>
+					</ion-item>
+				</ion-card>
 			</div>
+		</div>
+		<ion-row>
 			<ion-col center text-center clear *ngIf='chanelList.length == 0' style="color:gray;">
 				no channel available
 			</ion-col>

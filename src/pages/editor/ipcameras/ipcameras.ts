@@ -39,6 +39,14 @@ export class Ipcameras {
     this.matrix = this.navParams.data.matrix;
     this.views = this.navParams.data.views;
     this.selectedViewIndex = this.navParams.data.selectedViewIndex;
+
+    this.platform.registerBackButtonAction(() => {
+      let view = this.navCtrl.getActive();
+      if (view.instance instanceof Ipcameras){
+        this.dismiss();
+        }
+      else this.navCtrl.pop();
+    });
   }
 
   ionViewDidLoad() {
@@ -49,9 +57,12 @@ export class Ipcameras {
     this.loadIPCams();
   }
 
-
   openConnectivity() {
     this.navCtrl.push(Connectivity);
+  }
+
+  dismiss() {
+    this.viewCtrl.dismiss(null);
   }
 
   ipCams = [];
@@ -307,10 +318,6 @@ export class Ipcameras {
   //     });
   //   }
   // }
-
-  dismiss() {
-    this.viewCtrl.dismiss(null);
-  }
 
   createVideoView(fileName) {
     var localView = {
