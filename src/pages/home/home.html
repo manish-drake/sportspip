@@ -37,51 +37,50 @@
 	<div *ngSwitchCase="'local'" style="position: relative; height:100%;">
 		<ion-refresher (ionRefresh)="doRefreshLocal($event)">
 			<ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
-				<button ion-item *ngIf="localMatrices.length > 0" style="background:transparent;" (click)="openCollection()">
+			</ion-refresher-content>
+		</ion-refresher>
+		<button ion-item *ngIf="localMatrices.length > 0" style="background:transparent;" (click)="openCollection()">
 			All Matrices
 			<ion-badge item-right>{{localMatrices.length}}</ion-badge>
 			</button>
-				<div class="items">
-					<div class="item" *ngFor='let matrix of localMatrices | slice: 0:12; let i = index'>
-						<ion-card (click)="openMatrix(matrix.Name,matrix.Channel)" (press)="matrixPressed(i,matrix.Name,matrix.Channel,matrix.Title)">
-							<ion-row>
-								<ion-col no-padding [style.background-image]="retrunThumbnailPath(matrix.ThumbnailSource)" style="height: 120px;background-size: cover;background-color:lightgray;background-position: center;">
-								</ion-col>
-							</ion-row>
-							<ion-row>
-								<ion-col no-padding>
-									<ion-card-content style="padding:5px 10px 2px 10px ">
-										<ion-row>
-											<ion-col no-padding style="width: 100%;font-size: 18px;overflow: hidden;text-overflow: ellipsis;">
-												{{matrix.Title}}
-											</ion-col>
-											<ion-col no-padding center text-right style="flex: 0 0 auto; width: auto;">
-												<!--<p>{{FormatDate(matrix.DateCreated)}}</p>-->
-											</ion-col>
-										</ion-row>
-										<ion-row>
-											<ion-col no-padding style="width: 100%;overflow: hidden;text-overflow: ellipsis;">
-												{{matrix.Sport}}/{{matrix.Skill}}
-											</ion-col>
-											<ion-col no-padding center text-right style="flex: 0 0 auto; width: auto;">
-												<!--<p>{{formatDuration(matrix.Duration)}}</p>-->
-												<p>{{matrix.Views}}</p>
-											</ion-col>
-										</ion-row>
-									</ion-card-content>
-								</ion-col>
-							</ion-row>
-						</ion-card>
-					</div>
-				</div>
-				<ion-row center *ngIf="!(localMatrices.length > 0)" style="position: absolute;height:100%;color: gray;">
-					<ion-col text-center center>
-						<b>No matrix exists</b>
-					</ion-col>
-				</ion-row>
-
-			</ion-refresher-content>
-		</ion-refresher>
+		<div class="items">
+			<div class="item" *ngFor='let matrix of localMatrices | slice: 0:12; let i = index'>
+				<ion-card (click)="openMatrix(matrix.Name,matrix.Channel)" (press)="matrixPressed(i,matrix.Name,matrix.Channel,matrix.Title)">
+					<ion-row>
+						<ion-col no-padding [style.background-image]="retrunThumbnailPath(matrix.ThumbnailSource)" style="height: 120px;background-size: cover;background-color:lightgray;background-position: center;">
+						</ion-col>
+					</ion-row>
+					<ion-row>
+						<ion-col no-padding>
+							<ion-card-content style="padding:5px 10px 2px 10px ">
+								<ion-row>
+									<ion-col no-padding style="width: 100%;font-size: 18px;overflow: hidden;text-overflow: ellipsis;">
+										{{matrix.Title}}
+									</ion-col>
+									<ion-col no-padding center text-right style="flex: 0 0 auto; width: auto;">
+										<!--<p>{{FormatDate(matrix.DateCreated)}}</p>-->
+									</ion-col>
+								</ion-row>
+								<ion-row>
+									<ion-col no-padding style="width: 100%;overflow: hidden;text-overflow: ellipsis;">
+										{{matrix.Sport}}/{{matrix.Skill}}
+									</ion-col>
+									<ion-col no-padding center text-right style="flex: 0 0 auto; width: auto;">
+										<!--<p>{{formatDuration(matrix.Duration)}}</p>-->
+										<p>{{matrix.Views}}</p>
+									</ion-col>
+								</ion-row>
+							</ion-card-content>
+						</ion-col>
+					</ion-row>
+				</ion-card>
+			</div>
+		</div>
+		<ion-row center *ngIf="!(localMatrices.length > 0)" style="position: absolute;height:100%;color: gray;">
+			<ion-col text-center center>
+				<b>No matrix exists</b>
+			</ion-col>
+		</ion-row>
 	</div>
 
 	<div *ngSwitchCase="'server'" style="position: relative; height:100%;">

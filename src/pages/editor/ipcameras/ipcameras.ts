@@ -40,13 +40,6 @@ export class Ipcameras {
     this.views = this.navParams.data.views;
     this.selectedViewIndex = this.navParams.data.selectedViewIndex;
 
-    this.platform.registerBackButtonAction(() => {
-      let view = this.navCtrl.getActive();
-      if (view.instance instanceof Ipcameras){
-        this.dismiss();
-        }
-      else this.navCtrl.pop();
-    });
   }
 
   ionViewDidLoad() {
