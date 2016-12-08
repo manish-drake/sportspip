@@ -109,7 +109,7 @@ export class Ipcameras {
   }
 
   getIPCamPreview(ipAdd: string) {
-    return "http://" + ipAdd + "/Streaming/channels/101/picture";
+    return "http://admin:12345@" + ipAdd + "/Streaming/channels/101/picture";
   }
 
   isTimerOn: boolean = false;

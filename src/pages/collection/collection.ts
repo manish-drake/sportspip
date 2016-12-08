@@ -31,6 +31,18 @@ export class CollectionPage {
     this.LoadCollectionMatrix();
   }
 
+  refreshing: boolean = false;
+
+  doRefreshContent(refresher) {
+    this.refreshing = true;
+    this.localMatrices = [];
+    setTimeout(() => {
+      refresher.complete();
+      this.LoadCollectionMatrix();
+      this.refreshing = false;
+    }, 500);
+  }
+
   LoadCollectionMatrix() {
 
     this.platform.ready().then(() => {

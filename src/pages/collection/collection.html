@@ -20,6 +20,10 @@
 
 
 <ion-content style="background: #f1f1f1;position: relative;">
+  <ion-refresher (ionRefresh)="doRefreshContent($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
   <div class="items">
     <div class="item" *ngFor='let matrix of localMatrices; let i = index'>
       <ion-card (click)="openMatrix(matrix.Name,matrix.Channel)" (press)="matrixPressed(i,matrix.Name,matrix.Channel,matrix.Title)">
@@ -53,7 +57,7 @@
       </ion-card>
     </div>
   </div>
-  <ion-row center *ngIf="!(localMatrices.length > 0)" style="position: absolute;top: 0;width: 100%;height: 100%; color: gray;">
+  <ion-row center *ngIf="!(localMatrices.length > 0) && !refreshing" style="position: absolute;top: 0;width: 100%;height: 100%; color: gray;">
     <ion-col text-center center>
       <b>No matrix exists</b>
     </ion-col>

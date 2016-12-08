@@ -109,15 +109,26 @@ export class HomePage {
         this.openmatrix.run(matrixName, Channel);
     }
 
+    refreshing: boolean = false;
+
     doRefreshLocal(refresher) {
-        console.log('Begin async operation', refresher);
+        this.refreshing = true;
         this.localMatrices = [];
-        
         setTimeout(() => {
-            console.log('Async operation has ended');
             refresher.complete();
             this.GetLocalMatrixHeader();
-        }, 2000);
+            this.refreshing = false;
+        }, 500);
+    }
+
+    doRefreshChannels(refresher) {
+        this.refreshing = true;
+        this.channels = [];
+        setTimeout(() => {
+            refresher.complete();
+            this.GetServerHeader();
+            this.refreshing = false;
+        }, 500);
     }
 
     matrixPressed(index, Name, channel, title) {
@@ -409,7 +420,7 @@ export class HomePage {
 
 @Component({
     template: `
-    <ion-list no-lines>
+    <ion-list no-lines style="margin:0;">
     <ion-item (click)="onAbout()">
       <ion-icon item-left name="information-circle"></ion-icon>About
       </ion-item>

@@ -463,7 +463,7 @@ export class EditorPage {
 
 @Component({
   template: `
-    <ion-list no-lines>
+    <ion-list no-lines  style="margin:0;">
     <button ion-item [disabled]="countOfCaptureViews==0" (click)="dismiss('compareviews')">
       <ion-icon item-left name="grid"></ion-icon>Compare Views
       </button>

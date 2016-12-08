@@ -15,10 +15,10 @@
 	</ion-segment>-->
 	<ion-row>
 		<ion-col text-center center (click)="showSegment('local')" [class.selectedsegment]="selectedSegment != 'local'">
-			<b>Matrices</b>
+			<h5 style="margin:5px" color="primary">Matrices</h5>
 		</ion-col>
 		<ion-col text-center center (click)="showSegment('server')" [class.selectedsegment]="selectedSegment != 'server'">
-			<b>Channels</b>
+			<h5 style="margin:5px" color="primary">Channels</h5>
 		</ion-col>
 	</ion-row>
 </ion-header>
@@ -76,7 +76,7 @@
 				</ion-card>
 			</div>
 		</div>
-		<ion-row center *ngIf="!(localMatrices.length > 0)" style="position: absolute;height:100%;color: gray;">
+		<ion-row center *ngIf="!(localMatrices.length > 0) && !refreshing" style="position: absolute;height:100%;color: gray;">
 			<ion-col text-center center>
 				<b>No matrix exists</b>
 			</ion-col>
@@ -84,8 +84,11 @@
 	</div>
 
 	<div *ngSwitchCase="'server'" style="position: relative; height:100%;">
+		<ion-refresher (ionRefresh)="doRefreshChannels($event)">
+			<ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
+			</ion-refresher-content>
+		</ion-refresher>
 		<ion-item-group *ngFor="let channel of channels|groupBy:'Channel'">
-
 			<button ion-item *ngIf="channel.value.length > 0" style="background:transparent;" (click)="openChannelCollection(channel.key)">
 			{{channel.key}}
 			<ion-badge item-right>{{channel.value.length}}</ion-badge>
@@ -130,7 +133,7 @@
 				</div>
 			</div>
 		</ion-item-group>
-		<ion-row center *ngIf="!(channels.length > 0)" style="position: absolute; height:100%;color: gray;">
+		<ion-row center *ngIf="!(channels.length > 0) && !refreshing" style="position: absolute; height:100%;color: gray;">
 			<ion-col text-center center>
 				<b>No channel exists</b>
 			</ion-col>

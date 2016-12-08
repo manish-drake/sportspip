@@ -41,11 +41,23 @@ export class ChannelCollectionPage {
     this.GetChannelMatrix(this.channel);
   }
 
+  refreshing: boolean = false;
+
+  doRefreshContent(refresher) {
+    this.refreshing = true;
+    this.channelMatrices = [];
+    setTimeout(() => {
+      refresher.complete();
+      this.GetChannelMatrix(this.channel);
+      this.refreshing = false;
+    }, 500);
+  }
+
   GetChannelMatrix(channel) {
     this.platform.ready().then(() => {
       File.listDir(cordova.file.dataDirectory, "Server/" + channel + "/Tennis/Matrices/").then((success) => {
         success.forEach((res) => {
-          File.readAsText(cordova.file.dataDirectory + "Server/" + channel + "/Tennis/Matrices/" + res.name , "Header.xml")
+          File.readAsText(cordova.file.dataDirectory + "Server/" + channel + "/Tennis/Matrices/" + res.name, "Header.xml")
             .then(data => {
               //deserialiae server header  
               var result = JSON.parse(data.toString());
