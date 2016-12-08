@@ -5,7 +5,7 @@ import { Connection } from '../pages/Connection';
 import X2JS from 'x2js';
 
 @Injectable()
-export class Transfer {
+export class BackGroundTransferProcessIP {
     data: any;
 
     constructor(private platform: Platform, private http: Http) {
@@ -21,8 +21,6 @@ export class Transfer {
             this.createClips(fileName, duration, source, CamsCount);
             let parser: any = new X2JS();
             var xmlMatrix = parser.js2xml(this.data);
-
-            console.log(xmlMatrix);
 
             let headers = new Headers({ 'Content-Type': 'application/xml' });
             let options = new RequestOptions({ headers: headers });
@@ -40,7 +38,7 @@ export class Transfer {
         while (i <=  CamsCount) {
             var name = fileName + "_" + i + ".mp4"
             var view = "View" + " " + i;
-            this.CreateClip(name, view, this.data);
+            this.AddMatrixClip(name, view, this.data);
             i++;
         }
     }
@@ -69,7 +67,7 @@ export class Transfer {
     }
 
 
-    private CreateClip(kernel, view, data) {
+    private AddMatrixClip(kernel, view, data) {
         var clip = {
             "_Name": kernel,
             "_name": "",

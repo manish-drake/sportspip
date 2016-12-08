@@ -4,10 +4,10 @@ import {
   NavController, NavParams, AlertController, ModalController, ModalOptions, Platform,
   App, LoadingController, Events, PopoverController, ViewController
 } from 'ionic-angular';
-
+import { BackGroundTransferProcess } from '../../Action/BackGroundTransferProcess';
 import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError, FilePath, } from 'ionic-native';
 
-import { Http } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 import { Connection } from '../../pages/Connection'
 import { StorageFactory } from '../../Factory/StorageFactory';
 import { ModelFactory } from '../../Factory/ModelFactory';
@@ -23,7 +23,7 @@ declare var cordova: any;
 @Component({
   selector: 'page-editor',
   templateUrl: 'editor.html',
-  providers: [StorageFactory, Connection, ModelFactory],
+  providers: [StorageFactory, Connection, ModelFactory, BackGroundTransferProcess],
 })
 
 export class EditorPage {
@@ -34,6 +34,7 @@ export class EditorPage {
   views = [];
 
   constructor(public navCtrl: NavController,
+    private backGroundTransferProcess: BackGroundTransferProcess,
     private params: NavParams,
     private alertCtrl: AlertController,
     private modalCtrl: ModalController,
@@ -97,6 +98,7 @@ export class EditorPage {
           var res = JSON.parse(data.toString());
           var matrix = res.Matrix;
           matrix['Matrix.Children'].View = this.views;
+
           var name = this.GetThumbName(matrix);
 
           this.storagefactory.SaveMatrixAsync(res, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
@@ -337,24 +339,16 @@ export class EditorPage {
   captureSuccess(MediaFiles) {
     MediaFiles.forEach(mediaFile => {
       var fileUrl = mediaFile.localURL;
-      console.log(fileUrl);
+      console.log(mediaFile);
 
       var path = fileUrl.substr(0, fileUrl.lastIndexOf('/') + 1);
       var fileName = fileUrl.substr(fileUrl.lastIndexOf('/') + 1);
 
-      File.moveFile(path, fileName, cordova.file.applicationStorageDirectory, fileName)
+      File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName)
         .then(_ => {
-          console.log('Successfully saved video')
-          // var server = Connection.connectedServer.Address;
-          // this.http.get(cordova.file.applicationStorageDirectory + fileName).subscribe(success => {
-          //   let headers = new Headers({ 'Content-Type': 'multipart/form-data' }); // ... Set content type to JSON
-          //   let options = new RequestOptions({ headers: headers });
-          //   this.http.post("http://" + server + ":10080/imatrix/matrices/"+fileName+"/videos", success.text(),options)
-          //     .subscribe(res => {
-          //       alert(res);
-          //     })
-          // })
           this.CreateVideoView(fileName);
+          console.log('Successfully saved video')
+          this.backGroundTransferProcess.TransferVideo(fileName);
         })
         .catch(err => {
           console.log('Failed saving video' + err)
@@ -481,10 +475,10 @@ export class EditorPage {
 })
 export class EditorActionsPopover {
 
-  countOfCaptureViews:any;
+  countOfCaptureViews: any;
 
   constructor(public viewCtrl: ViewController, private navParams: NavParams) {
-    if(this.navParams.data!=null){
+    if (this.navParams.data != null) {
       this.countOfCaptureViews = this.navParams.data.countOfCaptureViews;
     }
   }
