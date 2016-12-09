@@ -66,10 +66,6 @@ export class HomePage {
         this.GetLocalMatrixHeader();
     }
 
-    ionViewWillEnter() {
-
-    }
-
     ionViewDidLoad() {
         this.connection.scanUdp();
     }

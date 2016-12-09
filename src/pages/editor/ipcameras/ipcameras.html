@@ -19,7 +19,11 @@
 </ion-header>
 
 
-<ion-content style="background:#eeeeee;" style="position: relative;">
+<ion-content style="background:#f4f4f4;position: relative;">
+  <ion-refresher *ngIf="isConnected" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="circles">
+    </ion-refresher-content>
+  </ion-refresher>
   <ion-row>
     <ion-col center style="width:auto;flex:0 0 auto;min-width:160px;">
       <b item-left>Rec. Duration </b>
@@ -44,8 +48,8 @@
 
   <ion-row center style="position: absolute;top:40%; color: gray;">
     <ion-col text-center center>
-      <ion-spinner *ngIf="loadingCams" name="dots"></ion-spinner>
-      <b *ngIf="isConnected && ipCams.length==0 && !loadingCams">No IP Camera found</b>
+      <ion-spinner *ngIf="isLoading" name="dots"></ion-spinner>
+      <b *ngIf="isConnected && ipCams.length==0 && !isLoading && !refreshing">No IP Camera found</b>
       <b *ngIf="!isConnected">Not connected to any server</b>
     </ion-col>
   </ion-row>

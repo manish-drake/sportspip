@@ -11,25 +11,17 @@
 			<button ion-button icon-only (click)="presentMoreActions($event)"><ion-icon name="more"></ion-icon></button>
 		</ion-buttons>
 	</ion-toolbar>
-
-	<!--<ion-segment color="light" class="segment" [(ngModel)]="selectedViewIndex">
-		<ion-segment-button color="primary" style="font-size:16px;" *ngFor="let view of views; let i = index" [value]="i" (click)="showViewSegment(i)"
-			(press)="deleteView(i)">
-			View {{i+1}}
-		</ion-segment-button>
-		<button ion-button icon-only clear color="light" (click)="addView()"><ion-icon name="add-circle"></ion-icon></button>
-	</ion-segment>-->
 	<ion-row>
 		<ion-col text-center center *ngFor="let view of views; let i = index" (click)="showViewSegment(i)" (press)="deleteView(i)"
 			[class.selectedview]="i == selectedViewIndex" [class.view]="i != selectedViewIndex">
-			<span [hidden]="views.length > 5">View </span>{{i+1}}
+			<span [hidden]="views.length > 5" color="primary">View </span><span color="primary">{{i+1}}</span>
 		</ion-col>
-		<button ion-button icon-only clear no-margin (click)="addView()"><ion-icon name="add-circle"></ion-icon></button>
+		<button ion-button icon-only clear (click)="addView()"><ion-icon name="add-circle"></ion-icon></button>
 	</ion-row>
 
 </ion-header>
 
-<ion-content style="background:whitesmoke;" [ngSwitch]="selectedViewIndex">
+<ion-content style="background:#f4f4f4;" [ngSwitch]="selectedViewIndex">
 	<div style="height:100%;" *ngFor="let view of views; let i = index" [hidden]="hideViewSegment(selectedViewIndex,i)" [ngSwitch]="view._Source">
 		<!--ViewCanvasTemplate-->
 		<canvas-component *ngSwitchCase="'Canvas'" [view]="view"></canvas-component>
@@ -68,7 +60,7 @@
 						</ion-col>
 						<ion-col no-padding width-50>
 							<ion-card (click)="IPCamCapture()">
-								<ion-item>
+								<ion-item  style="background-color:white;">
 									<ion-icon name="wifi" item-left style="margin-right:-10px;"></ion-icon>
 									<h2 class="textTrim">IP Cams Record</h2>
 								</ion-item>

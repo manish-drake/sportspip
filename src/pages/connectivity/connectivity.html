@@ -16,7 +16,11 @@
 </ion-header>
 
 
-<ion-content style="background:#f4f4f4;" style="position: relative;">
+<ion-content style="background:#f4f4f4;position: relative;">
+  <ion-refresher *ngIf="isConnectivityEnabled" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="circles">
+    </ion-refresher-content>
+  </ion-refresher>
   <ion-item no-lines style="background:transparent;">
     <ion-label>Connectivity</ion-label>
     <ion-toggle [(ngModel)]="isConnectivityEnabled" (ngModelChange)="connectivityChanged(isConnectivityEnabled)"></ion-toggle>
@@ -69,10 +73,11 @@
     </ion-list>
   </div>
   <ion-row style="position: absolute; height:80%;color: gray;">
-			<ion-col text-center center>
-				<span *ngIf="servers.length == 0 && isConnectivityEnabled"><b>No server found</b></span>
-        <span *ngIf="!isConnectivityEnabled"><b>Connectivity is off</b></span>
-			</ion-col>
-		</ion-row>
+    <ion-col text-center center>
+      <ion-spinner *ngIf="isLoading" name="dots"></ion-spinner>
+      <span *ngIf="servers.length == 0 && isConnectivityEnabled && !isLoading  && !refreshing"><b>No server found</b></span>
+      <span *ngIf="!isConnectivityEnabled"><b>Connectivity is off</b></span>
+    </ion-col>
+  </ion-row>
 
 </ion-content>

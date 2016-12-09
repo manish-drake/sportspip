@@ -42,8 +42,8 @@ export class Ipcameras {
 
   }
 
-  isConnected: boolean = null;
-  loadingCams: boolean;
+  isConnected: boolean = true;
+  isLoading: boolean = true;
 
   ionViewDidLoad() {
     console.log('Hello Ipcamera Page');
@@ -51,6 +51,18 @@ export class Ipcameras {
 
   ionViewDidEnter() {
     this.loadIPCams();
+  }
+
+  refreshing: boolean = false;
+
+  doRefresh(refresher) {
+    this.refreshing = true;
+    this.ipCams.length == 0
+    setTimeout(() => {
+      refresher.complete();
+      this.refreshing = false;
+      this.loadIPCams();
+    }, 500);
   }
 
   openConnectivity() {
@@ -67,6 +79,7 @@ export class Ipcameras {
     this.ipCams.length = 0;
 
     if (Connection.connectedServer == null) {
+      this.isLoading = false;
       this.isConnected = false;
       let alert = this.alertCtrl.create({
         title: 'Not connected!',
@@ -89,36 +102,38 @@ export class Ipcameras {
       alert.present();
     }
     else {
+      this.isLoading = false;
       this.isConnected = true;
-      this.loadingCams = true;
+      this.isLoading = true;
       var connectedServerIP = Connection.connectedServer.Address;
 
       var requestUri = "http://" + connectedServerIP + ":10080/icamera/cams/ip/";
 
-      this.http.get(requestUri)
-        .map(res => res.text())
-        .subscribe(
-        data => {
-          let parser: any = new X2JS();
-          var jsonData = parser.xml2js(data);
-          if (jsonData.Cams.IPCam != undefined) {
-            if (jsonData.Cams.IPCam instanceof Array) {
-              this.ipCams = jsonData.Cams.IPCam;
+      setTimeout(() => {
+        this.http.get(requestUri)
+          .map(res => res.text())
+          .subscribe(
+          data => {
+            let parser: any = new X2JS();
+            var jsonData = parser.xml2js(data);
+            if (jsonData.Cams.IPCam != undefined) {
+              if (jsonData.Cams.IPCam instanceof Array) {
+                this.ipCams = jsonData.Cams.IPCam;
+              }
+              else {
+                this.ipCams.push(jsonData.Cams.IPCam);
+              }
             }
-            else {
-              this.ipCams.push(jsonData.Cams.IPCam);
-            }
-          }
-        },
-        err => {
-          console.error('There was an error: ' + err);
-          this.loadingCams = false;
-        },
-        () => {
-          console.log('Random Quote Complete');
-          this.loadingCams = false;
-        }
-        );
+          },
+          err => {
+            console.error('There was an error: ' + err);
+            this.isLoading = false;
+          },
+          () => {
+            console.log('Random Quote Complete');
+            this.isLoading = false;
+          });
+      }, 1000);
     }
   }
 
