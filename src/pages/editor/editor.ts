@@ -52,11 +52,11 @@ export class EditorPage {
       console.log("editor page: " + this.matrix);
     }
 
-    this.platform.registerBackButtonAction(() => {
-      let view = this.navCtrl.getActive();
-      if (view.instance instanceof EditorPage) this.saveMatrix();
-      else this.navCtrl.pop();
-    });
+    // this.platform.registerBackButtonAction(() => {
+    //   let view = this.navCtrl.getActive();
+    //   if (view.instance instanceof EditorPage) this.saveMatrix();
+    //   else this.navCtrl.pop();
+    // });    
   }
 
   ngAfterViewInit() {
@@ -301,6 +301,7 @@ export class EditorPage {
           File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName).then(_ => {
             console.log('Successfully copied video');
             this.CreateVideoView(fileName);
+            this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
           }).catch(err => {
             console.log('Failed copying video:' + err)
             this.chooseVideoErrorMsg(err);
@@ -344,12 +345,12 @@ export class EditorPage {
       var path = fileUrl.substr(0, fileUrl.lastIndexOf('/') + 1);
       var fileName = fileUrl.substr(fileUrl.lastIndexOf('/') + 1);
 
-      File.moveFile (path, fileName, cordova.file.applicationStorageDirectory, fileName)
+      File.moveFile(path, fileName, cordova.file.applicationStorageDirectory, fileName)
         .then(_ => {
           this.CreateVideoView(fileName);
           console.log('Successfully saved video')
           if (Connection.connectedServer != null)
-            this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address);
+            this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
         })
         .catch(err => {
           console.log('Failed saving video' + err)

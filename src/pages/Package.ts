@@ -22,13 +22,13 @@ export class Package {
     public channelName: any;
 
     MoveToLocalCollection(channelName) {
-        this.fileName = Date.now().toString();
+        this.fileName =(new Date()).toISOString().replace(/[^0-9]/g, "").slice(0,14);
         this.platform.ready().then(() => {
            File.readAsText(cordova.file.dataDirectory + "Temp/matrix1","Header.xml").then((result => {
                 console.log("header moving..");
                 var header = JSON.parse(result.toString());
                 header.Name = this.fileName;
-                header.DateCreated = Date.now().toString();
+                header.DateCreated =(new Date()).toISOString().replace(/[^0-9]/g, "").slice(0,14);
                 header.ThumbnailSource = header.UploadID;
                 this.channelName = header.Channel;
                 this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
@@ -145,7 +145,6 @@ export class Package {
     }
 
     FormatDuration(dur) {
-        alert(dur)
         if (dur != null) {
             var hrs = Number(dur.slice(0, 2));
             var h = (hrs == 0) ? "" : hrs + 'h ';

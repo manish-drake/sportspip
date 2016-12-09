@@ -58,7 +58,7 @@ export class CollectionPage {
                   var item = {
                     Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
                     ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
-                    Views: result.Clips
+                    Views: result.Views
                   };
                   this.localMatrices.push(item);
                 });
@@ -71,10 +71,6 @@ export class CollectionPage {
 
   FormatDate(value) {
     return this.packages.FormatDate(value);
-  }
-
-  formatDuration(dur) {
-    return this.packages.FormatDuration(dur);
   }
 
   retrunThumbnailPath(name) {
@@ -90,7 +86,7 @@ export class CollectionPage {
   }
 
   DuplicateMatrix(matrixname, channelName) {
-    var name = Date.now().toString();
+    var name = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0,14);
     this.platform.ready().then(() => {
       File.readAsText(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/Matrices/" + matrixname, "Header.xml")
         .then(res => {

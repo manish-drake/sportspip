@@ -65,7 +65,7 @@ export class ChannelCollectionPage {
               var item = {
                 Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
                 ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
-                Views: result.Clips
+                Views: result.Views
               };
               this.channelMatrices.push(item);
             });
@@ -80,9 +80,9 @@ export class ChannelCollectionPage {
     return this.packages.FormatDate(value);
   }
 
-  formatDuration(dur) {
-    return this.packages.FormatDuration(dur);
-  }
+  // formatDuration(dur) {
+  //   return this.packages.FormatDuration(dur);
+  // }
 
   retrunThumbnailPath(name) {
     return "url(" + cordova.file.applicationStorageDirectory + name + ".jpg" + ")";

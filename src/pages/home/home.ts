@@ -54,6 +54,8 @@ export class HomePage {
         private loadingCtrl: LoadingController,
         private connection: Connection) {
 
+        // console.log(this.FormatDates("20161209084843"));
+
 
     }
 
@@ -110,6 +112,7 @@ export class HomePage {
     doRefreshLocal(refresher) {
         this.refreshing = true;
         this.localMatrices = [];
+
         setTimeout(() => {
             refresher.complete();
             this.GetLocalMatrixHeader();
@@ -203,18 +206,20 @@ export class HomePage {
     }
 
     DuplicateMatrix(channelName, matrixname) {
-        var name = Date.now().toString();
+        var name = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
         this.platform.ready().then(() => {
             File.readAsText(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/Matrices/" + matrixname, "Header.xml")
                 .then(res => {
                     var header = JSON.parse(res.toString());
                     header.Name = name;
+                    header.DateCreated = name;
                     this.storagefactory.SaveLocalHeader(header, channelName, header.Sport, name, "Matrices");
                 })
             File.readAsText(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/Matrices/" + matrixname, matrixname + ".mtx")
                 .then(res => {
                     var matrix = JSON.parse(res.toString());
                     matrix.Matrix._Name = name;
+                    matrix.Matrix._DateCreated = name;
                     this.storagefactory.SaveMatrixAsync(matrix, channelName, matrix.Matrix._Sport, name, "Matrices");
                 })
             Observable.interval(1000)
@@ -261,9 +266,10 @@ export class HomePage {
         return this.packages.FormatDate(value);
     }
 
-    formatDuration(dur) {
-        return this.packages.FormatDuration(dur);
-    }
+    // formatDuration(dur) {
+    //     console.log(dur);
+    //     return this.packages.FormatDuration(dur);
+    // }
 
     //Display Server Header
     GetServerHeader() {
