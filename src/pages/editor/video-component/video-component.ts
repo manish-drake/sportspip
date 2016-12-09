@@ -82,7 +82,7 @@ export class VideoComponent {
 
     OnVideoError(error) {
         console.log('Error in video Elmnt:' + JSON.stringify(error));
-        alert('Error in video Elmnt:' + JSON.stringify(error));
+        // alert('Error in video Elmnt:' + JSON.stringify(error));
         this.videoSrcAvailable = false;
     }
 

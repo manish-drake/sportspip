@@ -47,10 +47,10 @@ export class EditorPage {
     private app: App,
     private events: Events,
     private popoverCtrl: PopoverController) {
-    if (params.data != null) {
-      this.matrix = params.data.matrixData;
-      console.log("editor page: " + this.matrix);
-    }
+    // if (params.data != null) {
+    //   this.matrix = params.data.matrixData;
+    //   console.log("editor page: " + this.matrix);
+    // }
 
     // this.platform.registerBackButtonAction(() => {
     //   let view = this.navCtrl.getActive();
@@ -59,7 +59,16 @@ export class EditorPage {
     // });    
   }
 
-  ngAfterViewInit() {
+  // ngAfterViewInit() {
+
+  // }
+
+  ionViewWillLoad() {
+    if (this.params.data != null) {
+      this.matrix = this.params.data.matrixData;
+      console.log("editor page: " + this.matrix);
+    }
+
     this.selectedViewIndex = 0;
     if (this.matrix["Matrix.Children"]["View"] instanceof Array) {
       this.views = this.matrix["Matrix.Children"]["View"];
@@ -68,6 +77,7 @@ export class EditorPage {
       this.views.push(this.matrix["Matrix.Children"]["View"]);
     }
     this.evaluateCaptureViews();
+    this.evaluateReadPermissions();
   }
 
   presentMoreActions(event) {
@@ -240,7 +250,7 @@ export class EditorPage {
     alert.present();
   }
 
-  isHavingReadPermissions:boolean = false;
+  isHavingReadPermissions: boolean = false;
 
   evaluateReadPermissions() {
     if (this.platform.is('cordova')) {
@@ -253,71 +263,69 @@ export class EditorPage {
 
   chooseVideo() {
     if (this.platform.is('cordova')) {
-      var permissions = cordova.plugins.permissions;
-      permissions.hasPermission(permissions.READ_EXTERNAL_STORAGE, (status) => {
-        if (status.hasPermission) {
-          this.startChoosingFile();
-        }
-        else {
-          permissions.requestPermission(permissions.READ_EXTERNAL_STORAGE, (status2) => {
-            if (status2.hasPermission) {
-              this.startChoosingFile();
-            }
-            else {
-              console.log('permission is not turned on');
-              permissionNotGranted("");
-            }
-          }, ((err) => {
-            console.log('permission is not turned on: ' + err);
-            permissionNotGranted(err);
-          }));
-        }
-      }, ((err) => {
-        console.log('permission is not turned on: ' + err);
-        permissionNotGranted(err);
-      }));
+      FileChooser.open().then(uri => {
+        console.log(uri);
 
-      var permissionNotGranted = function (err) {
-        let alert = this.alertCtrl.create({
-          title: 'Storage read permission issue',
-          subTitle: err,
-          buttons: ['OK']
-        });
-        alert.present();
-      }
+        FilePath.resolveNativePath(uri)
+          .then(filePath => {
+            console.log(filePath);
+            var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+            var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
+
+            File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName).then(_ => {
+              console.log('Successfully copied video');
+              this.CreateVideoView(fileName);
+              this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
+            }).catch(err => {
+              console.log('Failed copying video:' + err)
+              // this.chooseVideoErrorMsg('Failed copying video:' + err);
+            });
+
+          })
+          .catch(err => {
+            console.log(err);
+            this.chooseVideoErrorMsg('Failed Resolving nativepath:' + err);
+          });
+
+      }).catch(err => {
+        console.log(err);
+        this.chooseVideoErrorMsg('Error opening file chooser:' + err);
+      });
     }
   }
 
-  startChoosingFile() {
-    FileChooser.open().then(uri => {
-      console.log(uri);
+  // var permissions = cordova.plugins.permissions;
+  //     permissions.hasPermission(permissions.READ_EXTERNAL_STORAGE, (status) => {
+  //       if (status.hasPermission) {
+  //         this.startChoosingFile();
+  //       }
+  //       else {
+  //         permissions.requestPermission(permissions.READ_EXTERNAL_STORAGE, (status2) => {
+  //           if (status2.hasPermission) {
+  //             this.startChoosingFile();
+  //           }
+  //           else {
+  //             console.log('permission is not turned on');
+  //             permissionNotGranted("");
+  //           }
+  //         }, ((err) => {
+  //           console.log('permission is not turned on: ' + err);
+  //           permissionNotGranted(err);
+  //         }));
+  //       }
+  //     }, ((err) => {
+  //       console.log('permission is not turned on: ' + err);
+  //       permissionNotGranted(err);
+  //     }));
 
-      FilePath.resolveNativePath(uri)
-        .then(filePath => {
-          console.log(filePath);
-          var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-          var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
-
-          File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName).then(_ => {
-            console.log('Successfully copied video');
-            this.CreateVideoView(fileName);
-            this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
-          }).catch(err => {
-            console.log('Failed copying video:' + err)
-            this.chooseVideoErrorMsg(err);
-          });
-
-        })
-        .catch(err => {
-          console.log(err);
-          this.chooseVideoErrorMsg('Failed Resolving nativepath:' + err);
-        });
-
-    }).catch(err => {
-      console.log(err);
-      this.chooseVideoErrorMsg('Error opening file chooser:' + err);
-    });
-  }
+  //     var permissionNotGranted = function (err) {
+  //       let alert = this.alertCtrl.create({
+  //         title: 'Storage read permission issue',
+  //         subTitle: err,
+  //         buttons: ['OK']
+  //       });
+  //       alert.present();
+  //     }
 
   chooseVideoErrorMsg(err) {
     let alert = this.alertCtrl.create({
