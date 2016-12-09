@@ -35,7 +35,7 @@
 						<ion-col no-padding width-50>
 							<ion-card (click)="addBlankCanvas()">
 								<ion-item>
-									<ion-icon name="easel" item-left style="margin-right:-10px;"></ion-icon>
+									<ion-icon name="easel" item-left></ion-icon>
 									Blank Canvas
 								</ion-item>
 							</ion-card>
@@ -43,7 +43,7 @@
 						<ion-col no-padding width-50>
 							<ion-card (click)="recordVideo()">
 								<ion-item>
-									<ion-icon name="videocam" item-left style="margin-right:-10px;"></ion-icon>
+									<ion-icon name="videocam" item-left></ion-icon>
 									<h2 class="textTrim">Record Video</h2>
 								</ion-item>
 							</ion-card>
@@ -53,7 +53,7 @@
 						<ion-col no-padding width-50>
 							<ion-card (click)="import()">
 								<ion-item>
-									<ion-icon name="log-in" item-left style="margin-right:-10px;"></ion-icon>
+									<ion-icon name="log-in" item-left></ion-icon>
 									<h2 class="textTrim">Import</h2>
 								</ion-item>
 							</ion-card>
@@ -61,7 +61,7 @@
 						<ion-col no-padding width-50>
 							<ion-card (click)="IPCamCapture()">
 								<ion-item  style="background-color:white;">
-									<ion-icon name="wifi" item-left style="margin-right:-10px;"></ion-icon>
+									<ion-icon name="wifi" item-left></ion-icon>
 									<h2 class="textTrim">IP Cams Record</h2>
 								</ion-item>
 							</ion-card>
@@ -69,9 +69,9 @@
 					</ion-row>
 					<ion-row>
 						<ion-col no-padding>
-							<ion-card (click)="chooseVideo()" *ngIf="evaluateReadPermissions()">
+							<ion-card (click)="chooseVideo()" *ngIf="isHavingReadPermissions">
 								<ion-item>
-									<ion-icon name="ios-film" item-left style="margin-right:-10px;"></ion-icon>
+									<ion-icon name="ios-film" item-left></ion-icon>
 									<h2 class="textTrim">Add Video</h2>
 								</ion-item>
 							</ion-card>

@@ -17,9 +17,8 @@
 
 
 <ion-content style="background:#f4f4f4;position: relative;">
-  <ion-refresher *ngIf="isConnectivityEnabled" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="circles">
-    </ion-refresher-content>
+  <ion-refresher [enabled] ="isConnectivityEnabled" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <ion-item no-lines style="background:transparent;">
     <ion-label>Connectivity</ion-label>

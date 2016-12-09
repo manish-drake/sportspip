@@ -21,8 +21,7 @@
 
 <ion-content style="background: #f1f1f1;position: relative;">
   <ion-refresher (ionRefresh)="doRefreshContent($event)">
-    <ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="circles">
-    </ion-refresher-content>
+    <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <div class="items">
     <div class="item" *ngFor='let matrix of localMatrices; let i = index'>

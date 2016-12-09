@@ -31,9 +31,8 @@
 	</ion-fab>-->
 
 	<div *ngSwitchCase="'local'" style="position: relative; height:100%;">
-		<ion-refresher (ionRefresh)="doRefreshLocal($event)">
-			<ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="circles">
-			</ion-refresher-content>
+		<ion-refresher (ionRefresh)="doRefreshLocal($event)" no-lines>
+			<ion-refresher-content></ion-refresher-content>
 		</ion-refresher>
 		<button ion-item *ngIf="localMatrices.length > 0" style="background:transparent;" (click)="openCollection()">
 			All Matrices
@@ -81,8 +80,7 @@
 
 	<div *ngSwitchCase="'server'" style="position: relative; height:100%;">
 		<ion-refresher (ionRefresh)="doRefreshChannels($event)">
-			<ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="circles">
-			</ion-refresher-content>
+			<ion-refresher-content></ion-refresher-content>
 		</ion-refresher>
 		<ion-item-group *ngFor="let channel of channels|groupBy:'Channel'">
 			<button ion-item *ngIf="channel.value.length > 0" style="background:transparent;" (click)="openChannelCollection(channel.key)">

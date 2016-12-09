@@ -20,9 +20,8 @@
 
 
 <ion-content style="background:#f4f4f4;position: relative;">
-  <ion-refresher *ngIf="isConnected" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="circles">
-    </ion-refresher-content>
+  <ion-refresher [enabled]="isConnected" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <ion-row>
     <ion-col center style="width:auto;flex:0 0 auto;min-width:160px;">
