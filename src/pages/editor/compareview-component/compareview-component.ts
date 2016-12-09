@@ -93,8 +93,16 @@ export class CompareviewComponent {
 
         this.events.subscribe('seekviews', (change) => {
             if (this.isLinked && !this.isSelected) {
-                var cT = Math.abs(this.video.currentTime + Number(change));
-                var factor = (100000 / this.video.duration) * cT;
+                let CT: number = this.video.currentTime;
+                if (change >= 0) {
+                    if (CT - Number(change) > this.video.duration) { var CTtoSet = Math.abs(Number(change) - (this.video.duration - CT)) }
+                    else var CTtoSet = Math.abs(CT + Number(change));
+                }
+                else {
+                    if (CT + Number(change) <= 0) { var CTtoSet = Math.abs(this.video.duration - Math.abs(CT + Number(change))) }
+                    else var CTtoSet = Math.abs(CT + Number(change));
+                }
+                var factor = (100000 / this.video.duration) * CTtoSet;
                 this.sliderValue = factor;
                 this.sliderValueChange();
             }
