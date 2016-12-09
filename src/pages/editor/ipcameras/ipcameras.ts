@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, ModalController, ViewController, AlertController, NavParams, LoadingController, Platform } from 'ionic-angular';
-import { Http, Headers, RequestOptions, Response } from '@angular/http';
+import { Http } from '@angular/http';
 import { Connection } from '../../../pages/Connection';
 import { Connectivity } from '../../connectivity/connectivity';
 import { StorageFactory } from '../../../Factory/StorageFactory';
