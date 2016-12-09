@@ -11,10 +11,10 @@ page-editor {
     overflow: hidden;text-overflow: ellipsis;
 }
 .view{
-    margin:2px 4px; background-color: white;box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.30);
+    margin:4px;padding:9px 0; display: inline-block; background-color: white;box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.40);
 }
 .selectedview{
-    margin:2px 3px; background-color: whitesmoke;box-shadow: 0px -1px 1px 0px rgba(0,0,0,0.30);
+    margin:4px; padding:9px 0; display: inline-block; background-color: #f4f4f4;box-shadow: 0px -1px 1px 0px rgba(0,0,0,0.30);
 }
 
 }

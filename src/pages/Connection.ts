@@ -4,7 +4,7 @@ import { Platform } from 'ionic-angular';
 
 import X2JS from 'x2js';
 
-import { Http, Headers, RequestOptions, Response } from '@angular/http';
+import { Http } from '@angular/http';
 
 declare var chrome: any;
 declare var cordova: any;

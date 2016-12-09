@@ -8,7 +8,6 @@
 
   <ion-toolbar color="primary">
     <ion-buttons start>
-      <button ion-button disabled>{{ipCams.length}}</button>
       <button ion-button icon-only [disabled]="isRecording" (click)="loadIPCams()"><ion-icon name="refresh"></ion-icon></button>
     </ion-buttons>
     <ion-title>IP Cams Capture</ion-title>
@@ -20,7 +19,10 @@
 </ion-header>
 
 
-<ion-content style="background:#eeeeee;" style="position: relative;">
+<ion-content style="background:#f4f4f4;position: relative;">
+  <ion-refresher [enabled]="isConnected" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-row>
     <ion-col center style="width:auto;flex:0 0 auto;min-width:160px;">
       <b item-left>Rec. Duration </b>
@@ -37,15 +39,17 @@
     <div class="item" *ngFor="let cam of ipCams;let i = index">
       <ion-card style="position: relative;max-height:350px;min-height:100px;
       background-color: #cccccc;background-image: url(assets/sample.jpg);background-repeat:no;background-size: cover;background-position: center;">
-        <img [attr.src]="getIPCamPreview(cam._IPAdd)"/>
+        <img [attr.src]="getIPCamPreview(cam._IPAdd)" />
         <b style="position: absolute;top: 10px; margin: 0 10px;font-size: 1.0em;;font-weight: bold;color: #fff;">{{cam._IPAdd}}</b>
       </ion-card>
     </div>
   </div>
 
-  <ion-row center *ngIf="ipCams.length==0" style="position: absolute;top:40%; color: gray;">
+  <ion-row center style="position: absolute;top:40%; color: gray;">
     <ion-col text-center center>
-      <b>No IP Camera found</b>
+      <ion-spinner *ngIf="isLoading" name="dots"></ion-spinner>
+      <b *ngIf="isConnected && ipCams.length==0 && !isLoading && !refreshing">No IP Camera found</b>
+      <b *ngIf="!isConnected">Not connected to any server</b>
     </ion-col>
   </ion-row>
 

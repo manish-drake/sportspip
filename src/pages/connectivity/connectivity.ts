@@ -22,9 +22,10 @@ declare var chrome: any;
 
 
 export class Connectivity implements DoCheck {
-    servers = Connection.servers;
 
-    isConnectivityEnabled: boolean;
+    servers = Connection.servers;
+    isConnectivityEnabled: boolean = true;
+    isLoading: boolean;
 
     constructor(public navCtrl: NavController,
         private connection: Connection,
@@ -37,18 +38,45 @@ export class Connectivity implements DoCheck {
             if (this.servers.length == 0) {
                 this.servers = Connection.servers;
             }
+            else {
+                this.isLoading = false;
+            }
         }, 1000);
     }
 
     ionViewDidLoad() {
         console.log('Hello Connectivity Page');
-        this.isConnectivityEnabled = true;
+        this.showLoader();
         this.connection.close();
         this.connection.scanUdp();
     }
 
+    showLoader() {
+        if (this.isConnectivityEnabled) {
+            this.isLoading = true;
+            setTimeout(() => {
+                this.isLoading = false;
+            }, 10000);
+        }
+    }
+
+    refreshing: boolean = false;
+
+    doRefresh(refresher) {
+        this.refreshing = true;
+        this.servers.length == 0
+        setTimeout(() => {
+            refresher.complete();
+            this.refreshing = false;
+            this.showLoader();
+            this.connection.close();
+            this.connection.scanUdp();
+        }, 500);
+    }
+
     connectivityChanged(isOn) {
         if (isOn) {
+            this.showLoader();
             this.connection.scanUdp();
             let toast = this.toastCtrl.create({
                 message: 'Connectivity is now on.',
@@ -60,6 +88,8 @@ export class Connectivity implements DoCheck {
             toast.present(toast);
         }
         else {
+            this.servers.length == 0;
+            this.isLoading = false;
             this.connection.close();
             let toast = this.toastCtrl.create({
                 message: 'Connectivity closed.',
@@ -72,8 +102,8 @@ export class Connectivity implements DoCheck {
         }
     }
     refreshConnection() {
+        this.servers.length == 0
         this.connection.close();
-
         let toast = this.toastCtrl.create({
             message: 'Connections reloaded.',
             duration: 1500,
@@ -82,7 +112,7 @@ export class Connectivity implements DoCheck {
             closeButtonText: 'Ok'
         });
         toast.present(toast);
-
+        this.showLoader();
         this.connection.scanUdp();
     }
 
