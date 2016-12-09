@@ -13,28 +13,59 @@ export class BackGroundTransferProcess {
     constructor(private platform: Platform, private http: Http) {
 
     }
-    TransferVideo(fileName, serverIP) {
+    TransferVideo(fileName, serverIP, views) {
         File.readAsArrayBuffer(cordova.file.applicationStorageDirectory, fileName).then(success => {
             let headers = new Headers({ 'Content-Type': 'video/mp4' }); // ... Set content type to JSON
             let options = new RequestOptions({ headers: headers });
             this.http.post("http://" + serverIP + ":10080/imatrix/matrices/" + fileName.slice(0, -4) + "/videos", success, options)
                 .subscribe(res => {
                     console.log(res);
-                    // this.backGroundTransferProcessIP.transferMatrix(fileName.slice(0, -4), 5, "Phone", 1);
+
+                    this.data = this.createNewIPMatrix(0);
+                    views.forEach((view, index) => {
+                        if (view.Content !== undefined) {
+                            if (view.Content.Capture != undefined) {
+                                this.createClips(view.Content.Capture._Kernel, 0, index + 1);
+                            }
+                        }
+
+                    });
+                    this.transferMatrix();
                 })
         })
     }
 
+    transferMatrix() {
+        var serverAddress = Connection.connectedServer.Address;
+        this.platform.ready().then(() => {
+            let parser: any = new X2JS();
+            var xmlMatrix = parser.js2xml(this.data);
 
-    private createClips(fileName, duration, CamsCount) {
-        this.data = this.createNewIPMatrix(0);
-        var i = 1;
-        while (i <= CamsCount) {
-            var name = fileName + "_" + i + ".mp4"
-            var view = "View" + " " + i;
-            // this.AddMatrixClip(name, view, this.data);
-            i++;
+            let headers = new Headers({ 'Content-Type': 'application/xml' });
+            let options = new RequestOptions({ headers: headers });
+
+            this.http.post("http://" + serverAddress + ":10080/imatrix/matrices/", xmlMatrix, options)
+                .subscribe(response => {
+                    console.log("matrix successfully sent");
+                })
+        });
+    }
+
+
+    private createClips(fileName, duration, count) {
+        var name = fileName;
+        var view = "View" + " " + count;
+        this.AddMatrixClip(name, view, this.data);
+    }
+
+    private AddMatrixClip(kernel, view, data) {
+        var clip = {
+            "_Name": kernel,
+            "_name": "",
+            "_Key": view,
+            "_Duration": "0"
         }
+        data.Matrix.Clips.Clip.push(clip);
     }
 
     private createNewIPMatrix(duration) {
@@ -51,7 +82,7 @@ export class BackGroundTransferProcess {
                     "_Duration": duration,
                     "_Location": "Field",
                     "_HasTransferred": false,
-                    "_Source": "IP",
+                    "_Source": "Phone",
                     "Clips": {
                         "Clip": []
                     }

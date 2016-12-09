@@ -150,7 +150,7 @@ export class StorageFactory {
     }
 
     ComposeNewMatrix() {
-        var name = Date.now().toString();
+        var name =(new Date()).toISOString().replace(/[^0-9]/g, "").slice(0,14);
         let data =
             {
                 "Matrix": {
@@ -160,7 +160,7 @@ export class StorageFactory {
                     "_Skill": "Serve",
                     "_Location": "Field",
                     "_Duration": "00:00:00",
-                    "_DateCreated": new Date().toString(),
+                    "_DateCreated": name,
                     "_Sport": "Tennis",
                     "_Channel": "Local",
                     "Matrix.Children": {
