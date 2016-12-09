@@ -42,6 +42,9 @@ export class Ipcameras {
 
   }
 
+  isConnected: boolean = null;
+  loadingCams: boolean;
+
   ionViewDidLoad() {
     console.log('Hello Ipcamera Page');
   }
@@ -64,6 +67,7 @@ export class Ipcameras {
     this.ipCams.length = 0;
 
     if (Connection.connectedServer == null) {
+      this.isConnected = false;
       let alert = this.alertCtrl.create({
         title: 'Not connected!',
         message: 'Please connect to an available server.',
@@ -85,6 +89,8 @@ export class Ipcameras {
       alert.present();
     }
     else {
+      this.isConnected = true;
+      this.loadingCams = true;
       var connectedServerIP = Connection.connectedServer.Address;
 
       var requestUri = "http://" + connectedServerIP + ":10080/icamera/cams/ip/";
@@ -95,15 +101,23 @@ export class Ipcameras {
         data => {
           let parser: any = new X2JS();
           var jsonData = parser.xml2js(data);
-          if (jsonData.Cams.IPCam instanceof Array)
-            this.ipCams = jsonData.Cams.IPCam;
-          else {
-            this.ipCams.push(jsonData.Cams.IPCam);
+          if (jsonData.Cams.IPCam != undefined) {
+            if (jsonData.Cams.IPCam instanceof Array) {
+              this.ipCams = jsonData.Cams.IPCam;
+            }
+            else {
+              this.ipCams.push(jsonData.Cams.IPCam);
+            }
           }
-
         },
-        err => console.error('There was an error: ' + err),
-        () => console.log('Random Quote Complete')
+        err => {
+          console.error('There was an error: ' + err);
+          this.loadingCams = false;
+        },
+        () => {
+          console.log('Random Quote Complete');
+          this.loadingCams = false;
+        }
         );
     }
   }
