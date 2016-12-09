@@ -33,6 +33,26 @@ export class CollectionPage {
 
   refreshing: boolean = false;
 
+  getSearchItems(ev: any) {
+    // Reset items back to all of the items
+    this.localMatrices = [];
+    this.LoadCollectionMatrix();
+
+    Observable.interval(1000)
+      .take(1).map((x) => x + 5)
+      .subscribe((x) => {
+        // set val to the value of the searchbar
+        let val = ev.target.value;
+        // if the value is an empty string don't filter the items
+        if (val && val.trim() != '') {
+          this.localMatrices = this.localMatrices.filter((item) => {
+            return (item.Title.toLowerCase().indexOf(val.toLowerCase()) > -1);
+          })
+        }
+      })
+
+  }
+
   doRefreshContent(refresher) {
     this.refreshing = true;
     this.localMatrices = [];
@@ -86,7 +106,7 @@ export class CollectionPage {
   }
 
   DuplicateMatrix(matrixname, channelName) {
-    var name = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0,14);
+    var name = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
     this.platform.ready().then(() => {
       File.readAsText(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/Matrices/" + matrixname, "Header.xml")
         .then(res => {

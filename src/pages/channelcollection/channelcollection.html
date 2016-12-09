@@ -12,7 +12,7 @@
 		</ion-buttons>
 	</ion-navbar>
 	<ion-toolbar color="primary" no-border-top>
-		<ion-searchbar></ion-searchbar>
+		<ion-searchbar (ionInput)="getSearchItems($event)"></ion-searchbar>
 	</ion-toolbar>
 </ion-header>
 
