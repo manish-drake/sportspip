@@ -25,6 +25,7 @@ export class ChannelCollectionPage {
 
   public channel: any;
   channelMatrices = [];
+  TempMatrix = [];
 
   constructor(public navCtrl: NavController, params: NavParams,
     private storagefactory: StorageFactory,
@@ -68,11 +69,32 @@ export class ChannelCollectionPage {
                 Views: result.Views
               };
               this.channelMatrices.push(item);
+              this.TempMatrix.push(item);
             });
         });
 
       });
     });
+
+  }
+
+  getSearchItems(ev: any) {
+    // Reset items back to all of the items
+    this.channelMatrices = [];
+    this.channelMatrices = this.TempMatrix;
+
+    Observable.interval(1000)
+      .take(1).map((x) => x + 5)
+      .subscribe((x) => {
+        // set val to the value of the searchbar
+        let val = ev.target.value;
+        // if the value is an empty string don't filter the items
+        if (val && val.trim() != '') {
+          this.channelMatrices = this.channelMatrices.filter((item) => {
+            return (item.Title.toLowerCase().indexOf(val.toLowerCase()) > -1);
+          })
+        }
+      })
 
   }
 
