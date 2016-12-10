@@ -59,14 +59,11 @@ export class EditorPage {
     // });    
   }
 
-  // ngAfterViewInit() {
-
-  // }
 
   ionViewWillLoad() {
     if (this.params.data != null) {
       this.matrix = this.params.data.matrixData;
-      console.log("editor page: " + this.matrix);
+      console.log("editor page: " + JSON.stringify(this.matrix));
     }
 
     this.selectedViewIndex = 0;
@@ -278,7 +275,7 @@ export class EditorPage {
               this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
             }).catch(err => {
               console.log('Failed copying video:' + err)
-              // this.chooseVideoErrorMsg('Failed copying video:' + err);
+              this.chooseVideoErrorMsg('Failed copying video:' + err);
             });
 
           })
@@ -293,39 +290,6 @@ export class EditorPage {
       });
     }
   }
-
-  // var permissions = cordova.plugins.permissions;
-  //     permissions.hasPermission(permissions.READ_EXTERNAL_STORAGE, (status) => {
-  //       if (status.hasPermission) {
-  //         this.startChoosingFile();
-  //       }
-  //       else {
-  //         permissions.requestPermission(permissions.READ_EXTERNAL_STORAGE, (status2) => {
-  //           if (status2.hasPermission) {
-  //             this.startChoosingFile();
-  //           }
-  //           else {
-  //             console.log('permission is not turned on');
-  //             permissionNotGranted("");
-  //           }
-  //         }, ((err) => {
-  //           console.log('permission is not turned on: ' + err);
-  //           permissionNotGranted(err);
-  //         }));
-  //       }
-  //     }, ((err) => {
-  //       console.log('permission is not turned on: ' + err);
-  //       permissionNotGranted(err);
-  //     }));
-
-  //     var permissionNotGranted = function (err) {
-  //       let alert = this.alertCtrl.create({
-  //         title: 'Storage read permission issue',
-  //         subTitle: err,
-  //         buttons: ['OK']
-  //       });
-  //       alert.present();
-  //     }
 
   chooseVideoErrorMsg(err) {
     let alert = this.alertCtrl.create({
@@ -477,7 +441,7 @@ export class EditorPage {
     <button ion-item [disabled]="countOfCaptureViews==0" (click)="dismiss('compareviews')">
       <ion-icon item-left name="grid"></ion-icon>Compare Views
       </button>
-    <button ion-item (click)="dismiss('swipeviews')">
+    <button ion-item disabled (click)="dismiss('swipeviews')">
       <ion-icon item-left name="move"></ion-icon>Swipe Views
       </button>
     </ion-list>

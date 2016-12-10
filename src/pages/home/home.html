@@ -11,10 +11,10 @@
 	</ion-navbar>
 	<ion-row>
 		<ion-col text-center center (click)="showSegment('local')" [class.selectedsegment]="selectedSegment != 'local'">
-			<b style="padding:9px 0; display: inline-block;" color="primary">Matrices</b>
+			<b ion-text style="padding:9px 0; display: inline-block;" color="primary">Matrices</b>
 		</ion-col>
 		<ion-col text-center center (click)="showSegment('server')" [class.selectedsegment]="selectedSegment != 'server'">
-			<b style="padding:9px 0; display: inline-block;" color="primary">Channels</b>
+			<b ion-text style="padding:9px 0; display: inline-block;" color="primary">Channels</b>
 		</ion-col>
 	</ion-row>
 </ion-header>

@@ -203,18 +203,30 @@ export class VideoComponent {
     }
 
     previousVideoFrame() {
-        if (this.video.currentTime >= 0) {
-            this.video.pause();
-            this.playPauseButtonIcon = 'play';
+        if (this.video.currentTime > 0) {
+            if (!this.video.paused) { this.playPause() }
             this.video.currentTime = this.video.currentTime - 0.1;
+            var factor = (100000 / this.video.duration) * this.video.currentTime;
+            this.sliderValue = factor;
+            this.timelinePosition = this.formatTime(this.video.currentTime);
+            this.PlayMarker();
+            this.PlayStoryBoard();
         }
     }
 
     nextVideoFrame() {
-        if (this.video.currentTime <= this.video.duration) {
-            this.video.pause();
-            this.playPauseButtonIcon = 'play';
+        if (this.video.currentTime < this.video.duration) {
+            if (!this.video.paused) { this.playPause() }
             this.video.currentTime = this.video.currentTime + 0.1;
+
+            var factor = (100000 / this.video.duration) * this.video.currentTime;
+            this.sliderValue = factor;
+            this.timelinePosition = this.formatTime(this.video.currentTime);
+            this.PlayMarker();
+            this.PlayStoryBoard();
+        }
+        else {
+            this.video.currentTime = 0;
         }
     }
 
