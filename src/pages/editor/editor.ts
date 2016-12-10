@@ -272,7 +272,10 @@ export class EditorPage {
             File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName).then(_ => {
               console.log('Successfully copied video');
               this.CreateVideoView(fileName);
-              this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
+
+              if (Connection.connectedServer != null)
+                this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
+                
             }).catch(err => {
               console.log('Failed copying video:' + err)
               this.chooseVideoErrorMsg('Failed copying video:' + err);
