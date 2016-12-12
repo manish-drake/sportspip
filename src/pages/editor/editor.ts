@@ -113,7 +113,7 @@ export class EditorPage {
           header.ThumbnailSource = thumbName;
           this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
 
-          Observable.interval(500)
+          Observable.interval(1000)
             .take(1).map((x) => x + 5)
             .subscribe((x) => {
               this.navCtrl.pop();
