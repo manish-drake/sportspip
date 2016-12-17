@@ -45,3 +45,4 @@ platforms
 /.editorconfig
 .vscode
 /res
+/typings
