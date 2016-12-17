@@ -59,17 +59,23 @@
 							</ion-card>
 						</ion-col>
 						<ion-col no-padding width-50>
-							<ion-card (click)="IPCamCapture()">
+							<ion-card (click)="IPCamCapture()" *ngIf="views.length == 1">
 								<ion-item  style="background-color:white;">
 									<ion-icon name="wifi" item-left></ion-icon>
 									<h2 class="textTrim">IP Cams Record</h2>
+								</ion-item>
+							</ion-card>
+							<ion-card (click)="chooseVideo()" *ngIf="isHavingReadPermissions && views.length > 1">
+								<ion-item>
+									<ion-icon name="ios-film" item-left></ion-icon>
+									<h2 class="textTrim">Add Video</h2>
 								</ion-item>
 							</ion-card>
 						</ion-col>
 					</ion-row>
 					<ion-row>
 						<ion-col no-padding>
-							<ion-card (click)="chooseVideo()" *ngIf="isHavingReadPermissions">
+							<ion-card (click)="chooseVideo()" *ngIf="isHavingReadPermissions && views.length == 1">
 								<ion-item>
 									<ion-icon name="ios-film" item-left></ion-icon>
 									<h2 class="textTrim">Add Video</h2>
