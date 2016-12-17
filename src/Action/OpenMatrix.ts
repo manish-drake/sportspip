@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { NavController, Platform } from 'ionic-angular';
 import { EditorPage } from '../pages/editor/editor';
 import { Http } from '@angular/http';
+import { File } from 'ionic-native';
 import { Observable } from 'rxjs/Rx';
 import { StorageFactory } from '../Factory/StorageFactory';
 declare var cordova: any;
@@ -12,24 +13,19 @@ export class OpenMatrix {
     }
 
     run(matrixName, Channel) {
-        this.http.get(cordova.file.dataDirectory + "Local/" + Channel + "/Tennis/Matrices/" + matrixName + "/" + matrixName + ".mtx")
-            .catch(err => new Observable(observer => {
-                console.log("mtx not found");
-                this.createNewMatrix(matrixName, Channel);
-            }))
-            .subscribe(data => {
+        File.readAsText(cordova.file.dataDirectory + "Local/" + Channel + "/Tennis/Matrices/" + matrixName, matrixName + ".mtx")
+            .then(data => {
                 console.log("open matrix");
-                var res = JSON.parse(data.text());
-                var view = res.Matrix["Matrix.Children"].View[0];
-                if ((view != undefined) && (view._Source == "IP")) {
-                    alert("You Can not open IPCams Matrix");
-                }
-                else {
+                var res = JSON.parse(data.toString());
+                var view = res.Matrix["Matrix.Children"].View;
+                if (view != undefined) {
                     this.navCtrl.push(EditorPage, {
                         matrixData: res.Matrix
                     });
-
                 }
+            }).catch(err => {
+                console.log("mtx not found");
+                this.createNewMatrix(matrixName, Channel);
             });
     }
 

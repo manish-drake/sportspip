@@ -10,7 +10,7 @@ import { ModelFactory } from '../../Factory/ModelFactory';
 import { Package } from '../../pages/Package';
 import { DeleteHeader } from '../../Action/DeleteHeader';
 import { OpenMatrix } from '../../Action/OpenMatrix';
-import { Http } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
@@ -23,7 +23,7 @@ import { ChannelCollectionPage } from '../channelcollection/channelcollection';
 import { EditorPage } from '../editor/editor';
 
 import { Connection } from '../../pages/Connection';
-
+declare var FileTransfer: any;
 declare var cordova: any;
 declare var navigator: any;
 
@@ -53,10 +53,11 @@ export class HomePage {
         private packages: Package,
         private loadingCtrl: LoadingController,
         private connection: Connection) {
-        // console.log(this.FormatDates("20161209084843"));
+
         platform.ready().then(() => {
             this.checkPermissions();
         });
+
     }
 
     checkPermissions() {

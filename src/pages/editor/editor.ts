@@ -5,7 +5,7 @@ import {
   App, LoadingController, Events, PopoverController, ViewController
 } from 'ionic-angular';
 import { BackGroundTransferProcess } from '../../Action/BackGroundTransferProcess';
-import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError, FilePath, } from 'ionic-native';
+import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError, FilePath} from 'ionic-native';
 
 import { Http } from '@angular/http';
 import { Connection } from '../../pages/Connection'
@@ -74,7 +74,7 @@ export class EditorPage {
       this.views.push(this.matrix["Matrix.Children"]["View"]);
     }
     this.evaluateCaptureViews();
-    this.evaluateReadPermissions();
+    // this.evaluateReadPermissions();
   }
 
   presentMoreActions(event) {
@@ -261,31 +261,28 @@ export class EditorPage {
   chooseVideo() {
     if (this.platform.is('cordova')) {
       FileChooser.open().then(uri => {
-        console.log(uri);
+        // console.log(uri);
+       FilePath.resolveNativePath(uri).then(filePath => {
+          console.log(filePath);
+          var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+          var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
 
-        FilePath.resolveNativePath(uri)
-          .then(filePath => {
-            console.log(filePath);
-            var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-            var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
+          File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName).then(success => {
+            console.log('Successfully copied video');
+            this.CreateVideoView(fileName);
 
-            File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName).then(_ => {
-              console.log('Successfully copied video');
-              this.CreateVideoView(fileName);
+            if (Connection.connectedServer != null)
+              this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
 
-              if (Connection.connectedServer != null)
-                this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
-                
-            }).catch(err => {
-              console.log('Failed copying video:' + err)
-              this.chooseVideoErrorMsg('Failed copying video:' + err);
-            });
-
-          })
-          .catch(err => {
-            console.log(err);
-            this.chooseVideoErrorMsg('Failed Resolving nativepath:' + err);
+          }).catch(err => {
+            console.log('Failed copying video:' + err)
+            this.chooseVideoErrorMsg('Failed copying video:' + err);
           });
+
+        }).catch(err => {
+          console.log(err);
+          this.chooseVideoErrorMsg('Failed Resolving nativepath:' + err);
+        });
 
       }).catch(err => {
         console.log(err);
@@ -444,12 +441,12 @@ export class EditorPage {
     <button ion-item [disabled]="countOfCaptureViews==0" (click)="dismiss('compareviews')">
       <ion-icon item-left name="grid"></ion-icon>Compare Views
       </button>
-    <button ion-item disabled (click)="dismiss('swipeviews')">
-      <ion-icon item-left name="move"></ion-icon>Swipe Views
-      </button>
     </ion-list>
   `
 })
+// <button ion-item disabled (click)="dismiss('swipeviews')">
+//       <ion-icon item-left name="move"></ion-icon>Swipe Views
+//       </button>
 export class EditorActionsPopover {
 
   countOfCaptureViews: any;

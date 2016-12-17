@@ -209,7 +209,6 @@ export class Ipcameras {
       .toPromise()
       .then(res => {
         console.log('Response: ' + res);
-
         this.createViews(fileName);
 
         var time = Number(0);
@@ -272,7 +271,7 @@ export class Ipcameras {
       },
       "_name": "View " + this.selectedViewIndex,
       "_Title": "View " + this.selectedViewIndex,
-      "_Source": "IP"
+      "_Source": "Local"
     }
     this.views[this.selectedViewIndex] = localView;
   }
