@@ -5,7 +5,7 @@ import {
   App, LoadingController, Events, PopoverController, ViewController
 } from 'ionic-angular';
 import { BackGroundTransferProcess } from '../../Action/BackGroundTransferProcess';
-import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError, FilePath, } from 'ionic-native';
+import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError,FilePath } from 'ionic-native';
 
 import { Http } from '@angular/http';
 import { Connection } from '../../pages/Connection'
@@ -46,7 +46,8 @@ export class EditorPage {
     private storagefactory: StorageFactory,
     private app: App,
     private events: Events,
-    private popoverCtrl: PopoverController) {
+    private popoverCtrl: PopoverController,
+    private _FilePath : FilePath) {
     // if (params.data != null) {
     //   this.matrix = params.data.matrixData;
     //   console.log("editor page: " + this.matrix);
