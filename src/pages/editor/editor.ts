@@ -5,7 +5,7 @@ import {
   App, LoadingController, Events, PopoverController, ViewController
 } from 'ionic-angular';
 import { BackGroundTransferProcess } from '../../Action/BackGroundTransferProcess';
-import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError, FilePath} from 'ionic-native';
+import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError,FilePath } from 'ionic-native';
 
 
 import { Http } from '@angular/http';
@@ -47,8 +47,7 @@ export class EditorPage {
     private storagefactory: StorageFactory,
     private app: App,
     private events: Events,
-    private popoverCtrl: PopoverController,
-    private _FilePath : FilePath) {
+    private popoverCtrl: PopoverController) {
     // if (params.data != null) {
     //   this.matrix = params.data.matrixData;
     //   console.log("editor page: " + this.matrix);
@@ -263,32 +262,32 @@ export class EditorPage {
   chooseVideo() {
     if (this.platform.is('cordova')) {
       FileChooser.open().then(uri => {
-        // console.log(uri);
-       FilePath.resolveNativePath(uri).then(filePath => {
-          console.log(filePath);
-          var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-          var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
+        console.log(uri);
+         FilePath.resolveNativePath(uri).then(filePath => {
+            console.log(filePath);
+            var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+            var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
 
-          File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName).then(success => {
-            console.log('Successfully copied video');
-            this.CreateVideoView(fileName);
+            File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName).then(success => {
+              console.log('Successfully copied video');
+              this.CreateVideoView(fileName);
 
-            if (Connection.connectedServer != null)
-              this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
+              if (Connection.connectedServer != null)
+                this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
+
+            }).catch(err => {
+              console.log('Failed copying video:' + err)
+              this.chooseVideoErrorMsg('Failed copying video:' + err);
+            });
 
           }).catch(err => {
-            console.log('Failed copying video:' + err)
-            this.chooseVideoErrorMsg('Failed copying video:' + err);
+            console.log(err);
+            this.chooseVideoErrorMsg('Failed Resolving nativepath:' + err);
           });
 
         }).catch(err => {
           console.log(err);
-          this.chooseVideoErrorMsg('Failed Resolving nativepath:' + err);
-        });
-
-      }).catch(err => {
-        console.log(err);
-        this.chooseVideoErrorMsg('Error opening file chooser:' + err);
+          this.chooseVideoErrorMsg('Error opening file chooser:' + err);
       });
     }
   }
