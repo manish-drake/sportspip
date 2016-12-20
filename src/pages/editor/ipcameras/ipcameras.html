@@ -39,7 +39,7 @@
     <div class="item" *ngFor="let cam of ipCams;let i = index">
       <ion-card style="position: relative;max-height:350px;min-height:100px;
       background-color: #cccccc;background-image: url(assets/sample.jpg);background-repeat:no;background-size: cover;background-position: center;">
-        <img [attr.src]="getIPCamPreview(cam._IPAdd)" />
+        <img [attr.src]="getIPCamPreview(cam)" />
         <b style="position: absolute;top: 10px; margin: 0 10px;font-size: 1.0em;;font-weight: bold;color: #fff;">{{cam._IPAdd}}</b>
       </ion-card>
     </div>
