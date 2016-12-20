@@ -47,6 +47,18 @@ export class BackGroundTransferProcessIP {
     }
 
     GetServerIPVideo(name, serverAddress) {
+        // let headers = new Headers({ 'Content-Type': 'blob' });
+        // let options = new RequestOptions({ headers: headers });
+        // this.http.get("http://" + serverAddress + ":10080/isportspip/sports/video/" + name, options)
+        //     .subscribe(response => {
+        //         File.createFile(cordova.file.applicationStorageDirectory, name, true)
+        //             .then((success) => {
+        //                 File.writeFile(cordova.file.applicationStorageDirectory, name, response["_body"].slice(8), true)
+        //                     .then((success) => {
+        //                     });
+        //             });
+        //     });
+
         var xhr = new XMLHttpRequest();
         xhr.open('GET', "http://" + serverAddress + ":10080/isportspip/sports/video/" + name, true); // url is my google cloud storage url
         xhr.responseType = 'blob';

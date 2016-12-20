@@ -53,7 +53,6 @@ export class MatrixInfoPage {
                         var res = JSON.parse(data.toString());
                         var matrix = res.Matrix;
                         matrix._Title = this.matrixData._Title;
-                        matrix._Sport = this.matrixData._Sport;
                         matrix._Skill = this.matrixData._Skill;
                         matrix._Location = this.matrixData._Location;
                         this.storagefactory.SaveMatrixAsync(res, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");

@@ -271,7 +271,7 @@ export class Ipcameras {
       },
       "_name": "View " + this.selectedViewIndex,
       "_Title": "View " + this.selectedViewIndex,
-      "_Source": "Local"
+      "_Source": "IP"
     }
     this.views[this.selectedViewIndex] = localView;
   }

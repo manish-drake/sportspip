@@ -130,44 +130,33 @@ export class ChannelCollectionPage {
     var authenticate = this.AuthenticateUser();
     if (authenticate) {
 
-      Observable.interval(2000)
-        .take(1).map((x) => x + 5)
-        .subscribe((x) => {
-          this.packages.DownloadServerHeader(fileName, channelName);
-          console.log("Download");
-        })
+      this.packages.DownloadServerHeader(fileName, channelName).then((serverHeader) => {
+        Observable.interval(2000)
+          .take(3).map((x) => x + 5)
+          .subscribe((x) => {
+            this.packages.unzipPackage();
+            console.log("unzip");
+          })
+        Observable.interval(4000)
+          .take(1).map((x) => x + 5)
+          .subscribe((x) => {
+            this.packages.MoveToLocalCollection(channelName);
+            console.log("matrix moved");
+          })
+        Observable.interval(6000)
+          .take(1).map((x) => x + 5)
+          .subscribe((x) => {
+            this.platform.ready().then(() => {
+              File.removeRecursively("file:/storage/emulated/0/DCIM/", "Temp").then(() => {
+                this.DeleteChannelMatrix(fileName, channelName, index);
+                console.log("delete server header");
+                loader.dismiss();
+              });
+            })
+          })
+      })
 
-      Observable.interval(3000)
-        .take(3).map((x) => x + 5)
-        .subscribe((x) => {
-          this.packages.unzipPackage();
-          console.log("unzip");
-        })
-
-      Observable.interval(5000)
-        .take(1).map((x) => x + 5)
-        .subscribe((x) => {
-          this.packages.MoveToLocalCollection(channelName);
-          console.log("matrix moved");
-        })
     }
-    Observable.interval(7000)
-      .take(1).map((x) => x + 5)
-      .subscribe((x) => {
-        this.DeleteChannelMatrix(fileName, channelName, index);
-        console.log("delete server header");
-        loader.dismiss();
-      })
-
-    Observable.interval(8000)
-      .take(1).map((x) => x + 5)
-      .subscribe((x) => {
-        this.platform.ready().then(() => {
-          File.removeRecursively("file:/storage/emulated/0/DCIM/", "Temp").then(() => {
-            console.log("delete temp");
-          });
-        })
-      })
   }
 
   AuthenticateUser() {

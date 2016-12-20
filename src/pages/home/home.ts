@@ -332,56 +332,38 @@ export class HomePage {
     DownloadServerHeaderAsync(fileName, channelName, index, value) {
         let loader = this.loadingCtrl.create({
             content: 'Downloading..',
-            duration: 300000
+            duration: 30000
         });
         loader.present();
-
         var authenticate = this.AuthenticateUser();
         if (authenticate) {
-
-            Observable.interval(1000)
-                .take(1).map((x) => x + 5)
-                .subscribe((x) => {
-                    this.packages.DownloadServerHeader(fileName, channelName);
-                    console.log("Download");
-                })
-            Observable.interval(2000)
-                .take(3).map((x) => x + 5)
-                .subscribe((x) => {
-                    this.packages.unzipPackage();
-                    console.log("unzip");
-                })
-
-            Observable.interval(4000)
-                .take(1).map((x) => x + 5)
-                .subscribe((x) => {
-                    this.packages.MoveToLocalCollection(channelName);
-                    console.log("matrix moved");
-                })
+            this.packages.DownloadServerHeader(fileName, channelName).then((serverHeader) => {
+                Observable.interval(2000)
+                    .take(3).map((x) => x + 5)
+                    .subscribe((x) => {
+                        this.packages.unzipPackage();
+                        console.log("unzip");
+                    })
+                Observable.interval(4000)
+                    .take(1).map((x) => x + 5)
+                    .subscribe((x) => {
+                        this.packages.MoveToLocalCollection(channelName);
+                        console.log("matrix moved");
+                    })
+                Observable.interval(6000)
+                    .take(1).map((x) => x + 5)
+                    .subscribe((x) => {
+                        this.platform.ready().then(() => {
+                            File.removeRecursively(cordova.file.dataDirectory, "Temp").then(() => {
+                                this.localMatrices = [];
+                                this.GetLocalMatrixHeader();
+                                this.deleteServerHeader(fileName, index, value, channelName);
+                                loader.dismiss();
+                            });
+                        })
+                    })
+            });
         }
-        Observable.interval(5000)
-            .take(1).map((x) => x + 5)
-            .subscribe((x) => {
-                this.localMatrices = [];
-                this.GetLocalMatrixHeader();
-                console.log("local header");
-            })
-        Observable.interval(6000)
-            .take(1).map((x) => x + 5)
-            .subscribe((x) => {
-                this.deleteServerHeader(fileName, index, value, channelName)
-                console.log("delete server header");
-            })
-        Observable.interval(7000)
-            .take(1).map((x) => x + 5)
-            .subscribe((x) => {
-                this.platform.ready().then(() => {
-                    File.removeRecursively(cordova.file.dataDirectory, "Temp").then(() => {
-                        console.log("delete temp");
-                        loader.dismiss();
-                    });
-                })
-            })
     }
 
     AuthenticateUser() {

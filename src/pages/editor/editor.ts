@@ -168,6 +168,7 @@ export class EditorPage {
     if (this.views.length <= 7) {
       var inum: number = this.views.length + 1;
       this.views.push({
+        "Content": {},
         "_name": "View " + inum,
         "_Title": "View " + inum,
         "_Source": "(Blank)"
@@ -400,7 +401,7 @@ export class EditorPage {
   openCompareView() {
     var captureViews = [];
     this.views.forEach(view => {
-      if (view._Source == 'Local') {
+      if (view.Content.Capture != undefined) {
         captureViews.push(view);
       }
     });
@@ -416,7 +417,7 @@ export class EditorPage {
   evaluateCaptureViews() {
     this.countOfCaptureViews = 0;
     this.views.forEach(element => {
-      if (element._Source == "Local") {
+      if (element.Content.Capture != undefined) {
         this.countOfCaptureViews++;
       }
     });
@@ -425,7 +426,7 @@ export class EditorPage {
   openSwipeView() {
     var captureViews = [];
     this.views.forEach(view => {
-      if (view._Source == 'Local') {
+      if (view.Content.Capture != undefined) {
         captureViews.push(view);
       }
     });

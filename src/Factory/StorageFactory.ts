@@ -169,7 +169,7 @@ export class StorageFactory {
                             "_name": "View 1",
                             "_Title": "View 1",
                             "_Source": "(Blank)",
-                            "_Content": {}
+                            "Content": {}
                         }
                     }
                 }

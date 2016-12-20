@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
 import { Platform } from 'ionic-angular';
 import { StorageFactory } from '../Factory/StorageFactory';
-import { Http } from '@angular/http';
-import { File } from 'ionic-native';
+import { Http, Headers, RequestOptions } from '@angular/http';
+import { File, DirectoryEntry, FileEntry } from 'ionic-native';
 import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/toPromise';
 import X2JS from 'x2js';
 declare var cordova: any;
@@ -22,17 +23,17 @@ export class Package {
     public channelName: any;
 
     MoveToLocalCollection(channelName) {
-        this.fileName =(new Date()).toISOString().replace(/[^0-9]/g, "").slice(0,14);
+        this.fileName = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
         this.platform.ready().then(() => {
-           File.readAsText(cordova.file.dataDirectory + "Temp/matrix1","Header.xml").then((result => {
-                console.log("header moving..");
+            File.readAsText(cordova.file.dataDirectory + "Temp/matrix1", "Header.xml").then((result => {
+                 console.log("header moving..");
                 var header = JSON.parse(result.toString());
                 header.Name = this.fileName;
-                header.DateCreated =(new Date()).toISOString().replace(/[^0-9]/g, "").slice(0,14);
+                header.DateCreated = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
                 header.ThumbnailSource = header.UploadID;
                 this.channelName = header.Channel;
                 this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
-                console.log("header moved");
+                 console.log("header moved");
             }));
             File.listDir(cordova.file.dataDirectory + "Temp/", "matrix1").then((success) => {
                 success.forEach(file => {
@@ -47,13 +48,13 @@ export class Package {
                                 matrix._Name = this.fileName;
                                 matrix._Channel = this.channelName;
                                 this.storagefactory.SaveMatrixAsync(matrixdata, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
-                                console.log("mtx moved");
+                                 console.log("mtx moved");
                             })
                             break;
                         case '.mp4':
-                            console.log("video moving...");
+                             console.log("video moving...");
                             File.moveFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.applicationStorageDirectory, file.name);
-                            console.log("video moved");
+                             console.log("video moved");
                             break;
                         case ".gif":
                         case ".rtf":
@@ -74,29 +75,29 @@ export class Package {
         })
     }
 
-    DownloadServerHeader(fileName, channelName) {
-        File.createDir(cordova.file.dataDirectory, "Temp", true).then(() => {
+    DownloadServerHeader(fileName, channelName): Promise<DirectoryEntry> {
+        return File.createDir(cordova.file.dataDirectory, "Temp", true).then(() => {
             var NewPath = cordova.file.dataDirectory + "Temp/";
-            File.createDir(NewPath, "matrix1", true).then(() => {
+            return File.createDir(NewPath, "matrix1", true).then(() => {
                 var matrixPath = NewPath + "matrix1/";
                 var oldPath = cordova.file.dataDirectory + "Server/" + channelName + "/Tennis/Matrices/" + fileName + "/";
-                File.copyFile(oldPath, "Header.xml", matrixPath, "Header.xml").then(() => {
+                return File.copyFile(oldPath, "Header.xml", matrixPath, "Header.xml").then((success) => {
                     const ft = new FileTransfer();
                     var url = encodeURI("https://sportspipstorage.blob.core.windows.net/matrices/" + channelName + "/" + fileName + ".sar");
                     // var url = encodeURI("https://drake.blob.core.windows.net/matrices/Harvest/636049183928404138.sar");
-                    ft.download(
-                        url,
-                        NewPath + "m1.zip",
+                    ft.download(url, NewPath + "m1.zip",
                         function (entry) {
                             console.log("download complete: " + entry.toURL());
+                            return;
                         },
                         function (error) {
-                            console.log("download error source " + error.source);
-                            console.log("download error target " + error.target);
-                            console.log("download error code" + error.code);
+                             console.log("download error source " + error.source);
+                             console.log("download error target " + error.target);
+                             console.log("download error code" + error.code);
                             return;
                         },
                         true);
+                    return success["nativeURL"];
                 })
             })
         })
@@ -116,7 +117,7 @@ export class Package {
     unzipPackage() {
         var PathToFileInString = cordova.file.dataDirectory + "Temp/m1.zip";
         var PathToResultZip = cordova.file.dataDirectory + "Temp/matrix1";
-        zip.unzip(PathToFileInString, PathToResultZip);
+        zip.unzip(PathToFileInString, PathToResultZip)
     }
 
     DownloadThumbnailfromServer(channelName, matrixName) {
