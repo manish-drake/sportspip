@@ -7,7 +7,6 @@ import {
 import { BackGroundTransferProcess } from '../../Action/BackGroundTransferProcess';
 import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError,FilePath } from 'ionic-native';
 
-
 import { Http } from '@angular/http';
 import { Connection } from '../../pages/Connection'
 import { StorageFactory } from '../../Factory/StorageFactory';

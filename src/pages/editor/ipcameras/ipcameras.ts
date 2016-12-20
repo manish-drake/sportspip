@@ -137,8 +137,20 @@ export class Ipcameras {
     }
   }
 
-  getIPCamPreview(ipAdd: string) {
-    return "http://admin:12345@" + ipAdd + "/Streaming/channels/101/picture";
+  getIPCamPreview(cam) {
+    var url;
+    switch (cam._Make) {
+      case "SAMSUNG":
+        url = "http://admin:Samsung99@" + cam._IPAdd + "/Streaming/channels/101/picture";
+        break;
+      case "HIKVISION":
+        url = "http://admin:12345@" + cam._IPAdd + "/Streaming/channels/101/picture";
+        break;
+      default:
+        url = "http://admin:12345@" + cam._IPAdd + "/Streaming/channels/101/picture";
+        break;
+    }
+    return url;
   }
 
   isTimerOn: boolean = false;
