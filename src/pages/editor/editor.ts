@@ -5,7 +5,7 @@ import {
   App, LoadingController, Events, PopoverController, ViewController
 } from 'ionic-angular';
 import { BackGroundTransferProcess } from '../../Action/BackGroundTransferProcess';
-import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError,FilePath } from 'ionic-native';
+import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError } from 'ionic-native';
 
 import { Http } from '@angular/http';
 import { Connection } from '../../pages/Connection'
@@ -263,7 +263,7 @@ export class EditorPage {
     if (this.platform.is('cordova')) {
       FileChooser.open().then(uri => {
         console.log(uri);
-         FilePath.resolveNativePath(uri).then(filePath => {
+         (document as any).FilePath.resolveNativePath(uri).then(filePath => {
             console.log(filePath);
             var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
             var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
