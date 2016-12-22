@@ -22,8 +22,7 @@ declare var cordova: any;
 export class MatrixInfoPage {
 
     matrixData: any;
-
-    formattedDateCreated: any;
+    viewsCount: number;
 
     errorMessege: string;
 
@@ -33,16 +32,12 @@ export class MatrixInfoPage {
         private platform: Platform,
         private http: Http) {
         this.matrixData = navParams.get("matrixData");
-        console.log(this.matrixData);
+        this.viewsCount = navParams.get("viewsCount");
         this.errorMessege = "";
     }
 
     FormateDate(value) {
         return this.packages.FormatDate(value);
-    }
-
-    ionViewDidLoad() {
-        console.log('Hello Matrixinfo Page');
     }
 
     ionViewWillUnload() {

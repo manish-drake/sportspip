@@ -75,7 +75,6 @@ export class EditorPage {
       this.views.push(this.matrix["Matrix.Children"]["View"]);
     }
     this.evaluateCaptureViews();
-    this.evaluateReadPermissions();
   }
 
   presentMoreActions(event) {
@@ -144,7 +143,8 @@ export class EditorPage {
 
   presentInfoModal() {
     let modal = this.modalCtrl.create(MatrixInfoPage, {
-      matrixData: this.matrix
+      matrixData: this.matrix,
+      viewsCount: this.views.length
     });
 
     modal.present();
@@ -231,17 +231,6 @@ export class EditorPage {
 
   import() {
     this.alertCtrls.BasicAlert('Unavailable!', 'View library not available currently.');
-  }
-
-  isHavingReadPermissions: boolean = false;
-
-  evaluateReadPermissions() {
-    if (this.platform.is('cordova')) {
-      var permissions = cordova.plugins.permissions;
-      permissions.hasPermission(permissions.READ_EXTERNAL_STORAGE, (status) => {
-        if (status.hasPermission) this.isHavingReadPermissions = true;
-      });
-    }
   }
 
   chooseVideo() {
