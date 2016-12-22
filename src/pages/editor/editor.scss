@@ -4,9 +4,14 @@ page-editor {
          flex-wrap: wrap;
      }
      .items .itemm {
-         flex: 1 0 50%;
+         flex: 1 0 100%;
          box-sizing: border-box;
          }
+         @media (min-width: 410px) {
+             .items .itemm {
+                 max-width: calc(50%);
+                 }
+        }
     .segment{
         background: color($colors, primary);
         }

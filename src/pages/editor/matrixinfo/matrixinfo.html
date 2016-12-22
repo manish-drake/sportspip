@@ -13,36 +13,34 @@
   </ion-toolbar>
 </ion-header>
 <ion-content padding>
-  <ion-list>
+  <ion-list no-lines>
     <ion-item>
       <ion-label fixed>Title*</ion-label>
-      <ion-input  [(ngModel)]="matrixData._Title" (keyup)="validatematrixInfo()" value="{{matrixData._Title}}"></ion-input>
+      <ion-input  [(ngModel)]="matrixData._Title" (keyup)="validatematrixInfo()" value="{{matrixData._Title}}" placeholder="Title"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Skill</ion-label>
+      <ion-input [(ngModel)]="matrixData._Skill" value="{{matrixData._Skill}}" placeholder="Skill"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Location</ion-label>
+      <ion-input [(ngModel)]="matrixData._Location" value="{{matrixData._Location}}" placeholder="Location"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>PIN</ion-label>
+      <ion-input [(ngModel)]="matrixData._PIN" value="{{matrixData._PIN}}" placeholder="PIN"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label fixed>Sports*</ion-label>
       <ion-input disabled="true" value="{{matrixData._Sport}}"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label fixed>Skill</ion-label>
-      <ion-input [(ngModel)]="matrixData._Skill" value="{{matrixData._Skill}}"></ion-input>
+      <ion-label fixed>Views</ion-label>
+      <ion-input disabled="true" value="{{viewsCount}}"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label fixed>Location</ion-label>
-      <ion-input [(ngModel)]="matrixData._Location" value="{{matrixData._Location}}"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label fixed>PIN</ion-label>
-      <ion-input [(ngModel)]="matrixData._PIN" value="{{matrixData._PIN}}"></ion-input>
-    </ion-item>
-    <ion-item no-lines style="min-height:20px;">
-    </ion-item>
-    <ion-item no-lines>
-      <label style="padding-right:73px;color:gray;">Views</label>
-      <label style="color:gray">{{matrixData["Matrix.Children"]["View"].length}}</label>
-    </ion-item>
-    <ion-item no-lines>
-      <label style="padding-right:20px;color:gray;">Date Created</label>
-      <label style="color:gray">{{FormateDate(matrixData._DateCreated)}}</label>
+      <ion-label fixed>Date Created</ion-label>
+      <ion-input disabled="true" value="{{FormateDate(matrixData._DateCreated)}}"></ion-input>
     </ion-item>
   </ion-list>
   <div align="right">
