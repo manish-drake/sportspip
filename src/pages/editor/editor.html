@@ -1,4 +1,4 @@
-<ion-header no-shadow>
+<ion-header no-border>
 
 	<ion-toolbar color="primary" no-border-bottom>
 		<ion-buttons>
@@ -32,59 +32,41 @@
 <!--viewOptions-->
 <ion-row *ngIf="(!view.Content.Capture)&&(!view.Content.PIP)" style="height:100%;">
 <ion-col no-padding center text-center>
-	<ion-grid no-padding style="max-width:450px ;margin-left: auto;margin-right: auto;">
-<ion-row>
-	<ion-col no-padding width-50>
+	<ion-grid no-padding style="max-width:460px ;margin-left: auto;margin-right: auto;">
+		<div class="items">
+	<div class="itemm">
 		<ion-card (click)="addBlankCanvas()">
 			<ion-item>
 				<ion-icon name="easel" item-left></ion-icon>
 				Blank Canvas
 			</ion-item>
 		</ion-card>
-	</ion-col>
-	<ion-col no-padding width-50>
+	</div>
+	<div class="itemm" *ngIf="isHavingReadPermissions">
+		<ion-card (click)="chooseVideo()" >
+			<ion-item>
+				<ion-icon name="ios-film" item-left></ion-icon>
+				<h2 class="textTrim">Add Video</h2>
+			</ion-item>
+		</ion-card>
+	</div>
+	<div class="itemm">
 		<ion-card (click)="recordVideo()">
 			<ion-item>
 				<ion-icon name="videocam" item-left></ion-icon>
 				<h2 class="textTrim">Record Video</h2>
 			</ion-item>
 		</ion-card>
-	</ion-col>
-</ion-row>
-<ion-row>
-	<ion-col no-padding width-50>
-		<ion-card (click)="import()">
-			<ion-item>
-				<ion-icon name="log-in" item-left></ion-icon>
-				<h2 class="textTrim">Import</h2>
-			</ion-item>
-		</ion-card>
-	</ion-col>
-	<ion-col no-padding width-50>
-		<ion-card (click)="IPCamCapture()" *ngIf="views.length == 1">
+	</div>
+	<div class="itemm" *ngIf="views.length == 1">
+		<ion-card (click)="IPCamCapture()" >
 			<ion-item style="background-color:white;">
-<ion-icon name="wifi" item-left></ion-icon>
-<h2 class="textTrim">IP Cams Record</h2>
-</ion-item>
-</ion-card>
-<ion-card (click)="chooseVideo()" *ngIf="isHavingReadPermissions && views.length > 1">
-	<ion-item>
-		<ion-icon name="ios-film" item-left></ion-icon>
-		<h2 class="textTrim">Add Video</h2>
-	</ion-item>
-</ion-card>
-</ion-col>
-</ion-row>
-<ion-row>
-	<ion-col no-padding>
-		<ion-card (click)="chooseVideo()" *ngIf="isHavingReadPermissions && views.length == 1">
-			<ion-item>
-				<ion-icon name="ios-film" item-left></ion-icon>
-				<h2 class="textTrim">Add Video</h2>
+				<ion-icon name="wifi" item-left></ion-icon>
+				<h2 class="textTrim">IP Cams Record</h2>
 			</ion-item>
 		</ion-card>
-	</ion-col>
-</ion-row>
+	</div>
+</div>
 </ion-grid>
 </ion-col>
 </ion-row>

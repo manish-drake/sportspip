@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
-import {
-    NavController, ActionSheetController, AlertController, PopoverController,
-    ViewController, ToastController, Platform, LoadingController
-} from 'ionic-angular';
+import {NavController, ActionSheetController, AlertController, PopoverController,
+    ViewController, ToastController, Platform, LoadingController} from 'ionic-angular';
 import { AppVersion, File } from 'ionic-native';
 
 import { StorageFactory } from '../../Factory/StorageFactory';
@@ -10,7 +8,7 @@ import { ModelFactory } from '../../Factory/ModelFactory';
 import { Package } from '../../pages/Package';
 import { DeleteHeader } from '../../Action/DeleteHeader';
 import { OpenMatrix } from '../../Action/OpenMatrix';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';

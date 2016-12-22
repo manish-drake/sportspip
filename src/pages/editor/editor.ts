@@ -5,7 +5,7 @@ import {
   App, LoadingController, Events, PopoverController, ViewController
 } from 'ionic-angular';
 import { BackGroundTransferProcess } from '../../Action/BackGroundTransferProcess';
-import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError } from 'ionic-native';
+import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError, FilePath } from 'ionic-native';
 
 import { Http } from '@angular/http';
 import { Connection } from '../../pages/Connection'
@@ -74,7 +74,7 @@ export class EditorPage {
       this.views.push(this.matrix["Matrix.Children"]["View"]);
     }
     this.evaluateCaptureViews();
-    // this.evaluateReadPermissions();
+    this.evaluateReadPermissions();
   }
 
   presentMoreActions(event) {
@@ -263,7 +263,7 @@ export class EditorPage {
       FileChooser.open().then(uri => {
         console.log(uri);
 
-         (document as any).FilePath.resolveNativePath(uri)
+         FilePath.resolveNativePath(uri)
          .then(filePath => {
             console.log(filePath);
             var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);

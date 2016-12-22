@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
 import { Platform } from 'ionic-angular';
 import { StorageFactory } from '../Factory/StorageFactory';
-import { Http, Headers, RequestOptions } from '@angular/http';
-import { File, DirectoryEntry, FileEntry } from 'ionic-native';
+import { Http } from '@angular/http';
+import { File, DirectoryEntry } from 'ionic-native';
 import 'rxjs/add/operator/map';
-import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/toPromise';
 import X2JS from 'x2js';
+
 declare var cordova: any;
 declare var zip: any;
 declare var FileTransfer: any;
