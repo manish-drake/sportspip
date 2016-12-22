@@ -323,7 +323,7 @@ export class Ipcameras {
 @Component({
   selector: 'page-IpCamsSettingsModal',
   template: `
-  <ion-header no-shadow>
+  <ion-header no-border>
 
   <ion-toolbar no-border-bottom>
     <ion-title color="primary">IP Cam Settings</ion-title>
