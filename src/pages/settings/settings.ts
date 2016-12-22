@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController, PopoverController, ViewController, Platform, AlertController, LoadingController } from 'ionic-angular';
+import { NavController, ModalController, PopoverController, ViewController, Platform, LoadingController } from 'ionic-angular';
 import { File } from 'ionic-native';
 import { Login } from '../settings/login/login'
 import { Subscription } from '../../Stubs/Subscription';
