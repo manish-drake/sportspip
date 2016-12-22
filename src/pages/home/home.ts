@@ -99,6 +99,7 @@ export class HomePage {
     }
 
     ionViewDidLoad() {
+        this.storagefactory.CreateVideoFolder();
         this.connection.scanUdp();
     }
 
@@ -281,7 +282,7 @@ export class HomePage {
                                         ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
                                         Views: result.Views
                                     };
-                                    this.localMatrices.push(item);
+                                    this.localMatrices.unshift(item);
                                 });
                         });
                     });
@@ -318,7 +319,7 @@ export class HomePage {
                                         Duration: result.Duration,
                                         Views: result.Views
                                     };
-                                    this.channels.push(item);
+                                    this.channels.unshift(item);
                                 });
                         });
                     });
@@ -393,14 +394,14 @@ export class HomePage {
                 var res = JSON.parse(data.text());
 
                 if (this.platform.is('cordova')) {
-                    File.checkFile(cordova.file.applicationStorageDirectory, 'sample.mp4').then(_ => {
+                    File.checkFile(cordova.file.externalRootDirectory + "SportsPIP/Video", 'sample.mp4').then(_ => {
                         console.log('Sample video already exists');
                         this.testNavToEditor(res);
                     }).catch(err => {
 
                         File.checkFile(cordova.file.applicationDirectory + '/www/assets/', 'sample.mp4').then(_ => {
 
-                            File.copyFile(cordova.file.applicationDirectory + '/www/assets/', 'sample.mp4', cordova.file.applicationStorageDirectory, 'sample.mp4').then(_ => {
+                            File.copyFile(cordova.file.applicationDirectory + '/www/assets/', 'sample.mp4', cordova.file.externalRootDirectory + "SportsPIP/Video", 'sample.mp4').then(_ => {
                                 console.log('Sample video saved to application directory');
                                 this.testNavToEditor(res);
                             }).catch(err => {

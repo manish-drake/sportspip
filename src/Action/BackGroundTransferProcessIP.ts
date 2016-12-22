@@ -3,7 +3,8 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { Platform } from 'ionic-angular';
 import { Connection } from '../pages/Connection';
 import X2JS from 'x2js';
-import { File } from 'ionic-native';
+import { File, DirectoryEntry } from 'ionic-native';
+import { Observable } from 'rxjs/Rx';
 declare var FileTransfer: any;
 declare var cordova: any;
 @Injectable()
@@ -16,22 +17,17 @@ export class BackGroundTransferProcessIP {
 
     //............................matrix transfer code.........................................
 
-    transferMatrix(fileName, duration, CamsCount) {
-        var serverAddress = Connection.connectedServer.Address;
-        this.platform.ready().then(() => {
+    transferMatrix(fileName, duration, CamsCount, server) {
+        this.createClips(fileName, duration, CamsCount, server);
+        let parser: any = new X2JS();
+        var xmlMatrix = parser.js2xml(this.data);
 
-            this.createClips(fileName, duration, CamsCount, serverAddress);
-            let parser: any = new X2JS();
-            var xmlMatrix = parser.js2xml(this.data);
-
-            let headers = new Headers({ 'Content-Type': 'application/xml' });
-            let options = new RequestOptions({ headers: headers });
-
-            this.http.post("http://" + serverAddress + ":10080/imatrix/matrices/", xmlMatrix, options)
-                .subscribe(response => {
-                    console.log("matrix successfully sent");
-                })
-        });
+        let headers = new Headers({ 'Content-Type': 'application/xml' });
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post("http://" + server + ":10080/imatrix/matrices/", xmlMatrix, options)
+            .map(response => {
+                return true
+            }).toPromise();
     }
 
     private createClips(fileName, duration, CamsCount, serverAddress) {
@@ -41,37 +37,28 @@ export class BackGroundTransferProcessIP {
             var name = fileName + "_" + i + ".mp4"
             var view = "View" + " " + i;
             this.AddMatrixClip(name, view, this.data);
-            this.GetServerIPVideo(name, serverAddress);
             i++;
         }
     }
 
-    GetServerIPVideo(name, serverAddress) {
-        // let headers = new Headers({ 'Content-Type': 'blob' });
-        // let options = new RequestOptions({ headers: headers });
-        // this.http.get("http://" + serverAddress + ":10080/isportspip/sports/video/" + name, options)
-        //     .subscribe(response => {
-        //         File.createFile(cordova.file.applicationStorageDirectory, name, true)
-        //             .then((success) => {
-        //                 File.writeFile(cordova.file.applicationStorageDirectory, name, response["_body"].slice(8), true)
-        //                     .then((success) => {
-        //                     });
-        //             });
-        //     });
+    GetServerIPVideo(fileName, serverAddress) {
+        return new Promise(function (resolve, reject) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', "http://" + serverAddress + ":10080/isportspip/sports/video/" + fileName, true); // url is my google cloud storage url
+            xhr.responseType = 'blob';
+            xhr.onload = function (e) {
+                var blob = xhr.response;
+                return File.createFile(cordova.file.externalRootDirectory + "SportsPIP/Video", fileName, true)
+                    .then((success) => {
+                        return File.writeFile(cordova.file.externalRootDirectory + "SportsPIP/Video", fileName, blob.slice(8), true)
+                            .then((success) => {
+                                return resolve(xhr.response);
+                            }).catch(() => { return reject(xhr.statusText); })
+                    })
+            };
+            xhr.send()
+        })
 
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', "http://" + serverAddress + ":10080/isportspip/sports/video/" + name, true); // url is my google cloud storage url
-        xhr.responseType = 'blob';
-        xhr.onload = function (e) {
-            var blob = xhr.response;
-            File.createFile(cordova.file.applicationStorageDirectory, name, true)
-                .then((success) => {
-                    File.writeFile(cordova.file.applicationStorageDirectory, name, blob.slice(8), true)
-                        .then((success) => {
-                        })
-                })
-        };
-        xhr.send();
     }
 
     private createNewIPMatrix(fileName, duration) {

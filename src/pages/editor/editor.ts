@@ -5,7 +5,7 @@ import {
   App, LoadingController, Events, PopoverController, ViewController
 } from 'ionic-angular';
 import { BackGroundTransferProcess } from '../../Action/BackGroundTransferProcess';
-import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError,FilePath } from 'ionic-native';
+import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError, FilePath } from 'ionic-native';
 
 import { Http } from '@angular/http';
 import { Connection } from '../../pages/Connection'
@@ -102,12 +102,11 @@ export class EditorPage {
             duration: 10000
           });
           loader.present();
+
           var res = JSON.parse(data.toString());
           var matrix = res.Matrix;
           matrix['Matrix.Children'].View = this.views;
-
           var thumbName = this.GetThumbName(matrix);
-
           this.storagefactory.SaveMatrixAsync(res, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
           var header = this.storagefactory.ComposeMatrixHeader(matrix);
           header.ThumbnailSource = thumbName;
@@ -125,21 +124,20 @@ export class EditorPage {
   }
 
   GetThumbName(matrix) {
-    var thumb = "thumbnail";
-    var name: any;
+    var name: "thumbnail";
     matrix['Matrix.Children'].View.forEach(view => {
       if (name == undefined) {
         if (view.Content !== undefined) {
           if (view.Content.Capture != undefined) {
             console.log("enter........")
-            name = view.Content.Capture._Kernel;
-            thumb = Date.now().toString();
-            this.modelFactory.CreateThumbnail(name, thumb);
+            var nm = view.Content.Capture._Kernel;
+            name = nm.split(" ");
+            this.modelFactory.CreateThumbnail(view.Content.Capture._Kernel, name);
           }
         }
       }
     });
-    return thumb;
+    return name;
   }
 
 
@@ -164,6 +162,7 @@ export class EditorPage {
   }
 
   addView() {
+
     if (this.views.length <= 7) {
       var inum: number = this.views.length + 1;
       this.views.push({
@@ -263,31 +262,32 @@ export class EditorPage {
     if (this.platform.is('cordova')) {
       FileChooser.open().then(uri => {
         console.log(uri);
-         FilePath.resolveNativePath(uri).then(filePath => {
-            console.log(filePath);
-            var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-            var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
+        FilePath.resolveNativePath(uri).then(filePath => {
+          console.log(filePath);
 
-            File.copyFile(path, fileName, cordova.file.applicationStorageDirectory, fileName).then(success => {
-              console.log('Successfully copied video');
-              this.CreateVideoView(fileName);
+          var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+          var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
 
-              if (Connection.connectedServer != null)
-                this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
+          File.copyFile(path, fileName, cordova.file.externalRootDirectory + "SportsPIP/Video", fileName).then(success => {
+            console.log('Successfully copied video');
+            this.CreateVideoView(fileName);
 
-            }).catch(err => {
-              console.log('Failed copying video:' + err)
-              this.chooseVideoErrorMsg('Failed copying video:' + err);
-            });
+            if (Connection.connectedServer != null)
+              this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
 
           }).catch(err => {
-            console.log(err);
-            this.chooseVideoErrorMsg('Failed Resolving nativepath:' + err);
+            console.log('Failed copying video:' + err)
+            this.chooseVideoErrorMsg('Failed copying video:' + err);
           });
 
         }).catch(err => {
           console.log(err);
-          this.chooseVideoErrorMsg('Error opening file chooser:' + err);
+          this.chooseVideoErrorMsg('Failed Resolving nativepath:' + err);
+        });
+
+      }).catch(err => {
+        console.log(err);
+        this.chooseVideoErrorMsg('Error opening file chooser:' + err);
       });
     }
   }
@@ -318,7 +318,7 @@ export class EditorPage {
       var path = fileUrl.substr(0, fileUrl.lastIndexOf('/') + 1);
       var fileName = fileUrl.substr(fileUrl.lastIndexOf('/') + 1);
 
-      File.moveFile(path, fileName, cordova.file.applicationStorageDirectory, fileName)
+      File.moveFile(path, fileName, cordova.file.externalRootDirectory + "SportsPIP/Video", fileName)
         .then(_ => {
           this.CreateVideoView(fileName);
           console.log('Successfully saved video')

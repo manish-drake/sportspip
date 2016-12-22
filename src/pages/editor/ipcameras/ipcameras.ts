@@ -237,9 +237,19 @@ export class Ipcameras {
           if (time >= this.recordingDuration) {
             clearInterval(interval);
             this.isRecording = false;
-            this.backGroundTransferProcessIP.transferMatrix(fileName, this.recordingDuration, this.ipCams.length);
-            this.viewCtrl.dismiss(this.views);
-
+            this.backGroundTransferProcessIP.transferMatrix(fileName, this.recordingDuration, this.ipCams.length, connectedServerIP).then(() => {
+              var i = 1;
+              while (i <= this.ipCams.length) {
+                var name = fileName + "_" + i + ".mp4";
+                this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP).then((success) => {
+                  if (i >= this.ipCams.length)
+                    this.viewCtrl.dismiss(this.views);
+                }).catch((errr) => { console.log(errr); });
+                i++;
+              }
+            }).catch((Error) => {
+              alert("sorry failed")
+            })
           }
         }, 1000);
       })
@@ -256,13 +266,21 @@ export class Ipcameras {
   }
 
   createViews(fileName) {
-    this.ipCams.forEach((element, index) => {
-      if (index > 0) {
-        this.selectedViewIndex++;
-        this.addView();
-      }
-      this.createVideoView(fileName + "_" + (index + 1) + ".mp4");
-    });
+    if (this.ipCams.length == 1) {
+      this.createVideoView(fileName + "_1.mp4");
+    }
+    else {
+      this.ipCams.forEach((element, index) => {
+        if (index == 0) {
+          this.createVideoView(fileName + "_1.mp4");
+        }
+        else {
+          this.selectedViewIndex++;
+          this.addView();
+          this.createVideoView(fileName + "_" + (index + 1) + ".mp4");
+        }
+      });
+    }
   }
 
   createVideoView(fileName) {

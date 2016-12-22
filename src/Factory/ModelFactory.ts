@@ -12,7 +12,7 @@ export class ModelFactory {
 
     CreateThumbnail(name, thumbname) {
         var blob: any;
-        var sourcePath = cordova.file.applicationStorageDirectory + name;
+        var sourcePath = cordova.file.externalRootDirectory+"SportsPIP/Video/" + name;
         navigator.createThumbnail(sourcePath, function (err, imageData) {
             blob = imageData;
         });

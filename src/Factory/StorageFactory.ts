@@ -149,8 +149,20 @@ export class StorageFactory {
 
     }
 
+    CreateVideoFolder() {
+        this.platform.ready().then(() => {
+            const fs: string = cordova.file.externalRootDirectory;
+            File.createDir(fs, "SportsPIP", true).then((success) => {
+                var videoPath = fs + "SportsPIP"
+                File.createDir(videoPath, "Video", true).then((success) => {
+                    console.log("video folder created");
+                })
+            })
+        })
+    }
+
     ComposeNewMatrix() {
-        var name =(new Date()).toISOString().replace(/[^0-9]/g, "").slice(0,14);
+        var name = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
         let data =
             {
                 "Matrix": {

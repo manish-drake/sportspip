@@ -79,10 +79,11 @@ export class VideoComponent {
             clearInterval(this.timelineInterval);
         }
     }
-
+    public errormessage: any;
     OnVideoError(error) {
         console.log('Error in video Elmnt:' + JSON.stringify(error));
         // alert('Error in video Elmnt:' + JSON.stringify(error));
+        this.errormessage = JSON.stringify(error);
         this.videoSrcAvailable = false;
     }
 
@@ -135,8 +136,8 @@ export class VideoComponent {
     }
 
     returnVidPath(filename) {
-        if (this.platform.is('cordova')) {        
-            return cordova.file.applicationStorageDirectory + filename;
+        if (this.platform.is('cordova')) {
+            return cordova.file.externalRootDirectory+"SportsPIP/Video/" + filename;
         }
         else {
             return 'assets/' + filename;

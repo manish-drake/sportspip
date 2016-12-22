@@ -225,7 +225,7 @@ export class CompareviewComponent {
 
     returnVidPath(filename) {
         if (this.platform.is('cordova')) {
-            return cordova.file.applicationStorageDirectory + filename;
+            return cordova.file.externalRootDirectory + "SportsPIP/Video/" + filename;
         }
         else {
             return 'assets/' + filename;
