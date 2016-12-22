@@ -259,7 +259,6 @@ export class SettingsPage {
 
 export class UserActionsPopover {
   constructor(public viewCtrl: ViewController,
-    private alertCtrl: AlertController,
     private http: Http,
     private platform: Platform) {
   }

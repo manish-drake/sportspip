@@ -25,7 +25,8 @@ export class OpenMatrix {
                 }
             }).catch(err => {
                 console.log("mtx not found");
-                this.createNewMatrix(matrixName, Channel);
+                alert("Either file is correpted or download not properly");
+                // this.createNewMatrix(matrixName, Channel);
             });
     }
 

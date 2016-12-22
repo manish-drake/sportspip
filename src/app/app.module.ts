@@ -6,7 +6,7 @@ import { HomePage, MoreActionsPopover } from '../pages/home/home';
 import { Connectivity } from '../pages/connectivity/connectivity';
 import { SettingsPage, UserActionsPopover } from '../pages/settings/settings';
 import { Login } from '../pages/settings/login/login';
-
+import { AlertControllers } from '../Action/Alerts';
 import { CollectionPage } from '../pages/collection/collection'
 import { ChannelCollectionPage, PopoverPage2 } from '../pages/channelcollection/channelcollection'
 import { OrderBy } from '../GroupBy/OrderBy';
@@ -48,6 +48,7 @@ import { Swipeview } from '../pages/editor/swipeview/swipeview'
     CaptureViewsPopover,
     Swipeview
   ],
+  providers: [AlertControllers],
   imports: [
     IonicModule.forRoot(sportspip)
   ],
@@ -72,6 +73,5 @@ import { Swipeview } from '../pages/editor/swipeview/swipeview'
     CaptureViewsPopover,
     Swipeview
   ],
-  providers: []
 })
 export class AppModule { }

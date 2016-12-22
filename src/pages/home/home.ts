@@ -4,7 +4,7 @@ import {
     ViewController, ToastController, Platform, LoadingController
 } from 'ionic-angular';
 import { AppVersion, File } from 'ionic-native';
-
+import { AlertControllers } from '../../Action/Alerts';
 import { StorageFactory } from '../../Factory/StorageFactory';
 import { ModelFactory } from '../../Factory/ModelFactory';
 import { Package } from '../../pages/Package';
@@ -49,6 +49,7 @@ export class HomePage {
         private popoverCtrl: PopoverController,
         private actionSheetCtrl: ActionSheetController,
         private alertCtrl: AlertController,
+        private alertCtrls: AlertControllers,
         private toastCtrl: ToastController,
         private packages: Package,
         private loadingCtrl: LoadingController,
@@ -67,26 +68,21 @@ export class HomePage {
                 permissions.requestPermission(permissions.READ_EXTERNAL_STORAGE, (status2) => {
                     if (!status2.hasPermission) {
                         console.log('permission is not turned on');
-                        permissionNotGranted("");
+                        this.permissionNotGranted("");
                     }
                 }, ((err) => {
                     console.log('permission is not turned on: ' + err);
-                    permissionNotGranted(err);
+                    this.permissionNotGranted(err);
                 }));
             }
         }, ((err) => {
             console.log('permission is not turned on: ' + err);
-            permissionNotGranted(err);
+            this.permissionNotGranted(err);
         }));
+    }
 
-        var permissionNotGranted = function (err) {
-            let alert = this.alertCtrl.create({
-                title: 'READ_EXTERNAL_STORAGE not granted',
-                subTitle: err,
-                buttons: ['OK']
-            });
-            alert.present();
-        }
+    permissionNotGranted(err) {
+        this.alertCtrls.BasicAlert('READ_EXTERNAL_STORAGE not granted', err);
     }
 
     ionViewDidEnter() {
@@ -446,7 +442,7 @@ export class MoreActionsPopover {
 
     versionNumber: any;
 
-    constructor(public viewCtrl: ViewController, private alertCtrl: AlertController, private platform: Platform, ) {
+    constructor(public viewCtrl: ViewController, private alertCtrl: AlertController, private alertCtrls: AlertControllers, private platform: Platform, ) {
         if (this.platform.is('cordova')) {
             AppVersion.getVersionNumber().then((s) => {
                 this.versionNumber = s;
@@ -456,12 +452,6 @@ export class MoreActionsPopover {
 
     onAbout() {
         this.viewCtrl.dismiss();
-
-        let alert = this.alertCtrl.create({
-            title: 'Sports PIP',
-            subTitle: 'version ' + this.versionNumber,
-            buttons: ['OK']
-        });
-        alert.present();
+        this.alertCtrls.BasicAlert('Sports PIP', 'version ' + this.versionNumber);
     }
 }
