@@ -5,7 +5,7 @@ import {
   App, LoadingController, Events, PopoverController, ViewController
 } from 'ionic-angular';
 import { BackGroundTransferProcess } from '../../Action/BackGroundTransferProcess';
-import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError, FilePath } from 'ionic-native';
+import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError } from 'ionic-native';
 
 import { Http } from '@angular/http';
 import { Connection } from '../../pages/Connection'
@@ -262,11 +262,12 @@ export class EditorPage {
     if (this.platform.is('cordova')) {
       FileChooser.open().then(uri => {
         console.log(uri);
-        FilePath.resolveNativePath(uri).then(filePath => {
-          console.log(filePath);
 
-          var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-          var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
+         (document as any).FilePath.resolveNativePath(uri)
+         .then(filePath => {
+            console.log(filePath);
+            var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+            var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
 
           File.copyFile(path, fileName, cordova.file.externalRootDirectory + "SportsPIP/Video", fileName).then(success => {
             console.log('Successfully copied video');
@@ -280,7 +281,8 @@ export class EditorPage {
             this.chooseVideoErrorMsg('Failed copying video:' + err);
           });
 
-        }).catch(err => {
+        })
+        .catch(err => {
           console.log(err);
           this.chooseVideoErrorMsg('Failed Resolving nativepath:' + err);
         });
