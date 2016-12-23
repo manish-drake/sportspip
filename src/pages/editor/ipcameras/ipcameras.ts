@@ -6,6 +6,7 @@ import { Connectivity } from '../../connectivity/connectivity';
 import { StorageFactory } from '../../../Factory/StorageFactory';
 import { BackGroundTransferProcessIP } from '../../../Action/BackGroundTransferProcessIP';
 import X2JS from 'x2js';
+import { Logger } from '../../../logging/logger';
 
 /*
   Generated class for the Ipcamera page.
@@ -34,7 +35,8 @@ export class Ipcameras {
     private loadingCtrl: LoadingController,
     private platform: Platform,
     private navParams: NavParams,
-    private storagefactory: StorageFactory) {
+    private storagefactory: StorageFactory,
+    private _logger: Logger) {
 
     this.matrix = this.navParams.data.matrix;
     this.views = this.navParams.data.views;
@@ -47,6 +49,7 @@ export class Ipcameras {
 
   ionViewDidLoad() {
     console.log('Hello Ipcamera Page');
+    this._logger.Debug('Ipcamera Page loaded');
   }
 
   ionViewDidEnter() {

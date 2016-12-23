@@ -7,6 +7,8 @@ import { StorageFactory } from '../../Factory/StorageFactory';
 import { Package } from '../../pages/Package';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
+import { Logger } from '../../logging/logger';
+
 declare var cordova: any;
 /*
   Generated class for the Settings page.
@@ -39,11 +41,13 @@ export class SettingsPage {
     private modalCtrl: ModalController,
     private popoverCtrl: PopoverController,
     private platform: Platform,
-    private loadingCtrl: LoadingController) {
+    private loadingCtrl: LoadingController,
+    private _logger: Logger) {
 
   }
 
   ionViewDidLoad() {
+    this._logger.Debug('Settings Page loaded');
     console.log('Hello Settings Page');
     this.createSettingsasync();
   }
@@ -126,7 +130,7 @@ export class SettingsPage {
       if (data != null) {
         this.SetUserAcync(data);
         this.InvalidateSubscribeListAsync(this.UserID);
-        this.InvalidateChannelListAsync(this.UserID); 
+        this.InvalidateChannelListAsync(this.UserID);
         let loader = this.loadingCtrl.create({
           content: "Fetching Channel Headers..",
           duration: 10000
@@ -136,7 +140,7 @@ export class SettingsPage {
           .take(1).map((x) => x + 5)
           .subscribe((x) => {
             this.subscribeList.forEach(sub => {
-              this.GetserverHeader(sub.ChannelName)       
+              this.GetserverHeader(sub.ChannelName)
             });
           });
 
