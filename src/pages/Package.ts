@@ -41,31 +41,30 @@ export class Package {
                     switch (sliced) {
                         case '.mtx':
                             let parser: any = new X2JS();
-                            this.http.get(file.nativeURL).subscribe(data => {
+                            return this.http.get(file.nativeURL).map(data => {
                                 console.log("mtx moving...");
                                 var matrixdata = parser.xml2js(data["_body"]);
                                 var matrix = matrixdata.Matrix;
                                 matrix._Name = this.fileName;
                                 matrix._Channel = this.channelName;
-                                this.storagefactory.SaveMatrixAsync(matrixdata, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
-                                console.log("mtx moved");
-                            })
-                            break;
+                                return this.storagefactory.SaveMatrixAsync(matrixdata, matrix._Channel, matrix._Sport, matrix._Name, "Matrices").then(() => {
+                                    console.log("mtx moved");
+                                });
+
+                            }).toPromise()
                         case '.mp4':
                             console.log("video moving...");
-                            File.moveFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.externalRootDirectory + "SportsPIP/Video", file.name);
-                            console.log("video moved");
+                            return File.moveFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.externalRootDirectory + "SportsPIP/Video", file.name)
+                                .then((success) => { console.log("video moved"); });
                         case ".gif":
                         case ".rtf":
                             console.log("ink moving...");
-                            File.moveFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.applicationStorageDirectory, file.name);
-                            console.log("ink moved...");
-                            break;
+                            return File.moveFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.applicationStorageDirectory, file.name)
+                                .then((success) => { console.log("ink moved..."); });
                         case ".jpg":
                             console.log("image moving...");
-                            File.moveFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.applicationStorageDirectory, file.name);
-                            console.log("image moved");
-                            break;
+                            return File.moveFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.applicationStorageDirectory, file.name)
+                                .then(() => { console.log("image moved"); });
                         default:
                     }
                 });

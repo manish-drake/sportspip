@@ -55,6 +55,7 @@ export class Ipcameras {
   }
 
   ionViewDidEnter() {
+    this._logger.Debug('Ipcamera Page entered');
     this.loadIPCams();
   }
 
@@ -107,38 +108,43 @@ export class Ipcameras {
       alert.present();
     }
     else {
-      this.isLoading = false;
-      this.isConnected = true;
-      this.isLoading = true;
-      var connectedServerIP = Connection.connectedServer.Address;
+      try {
+        this.isLoading = false;
+        this.isConnected = true;
+        this.isLoading = true;
+        var connectedServerIP = Connection.connectedServer.Address;
 
-      var requestUri = "http://" + connectedServerIP + ":10080/icamera/cams/ip/";
+        var requestUri = "http://" + connectedServerIP + ":10080/icamera/cams/ip/";
 
-      setTimeout(() => {
-        this.http.get(requestUri)
-          .map(res => res.text())
-          .subscribe(
-          data => {
-            let parser: any = new X2JS();
-            var jsonData = parser.xml2js(data);
-            if (jsonData.Cams.IPCam != undefined) {
-              if (jsonData.Cams.IPCam instanceof Array) {
-                this.ipCams = jsonData.Cams.IPCam;
+        setTimeout(() => {
+          this.http.get(requestUri)
+            .map(res => res.text())
+            .subscribe(
+            data => {
+              let parser: any = new X2JS();
+              var jsonData = parser.xml2js(data);
+              if (jsonData.Cams.IPCam != undefined) {
+                if (jsonData.Cams.IPCam instanceof Array) {
+                  this.ipCams = jsonData.Cams.IPCam;
+                }
+                else {
+                  this.ipCams.push(jsonData.Cams.IPCam);
+                }
               }
-              else {
-                this.ipCams.push(jsonData.Cams.IPCam);
-              }
-            }
-          },
-          err => {
-            console.error('There was an error: ' + err);
-            this.isLoading = false;
-          },
-          () => {
-            console.log('Random Quote Complete');
-            this.isLoading = false;
-          });
-      }, 1000);
+            },
+            err => {
+              console.error('There was an error: ' + err);
+              this.isLoading = false;
+            },
+            () => {
+              console.log('Random Quote Complete');
+              this.isLoading = false;
+            });
+        }, 1000);
+      }
+      catch (err) {
+        this._logger.Error("IPCam", err);
+      }
     }
   }
 
@@ -217,7 +223,7 @@ export class Ipcameras {
   }
 
   record() {
-    console.log("Recording for IP Cams on network");
+    this._logger.Debug("Recording for IP Cams on network");
     var connectedServerIP = Connection.connectedServer.Data.Location;
     var fileName = Date.now();
     var uri: string = "http://" + connectedServerIP + ":10080/icamera/cams/ip/" + fileName + "/rec?duration=" + this.recordingDuration;
@@ -227,7 +233,6 @@ export class Ipcameras {
       .then(res => {
         console.log('Response: ' + res);
         this.createViews(fileName);
-
         var time = Number(0);
         let loader = this.loadingCtrl.create({
           content: 'Recording ' + time.toString() + 's',
@@ -242,27 +247,32 @@ export class Ipcameras {
           if (time >= this.recordingDuration) {
             clearInterval(interval);
             this.isRecording = false;
-            this.backGroundTransferProcessIP.transferMatrix(fileName, this.recordingDuration, this.ipCams.length, connectedServerIP).then(() => {
-              var i = 1;
-              while (i <= this.ipCams.length) {
-                var name = fileName + "_" + i + ".mp4";
-                this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP).then((success) => {
-                  if (i > this.ipCams.length) {
-                    this.viewCtrl.dismiss(this.views);
-                    this.alertCtrls.BasicAlert('Video transfered successfully', cordova.file.externalRootDirectory + "SportsPIP/Video");
-                  }
-                }).catch((errr) => { console.log(errr); });
-                i++;
-              }
-            }).catch((Error) => {
-              alert("sorry failed")
-            })
+
+            this._logger.Debug("transferring IP Cams matrix on network");
+            this.backGroundTransferProcessIP.transferMatrix(fileName, this.recordingDuration, this.ipCams.length, connectedServerIP)
+              .then(() => {
+                var i = 1;
+                while (i <= this.ipCams.length) {
+                  var name = fileName + "_" + i + ".mp4";
+                  this._logger.Debug("Getting IP Cams Video from network");
+                  this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP).then((success) => {
+                    if (i > this.ipCams.length) {
+                      this.alertCtrls.BasicAlert('Video transfered successfully', cordova.file.externalRootDirectory + "SportsPIP/Video");
+                      this.viewCtrl.dismiss(this.views);
+                    }
+                  }).catch((errr) => { this._logger.Error("Error,Getting IP Cams Video from network", errr); });
+                  i++;
+                }
+              }).catch((err) => {
+                this._logger.Error("Error,transferring IP Cams matrix on network", err);
+              })
+
           }
         }, 1000);
       })
       .catch(err => {
         console.log('Error: ' + err);
-        this.alertCtrls.BasicAlert('Error',err);
+        this.alertCtrls.BasicAlert('Error', err);
         this.isRecording = false;
       });
   }
@@ -318,7 +328,8 @@ export class Ipcameras {
         "_Source": "(Blank)"
       });
     }
-    else { this.alertCtrls.BasicAlert('Maximum 8 views!','No more views could be added.');
+    else {
+      this.alertCtrls.BasicAlert('Maximum 8 views!', 'No more views could be added.');
     }
   }
 }

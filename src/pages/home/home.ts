@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import {NavController, ActionSheetController, AlertController, PopoverController,
-    ViewController, ToastController, Platform, LoadingController} from 'ionic-angular';
+import {
+    NavController, ActionSheetController, AlertController, PopoverController,
+    ViewController, ToastController, Platform, LoadingController
+} from 'ionic-angular';
 import { AppVersion, File } from 'ionic-native';
 import { AlertControllers } from '../../Action/Alerts';
 import { StorageFactory } from '../../Factory/StorageFactory';
@@ -344,17 +346,24 @@ export class HomePage {
 
 
     newMatrix() {
-        var data = this.storagefactory.ComposeNewMatrix();
+        this._logger.Debug('Creating new matrix..');
+        try {
+            var data = this.storagefactory.ComposeNewMatrix();
 
-        var result = data.Matrix;
-        this.storagefactory.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices");
+            var result = data.Matrix;
+            this.storagefactory.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices");
 
-        var headerContent = this.storagefactory.ComposeNewMatrixHeader(result);
-        this.storagefactory.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
+            var headerContent = this.storagefactory.ComposeNewMatrixHeader(result);
+            this.storagefactory.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
 
-        this.navCtrl.push(EditorPage, {
-            matrixData: result
-        });
+            this.navCtrl.push(EditorPage, {
+                matrixData: result
+            });
+        }
+        catch (err) {
+            this._logger.Error('Error,creating new matrix..', err);
+        }
+
     }
 
     // For testing only --starts
