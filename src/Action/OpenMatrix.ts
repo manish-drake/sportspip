@@ -14,26 +14,23 @@ export class OpenMatrix {
     }
 
     run(matrixName, Channel) {
-        this._logger.Debug('Open matrix..');
-        try {
-            File.readAsText(cordova.file.dataDirectory + "Local/" + Channel + "/Tennis/Matrices/" + matrixName, matrixName + ".mtx")
-                .then(data => {
-                    console.log("open matrix");
-                    var res = JSON.parse(data.toString());
-                    var view = res.Matrix["Matrix.Children"].View;
-                    if (view != undefined) {
-                        this.navCtrl.push(EditorPage, {
-                            matrixData: res.Matrix
-                        });
-                    }
-                }).catch(err => {
-                    console.log("mtx not found");
-                    this.createNewMatrix(matrixName, Channel);
-                });
-        }
-        catch (err) {
-            this._logger.Error('Error,opening matrix: ', err);
-        }
+
+             File.readAsText(cordova.file.dataDirectory + "Local/" + Channel + "/Tennis/Matrices/" + matrixName, matrixName + ".mtx")
+            .then(data => {
+                console.log("open matrix");
+                var res = JSON.parse(data.toString());
+                var view = res.Matrix["Matrix.Children"].View;
+                if (view != undefined) {
+                    this.navCtrl.push(EditorPage, {
+                        matrixData: res.Matrix
+                    });
+                }
+            }).catch(err => {
+                console.log("mtx not found");
+                alert("Either file is correpted or download not properly");
+                // this.createNewMatrix(matrixName, Channel);
+            });
+       
     }
 
     createNewMatrix(matrixName, Channel) {

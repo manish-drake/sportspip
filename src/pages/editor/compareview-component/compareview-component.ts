@@ -1,7 +1,6 @@
 import { Component, ViewChild, Input, ElementRef } from '@angular/core';
 
-import {
-    AlertController, ModalController, Platform,
+import {ModalController, Platform,
     PopoverController, ViewController, NavParams, Events
 } from 'ionic-angular';
 
@@ -28,7 +27,7 @@ export class CompareviewComponent {
 
     video: HTMLVideoElement;
 
-    constructor(private alertCtrl: AlertController,
+    constructor(
         private modalCtrl: ModalController,
         private platform: Platform,
         private popoverCtrl: PopoverController,

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Platform } from 'ionic-angular';
 import X2JS from 'x2js';
-import { File } from 'ionic-native';
+import { File, WriteOptions } from 'ionic-native';
 import { Logger } from '../logging/logger';
 
 declare var FileTransfer: any;
@@ -52,7 +52,6 @@ export class BackGroundTransferProcessIP {
             this._logger.Error('Error,creating clips (IP): ', err);
         }
     }
-
     GetServerIPVideo(fileName, serverAddress) {
         this._logger.Debug('Get server IP video');
         try {
@@ -61,10 +60,11 @@ export class BackGroundTransferProcessIP {
                 xhr.open('GET', "http://" + serverAddress + ":10080/isportspip/sports/video/" + fileName, true); // url is my google cloud storage url
                 xhr.responseType = 'blob';
                 xhr.onload = function (e) {
+                    var writeOptions: WriteOptions = { replace: true }
                     var blob = xhr.response;
                     return File.createFile(cordova.file.externalRootDirectory + "SportsPIP/Video", fileName, true)
                         .then((success) => {
-                            return File.writeFile(cordova.file.externalRootDirectory + "SportsPIP/Video", fileName, blob.slice(8), true)
+                            return File.writeFile(cordova.file.externalRootDirectory + "SportsPIP/Video", fileName, blob.slice(8), writeOptions)
                                 .then((success) => {
                                     return resolve(xhr.response);
                                 }).catch(() => { return reject(xhr.statusText); })

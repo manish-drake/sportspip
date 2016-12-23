@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable } from 'rxjs/Rx';
-import { File } from 'ionic-native';
+import { File, WriteOptions } from 'ionic-native';
 import { Logger } from '../logging/logger';
 
 declare var navigator: any;
@@ -9,7 +9,7 @@ import 'rxjs/Rx';
 
 @Injectable()
 export class ModelFactory {
-
+    writeOptions: WriteOptions = { replace: true }
     constructor(private _logger: Logger) { }
 
     CreateThumbnail(name, thumbname) {
@@ -25,12 +25,12 @@ export class ModelFactory {
                 .subscribe((x) => {
                     var data = this.b64toBlob(blob, 'image/jpeg', 1024);
                     File.createFile(cordova.file.applicationStorageDirectory, thumbname + ".jpg", true).then(() => {
-                        File.writeFile(cordova.file.applicationStorageDirectory, thumbname + ".jpg", data, true).then(() => {
+                        File.writeFile(cordova.file.applicationStorageDirectory, thumbname + ".jpg", data, this.writeOptions).then(() => {
                             console.log("thumbanil created ")
                         })
                     })
                 })
-             }
+        }
         catch (err) {
             this._logger.Error('Error,creating thumbnail: ', err);
         }
@@ -56,7 +56,7 @@ export class ModelFactory {
             }
             var blob = new Blob(byteArrays, { type: contentType });
             return blob;
-          }
+        }
         catch (err) {
             this._logger.Error('Error,parsing b64 to blob: ', err);
         }

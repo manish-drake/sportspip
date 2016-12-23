@@ -9,42 +9,42 @@ page-home {
 	display: flex;
 	flex-wrap: wrap;
 }
-.items .itemm {
+.items .item {
 	flex: 1 0 100%;
   box-sizing: border-box;
 }
 @media (min-width: 410px) {
-  .items .itemm {
+  .items .item {
     max-width: calc(50%);
   }
 }
 @media (min-width: 620px) {
-  .items .itemm {
+  .items .item {
     max-width: calc(33.33333%);
   }
 }
 @media (min-width: 830px) {
-  .items .itemm {
+  .items .item {
     max-width: calc(25%);
   }
 }
 @media (min-width: 1040px) {
-  .items .itemm {
+  .items .item {
     max-width: calc(20%);
   }
 }
 @media (min-width: 1250px) {
-  .items .itemm {
+  .items .item {
     max-width: calc(16.66667%);
   }
 }
 @media (min-width: 1460px) {
-  .items .itemm {
+  .items .item {
     max-width: calc(14.28571%);
   }
 }
 @media (min-width: 1670px) {
-  .items .itemm {
+  .items .item {
     min-width: calc(12.5%);
   }
 }

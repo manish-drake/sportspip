@@ -5,8 +5,8 @@ import {
   App, LoadingController, Events, PopoverController, ViewController
 } from 'ionic-angular';
 import { BackGroundTransferProcess } from '../../Action/BackGroundTransferProcess';
-import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError, FilePath } from 'ionic-native';
-
+import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError,FilePath} from 'ionic-native';
+import { AlertControllers } from '../../Action/Alerts';
 import { Http } from '@angular/http';
 import { Connection } from '../../pages/Connection'
 import { StorageFactory } from '../../Factory/StorageFactory';
@@ -37,6 +37,7 @@ export class EditorPage {
   constructor(public navCtrl: NavController,
     private backGroundTransferProcess: BackGroundTransferProcess,
     private params: NavParams,
+    private alertCtrls: AlertControllers,
     private alertCtrl: AlertController,
     private modalCtrl: ModalController,
     private loadingCtrl: LoadingController,
@@ -177,12 +178,7 @@ export class EditorPage {
       this.showViewSegment(inum - 1);
     }
     else {
-      let alert = this.alertCtrl.create({
-        title: 'Maximum 8 views!',
-        subTitle: 'No more views could be added.',
-        buttons: ['OK']
-      });
-      alert.present();
+      this.alertCtrls.BasicAlert('Maximum 8 views!', 'No more views could be added.');
     }
   }
 
@@ -214,12 +210,7 @@ export class EditorPage {
       confirm.present();
     }
     else {
-      let alert = this.alertCtrl.create({
-        title: 'Can not be deleted!',
-        subTitle: 'Atleast 1 view is required.',
-        buttons: ['OK']
-      });
-      alert.present();
+      this.alertCtrls.BasicAlert('Can not be deleted!', 'Atleast 1 view is required.');
     }
   }
 
@@ -242,21 +233,15 @@ export class EditorPage {
   }
 
   import() {
-    let alert = this.alertCtrl.create({
-      title: 'Unavailable!',
-      subTitle: 'View library not available currently.',
-      buttons: ['OK']
-    });
-    alert.present();
+    this.alertCtrls.BasicAlert('Unavailable!', 'View library not available currently.');
   }
 
   chooseVideo() {
     if (this.platform.is('cordova')) {
       FileChooser.open().then(uri => {
         console.log(uri);
-
-        FilePath.resolveNativePath(uri)
-          .then(filePath => {
+         FilePath.resolveNativePath(uri)
+         .then(filePath => {
             console.log(filePath);
             var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
             var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
@@ -287,12 +272,7 @@ export class EditorPage {
   }
 
   chooseVideoErrorMsg(err) {
-    let alert = this.alertCtrl.create({
-      title: 'Failed saving video!',
-      subTitle: err,
-      buttons: ['OK']
-    });
-    alert.present();
+    this.alertCtrls.BasicAlert('Failed saving video!', err);
   }
 
   // Code for Camera Recording Starts
@@ -321,12 +301,12 @@ export class EditorPage {
         })
         .catch(err => {
           console.log('Failed saving video' + err)
-          let alert = this.alertCtrl.create({
-            title: 'Failed saving video!',
-            subTitle: JSON.stringify(err),
-            buttons: ['OK']
-          });
-          alert.present();
+          // let alert = this.alertCtrl.create({
+          //   title: 'Failed saving video!',
+          //   subTitle: JSON.stringify(err),
+          //   buttons: ['OK']
+          // });
+          // alert.present();
         });
     });
   }
@@ -336,12 +316,7 @@ export class EditorPage {
       console.log("Reording: " + err.message + ", Code:" + err.code)
     }
     else {
-      let alert = this.alertCtrl.create({
-        title: 'Recording Failed!',
-        subTitle: err.code + ", " + err.message,
-        buttons: ['OK']
-      });
-      alert.present();
+      this.alertCtrls.BasicAlert('Recording Failed!', err.code + ", " + err.message);
     }
   }
 

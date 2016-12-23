@@ -5,6 +5,7 @@ import { Connection } from '../../../pages/Connection';
 import { Connectivity } from '../../connectivity/connectivity';
 import { StorageFactory } from '../../../Factory/StorageFactory';
 import { BackGroundTransferProcessIP } from '../../../Action/BackGroundTransferProcessIP';
+import { AlertControllers } from '../../../Action/Alerts';
 import X2JS from 'x2js';
 import { Logger } from '../../../logging/logger';
 
@@ -32,6 +33,7 @@ export class Ipcameras {
     private http: Http,
     private backGroundTransferProcessIP: BackGroundTransferProcessIP,
     private alertCtrl: AlertController,
+    private alertCtrls: AlertControllers,
     private loadingCtrl: LoadingController,
     private platform: Platform,
     private navParams: NavParams,
@@ -245,8 +247,10 @@ export class Ipcameras {
               while (i <= this.ipCams.length) {
                 var name = fileName + "_" + i + ".mp4";
                 this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP).then((success) => {
-                  if (i >= this.ipCams.length)
+                  if (i > this.ipCams.length) {
                     this.viewCtrl.dismiss(this.views);
+                    this.alertCtrls.BasicAlert('Video transfered successfully', cordova.file.externalRootDirectory + "SportsPIP/Video");
+                  }
                 }).catch((errr) => { console.log(errr); });
                 i++;
               }
@@ -258,12 +262,7 @@ export class Ipcameras {
       })
       .catch(err => {
         console.log('Error: ' + err);
-        let alert = this.alertCtrl.create({
-          title: 'Error',
-          subTitle: err,
-          buttons: ['OK']
-        });
-        alert.present();
+        this.alertCtrls.BasicAlert('Error',err);
         this.isRecording = false;
       });
   }
@@ -319,13 +318,7 @@ export class Ipcameras {
         "_Source": "(Blank)"
       });
     }
-    else {
-      let alert = this.alertCtrl.create({
-        title: 'Maximum 8 views!',
-        subTitle: 'No more views could be added.',
-        buttons: ['OK']
-      });
-      alert.present();
+    else { this.alertCtrls.BasicAlert('Maximum 8 views!','No more views could be added.');
     }
   }
 }

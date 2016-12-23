@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Platform, ToastController } from 'ionic-angular';
 import { Http } from '@angular/http';
-import { File } from 'ionic-native';
+import { File, WriteOptions } from 'ionic-native';
 import { Logger } from '../logging/logger';
 
 declare var cordova: any;
@@ -9,6 +9,7 @@ import 'rxjs/Rx';
 
 @Injectable()
 export class StorageFactory {
+    writeOptions: WriteOptions = { replace: true }
 
     constructor(private http: Http, private platform: Platform, private toastCtrl: ToastController, private _logger: Logger) {
     }
@@ -21,7 +22,6 @@ export class StorageFactory {
         try {
             this.platform.ready().then(() => {
                 const fs: string = cordova.file.dataDirectory;
-
                 //create Server Folder
                 File.createDir(fs, "Server", true).then((success) => {
                     var serverFolder = fs + "Server/";
@@ -34,7 +34,7 @@ export class StorageFactory {
                                 File.createDir(contentFolder, matrixName, true).then((success) => {
                                     var fileLocation = contentFolder + matrixName;
                                     File.createFile(fileLocation, "Header.xml", true).then(() => {
-                                        File.writeFile(fileLocation, "Header.xml", content, true)
+                                        File.writeFile(fileLocation, "Header.xml", content, this.writeOptions)
                                             .then(function (success) {
                                                 console.log("server header saved ..")
                                             })
@@ -72,13 +72,12 @@ export class StorageFactory {
                                 File.createDir(contentFolder, matrixName, true).then((success) => {
                                     var fileLocation = contentFolder + matrixName;
                                     File.createFile(fileLocation, matrixName + ".mtx", true).then(() => {
-                                        File.writeFile(fileLocation, matrixName + ".mtx", content, true)
+                                        File.writeFile(fileLocation, matrixName + ".mtx", content, this.writeOptions)
                                             .then(function (success) {
                                                 console.log('Saved in SF');
                                             })
                                     })
                                 })
-
                             })
 
                         })
@@ -96,7 +95,6 @@ export class StorageFactory {
         try {
             this.platform.ready().then(() => {
                 const fs: string = cordova.file.dataDirectory;
-
                 //create local Folder
                 File.createDir(fs, "Local", true).then((success) => {
                     var localFolder = fs + "Local/";
@@ -109,13 +107,12 @@ export class StorageFactory {
                                 File.createDir(contentFolder, matrixName, true).then((success) => {
                                     var fileLocation = contentFolder + matrixName;
                                     File.createFile(fileLocation, "Header.xml", true).then(() => {
-                                        File.writeFile(fileLocation, "Header.xml", content, true)
+                                        File.writeFile(fileLocation, "Header.xml", content, this.writeOptions)
                                             .then(function (success) {
                                                 console.log("saved local header");
                                             })
                                     })
                                 })
-
                             })
 
                         })
@@ -171,7 +168,7 @@ export class StorageFactory {
                 File.createDir(fs, "Server", true).then((success) => {
                     var serverFolder = fs + "Server/";
                     File.createFile(serverFolder, "User.json", true).then(() => {
-                        File.writeFile(serverFolder, "User.json", content, true)
+                        File.writeFile(serverFolder, "User.json", content, this.writeOptions)
                             .then(function (success) {
                                 console.log("registraion complited..");
                             })

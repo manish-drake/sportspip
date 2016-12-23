@@ -55,7 +55,6 @@ export class Package {
                             console.log("video moving...");
                             File.moveFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.externalRootDirectory + "SportsPIP/Video", file.name);
                             console.log("video moved");
-                            break;
                         case ".gif":
                         case ".rtf":
                             console.log("ink moving...");

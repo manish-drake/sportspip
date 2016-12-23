@@ -1,7 +1,8 @@
 import { Component, ViewChild, Input, ElementRef } from '@angular/core';
-
+import { AlertControllers } from '../../../Action/Alerts';
 import { AlertController, ModalController, Platform, Events } from 'ionic-angular';
 import { Logger } from '../../../logging/logger';
+
 declare var cordova: any;
 
 @Component({
@@ -15,7 +16,8 @@ export class VideoComponent {
 
     @ViewChild('video') videoElement: ElementRef;
 
-    constructor(private alertCtrl: AlertController,
+    constructor(private alertCtrls: AlertControllers,
+        private alertCtrl: AlertController,
         private modalCtrl: ModalController,
         private platform: Platform,
         private events: Events,
@@ -90,7 +92,7 @@ export class VideoComponent {
         this.videoSrcAvailable = false;
     }
 
-    LoadMarkers() {        
+    LoadMarkers() {
         var chronoMarker = this.view["Content"]["Capture"]["View.ChronoMarker"]["ChronoMarker"];
         if (chronoMarker != undefined) {
             if (chronoMarker instanceof Array) {
@@ -140,7 +142,7 @@ export class VideoComponent {
 
     returnVidPath(filename) {
         if (this.platform.is('cordova')) {
-            return cordova.file.externalRootDirectory+"SportsPIP/Video/" + filename;
+            return cordova.file.externalRootDirectory + "SportsPIP/Video/" + filename;
         }
         else {
             return 'assets/' + filename;
@@ -425,14 +427,7 @@ export class VideoComponent {
                 console.log("..Marker Added");
                 this.saveMarkers();
             }
-            else {
-                let alert = this.alertCtrl.create({
-                    title: 'Limit Reached',
-                    subTitle: 'Only 4 markers can be added on same position.',
-                    buttons: ['OK']
-                });
-                alert.present();
-            }
+            else { this.alertCtrls.BasicAlert('Limit Reached', 'Only 4 markers can be added on same position.'); }
         }
     }
 

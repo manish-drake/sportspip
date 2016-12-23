@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController, PopoverController, ViewController, Platform, AlertController, LoadingController } from 'ionic-angular';
-import { File } from 'ionic-native';
+import { NavController, ModalController, PopoverController, ViewController, Platform, LoadingController } from 'ionic-angular';
+import { File,WriteOptions } from 'ionic-native';
 import { Login } from '../settings/login/login'
 import { Subscription } from '../../Stubs/Subscription';
 import { StorageFactory } from '../../Factory/StorageFactory';
@@ -100,8 +100,7 @@ export class SettingsPage {
       this.chanelList = [];
       this.subscribeList = [];
       this.createSettingsasync()
-      File.removeDir(cordova.file.dataDirectory + "Server", channelName).then(() => {
-        alert("successfully removed..")
+      File.removeRecursively(cordova.file.dataDirectory + "Server", channelName).then(() => {
       })
     });
   }
@@ -171,10 +170,10 @@ export class SettingsPage {
           });
       });
   }
-
+writeOptions: WriteOptions = { replace: true }
   Save(blob, filename) {
     File.createFile(cordova.file.dataDirectory, filename, true).then(() => {
-      File.writeFile(cordova.file.dataDirectory, filename, blob, true).then(() => {
+      File.writeFile(cordova.file.dataDirectory, filename, blob, this.writeOptions).then(() => {
         console.log("saving headers list file..");
       })
     })
@@ -263,7 +262,6 @@ export class SettingsPage {
 
 export class UserActionsPopover {
   constructor(public viewCtrl: ViewController,
-    private alertCtrl: AlertController,
     private http: Http,
     private platform: Platform) {
   }

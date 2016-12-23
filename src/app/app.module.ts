@@ -6,7 +6,7 @@ import { HomePage, MoreActionsPopover } from '../pages/home/home';
 import { Connectivity } from '../pages/connectivity/connectivity';
 import { SettingsPage, UserActionsPopover } from '../pages/settings/settings';
 import { Login } from '../pages/settings/login/login';
-
+import { AlertControllers } from '../Action/Alerts';
 import { CollectionPage } from '../pages/collection/collection'
 import { ChannelCollectionPage, PopoverPage2 } from '../pages/channelcollection/channelcollection'
 import { OrderBy } from '../GroupBy/OrderBy';
@@ -53,6 +53,11 @@ import { WebSqlLogProvider } from '../logging/providers/websqlLogProvider';
     CaptureViewsPopover,
     Swipeview
   ],
+  providers: [
+    AlertControllers,
+    { provide: AProvider, useClass: SqliteLogProvider },
+    Logger
+    ],
   imports: [
     IonicModule.forRoot(sportspip)
   ],
@@ -77,9 +82,5 @@ import { WebSqlLogProvider } from '../logging/providers/websqlLogProvider';
     CaptureViewsPopover,
     Swipeview
   ],
-  providers: [
-    { provide: AProvider, useClass: SqliteLogProvider },
-    Logger,
-  ]
 })
 export class AppModule { }

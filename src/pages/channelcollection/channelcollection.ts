@@ -4,6 +4,7 @@ import { StorageFactory } from '../../Factory/StorageFactory';
 import { Http } from '@angular/http';
 import { Package } from '../../pages/Package';
 import { Observable } from 'rxjs/Rx';
+import { AlertControllers } from '../../Action/Alerts';
 import {
   NavController, ToastController, PopoverController, NavParams,
   ActionSheetController, AlertController, ViewController, Platform, LoadingController
@@ -36,6 +37,7 @@ export class ChannelCollectionPage {
     private platform: Platform,
     private toastCtrl: ToastController,
     private alertCtrl: AlertController,
+    private alertCtrls: AlertControllers,
     private popoverController: PopoverController,
     private packages: Package,
     private http: Http,
