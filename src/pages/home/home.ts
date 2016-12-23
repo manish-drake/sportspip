@@ -21,6 +21,8 @@ import { ChannelCollectionPage } from '../channelcollection/channelcollection';
 import { EditorPage } from '../editor/editor';
 
 import { Connection } from '../../pages/Connection';
+
+import { Logger } from '../../logging/logger';
 declare var FileTransfer: any;
 declare var cordova: any;
 declare var navigator: any;
@@ -50,11 +52,13 @@ export class HomePage {
         private toastCtrl: ToastController,
         private packages: Package,
         private loadingCtrl: LoadingController,
-        private connection: Connection) {
+        private connection: Connection,
+        private _logger: Logger) {
 
     }
 
     ionViewDidEnter() {
+        this._logger.Debug('Home page loaded');
         console.log("main page");
         this.selectedSegment = "local";
         this.channels = [];

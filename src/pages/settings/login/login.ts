@@ -3,6 +3,8 @@ import { ViewController } from 'ionic-angular';
 import { Subscription } from '../../../Stubs/Subscription';
 import { StorageFactory } from '../../../Factory/StorageFactory';
 import { user } from '../user';
+import { Logger } from '../../../logging/logger';
+
 
 /*
   Generated class for the Matrixinfo page.
@@ -26,16 +28,17 @@ export class Login {
     FirstName: any;
     LastName: any;
 
-    constructor(private viewCtrl: ViewController, private subscription: Subscription, private storageFactory: StorageFactory) {
+    constructor(private viewCtrl: ViewController,
+        private subscription: Subscription,
+        private storageFactory: StorageFactory,
+        private _logger: Logger) {
         this.IsLoginAvailable = "Login";
+        this._logger.Debug('Login page loaded');
     }
     dismiss(user) {
         this.viewCtrl.dismiss(user);
     }
-    ionViewDidLoad() {
-        console.log('Hello Login Page');
-
-    }
+   
     presentRegister() {
         console.log('Hello Register Page');
         this.LoginAvailable = false;

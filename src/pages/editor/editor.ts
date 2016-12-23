@@ -16,6 +16,7 @@ import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 import { Compareview } from '../editor/compareview/compareview'
 import { Swipeview } from '../editor/swipeview/swipeview'
 import { Ipcameras } from '../editor/ipcameras/ipcameras'
+import { Logger } from '../../logging/logger';
 declare var navigator: any;
 declare var cordova: any;
 
@@ -46,7 +47,8 @@ export class EditorPage {
     private storagefactory: StorageFactory,
     private app: App,
     private events: Events,
-    private popoverCtrl: PopoverController) {
+    private popoverCtrl: PopoverController,
+    private _logger: Logger) {
     // if (params.data != null) {
     //   this.matrix = params.data.matrixData;
     //   console.log("editor page: " + this.matrix);
@@ -61,6 +63,7 @@ export class EditorPage {
 
 
   ionViewWillLoad() {
+    this._logger.Debug('Editor page loaded');
     if (this.params.data != null) {
       this.matrix = this.params.data.matrixData;
       console.log("editor page: " + JSON.stringify(this.matrix));
@@ -252,29 +255,29 @@ export class EditorPage {
       FileChooser.open().then(uri => {
         console.log(uri);
 
-         FilePath.resolveNativePath(uri)
-         .then(filePath => {
+        FilePath.resolveNativePath(uri)
+          .then(filePath => {
             console.log(filePath);
             var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
             var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
 
-          File.copyFile(path, fileName, cordova.file.externalRootDirectory + "SportsPIP/Video", fileName).then(success => {
-            console.log('Successfully copied video');
-            this.CreateVideoView(fileName);
+            File.copyFile(path, fileName, cordova.file.externalRootDirectory + "SportsPIP/Video", fileName).then(success => {
+              console.log('Successfully copied video');
+              this.CreateVideoView(fileName);
 
-            if (Connection.connectedServer != null)
-              this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
+              if (Connection.connectedServer != null)
+                this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
 
-          }).catch(err => {
-            console.log('Failed copying video:' + err)
-            this.chooseVideoErrorMsg('Failed copying video:' + err);
+            }).catch(err => {
+              console.log('Failed copying video:' + err)
+              this.chooseVideoErrorMsg('Failed copying video:' + err);
+            });
+
+          })
+          .catch(err => {
+            console.log(err);
+            this.chooseVideoErrorMsg('Failed Resolving nativepath:' + err);
           });
-
-        })
-        .catch(err => {
-          console.log(err);
-          this.chooseVideoErrorMsg('Failed Resolving nativepath:' + err);
-        });
 
       }).catch(err => {
         console.log(err);

@@ -4,6 +4,7 @@ import { Http } from '@angular/http';
 import { File } from 'ionic-native';
 import { StorageFactory } from '../../../Factory/StorageFactory';
 import { Package } from '../../../pages/Package';
+import { Logger } from '../../../logging/logger';
 
 declare var cordova: any;
 
@@ -30,7 +31,8 @@ export class MatrixInfoPage {
         private storagefactory: StorageFactory,
         private packages: Package,
         private platform: Platform,
-        private http: Http) {
+        private http: Http,
+        private _logger: Logger) {
         this.matrixData = navParams.get("matrixData");
         this.viewsCount = navParams.get("viewsCount");
         this.errorMessege = "";
@@ -39,6 +41,12 @@ export class MatrixInfoPage {
     FormateDate(value) {
         return this.packages.FormatDate(value);
     }
+
+    ionViewDidLoad() {
+        console.log('Hello Matrixinfo Page');
+        this._logger.Debug('Matrixinfo Page loaded');
+    }
+
 
     ionViewWillUnload() {
         if (this.validatematrixInfo()) {

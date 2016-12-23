@@ -21,6 +21,7 @@ import { Compareview } from '../pages/editor/compareview/compareview'
 import { CompareviewComponent, CaptureViewsPopover } from '../pages/editor/Compareview-Component/Compareview-Component'
 import { Swipeview } from '../pages/editor/swipeview/swipeview'
 
+import { Logger } from '../logging/logger';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,8 @@ import { Swipeview } from '../pages/editor/swipeview/swipeview'
     CaptureViewsPopover,
     Swipeview
   ],
-  providers: []
+  providers: [
+    Logger
+  ]
 })
 export class AppModule { }

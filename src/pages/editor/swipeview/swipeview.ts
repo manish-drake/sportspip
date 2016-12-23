@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { Logger } from '../../../logging/logger';
+
 
 /*
   Generated class for the Swipeview page.
@@ -15,11 +17,14 @@ export class Swipeview {
 
   views = [];
 
-  constructor(public navCtrl: NavController,private navParams: NavParams) {
-    
+  constructor(public navCtrl: NavController,
+              private navParams: NavParams,
+              private _logger: Logger) {
+
   }
 
   ionViewDidLoad() {
+    this._logger.Debug('Swipe view loaded');
     console.log('Hello Swipeview Page');
     this.views = this.navParams.get('captureViews');
   }
