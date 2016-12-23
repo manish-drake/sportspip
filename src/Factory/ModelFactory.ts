@@ -1,13 +1,13 @@
 import { Injectable } from "@angular/core";
 import { Observable } from 'rxjs/Rx';
-import { File } from 'ionic-native';
+import { File,WriteOptions } from 'ionic-native';
 declare var navigator: any;
 declare var cordova: any;
 import 'rxjs/Rx';
 
 @Injectable()
 export class ModelFactory {
-
+writeOptions: WriteOptions = { replace: true }
     constructor() { }
 
     CreateThumbnail(name, thumbname) {
@@ -21,7 +21,7 @@ export class ModelFactory {
             .subscribe((x) => {
                 var data = this.b64toBlob(blob, 'image/jpeg', 1024);
                 File.createFile(cordova.file.applicationStorageDirectory, thumbname + ".jpg", true).then(() => {
-                    File.writeFile(cordova.file.applicationStorageDirectory, thumbname + ".jpg", data, true).then(() => {
+                    File.writeFile(cordova.file.applicationStorageDirectory, thumbname + ".jpg", data, this.writeOptions).then(() => {
                         console.log("thumbanil created ")
                     })
                 })
