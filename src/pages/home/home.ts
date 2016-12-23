@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import {NavController, ActionSheetController, AlertController, PopoverController,
-    ViewController, ToastController, Platform, LoadingController} from 'ionic-angular';
-import { AppVersion, File } from 'ionic-native';
+import {
+    NavController, ActionSheetController, AlertController, PopoverController,
+    ViewController, ToastController, Platform, LoadingController
+} from 'ionic-angular';
+import { AppVersion, File, EmailComposer, SQLite } from 'ionic-native';
 import { AlertControllers } from '../../Action/Alerts';
 import { StorageFactory } from '../../Factory/StorageFactory';
 import { ModelFactory } from '../../Factory/ModelFactory';
@@ -409,6 +411,9 @@ export class HomePage {
     <ion-item (click)="onAbout()">
       <ion-icon item-left name="information-circle"></ion-icon>About
       </ion-item>
+    <ion-item (click)="sendLogs()">
+      <ion-icon item-left name="attach"></ion-icon>Send Logs
+      </ion-item>
     </ion-list>
   `
 })
@@ -427,5 +432,24 @@ export class MoreActionsPopover {
     onAbout() {
         this.viewCtrl.dismiss();
         this.alertCtrls.BasicAlert('Sports PIP', 'version ' + this.versionNumber);
+    }
+
+    sendLogs() {
+        
+
+        let email = {
+            to: 'manish@drake.in',
+            attachments: [ SQLite.openDatabase({name:'log.db'}) ],
+            subject: 'Logs for Sports PIP',
+            body: 'Here are log files for Sports PIP app..',
+            isHtml: true
+        };
+
+        // EmailComposer.isAvailable().then((available: boolean) => {
+        //     alert(available);
+        //     if (available) {
+                EmailComposer.open(email);
+        //     }
+        // });
     }
 }
