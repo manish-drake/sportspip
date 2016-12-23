@@ -39,7 +39,7 @@
 			<ion-badge item-right>{{localMatrices.length}}</ion-badge>
 			</button>
 		<div class="items">
-			<div class="itemm" *ngFor='let matrix of localMatrices | slice: 0:12; let i = index'>
+			<div class="item" *ngFor='let matrix of localMatrices | slice: 0:12; let i = index'>
 				<ion-card (click)="openMatrix(matrix.Name,matrix.Channel)" (press)="matrixPressed(i,matrix.Name,matrix.Channel,matrix.Title)">
 					<ion-row>
 						<ion-col no-padding [style.background-image]="retrunThumbnailPath(matrix.ThumbnailSource)" style="height: 120px;background-size: cover;background-color:lightgray;background-position: center;">
