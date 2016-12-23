@@ -1,6 +1,8 @@
 import { Component, ViewChild, Input, ElementRef } from '@angular/core';
 import { AlertControllers } from '../../../Action/Alerts';
-import { ModalController, AlertController, Platform, Events } from 'ionic-angular';
+import { AlertController, ModalController, Platform, Events } from 'ionic-angular';
+import { Logger } from '../../../logging/logger';
+
 declare var cordova: any;
 
 @Component({
@@ -18,7 +20,8 @@ export class VideoComponent {
         private alertCtrl: AlertController,
         private modalCtrl: ModalController,
         private platform: Platform,
-        private events: Events) {
+        private events: Events,
+        private _logger: Logger) {
         this.timelinePosition = this.formatTime(0);
     }
 
@@ -36,6 +39,7 @@ export class VideoComponent {
     markers = [];
 
     ngAfterViewInit() {
+        this._logger.Debug('Video-component Loaded');
         this.loadObjects();
         this.LoadMarkers();
 

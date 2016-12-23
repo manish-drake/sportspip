@@ -4,15 +4,18 @@ import { EditorPage } from '../pages/editor/editor';
 import { Http } from '@angular/http';
 import { File } from 'ionic-native';
 import { StorageFactory } from '../Factory/StorageFactory';
+import { Logger } from '../logging/logger';
+
 declare var cordova: any;
 @Injectable()
 export class OpenMatrix {
 
-    constructor(private http: Http, private navCtrl: NavController, private platform: Platform, private storagefactory: StorageFactory) {
+    constructor(private http: Http, private navCtrl: NavController, private platform: Platform, private storagefactory: StorageFactory, private _logger: Logger) {
     }
 
     run(matrixName, Channel) {
-        File.readAsText(cordova.file.dataDirectory + "Local/" + Channel + "/Tennis/Matrices/" + matrixName, matrixName + ".mtx")
+
+             File.readAsText(cordova.file.dataDirectory + "Local/" + Channel + "/Tennis/Matrices/" + matrixName, matrixName + ".mtx")
             .then(data => {
                 console.log("open matrix");
                 var res = JSON.parse(data.toString());
@@ -27,21 +30,28 @@ export class OpenMatrix {
                 alert("Either file is correpted or download not properly");
                 // this.createNewMatrix(matrixName, Channel);
             });
+       
     }
 
     createNewMatrix(matrixName, Channel) {
-        var data = this.storagefactory.ComposeNewMatrix();
-        var result = data.Matrix;
-        result._name = matrixName;
-        result._Name = matrixName;
-        result._Channel = Channel;
-        this.storagefactory.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices");
+        this._logger.Debug('Create new matrix..');
+        try {
+            var data = this.storagefactory.ComposeNewMatrix();
+            var result = data.Matrix;
+            result._name = matrixName;
+            result._Name = matrixName;
+            result._Channel = Channel;
+            this.storagefactory.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices");
 
-        var headerContent = this.storagefactory.ComposeMatrixHeader(result);
-        this.storagefactory.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
+            var headerContent = this.storagefactory.ComposeMatrixHeader(result);
+            this.storagefactory.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
 
-        this.navCtrl.push(EditorPage, {
-            matrixData: result
-        });
+            this.navCtrl.push(EditorPage, {
+                matrixData: result
+            });
+        }
+        catch (err) {
+            this._logger.Error('Error,creating new matrix: ', err);
+        }
     }
 }

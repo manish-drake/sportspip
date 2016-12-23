@@ -16,6 +16,7 @@ import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 import { Compareview } from '../editor/compareview/compareview'
 import { Swipeview } from '../editor/swipeview/swipeview'
 import { Ipcameras } from '../editor/ipcameras/ipcameras'
+import { Logger } from '../../logging/logger';
 declare var navigator: any;
 declare var cordova: any;
 
@@ -47,7 +48,8 @@ export class EditorPage {
     private storagefactory: StorageFactory,
     private app: App,
     private events: Events,
-    private popoverCtrl: PopoverController) {
+    private popoverCtrl: PopoverController,
+    private _logger: Logger) {
     // if (params.data != null) {
     //   this.matrix = params.data.matrixData;
     //   console.log("editor page: " + this.matrix);
@@ -62,6 +64,7 @@ export class EditorPage {
 
 
   ionViewWillLoad() {
+    this._logger.Debug('Editor page loaded');
     if (this.params.data != null) {
       this.matrix = this.params.data.matrixData;
       console.log("editor page: " + JSON.stringify(this.matrix));

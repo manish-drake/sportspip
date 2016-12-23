@@ -2,6 +2,7 @@ import { Component, DoCheck } from '@angular/core';
 import { NavController, ToastController } from 'ionic-angular';
 
 import { Connection } from '../../pages/Connection';
+import { Logger } from '../../logging/logger';
 
 /*
   Generated class for the Connectivity page.
@@ -29,7 +30,8 @@ export class Connectivity implements DoCheck {
 
     constructor(public navCtrl: NavController,
         private connection: Connection,
-        private toastCtrl: ToastController) {
+        private toastCtrl: ToastController,
+        private _logger:Logger) {
 
     }
 
@@ -63,57 +65,75 @@ export class Connectivity implements DoCheck {
     refreshing: boolean = false;
 
     doRefresh(refresher) {
-        this.refreshing = true;
-        this.servers.length == 0
-        setTimeout(() => {
-            refresher.complete();
-            this.refreshing = false;
-            this.showLoader();
-            this.connection.close();
-            this.connection.scanUdp();
-        }, 500);
+        this._logger.Debug('Refresh connectivity content..');
+         try {
+            this.refreshing = true;
+            this.servers.length == 0
+            setTimeout(() => {
+                refresher.complete();
+                this.refreshing = false;
+                this.showLoader();
+                this.connection.close();
+                this.connection.scanUdp();
+            }, 500);
+         }
+         catch (err) {
+            this._logger.Error('Error,refreshing connectivity content: ', err);
+         }
     }
 
     connectivityChanged(isOn) {
-        if (isOn) {
-            this.showLoader();
-            this.connection.scanUdp();
-            let toast = this.toastCtrl.create({
-                message: 'Connectivity is now on.',
-                duration: 1500,
-                position: 'bottom',
-                showCloseButton: true,
-                closeButtonText: 'Ok'
-            });
-            toast.present(toast);
-        }
-        else {
-            this.servers.length == 0;
-            this.isLoading = false;
-            this.connection.close();
-            let toast = this.toastCtrl.create({
-                message: 'Connectivity closed.',
-                duration: 1500,
-                position: 'bottom',
-                showCloseButton: true,
-                closeButtonText: 'Ok'
-            });
-            toast.present(toast);
-        }
+         this._logger.Debug('Connectivity changed..', isOn);
+         try {
+            if (isOn) {
+                this.showLoader();
+                this.connection.scanUdp();
+                let toast = this.toastCtrl.create({
+                    message: 'Connectivity is now on.',
+                    duration: 1500,
+                    position: 'bottom',
+                    showCloseButton: true,
+                    closeButtonText: 'Ok'
+                });
+                toast.present(toast);
+            }
+            else {
+                this.servers.length == 0;
+                this.isLoading = false;
+                this.connection.close();
+                let toast = this.toastCtrl.create({
+                    message: 'Connectivity closed.',
+                    duration: 1500,
+                    position: 'bottom',
+                    showCloseButton: true,
+                    closeButtonText: 'Ok'
+                });
+                toast.present(toast);
+            }
+         }
+         catch (err) {
+            this._logger.Error('Error,changing connectivity : ', err);
+         }
     }
     refreshConnection() {
-        this.servers.length == 0
-        this.connection.close();
-        let toast = this.toastCtrl.create({
-            message: 'Connections reloaded.',
-            duration: 1500,
-            position: 'bottom',
-            showCloseButton: true,
-            closeButtonText: 'Ok'
-        });
-        toast.present(toast);
-        this.showLoader();
-        this.connection.scanUdp();
+         this._logger.Debug('Refresh connection..');
+         try {
+            this.servers.length == 0
+            this.connection.close();
+            let toast = this.toastCtrl.create({
+                message: 'Connections reloaded.',
+                duration: 1500,
+                position: 'bottom',
+                showCloseButton: true,
+                closeButtonText: 'Ok'
+            });
+            toast.present(toast);
+            this.showLoader();
+            this.connection.scanUdp();
+         }
+         catch (err) {
+            this._logger.Error('Error,refreshing connection : ', err);
+         }
     }
 
     connect(server) {

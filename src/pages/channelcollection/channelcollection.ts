@@ -9,6 +9,9 @@ import {
   NavController, ToastController, PopoverController, NavParams,
   ActionSheetController, AlertController, ViewController, Platform, LoadingController
 } from 'ionic-angular';
+
+import { Logger } from '../../logging/logger';
+
 declare var cordova: any;
 
 /*
@@ -38,7 +41,8 @@ export class ChannelCollectionPage {
     private popoverController: PopoverController,
     private packages: Package,
     private http: Http,
-    private loadingCtrl: LoadingController) {
+    private loadingCtrl: LoadingController,
+    private _logger: Logger) {
 
     this.channel = params.get("firstPassed");
     this.GetChannelMatrix(this.channel);
@@ -47,57 +51,74 @@ export class ChannelCollectionPage {
   refreshing: boolean = false;
 
   doRefreshContent(refresher) {
-    this.refreshing = true;
-    this.channelMatrices = [];
-    setTimeout(() => {
-      refresher.complete();
-      this.GetChannelMatrix(this.channel);
-      this.refreshing = false;
-    }, 500);
+    this._logger.Debug('Refresh channel collection content..');
+    try {
+      this.refreshing = true;
+      this.channelMatrices = [];
+      setTimeout(() => {
+        refresher.complete();
+        this.GetChannelMatrix(this.channel);
+        this.refreshing = false;
+      }, 500);
+    }
+    catch (err) {
+      this._logger.Error('Error,refreshing  channel collection content: ', err);
+    }
   }
 
   GetChannelMatrix(channel) {
-    this.platform.ready().then(() => {
-      File.listDir(cordova.file.dataDirectory, "Server/" + channel + "/Tennis/Matrices/").then((success) => {
-        success.forEach((res) => {
-          File.readAsText(cordova.file.dataDirectory + "Server/" + channel + "/Tennis/Matrices/" + res.name, "Header.xml")
-            .then(data => {
-              //deserialiae server header  
-              var result = JSON.parse(data.toString());
-              // var result = header.Header;
-              var item = {
-                Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
-                ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
-                Views: result.Views
-              };
-              this.channelMatrices.push(item);
-              this.TempMatrix.push(item);
-            });
-        });
+    this._logger.Debug('Get channel matrix..');
+    try {
+      this.platform.ready().then(() => {
+        File.listDir(cordova.file.dataDirectory, "Server/" + channel + "/Tennis/Matrices/").then((success) => {
+          success.forEach((res) => {
+            File.readAsText(cordova.file.dataDirectory + "Server/" + channel + "/Tennis/Matrices/" + res.name, "Header.xml")
+              .then(data => {
+                //deserialiae server header  
+                var result = JSON.parse(data.toString());
+                // var result = header.Header;
+                var item = {
+                  Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
+                  ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
+                  Views: result.Views
+                };
+                this.channelMatrices.push(item);
+                this.TempMatrix.push(item);
+              });
+          });
 
+        });
       });
-    });
+    }
+    catch (err) {
+      this._logger.Error('Error,getting channel matrix: ', err);
+    }
 
   }
 
   getSearchItems(ev: any) {
-    // Reset items back to all of the items
-    this.channelMatrices = [];
-    this.channelMatrices = this.TempMatrix;
+    this._logger.Debug('Get search items (channel collection)..');
+    try {
+      // Reset items back to all of the items
+      this.channelMatrices = [];
+      this.channelMatrices = this.TempMatrix;
 
-    Observable.interval(1000)
-      .take(1).map((x) => x + 5)
-      .subscribe((x) => {
-        // set val to the value of the searchbar
-        let val = ev.target.value;
-        // if the value is an empty string don't filter the items
-        if (val && val.trim() != '') {
-          this.channelMatrices = this.channelMatrices.filter((item) => {
-            return (item.Title.toLowerCase().indexOf(val.toLowerCase()) > -1);
-          })
-        }
-      })
-
+      Observable.interval(1000)
+        .take(1).map((x) => x + 5)
+        .subscribe((x) => {
+          // set val to the value of the searchbar
+          let val = ev.target.value;
+          // if the value is an empty string don't filter the items
+          if (val && val.trim() != '') {
+            this.channelMatrices = this.channelMatrices.filter((item) => {
+              return (item.Title.toLowerCase().indexOf(val.toLowerCase()) > -1);
+            })
+          }
+        })
+    }
+    catch (err) {
+      this._logger.Error('Error,getting search items (channel collection): ', err);
+    }
   }
 
   FormatDate(value) {
@@ -109,7 +130,13 @@ export class ChannelCollectionPage {
   // }
 
   retrunThumbnailPath(name) {
-    return "url(" + cordova.file.applicationStorageDirectory + name + ".jpg" + ")";
+    this._logger.Debug('Retrun thumbnail path (channel collection)..');
+    try {
+      return "url(" + cordova.file.applicationStorageDirectory + name + ".jpg" + ")";
+    }
+    catch (err) {
+      this._logger.Error('Error,retruning thumbnail path (channel collection): ', err);
+    }
   }
 
   presentPopover(event) {
@@ -123,41 +150,47 @@ export class ChannelCollectionPage {
   }
 
   DownloadServerHeaderAsync(fileName, channelName, index) {
-    let loader = this.loadingCtrl.create({
-      content: 'Downloading..',
-      duration: 300000
-    });
-    loader.present();
+    this._logger.Debug('Download server header async..');
+    try {
+      let loader = this.loadingCtrl.create({
+        content: 'Downloading..',
+        duration: 300000
+      });
+      loader.present();
 
-    var authenticate = this.AuthenticateUser();
-    if (authenticate) {
+      var authenticate = this.AuthenticateUser();
+      if (authenticate) {
 
-      this.packages.DownloadServerHeader(fileName, channelName).then((serverHeader) => {
-        Observable.interval(2000)
-          .take(3).map((x) => x + 5)
-          .subscribe((x) => {
-            this.packages.unzipPackage();
-            console.log("unzip");
-          })
-        Observable.interval(4000)
-          .take(1).map((x) => x + 5)
-          .subscribe((x) => {
-            this.packages.MoveToLocalCollection(channelName);
-            console.log("matrix moved");
-          })
-        Observable.interval(6000)
-          .take(1).map((x) => x + 5)
-          .subscribe((x) => {
-            this.platform.ready().then(() => {
-              File.removeRecursively("file:/storage/emulated/0/DCIM/", "Temp").then(() => {
-                this.DeleteChannelMatrix(fileName, channelName, index);
-                console.log("delete server header");
-                loader.dismiss();
-              });
+        this.packages.DownloadServerHeader(fileName, channelName).then((serverHeader) => {
+          Observable.interval(2000)
+            .take(3).map((x) => x + 5)
+            .subscribe((x) => {
+              this.packages.unzipPackage();
+              console.log("unzip");
             })
-          })
-      })
+          Observable.interval(4000)
+            .take(1).map((x) => x + 5)
+            .subscribe((x) => {
+              this.packages.MoveToLocalCollection(channelName);
+              console.log("matrix moved");
+            })
+          Observable.interval(6000)
+            .take(1).map((x) => x + 5)
+            .subscribe((x) => {
+              this.platform.ready().then(() => {
+                File.removeRecursively("file:/storage/emulated/0/DCIM/", "Temp").then(() => {
+                  this.DeleteChannelMatrix(fileName, channelName, index);
+                  console.log("delete server header");
+                  loader.dismiss();
+                });
+              })
+            })
+        })
 
+      }
+    }
+    catch (err) {
+      this._logger.Error('Error,downloading server header async: ', err);
     }
   }
 
@@ -167,45 +200,57 @@ export class ChannelCollectionPage {
   }
 
   channelMatrixClicked(index, channel, DirName, title) {
-    let confirm = this.alertCtrl.create({
-      title: ' Download Confirmation?',
-      buttons: [
-        {
-          text: 'Cancel',
-          handler: () => { console.log('Cancel clicked'); }
-        },
-        {
-          text: 'Download',
-          handler: () => {
-            console.log('Download clicked');
-            this.DownloadServerHeaderAsync(DirName, channel, index);
+    this._logger.Debug('Channel matrix clicked..');
+    try {
+      let confirm = this.alertCtrl.create({
+        title: ' Download Confirmation?',
+        buttons: [
+          {
+            text: 'Cancel',
+            handler: () => { console.log('Cancel clicked'); }
+          },
+          {
+            text: 'Download',
+            handler: () => {
+              console.log('Download clicked');
+              this.DownloadServerHeaderAsync(DirName, channel, index);
+            }
           }
-        }
-      ]
-    });
-    confirm.present();
+        ]
+      });
+      confirm.present();
+    }
+    catch (err) {
+      this._logger.Error('Error,Channel matrix clicked: ', err);
+    }
   }
 
   channelMatrixPressed(index, channel, DirName, title) {
-    let actionSheet = this.actionSheetCtrl.create({
-      title: title,
-      buttons: [{
-        text: 'Delete',
-        role: 'destructive',
-        handler: () => {
-          this.DeleteChannelMatrix(DirName, channel, index);
+    this._logger.Debug('Channel matrix pressed..');
+    try {
+      let actionSheet = this.actionSheetCtrl.create({
+        title: title,
+        buttons: [{
+          text: 'Delete',
+          role: 'destructive',
+          handler: () => {
+            this.DeleteChannelMatrix(DirName, channel, index);
+          }
+        }, {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => { }
         }
-      }, {
-        text: 'Cancel',
-        role: 'cancel',
-        handler: () => { }
-      }
-      ]
-    });
-    actionSheet.present();
+        ]
+      });
+      actionSheet.present();
+    }
+
+    catch (err) {
+      this._logger.Error('Error,channel matrix pressed: ', err);
+    }
   }
 }
-
 @Component({
   template: `
     <ion-list radio-group (ionChange)="changeSortBy($event)">
