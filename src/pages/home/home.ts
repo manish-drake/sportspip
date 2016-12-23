@@ -435,21 +435,34 @@ export class MoreActionsPopover {
     }
 
     sendLogs() {
-        
+        this.viewCtrl.dismiss();
 
-        let email = {
-            to: 'manish@drake.in',
-            attachments: [ SQLite.openDatabase({name:'log.db'}) ],
-            subject: 'Logs for Sports PIP',
-            body: 'Here are log files for Sports PIP app..',
-            isHtml: true
-        };
+        this.platform.ready().then(() => {
+            File.checkFile(cordova.file.applicationStorageDirectory + 'databases/', "data.db")
+                .then(promise => {
+                    console.log("Success: " + JSON.stringify(promise));
+                    File.copyFile(cordova.file.applicationStorageDirectory + 'databases/', "data.db", cordova.file.externalRootDirectory + "SportsPIP/", "data.db")
+                        .then(promise => {
+                            alert("Success: " + JSON.stringify(promise));
+                            var logFilePath = cordova.file.externalRootDirectory + "SportsPIP/data.db";
 
-        // EmailComposer.isAvailable().then((available: boolean) => {
-        //     alert(available);
-        //     if (available) {
-                EmailComposer.open(email);
-        //     }
-        // });
+                            let email = {
+                                to: 'gurpreet.drake@hotmail.com',
+                                attachments: [logFilePath],
+                                subject: 'Logs for Sports PIP',
+                                body: 'Here are log files for Sports PIP app..',
+                                isHtml: true
+                            };
+
+                            EmailComposer.open(email);
+                        })
+                        .catch(err => {
+                        console.log("Error: " + JSON.stringify(err));
+                        alert("No log file found");
+                        });
+                })
+                .catch(err => console.log("Error: " + JSON.stringify(err)));
+        });
+
     }
 }
