@@ -346,17 +346,24 @@ export class HomePage {
 
 
     newMatrix() {
-        var data = this.storagefactory.ComposeNewMatrix();
+        this._logger.Debug('Creating new matrix..');
+        try {
+            var data = this.storagefactory.ComposeNewMatrix();
 
-        var result = data.Matrix;
-        this.storagefactory.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices");
+            var result = data.Matrix;
+            this.storagefactory.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices");
 
-        var headerContent = this.storagefactory.ComposeNewMatrixHeader(result);
-        this.storagefactory.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
+            var headerContent = this.storagefactory.ComposeNewMatrixHeader(result);
+            this.storagefactory.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
 
-        this.navCtrl.push(EditorPage, {
-            matrixData: result
-        });
+            this.navCtrl.push(EditorPage, {
+                matrixData: result
+            });
+        }
+        catch (err) {
+            this._logger.Error('Error,creating new matrix..', err);
+        }
+
     }
 
     // For testing only --starts
@@ -443,17 +450,14 @@ export class MoreActionsPopover {
                     console.log("Success: " + JSON.stringify(promise));
                     File.copyFile(cordova.file.applicationStorageDirectory + 'databases/', "data.db", cordova.file.externalRootDirectory + "SportsPIP/", "data.db")
                         .then(promise => {
-                            alert("Success: " + JSON.stringify(promise));
-                            var logFilePath = cordova.file.externalRootDirectory + "SportsPIP/data.db";
 
                             let email = {
                                 to: 'gurpreet.drake@hotmail.com',
-                                attachments: [logFilePath],
+                                attachments: [cordova.file.externalRootDirectory + "SportsPIP/data.db"],
                                 subject: 'Logs for Sports PIP',
                                 body: 'Here are log files for Sports PIP app..',
                                 isHtml: true
                             };
-
                             EmailComposer.open(email);
                         })
                         .catch(err => {

@@ -5,7 +5,7 @@ import {
   App, LoadingController, Events, PopoverController, ViewController
 } from 'ionic-angular';
 import { BackGroundTransferProcess } from '../../Action/BackGroundTransferProcess';
-import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError,FilePath} from 'ionic-native';
+import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError, FilePath } from 'ionic-native';
 import { AlertControllers } from '../../Action/Alerts';
 import { Http } from '@angular/http';
 import { Connection } from '../../pages/Connection'
@@ -98,7 +98,9 @@ export class EditorPage {
 
   saveMatrix() {
     if (this.platform.is('cordova')) {
-      File.readAsText(cordova.file.dataDirectory + "Local/" + this.matrix._Channel + "/Tennis/Matrices/" + this.matrix._Name, this.matrix._Name + ".mtx")
+      this._logger.Debug("Matrix file saving..")
+      try {
+        File.readAsText(cordova.file.dataDirectory + "Local/" + this.matrix._Channel + "/Tennis/Matrices/" + this.matrix._Name, this.matrix._Name + ".mtx")
         .then(data => {
           let loader = this.loadingCtrl.create({
             content: "Saving..",
@@ -123,6 +125,8 @@ export class EditorPage {
             });
 
         });
+      }
+      catch (err) { this._logger.Error("Error,Matrix file saving..",err);this.navCtrl.pop();  }
     } else this.navCtrl.pop();
   }
 
@@ -237,38 +241,42 @@ export class EditorPage {
   }
 
   chooseVideo() {
-    if (this.platform.is('cordova')) {
-      FileChooser.open().then(uri => {
-        console.log(uri);
-         FilePath.resolveNativePath(uri)
-         .then(filePath => {
-            console.log(filePath);
-            var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-            var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
+    this._logger.Debug("Adding file mannualy..");
+    try {
+      if (this.platform.is('cordova')) {
+        FileChooser.open().then(uri => {
+          console.log(uri);
+          FilePath.resolveNativePath(uri)
+            .then(filePath => {
+              console.log(filePath);
+              var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+              var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
 
-            File.copyFile(path, fileName, cordova.file.externalRootDirectory + "SportsPIP/Video", fileName).then(success => {
-              console.log('Successfully copied video');
-              this.CreateVideoView(fileName);
+              File.copyFile(path, fileName, cordova.file.externalRootDirectory + "SportsPIP/Video", fileName).then(success => {
+                console.log('Successfully copied video');
+                this.CreateVideoView(fileName);
 
-              if (Connection.connectedServer != null)
-                this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
+                if (Connection.connectedServer != null)
+                  this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
 
-            }).catch(err => {
-              console.log('Failed copying video:' + err)
-              this.chooseVideoErrorMsg('Failed copying video:' + err);
+              }).catch(err => {
+                console.log('Failed copying video:' + err)
+                this.chooseVideoErrorMsg('Failed copying video:' + err);
+              });
+
+            })
+            .catch(err => {
+              console.log(err);
+              this.chooseVideoErrorMsg('Failed Resolving nativepath:' + err);
             });
 
-          })
-          .catch(err => {
-            console.log(err);
-            this.chooseVideoErrorMsg('Failed Resolving nativepath:' + err);
-          });
-
-      }).catch(err => {
-        console.log(err);
-        this.chooseVideoErrorMsg('Error opening file chooser:' + err);
-      });
+        }).catch(err => {
+          console.log(err);
+          this.chooseVideoErrorMsg('Error opening file chooser:' + err);
+        });
+      }
     }
+    catch (err) { this._logger.Error('Error,adding video mannualy: ', JSON.stringify(err)); }
   }
 
   chooseVideoErrorMsg(err) {
@@ -323,22 +331,27 @@ export class EditorPage {
   // Code for Camera Recording Starts
 
   IPCamCapture() {
-    let modalOptions: ModalOptions = { showBackdrop: true, enableBackdropDismiss: false };
+    this._logger.Debug('creating IPCam Video..');
+    try {
+      let modalOptions: ModalOptions = { showBackdrop: true, enableBackdropDismiss: false };
 
-    var modal = this.modalCtrl.create(Ipcameras, {
-      matrix: this.matrix,
-      views: this.views,
-      selectedViewIndex: this.selectedViewIndex
-    }, modalOptions);
-    modal.present();
+      var modal = this.modalCtrl.create(Ipcameras, {
+        matrix: this.matrix,
+        views: this.views,
+        selectedViewIndex: this.selectedViewIndex
+      }, modalOptions);
+      modal.present();
 
-    modal.onDidDismiss((views) => {
-      if (views != null) {
-        this.views = views;
-        this.saveMatrix();
-        // this.connection.transferMatrix(this.matrix._Name,duration);
-      }
-    });
+      modal.onDidDismiss((views) => {
+        if (views != null) {
+          this.views = views;
+          this.saveMatrix();
+          // this.connection.transferMatrix(this.matrix._Name,duration);
+        }
+      });
+    }
+    catch (err) { this._logger.Error('Error,creating IPCam Video: ', JSON.stringify(err)); }
+
   }
 
   CreateVideoView(fileName) {

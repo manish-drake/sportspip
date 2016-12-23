@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Platform, ToastController } from 'ionic-angular';
 import { Http } from '@angular/http';
-import { File, WriteOptions } from 'ionic-native';
+import { File, WriteOptions,FileEntry } from 'ionic-native';
 import { Logger } from '../logging/logger';
 
 declare var cordova: any;
@@ -50,43 +50,41 @@ export class StorageFactory {
             })
         }
         catch (err) {
-            this._logger.Error('Error,saving server header: ', err);
+            this._logger.Error('Error,saving server header: ', JSON.stringify(err));
         }
     }
 
-    SaveMatrixAsync(content, channel, sport, matrixName, typeFolder) {
+    SaveMatrixAsync(content, channel, sport, matrixName, typeFolder):Promise<FileEntry> {
         this._logger.Debug('Save matrix async..');
         try {
-            this.platform.ready().then(() => {
-                const fs: string = cordova.file.dataDirectory;
-
-                //create Server Folder
-                File.createDir(fs, "Local", true).then((success) => {
-                    var localFolder = fs + "Local/";
-                    File.createDir(localFolder, channel, true).then(() => {
-                        var channelFolder = localFolder + channel + "/";
-                        File.createDir(channelFolder, sport, true).then(() => {
-                            var sportFolder = channelFolder + sport + "/";
-                            File.createDir(sportFolder, typeFolder, true).then(() => {
-                                var contentFolder = sportFolder + typeFolder + "/";
-                                File.createDir(contentFolder, matrixName, true).then((success) => {
-                                    var fileLocation = contentFolder + matrixName;
-                                    File.createFile(fileLocation, matrixName + ".mtx", true).then(() => {
-                                        File.writeFile(fileLocation, matrixName + ".mtx", content, this.writeOptions)
-                                            .then(function (success) {
-                                                console.log('Saved in SF');
-                                            })
-                                    })
+            const fs: string = cordova.file.dataDirectory;
+            //create Server Folder
+           return File.createDir(fs, "Local", true).then((success) => {
+                var localFolder = fs + "Local/";
+               return File.createDir(localFolder, channel, true).then(() => {
+                    var channelFolder = localFolder + channel + "/";
+                    return File.createDir(channelFolder, sport, true).then(() => {
+                        var sportFolder = channelFolder + sport + "/";
+                       return File.createDir(sportFolder, typeFolder, true).then(() => {
+                            var contentFolder = sportFolder + typeFolder + "/";
+                           return File.createDir(contentFolder, matrixName, true).then((success) => {
+                                var fileLocation = contentFolder + matrixName;
+                               return File.createFile(fileLocation, matrixName + ".mtx", true).then(() => {
+                                   return File.writeFile(fileLocation, matrixName + ".mtx", content, this.writeOptions)
+                                        .then(function (success) {
+                                            console.log('Saved in SF');
+                                            return success["nativeUrl"]
+                                        })
                                 })
                             })
-
                         })
+
                     })
                 })
             })
         }
         catch (err) {
-            this._logger.Error('Error,saving matrix async: ', err);
+            this._logger.Error('Error,saving matrix async: ', JSON.stringify(err));
         }
     }
 
@@ -121,7 +119,7 @@ export class StorageFactory {
             })
         }
         catch (err) {
-            this._logger.Error('Error,saving local header: ', err);
+            this._logger.Error('Error,saving local header: ', JSON.stringify(err));
         }
     }
 
@@ -137,7 +135,7 @@ export class StorageFactory {
             })
         }
         catch (err) {
-            this._logger.Error('Error,deleting server header: ', err);
+            this._logger.Error('Error,deleting server header: ', JSON.stringify(err));
         }
     }
 
@@ -156,7 +154,7 @@ export class StorageFactory {
             })
         }
         catch (err) {
-            this._logger.Error('Error,deleting local header: ', err);
+            this._logger.Error('Error,deleting local header: ', JSON.stringify(err));
         }
     }
 
@@ -177,7 +175,7 @@ export class StorageFactory {
             })
         }
         catch (err) {
-            this._logger.Error('Error,saving user async: ', err);
+            this._logger.Error('Error,saving user async: ', JSON.stringify(err));
         }
     }
 
@@ -195,7 +193,7 @@ export class StorageFactory {
             })
         }
         catch (err) {
-            this._logger.Error('Error,creating video folder: ', err);
+            this._logger.Error('Error,creating video folder: ', JSON.stringify(err));
         }
     }
 
@@ -229,7 +227,7 @@ export class StorageFactory {
             return data;
         }
         catch (err) {
-            this._logger.Error('Error,composing new matrix: ', err);
+            this._logger.Error('Error,composing new matrix: ', JSON.stringify(err));
         }
     }
 
@@ -251,7 +249,7 @@ export class StorageFactory {
             return header;
         }
         catch (err) {
-            this._logger.Error('Error,composing matrix header: ', err);
+            this._logger.Error('Error,composing matrix header: ', JSON.stringify(err));
         }
     }
 
@@ -273,7 +271,7 @@ export class StorageFactory {
             return header;
         }
         catch (err) {
-            this._logger.Error('Error,composing new matrix header: ', err);
+            this._logger.Error('Error,composing new matrix header: ', JSON.stringify(err));
         }
     }
 }

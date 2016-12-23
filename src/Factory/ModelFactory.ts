@@ -32,7 +32,7 @@ export class ModelFactory {
                 })
         }
         catch (err) {
-            this._logger.Error('Error,creating thumbnail: ', err);
+            this._logger.Error('Error,creating thumbnail: ', JSON.stringify(err));
         }
     }
 
@@ -58,7 +58,7 @@ export class ModelFactory {
             return blob;
         }
         catch (err) {
-            this._logger.Error('Error,parsing b64 to blob: ', err);
+            this._logger.Error('Error,parsing b64 to blob: ', JSON.stringify(err));
         }
     }
 
