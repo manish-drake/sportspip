@@ -50,7 +50,7 @@ export class StorageFactory {
             })
         }
         catch (err) {
-            this._logger.Error('Error,saving server header: ', err);
+            this._logger.Error('Error,saving server header: ', JSON.stringify(err));
         }
     }
 
@@ -84,7 +84,7 @@ export class StorageFactory {
             })
         }
         catch (err) {
-            this._logger.Error('Error,saving matrix async: ', err);
+            this._logger.Error('Error,saving matrix async: ', JSON.stringify(err));
         }
     }
 
@@ -119,7 +119,7 @@ export class StorageFactory {
             })
         }
         catch (err) {
-            this._logger.Error('Error,saving local header: ', err);
+            this._logger.Error('Error,saving local header: ', JSON.stringify(err));
         }
     }
 
@@ -135,7 +135,7 @@ export class StorageFactory {
             })
         }
         catch (err) {
-            this._logger.Error('Error,deleting server header: ', err);
+            this._logger.Error('Error,deleting server header: ', JSON.stringify(err));
         }
     }
 
@@ -154,7 +154,7 @@ export class StorageFactory {
             })
         }
         catch (err) {
-            this._logger.Error('Error,deleting local header: ', err);
+            this._logger.Error('Error,deleting local header: ', JSON.stringify(err));
         }
     }
 
@@ -175,7 +175,7 @@ export class StorageFactory {
             })
         }
         catch (err) {
-            this._logger.Error('Error,saving user async: ', err);
+            this._logger.Error('Error,saving user async: ', JSON.stringify(err));
         }
     }
 
@@ -193,7 +193,7 @@ export class StorageFactory {
             })
         }
         catch (err) {
-            this._logger.Error('Error,creating video folder: ', err);
+            this._logger.Error('Error,creating video folder: ', JSON.stringify(err));
         }
     }
 
@@ -227,7 +227,7 @@ export class StorageFactory {
             return data;
         }
         catch (err) {
-            this._logger.Error('Error,composing new matrix: ', err);
+            this._logger.Error('Error,composing new matrix: ', JSON.stringify(err));
         }
     }
 
@@ -249,7 +249,7 @@ export class StorageFactory {
             return header;
         }
         catch (err) {
-            this._logger.Error('Error,composing matrix header: ', err);
+            this._logger.Error('Error,composing matrix header: ', JSON.stringify(err));
         }
     }
 
@@ -271,7 +271,7 @@ export class StorageFactory {
             return header;
         }
         catch (err) {
-            this._logger.Error('Error,composing new matrix header: ', err);
+            this._logger.Error('Error,composing new matrix header: ', JSON.stringify(err));
         }
     }
 }

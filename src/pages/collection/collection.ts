@@ -56,7 +56,7 @@ export class CollectionPage {
             })
          }
          catch (err) {
-            this._logger.Error('Error,getting search items: ', err);
+            this._logger.Error('Error,getting search items: ', JSON.stringify(err));
          }
   }
 
@@ -72,7 +72,7 @@ export class CollectionPage {
             }, 500);
           }
          catch (err) {
-            this._logger.Error('Error,refreshing local collection content: ', err);
+            this._logger.Error('Error,refreshing local collection content: ', JSON.stringify(err));
          }
   }
 
@@ -103,7 +103,7 @@ export class CollectionPage {
             });
          }
          catch (err) {
-            this._logger.Error('Error,loading local matrix collection: ', err);
+            this._logger.Error('Error,loading local matrix collection: ', JSON.stringify(err));
          }
   }
 
@@ -117,7 +117,7 @@ export class CollectionPage {
              return "url(" + cordova.file.applicationStorageDirectory + name + ".jpg" + ")";
           }
          catch (err) {
-            this._logger.Error('Error,retruning thumbnail path (local collection): ', err);
+            this._logger.Error('Error,retruning thumbnail path (local collection): ', JSON.stringify(err));
          }
   }
 
@@ -155,7 +155,7 @@ export class CollectionPage {
             })
          }
          catch (err) {
-            this._logger.Error('Error,creating duplicate matrix: ', err);
+            this._logger.Error('Error,creating duplicate matrix: ', JSON.stringify(err));
          }
   }
 
@@ -189,7 +189,7 @@ export class CollectionPage {
           actionSheet.present();
           }
          catch (err) {
-            this._logger.Error('Error,matrix pressed (local collection): ', err);
+            this._logger.Error('Error,matrix pressed (local collection): ', JSON.stringify(err));
          }
   }
 
