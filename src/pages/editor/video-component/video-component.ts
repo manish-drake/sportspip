@@ -153,7 +153,6 @@ export class VideoComponent {
     }
 
     returnVidPath(filename) {
-        alert(filename);
         if (this.platform.is('cordova')) {
             return cordova.file.externalRootDirectory + "SportsPIP/Video/" + filename;
         }

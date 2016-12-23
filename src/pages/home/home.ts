@@ -452,7 +452,7 @@ export class MoreActionsPopover {
                         .then(promise => {
 
                             let email = {
-                                to: 'gurpreet.drake@hotmail.com',
+                                to: 'manish@drake.in',
                                 attachments: [cordova.file.externalRootDirectory + "SportsPIP/data.db"],
                                 subject: 'Logs for Sports PIP',
                                 body: 'Here are log files for Sports PIP app..',
