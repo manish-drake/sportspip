@@ -3,7 +3,6 @@ import { NavController, Platform } from 'ionic-angular';
 import { EditorPage } from '../pages/editor/editor';
 import { Http } from '@angular/http';
 import { File } from 'ionic-native';
-import { Observable } from 'rxjs/Rx';
 import { StorageFactory } from '../Factory/StorageFactory';
 import { Logger } from '../logging/logger';
 

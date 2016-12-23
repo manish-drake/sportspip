@@ -1,20 +1,33 @@
 page-editor {
+     .items {
+         display: flex;
+         flex-wrap: wrap;
+     }
+     .items .itemm {
+         flex: 1 0 100%;
+         box-sizing: border-box;
+         }
+         @media (min-width: 410px) {
+             .items .itemm {
+                 max-width: calc(50%);
+                 }
+        }
     .segment{
-    background: color($colors, primary);
-  }
+        background: color($colors, primary);
+        }
   
     ::-webkit-scrollbar,
     *::-webkit-scrollbar {
     display: none;
-}
-.textTrim{
-    overflow: hidden;text-overflow: ellipsis;
-}
-.view{
-    margin:4px;padding:9px 0; display: inline-block; background-color: white;box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.40);
-}
-.selectedview{
-    margin:4px; padding:9px 0; display: inline-block; background-color: #f4f4f4;box-shadow: 0px -1px 1px 0px rgba(0,0,0,0.30);
-}
+    }
+    .textTrim{
+        overflow: hidden;text-overflow: ellipsis;
+        }
+        .view{
+            margin:4px;padding:9px 0; display: inline-block; background-color: white;box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.40);
+            }
+            .selectedview{
+                margin:4px; padding:9px 0; display: inline-block; background-color: #f4f4f4;box-shadow: 0px -1px 1px 0px rgba(0,0,0,0.30);
+                }
 
 }

@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
-import {
-    NavController, ActionSheetController, AlertController, PopoverController,
-    ViewController, ToastController, Platform, LoadingController
-} from 'ionic-angular';
+import {NavController, ActionSheetController, AlertController, PopoverController,
+    ViewController, ToastController, Platform, LoadingController} from 'ionic-angular';
 import { AppVersion, File } from 'ionic-native';
 
 import { StorageFactory } from '../../Factory/StorageFactory';
@@ -10,7 +8,7 @@ import { ModelFactory } from '../../Factory/ModelFactory';
 import { Package } from '../../pages/Package';
 import { DeleteHeader } from '../../Action/DeleteHeader';
 import { OpenMatrix } from '../../Action/OpenMatrix';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
@@ -57,39 +55,6 @@ export class HomePage {
         private connection: Connection,
         private _logger: Logger) {
 
-        platform.ready().then(() => {
-            this.checkPermissions();
-        });
-
-    }
-
-    checkPermissions() {
-        var permissions = cordova.plugins.permissions;
-        permissions.hasPermission(permissions.READ_EXTERNAL_STORAGE, (status) => {
-            if (!status.hasPermission) {
-                permissions.requestPermission(permissions.READ_EXTERNAL_STORAGE, (status2) => {
-                    if (!status2.hasPermission) {
-                        console.log('permission is not turned on');
-                        permissionNotGranted("");
-                    }
-                }, ((err) => {
-                    console.log('permission is not turned on: ' + err);
-                    permissionNotGranted(err);
-                }));
-            }
-        }, ((err) => {
-            console.log('permission is not turned on: ' + err);
-            permissionNotGranted(err);
-        }));
-
-        var permissionNotGranted = function (err) {
-            let alert = this.alertCtrl.create({
-                title: 'READ_EXTERNAL_STORAGE not granted',
-                subTitle: err,
-                buttons: ['OK']
-            });
-            alert.present();
-        }
     }
 
     ionViewDidEnter() {

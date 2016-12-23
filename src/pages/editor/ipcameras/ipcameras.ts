@@ -333,7 +333,7 @@ export class Ipcameras {
 @Component({
   selector: 'page-IpCamsSettingsModal',
   template: `
-  <ion-header no-shadow>
+  <ion-header no-border>
 
   <ion-toolbar no-border-bottom>
     <ion-title color="primary">IP Cam Settings</ion-title>
@@ -345,28 +345,28 @@ export class Ipcameras {
 </ion-header>
 <ion-content padding style=" ::-webkit-scrollbar,*::-webkit-scrollbar: display: none;">
 
-<ion-item>
+<ion-item no-lines>
 <ion-label item-left fixed>Timer ({{timerDelay}}s)</ion-label>
 <ion-range item-right min="3" max="15" step="3" snaps="true" [(ngModel)]="timerDelay">
 <ion-label range-left>3s</ion-label>
 <ion-label range-right>15s</ion-label>
 </ion-range>
 </ion-item>
-<ion-item>
+<ion-item no-lines>
 <ion-label item-left fixed>Brightness</ion-label>
 <ion-range>
 <ion-icon range-left small name="sunny"></ion-icon>
 <ion-icon range-right name="sunny"></ion-icon>
 </ion-range>
 </ion-item>
-<ion-item>
+<ion-item no-lines>
 <ion-label item-left fixed>AWB</ion-label>
 <ion-range>
 <ion-icon range-left small name="contrast"></ion-icon>
 <ion-icon range-right name="contrast"></ion-icon>
 </ion-range>
 </ion-item>
-<ion-item>
+<ion-item no-lines>
 <ion-label item-left fixed>Zoom</ion-label>
 <ion-range>
 <ion-icon range-left small name="search"></ion-icon>

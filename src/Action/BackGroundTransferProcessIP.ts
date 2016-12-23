@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Platform } from 'ionic-angular';
-import { Connection } from '../pages/Connection';
 import X2JS from 'x2js';
-import { File, DirectoryEntry } from 'ionic-native';
-import { Observable } from 'rxjs/Rx';
+import { File } from 'ionic-native';
 import { Logger } from '../logging/logger';
+
 declare var FileTransfer: any;
 declare var cordova: any;
 @Injectable()
