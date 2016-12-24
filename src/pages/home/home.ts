@@ -3,7 +3,7 @@ import {
     NavController, ActionSheetController, AlertController, PopoverController,
     ViewController, ToastController, Platform, LoadingController
 } from 'ionic-angular';
-import { AppVersion, File } from 'ionic-native';
+import { AppVersion, File, EmailComposer, SQLite } from 'ionic-native';
 import { AlertControllers } from '../../Action/Alerts';
 import { StorageFactory } from '../../Factory/StorageFactory';
 import { ModelFactory } from '../../Factory/ModelFactory';
@@ -418,6 +418,9 @@ export class HomePage {
     <ion-item (click)="onAbout()">
       <ion-icon item-left name="information-circle"></ion-icon>About
       </ion-item>
+    <ion-item (click)="sendLogs()">
+      <ion-icon item-left name="attach"></ion-icon>Send Logs
+      </ion-item>
     </ion-list>
   `
 })
@@ -436,5 +439,34 @@ export class MoreActionsPopover {
     onAbout() {
         this.viewCtrl.dismiss();
         this.alertCtrls.BasicAlert('Sports PIP', 'version ' + this.versionNumber);
+    }
+
+    sendLogs() {
+        this.viewCtrl.dismiss();
+
+        this.platform.ready().then(() => {
+            File.checkFile(cordova.file.applicationStorageDirectory + 'databases/', "data.db")
+                .then(promise => {
+                    console.log("Success: " + JSON.stringify(promise));
+                    File.copyFile(cordova.file.applicationStorageDirectory + 'databases/', "data.db", cordova.file.externalRootDirectory + "SportsPIP/", "data.db")
+                        .then(promise => {
+
+                            let email = {
+                                to: 'manish@drake.in',
+                                attachments: [cordova.file.externalRootDirectory + "SportsPIP/data.db"],
+                                subject: 'Logs for Sports PIP',
+                                body: 'Here are log files for Sports PIP app..',
+                                isHtml: true
+                            };
+                            EmailComposer.open(email);
+                        })
+                        .catch(err => {
+                        console.log("Error: " + JSON.stringify(err));
+                        alert("No log file found");
+                        });
+                })
+                .catch(err => console.log("Error: " + JSON.stringify(err)));
+        });
+
     }
 }
