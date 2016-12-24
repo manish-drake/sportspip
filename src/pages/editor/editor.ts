@@ -99,9 +99,8 @@ export class EditorPage {
   saveMatrix() {
     if (this.platform.is('cordova')) {
       this._logger.Debug("Matrix file saving..")
-      try {
-        File.readAsText(cordova.file.dataDirectory + "Local/" + this.matrix._Channel + "/Tennis/Matrices/" + this.matrix._Name, this.matrix._Name + ".mtx")
-        .then(data => {
+      this.storagefactory.ReadLocalFileAync(this.matrix._Channel, this.matrix._Name, this.matrix._Name + ".mtx")
+        .then((data) => {
           let loader = this.loadingCtrl.create({
             content: "Saving..",
             duration: 10000
@@ -123,10 +122,8 @@ export class EditorPage {
               this.navCtrl.pop();
               loader.dismiss();
             });
+        }).catch((err) => { this._logger.Error("Error,Matrix file saving..", err); this.navCtrl.pop(); });
 
-        });
-      }
-      catch (err) { this._logger.Error("Error,Matrix file saving..",err);this.navCtrl.pop();  }
     } else this.navCtrl.pop();
   }
 
@@ -280,7 +277,9 @@ export class EditorPage {
   }
 
   chooseVideoErrorMsg(err) {
+    this._logger.Error("Error in chooseVideo", err);
     this.alertCtrls.BasicAlert('Failed saving video!', err);
+
   }
 
   // Code for Camera Recording Starts
@@ -322,8 +321,11 @@ export class EditorPage {
   captureError(err) {
     if (err.code == "3") {
       console.log("Reording: " + err.message + ", Code:" + err.code)
+      this._logger.Error("Reording: ", err.message)
+      this._logger.Error("Code:", err.code)
     }
     else {
+      this._logger.Error('Recording Failed!', err.code + ", " + err.message);
       this.alertCtrls.BasicAlert('Recording Failed!', err.code + ", " + err.message);
     }
   }

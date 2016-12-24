@@ -211,20 +211,18 @@ export class HomePage {
     DuplicateMatrix(channelName, matrixname) {
         var name = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
         this.platform.ready().then(() => {
-            File.readAsText(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/Matrices/" + matrixname, "Header.xml")
-                .then(res => {
-                    var header = JSON.parse(res.toString());
-                    header.Name = name;
-                    header.DateCreated = name;
-                    this.storagefactory.SaveLocalHeader(header, channelName, header.Sport, name, "Matrices");
-                })
-            File.readAsText(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/Matrices/" + matrixname, matrixname + ".mtx")
-                .then(res => {
-                    var matrix = JSON.parse(res.toString());
-                    matrix.Matrix._Name = name;
-                    matrix.Matrix._DateCreated = name;
-                    this.storagefactory.SaveMatrixAsync(matrix, channelName, matrix.Matrix._Sport, name, "Matrices");
-                })
+            this.storagefactory.ReadLocalFileAync(channelName, matrixname, "Header.xml").then((res) => {
+                var header = JSON.parse(res.toString());
+                header.Name = name;
+                header.DateCreated = name;
+                this.storagefactory.SaveLocalHeader(header, channelName, header.Sport, name, "Matrices");
+            })
+            this.storagefactory.ReadLocalFileAync(channelName, matrixname, matrixname + ".mtx").then((res) => {
+                var matrix = JSON.parse(res.toString());
+                matrix.Matrix._Name = name;
+                matrix.Matrix._DateCreated = name;
+                this.storagefactory.SaveMatrixAsync(matrix, channelName, matrix.Matrix._Sport, name, "Matrices");
+            })
             Observable.interval(1000)
                 .take(1).map((x) => x + 5)
                 .subscribe((x) => {
@@ -349,22 +347,19 @@ export class HomePage {
 
     newMatrix() {
         this._logger.Debug('Creating new matrix..');
-        try {
-            var data = this.storagefactory.ComposeNewMatrix();
 
-            var result = data.Matrix;
-            this.storagefactory.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices");
+        var data = this.storagefactory.ComposeNewMatrix();
 
-            var headerContent = this.storagefactory.ComposeNewMatrixHeader(result);
-            this.storagefactory.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
+        var result = data.Matrix;
+        this.storagefactory.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices");
 
-            this.navCtrl.push(EditorPage, {
-                matrixData: result
-            });
-        }
-        catch (err) {
-            this._logger.Error('Error,creating new matrix..', err);
-        }
+        var headerContent = this.storagefactory.ComposeNewMatrixHeader(result);
+        
+        this.storagefactory.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
+        this.navCtrl.push(EditorPage, {
+            matrixData: result
+        });
+
 
     }
 
@@ -454,7 +449,7 @@ export class MoreActionsPopover {
                         .then(promise => {
 
                             let email = {
-                                to: 'manish@drake.in',
+                                to: 'anju17gautam@gmail.com',
                                 attachments: [cordova.file.externalRootDirectory + "SportsPIP/data.db"],
                                 subject: 'Logs for Sports PIP',
                                 body: 'Here are log files for Sports PIP app..',

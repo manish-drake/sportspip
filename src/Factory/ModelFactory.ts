@@ -14,12 +14,14 @@ export class ModelFactory {
 
     CreateThumbnail(name, thumbname) {
         this._logger.Debug('Create thumbnail..');
-        try {
-            var blob: any;
-            var sourcePath = cordova.file.externalRootDirectory + "SportsPIP/Video/" + name;
-            navigator.createThumbnail(sourcePath, function (err, imageData) {
-                blob = imageData;
-            });
+
+        var blob: any;
+        var sourcePath = cordova.file.externalRootDirectory + "SportsPIP/Video/" + name;
+        navigator.createThumbnail(sourcePath, function (err, imageData) {
+            blob = imageData;
+            if (err != undefined) { this._logger.Error('Error,creating thumbnail: ', err); }
+        });
+        if (blob != undefined) {
             Observable.interval(1000)
                 .take(1).map((x) => x + 5)
                 .subscribe((x) => {
@@ -31,9 +33,7 @@ export class ModelFactory {
                     })
                 })
         }
-        catch (err) {
-            this._logger.Error('Error,creating thumbnail: ', err);
-        }
+
     }
 
     b64toBlob(b64Data, contentType, sliceSize) {

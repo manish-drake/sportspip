@@ -19,18 +19,13 @@ import { Logger } from '../logging/logger';
 //   }
 // }
 
-@Pipe({ name: 'filter'})
+@Pipe({ name: 'filter' })
 
 export class OrderBy implements PipeTransform {
     constructor(private _logger: Logger) { }
     transform(items: any[], field: string, value: string): any[] {
-        this._logger.Debug('Transform by order..');
-        try {
-            if (!items) return [];
-            return items.filter(it => it[field] == value);
-        }
-        catch (err) {
-            this._logger.Error('Error, transforming by order: ', err);
-        }
+
+        if (!items) return [];
+        return items.filter(it => it[field] == value);
     }
 }

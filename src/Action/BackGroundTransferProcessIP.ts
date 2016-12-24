@@ -4,7 +4,7 @@ import { Platform } from 'ionic-angular';
 import X2JS from 'x2js';
 import { File, WriteOptions } from 'ionic-native';
 import { Logger } from '../logging/logger';
-
+import { Observable } from 'rxjs/Rx';
 declare var FileTransfer: any;
 declare var cordova: any;
 @Injectable()
@@ -19,25 +19,23 @@ export class BackGroundTransferProcessIP {
 
     transferMatrix(fileName, duration, CamsCount, server) {
         this._logger.Debug('Transfer IP Matrix');
-        try {
-            this.createClips(fileName, duration, CamsCount, server);
-            let parser: any = new X2JS();
-            var xmlMatrix = parser.js2xml(this.data);
 
-            let headers = new Headers({ 'Content-Type': 'application/xml' });
-            let options = new RequestOptions({ headers: headers });
-            return this.http.post("http://" + server + ":10080/imatrix/matrices/", xmlMatrix, options)
-                .map(response => {
-                    return true
-                }).toPromise();
-        }
-        catch (err) {
-            this._logger.Error('Error,transferring IP matrix: ',err);
-        }
+        this.createClips(fileName, duration, CamsCount, server);
+        let parser: any = new X2JS();
+        var xmlMatrix = parser.js2xml(this.data);
+
+        let headers = new Headers({ 'Content-Type': 'application/xml' });
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post("http://" + server + ":10080/imatrix/matrices/", xmlMatrix, options)
+            .catch(err => new Observable(err => { return this._logger.Error('Error,transferring IP matrix: ', err) }))
+            .map(response => {
+                return response;
+            }).toPromise()
+
+
     }
 
     private createClips(fileName, duration, CamsCount, serverAddress) {
-        this._logger.Debug('Create clips (IP)');
         try {
             this.data = this.createNewIPMatrix(fileName, duration);
             var i = 1;
@@ -67,8 +65,11 @@ export class BackGroundTransferProcessIP {
                             return File.writeFile(cordova.file.externalRootDirectory + "SportsPIP/Video", fileName, blob.slice(8), writeOptions)
                                 .then((success) => {
                                     return resolve(xhr.response);
-                                }).catch(() => { return reject(xhr.statusText); })
+                                })
                         })
+                };
+                xhr.onerror = function (err) {
+                    return reject(err + xhr.statusText);
                 };
                 xhr.send()
             })
@@ -79,7 +80,6 @@ export class BackGroundTransferProcessIP {
     }
 
     private createNewIPMatrix(fileName, duration) {
-        this._logger.Debug('Create IP matrix');
         try {
             var name = Date.now().toString();
             let data =
@@ -109,7 +109,6 @@ export class BackGroundTransferProcessIP {
 
 
     private AddMatrixClip(kernel, view, data) {
-        this._logger.Debug('Add matrix clip (IP)');
         try {
             var clip = {
                 "_Name": kernel,

@@ -10,7 +10,7 @@ export class Logger {
     }
 
     constructor(private _provider: AProvider) {
-        this._Level = 0;
+        this._Level = 5;
     }
 
     Debug(message: string, exception: any = null) {
@@ -22,7 +22,7 @@ export class Logger {
     Warn(message: string, exception: any = null) {
         this.write(message, 2, exception);
     }
-    Error(message: string, exception: any) {
+    Error(message: string, exception: any = null) {
         this.write(message, 3, exception);
     }
     Fatal(message: string, exception: any = null) {
@@ -33,16 +33,16 @@ export class Logger {
         console.log("writing log..");
         if (this.Level >= level) {
             var log = this.createLog(message, exception);
-            this._provider.write(message)
+            this._provider.write(log)
         }
         console.log("written log..");
     }
-    private createLog(message: string, exception: any): string{
+    private createLog(message: string, exception: any): string {
         var log = "";
-        if(message)
+        if (message)
             log = message;
-        if(exception)
-            log = (message?"->->":"") + JSON.stringify(exception);
+        if (exception)
+            log = (message ? message : "") + JSON.stringify(exception);
         return log;
     }
 }

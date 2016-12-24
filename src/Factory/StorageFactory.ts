@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Platform, ToastController } from 'ionic-angular';
 import { Http } from '@angular/http';
-import { File, WriteOptions,FileEntry } from 'ionic-native';
+import { File, WriteOptions, FileEntry, DirectoryEntry } from 'ionic-native';
 import { Logger } from '../logging/logger';
 
 declare var cordova: any;
@@ -54,73 +54,62 @@ export class StorageFactory {
         }
     }
 
-    SaveMatrixAsync(content, channel, sport, matrixName, typeFolder):Promise<FileEntry> {
+    SaveMatrixAsync(content, channel, sport, matrixName, typeFolder): Promise<FileEntry> {
         this._logger.Debug('Save matrix async..');
-        try {
-            const fs: string = cordova.file.dataDirectory;
-            //create Server Folder
-           return File.createDir(fs, "Local", true).then((success) => {
-                var localFolder = fs + "Local/";
-               return File.createDir(localFolder, channel, true).then(() => {
-                    var channelFolder = localFolder + channel + "/";
-                    return File.createDir(channelFolder, sport, true).then(() => {
-                        var sportFolder = channelFolder + sport + "/";
-                       return File.createDir(sportFolder, typeFolder, true).then(() => {
-                            var contentFolder = sportFolder + typeFolder + "/";
-                           return File.createDir(contentFolder, matrixName, true).then((success) => {
-                                var fileLocation = contentFolder + matrixName;
-                               return File.createFile(fileLocation, matrixName + ".mtx", true).then(() => {
-                                   return File.writeFile(fileLocation, matrixName + ".mtx", content, this.writeOptions)
-                                        .then(function (success) {
-                                            console.log('Saved in SF');
-                                            return success["nativeUrl"]
-                                        })
-                                })
-                            })
-                        })
 
-                    })
-                })
-            })
-        }
-        catch (err) {
-            this._logger.Error('Error,saving matrix async: ', err);
-        }
+        const fs: string = cordova.file.dataDirectory;
+        //create Server Folder
+        return File.createDir(fs, "Local", true).then((success) => {
+            var localFolder = fs + "Local/";
+            return File.createDir(localFolder, channel, true).then(() => {
+                var channelFolder = localFolder + channel + "/";
+                return File.createDir(channelFolder, sport, true).then(() => {
+                    var sportFolder = channelFolder + sport + "/";
+                    return File.createDir(sportFolder, typeFolder, true).then(() => {
+                        var contentFolder = sportFolder + typeFolder + "/";
+                        return File.createDir(contentFolder, matrixName, true).then((success) => {
+                            var fileLocation = contentFolder + matrixName;
+                            return File.createFile(fileLocation, matrixName + ".mtx", true).then(() => {
+                                return File.writeFile(fileLocation, matrixName + ".mtx", content, this.writeOptions)
+                                    .then(function (success) {
+                                        console.log('Saved in SF');
+                                        return success["nativeUrl"]
+                                    }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
+                            }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
+                        }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
+                    }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
+                }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
+            }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
+        }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
     }
 
     SaveLocalHeader(content, channel, sport, matrixName, typeFolder) {
         this._logger.Debug('Save local header..');
-        try {
-            this.platform.ready().then(() => {
-                const fs: string = cordova.file.dataDirectory;
-                //create local Folder
-                File.createDir(fs, "Local", true).then((success) => {
-                    var localFolder = fs + "Local/";
-                    File.createDir(localFolder, channel, true).then(() => {
-                        var channelFolder = localFolder + channel + "/";
-                        File.createDir(channelFolder, sport, true).then(() => {
-                            var sportFolder = channelFolder + sport + "/";
-                            File.createDir(sportFolder, typeFolder, true).then(() => {
-                                var contentFolder = sportFolder + typeFolder + "/";
-                                File.createDir(contentFolder, matrixName, true).then((success) => {
-                                    var fileLocation = contentFolder + matrixName;
-                                    File.createFile(fileLocation, "Header.xml", true).then(() => {
-                                        File.writeFile(fileLocation, "Header.xml", content, this.writeOptions)
-                                            .then(function (success) {
-                                                console.log("saved local header");
-                                            })
-                                    })
-                                })
-                            })
-
-                        })
-                    })
-                })
-            })
-        }
-        catch (err) {
-            this._logger.Error('Error,saving local header: ', err);
-        }
+        this.platform.ready().then(() => {
+            const fs: string = cordova.file.dataDirectory;
+            //create local Folder
+            File.createDir(fs, "Local", true).then((success) => {
+                var localFolder = fs + "Local/";
+                File.createDir(localFolder, channel, true).then(() => {
+                    var channelFolder = localFolder + channel + "/";
+                    File.createDir(channelFolder, sport, true).then(() => {
+                        var sportFolder = channelFolder + sport + "/";
+                        File.createDir(sportFolder, typeFolder, true).then(() => {
+                            var contentFolder = sportFolder + typeFolder + "/";
+                            File.createDir(contentFolder, matrixName, true).then((success) => {
+                                var fileLocation = contentFolder + matrixName;
+                                File.createFile(fileLocation, "Header.xml", true).then(() => {
+                                    File.writeFile(fileLocation, "Header.xml", content, this.writeOptions)
+                                        .then(function (success) {
+                                            console.log("saved local header");
+                                        }).catch((err) => { this._logger.Error('Error,saving local header: ', err); })
+                                }).catch((err) => { this._logger.Error('Error,saving local header: ', err); })
+                            }).catch((err) => { this._logger.Error('Error,saving local header: ', err); })
+                        }).catch((err) => { this._logger.Error('Error,saving local header: ', err); })
+                    }).catch((err) => { this._logger.Error('Error,saving local header: ', err); })
+                }).catch((err) => { this._logger.Error('Error,saving local header: ', err); })
+            }).catch((err) => { this._logger.Error('Error,saving local header: ', err); })
+        }).catch((err) => { this._logger.Error('Error,saving local header: ', err); })
     }
 
 
@@ -232,7 +221,7 @@ export class StorageFactory {
     }
 
     ComposeMatrixHeader(fromMatrix) {
-        this._logger.Debug('Compose matrix header..');
+        this._logger.Debug('composing matrix header..');
         try {
             var header = {
                 Title: fromMatrix._Title,
@@ -249,29 +238,68 @@ export class StorageFactory {
             return header;
         }
         catch (err) {
-            this._logger.Error('Error,composing matrix header: ',err);
+            this._logger.Error('Error,composing matrix header: ', err);
         }
     }
 
     ComposeNewMatrixHeader(fromMatrix) {
-        this._logger.Debug('Compose new matrix header..');
-        try {
-            var header = {
-                Title: fromMatrix._Title,
-                DateCreated: fromMatrix._DateCreated,
-                Name: fromMatrix._Name,
-                Channel: fromMatrix._Channel,
-                ThumbnailSource: "thumbnail",
-                Sport: fromMatrix._Sport,
-                Skill: fromMatrix._Skill,
-                UploadID: "0",
-                Duration: fromMatrix._Duration,
-                Views: "1"
-            };
-            return header;
-        }
-        catch (err) {
-            this._logger.Error('Error,composing new matrix header: ',err);
-        }
+        this._logger.Debug('composing new matrix header..');
+        var header = {
+            Title: fromMatrix._Title,
+            DateCreated: fromMatrix._DateCreated,
+            Name: fromMatrix._Name,
+            Channel: fromMatrix._Channel,
+            ThumbnailSource: "thumbnail",
+            Sport: fromMatrix._Sport,
+            Skill: fromMatrix._Skill,
+            UploadID: "0",
+            Duration: fromMatrix._Duration,
+            Views: "1"
+        };
+        return header;
+    }
+
+
+    ReadLocalFileAync(channelName, matrixname, fileName): Promise<any> {
+        this._logger.Debug("reading file async.. ")
+        return File.readAsText(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/Matrices/" + matrixname, fileName)
+            .then(res => {
+                return res;
+            }).catch((err) => { this._logger.Error("Error,reading file async.. ", err) })
+    }
+
+    GetLocalHeader(): Promise<any> {
+        var localMatrices = [];
+        return new Promise((resolve, reject) => {
+            return this.GetLisOfDirectory(cordova.file.dataDirectory, "Local/").then((list) => {
+                list.forEach((channelName) => {
+                    return this.GetLisOfDirectory(cordova.file.dataDirectory, "Local/" + channelName.name + "/Tennis/Matrices/").then((success) => {
+                        success.forEach((res) => {
+                            return this.ReadLocalFileAync(channelName.name, res.name, "Header.xml").then((data) => {
+                                //deserialiae server header  
+                                var result = JSON.parse(data.toString());
+                                // console.log(result);
+                                var item = {
+                                    Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
+                                    ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
+                                    Views: result.Views
+                                };
+                                localMatrices.unshift(item)
+                                resolve(localMatrices);
+                            })
+                        })
+
+                    })
+                })
+
+            })
+        })
+
+    }
+
+    GetLisOfDirectory(path, DirName) {
+        return File.listDir(path, DirName).then((success) => {
+            return success;
+        })
     }
 }

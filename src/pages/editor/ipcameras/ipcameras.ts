@@ -247,34 +247,37 @@ export class Ipcameras {
           if (time >= this.recordingDuration) {
             clearInterval(interval);
             this.isRecording = false;
-
-            this._logger.Debug("transferring IP Cams matrix on network");
-            this.backGroundTransferProcessIP.transferMatrix(fileName, this.recordingDuration, this.ipCams.length, connectedServerIP)
-              .then(() => {
-                var i = 1;
-                while (i <= this.ipCams.length) {
-                  var name = fileName + "_" + i + ".mp4";
-                  this._logger.Debug("Getting IP Cams Video from network");
-                  this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP).then((success) => {
-                    if (i > this.ipCams.length) {
-                      this.alertCtrls.BasicAlert('Video transfered successfully', cordova.file.externalRootDirectory + "SportsPIP/Video");
-                      this.viewCtrl.dismiss(this.views);
-                    }
-                  }).catch((errr) => { this._logger.Error("Error,Getting IP Cams Video from network", errr); });
-                  i++;
-                }
-              }).catch((err) => {
-                this._logger.Error("Error,transferring IP Cams matrix on network", err);
-              })
-
+            
+            this.TransferMatrix(fileName, connectedServerIP);
           }
         }, 1000);
       })
       .catch(err => {
-        console.log('Error: ' + err);
+        this._logger.Error("Error,Recording IPCam Video", err);
         this.alertCtrls.BasicAlert('Error', err);
         this.isRecording = false;
       });
+  }
+
+  TransferMatrix(fileName, connectedServerIP) {
+    this._logger.Debug("transferring IP Cams matrix on network");
+    this.backGroundTransferProcessIP.transferMatrix(fileName, this.recordingDuration, this.ipCams.length, connectedServerIP)
+      .then(() => {
+        this.ipCams.forEach((element, index) => {
+          var name = fileName + "_" + (index + 1) + ".mp4";
+          this.GetVideoFileFromServer(name, connectedServerIP)
+        })
+      }).catch((err) => {
+        this._logger.Error("Error,transferring IP Cams matrix on network", err);
+      })
+  }
+
+  GetVideoFileFromServer(name, connectedServerIP) {
+    this._logger.Debug("Getting IP Cams Video from network");
+    this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP).then((success) => {
+      this._logger.Info("Video transfered successfully  " + JSON.stringify(cordova.file.externalRootDirectory) + "SportsPIP/Video");
+      this.viewCtrl.dismiss(this.views);
+    }).catch((err) => { this._logger.Error("Error,Getting IP Cams Video from network.", err); });
   }
 
   createViews(fileName) {
