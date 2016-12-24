@@ -28,7 +28,7 @@
 <!--ViewCanvasTemplate-->
 <canvas-component *ngIf="view.Content.PIP" [view]="view"></canvas-component>
 <!--ViewVideoTemplate-->
-<video-component *ngIf="view.Content.Capture" [view]="view"></video-component>
+<video-component *ngIf="view.Content.Capture" [view]="view" [viewindex]="i"></video-component>
 <!--viewOptions-->
 <ion-row *ngIf="(!view.Content.Capture)&&(!view.Content.PIP)" style="height:100%;">
 <ion-col no-padding center text-center>

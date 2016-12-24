@@ -1,4 +1,6 @@
 import { Component, ViewChild, Input, ElementRef } from '@angular/core';
+import { File } from 'ionic-native';
+
 import { AlertControllers } from '../../../Action/Alerts';
 import { AlertController, ModalController, Platform, Events } from 'ionic-angular';
 import { Logger } from '../../../logging/logger';
@@ -13,6 +15,7 @@ declare var cordova: any;
 export class VideoComponent {
 
     @Input() view: any;
+    @Input() viewindex: any;
 
     @ViewChild('video') videoElement: ElementRef;
 
@@ -77,15 +80,14 @@ export class VideoComponent {
 
     OnVideoMatadataLoad() {
         this._logger.Debug('OnVideoMatadataLoad');
-        this._logger.Debug('Video Info: ' + "Duration: " + this.video.duration +
-            ", Source: " + this.video.currentSrc +
-            ", Resolution: " + this.video.videoWidth + "*" + this.video.videoHeight
-        );
-
         this.video.currentTime = .1;
         this.video.setAttribute('preload', "auto");
         this.video.play();
         this.video.pause();
+        this._logger.Debug("View " + (this.viewindex + 1) + ': Video Info: ' + "Duration: " + this.formatTime(this.video.duration) +
+            ", Source: " + this.video.currentSrc +
+            ", Resolution: " + this.video.videoWidth + "*" + this.video.videoHeight
+        );
     }
 
     OnVideoEnded() {
@@ -99,10 +101,43 @@ export class VideoComponent {
     public errormessage: any;
 
     OnVideoError(error) {
-        console.log('Error loading video: ' + JSON.stringify(error));
-        this._logger.Error('Error loading video: ', JSON.stringify(error) + JSON.stringify(this.video.error));
-        this.errormessage = JSON.stringify(error);
         this.videoSrcAvailable = false;
+        console.log('Error loading video: ' + JSON.stringify(error));
+
+        var filePath = this.video.currentSrc;
+        var dirpath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+        var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
+
+        File.checkFile(dirpath, fileName)
+            .then(success => {
+                this._logger.Error("View " + (this.viewindex + 1) + ': Error loading video: ', this.videoErrorHandling(this.video.error.code));
+                this.errormessage = this.videoErrorHandling(this.video.error.code);
+            })
+            .catch(err => {
+                this._logger.Error("View " + (this.viewindex + 1) + ': Video file not exists in the desired directory: ', error);
+                this.errormessage = "Video file not found";
+            });
+    }
+
+    videoErrorHandling(errornumber) {
+        var error;
+        switch (errornumber) {
+            case 1:
+                error = "MEDIA_ERR_ABORTED - fetching process aborted by user";
+                break;
+            case 2:
+                error = "MEDIA_ERR_NETWORK - error occurred when downloading";
+                break;
+            case 3:
+                error = "MEDIA_ERR_DECODE - error occurred when decoding";
+                break;
+            case 4:
+                error = "MEDIA_ERR_SRC_NOT_SUPPORTED - audio/video not supported";
+                break;
+            default:
+                error = "An unknown error occured"
+        }
+        return error;
     }
 
     LoadMarkers() {
