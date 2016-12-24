@@ -47,8 +47,7 @@ export class VideoComponent {
 
         this.video.addEventListener('loadedmetadata', () => {
             this._logger.Debug('loading video metadata');
-            try { this.OnVideoMatadataLoad(); }
-            catch (err) { this._logger.Error('Error,loading video metadata', JSON.stringify(err)); }
+            this.OnVideoMatadataLoad();
         });
 
         this.video.addEventListener('ended', () => {
@@ -56,9 +55,8 @@ export class VideoComponent {
         });
 
         this.video.addEventListener('error', (error) => {
-            this._logger.Debug('video error');
-            try { this.OnVideoError(error); }
-            catch (err) { this._logger.Error('Error,video error', JSON.stringify(err)); }
+            this._logger.Error('Error,video error', JSON.stringify(error));
+            this.OnVideoError(error);
 
         });
 
@@ -95,7 +93,7 @@ export class VideoComponent {
             clearInterval(this.timelineInterval);
         }
     }
-    
+
     public errormessage: any;
     OnVideoError(error) {
         console.log('Error in video Elmnt:' + JSON.stringify(error));
@@ -153,7 +151,6 @@ export class VideoComponent {
     }
 
     returnVidPath(filename) {
-        alert(filename);
         if (this.platform.is('cordova')) {
             return cordova.file.externalRootDirectory + "SportsPIP/Video/" + filename;
         }
