@@ -39,7 +39,7 @@ export class OpenMatrix {
                 });
         }
         catch (err) {
-            this._logger.Error('Error,open matrix: ', JSON.stringify(err));
+            this._logger.Error('Error,open matrix: ', err);
         }
 
     }
@@ -62,7 +62,7 @@ export class OpenMatrix {
             });
         }
         catch (err) {
-            this._logger.Error('Error,creating new matrix: ', JSON.stringify(err));
+            this._logger.Error('Error,creating new matrix: ', err);
         }
     }
 }

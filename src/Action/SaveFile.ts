@@ -51,7 +51,7 @@ export class SaveFile {
             }
         }
         catch (err) {
-            this._logger.Error('Error,saving matrix: ', JSON.stringify(err));
+            this._logger.Error('Error,saving matrix: ',err);
         }
     }
 
@@ -74,7 +74,7 @@ export class SaveFile {
             return thumb;
         }
         catch (err) {
-            this._logger.Error('Error,getting thumbnail: ', JSON.stringify(err));
+            this._logger.Error('Error,getting thumbnail: ', err);
         }
     }
 }

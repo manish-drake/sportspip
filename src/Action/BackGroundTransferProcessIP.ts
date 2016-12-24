@@ -32,7 +32,7 @@ export class BackGroundTransferProcessIP {
                 }).toPromise();
         }
         catch (err) {
-            this._logger.Error('Error,transferring IP matrix: ', JSON.stringify(err));
+            this._logger.Error('Error,transferring IP matrix: ',err);
         }
     }
 
@@ -49,7 +49,7 @@ export class BackGroundTransferProcessIP {
             }
         }
         catch (err) {
-            this._logger.Error('Error,creating clips (IP): ', JSON.stringify(err));
+            this._logger.Error('Error,creating clips (IP): ', err);
         }
     }
     GetServerIPVideo(fileName, serverAddress) {
@@ -74,7 +74,7 @@ export class BackGroundTransferProcessIP {
             })
         }
         catch (err) {
-            this._logger.Error('Error,getting server IP video: ', JSON.stringify(err));
+            this._logger.Error('Error,getting server IP video: ', err);
         }
     }
 
@@ -103,7 +103,7 @@ export class BackGroundTransferProcessIP {
             return data;
         }
         catch (err) {
-            this._logger.Error('Error,creating IP matrix: ', JSON.stringify(err));
+            this._logger.Error('Error,creating IP matrix: ', err);
         }
     }
 
@@ -120,7 +120,7 @@ export class BackGroundTransferProcessIP {
             data.Matrix.Clips.Clip.push(clip);
         }
         catch (err) {
-            this._logger.Error('Error,adding matrix clip (IP): ', JSON.stringify(err));
+            this._logger.Error('Error,adding matrix clip (IP): ', err);
         }
     }
 

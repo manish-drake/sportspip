@@ -20,7 +20,7 @@ export class GroupBy implements PipeTransform {
             return Object.keys(groupedObj).map(key => { return { key, value: groupedObj[key] } });
         }
         catch (err) {
-            this._logger.Error('Error, transforming by group: ', JSON.stringify(err));
+            this._logger.Error('Error, transforming by group: ', err);
         }
     }
 }

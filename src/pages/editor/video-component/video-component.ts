@@ -47,8 +47,7 @@ export class VideoComponent {
 
         this.video.addEventListener('loadedmetadata', () => {
             this._logger.Debug('loading video metadata');
-            try { this.OnVideoMatadataLoad(); }
-            catch (err) { this._logger.Error('Error,loading video metadata', JSON.stringify(err)); }
+            this.OnVideoMatadataLoad();
         });
 
         this.video.addEventListener('ended', () => {
@@ -58,7 +57,6 @@ export class VideoComponent {
         this.video.addEventListener('error', (error) => { 
             this.OnVideoError(error) 
         });
-
 
         var interval = setInterval(() => {
             if (this.timelineDuration == undefined || this.timelineDuration == "00:00:00.00" || this.viewBoxSize == "0 0 0 0") {

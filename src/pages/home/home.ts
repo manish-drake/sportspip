@@ -238,6 +238,7 @@ export class HomePage {
     }
 
     GetLocalMatrixHeader() {
+        this._logger.Debug('Getting local matrix header..');
         this.platform.ready().then(() => {
             File.listDir(cordova.file.dataDirectory, "Local/").then((success) => {
                 success.forEach((channelName) => {
@@ -259,7 +260,7 @@ export class HomePage {
                     });
                 })
             }).catch((err) => {
-                console.log('Local Matrix header error: ' + err);
+                this._logger.Error('Error,Getting local matrix header..', err);
             });
         });
     }
@@ -275,6 +276,7 @@ export class HomePage {
 
     //Display Server Header
     GetServerHeader() {
+        this._logger.Debug('Getting server matrix header..');
         this.platform.ready().then(() => {
             File.listDir(cordova.file.dataDirectory, "Server/").then((success) => {
                 success.forEach((channelName) => {
@@ -296,7 +298,7 @@ export class HomePage {
                     });
                 })
             }).catch((err) => {
-                console.log('server Matrix header error: ' + JSON.stringify(err));
+                this._logger.Error('Error,Getting server matrix header..', err);
             });
         });
     }

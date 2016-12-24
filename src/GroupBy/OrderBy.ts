@@ -30,7 +30,7 @@ export class OrderBy implements PipeTransform {
             return items.filter(it => it[field] == value);
         }
         catch (err) {
-            this._logger.Error('Error, transforming by order: ', JSON.stringify(err));
+            this._logger.Error('Error, transforming by order: ', err);
         }
     }
 }
