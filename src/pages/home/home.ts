@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import {
-    NavController, ActionSheetController, AlertController, PopoverController,
-    ViewController, ToastController, Platform, LoadingController
-} from 'ionic-angular';
-import { AppVersion, File, EmailComposer, SQLite } from 'ionic-native';
+import { NavController, ActionSheetController, AlertController, PopoverController, ViewController, ToastController, Platform, LoadingController } from 'ionic-angular';
+import { AppVersion, File, EmailComposer, SQLite, Device } from 'ionic-native';
+
 import { AlertControllers } from '../../Action/Alerts';
 import { StorageFactory } from '../../Factory/StorageFactory';
 import { ModelFactory } from '../../Factory/ModelFactory';
@@ -25,6 +23,7 @@ import { EditorPage } from '../editor/editor';
 import { Connection } from '../../pages/Connection';
 
 import { Logger } from '../../logging/logger';
+
 declare var FileTransfer: any;
 declare var cordova: any;
 declare var navigator: any;
@@ -428,7 +427,10 @@ export class MoreActionsPopover {
 
     versionNumber: any;
 
-    constructor(public viewCtrl: ViewController, private alertCtrl: AlertController, private alertCtrls: AlertControllers, private platform: Platform, ) {
+    constructor(public viewCtrl: ViewController,
+        private alertCtrl: AlertController,
+        private alertCtrls: AlertControllers,
+        private platform: Platform, ) {
         if (this.platform.is('cordova')) {
             AppVersion.getVersionNumber().then((s) => {
                 this.versionNumber = s;
@@ -450,23 +452,37 @@ export class MoreActionsPopover {
                     console.log("Success: " + JSON.stringify(promise));
                     File.copyFile(cordova.file.applicationStorageDirectory + 'databases/', "data.db", cordova.file.externalRootDirectory + "SportsPIP/", "data.db")
                         .then(promise => {
-
-                            let email = {
-                                to: 'manish@drake.in',
-                                attachments: [cordova.file.externalRootDirectory + "SportsPIP/data.db"],
-                                subject: 'Logs for Sports PIP',
-                                body: 'Here are log files for Sports PIP app..',
-                                isHtml: true
-                            };
-                            EmailComposer.open(email);
+                            this.composeEmail();
                         })
                         .catch(err => {
-                        console.log("Error: " + JSON.stringify(err));
-                        alert("No log file found");
+                            console.log("Error: " + JSON.stringify(err));
+                            this.alertCtrls.BasicAlert("No log file found", err);
                         });
                 })
-                .catch(err => console.log("Error: " + JSON.stringify(err)));
+                .catch(err => {
+                    console.log("Error: " + JSON.stringify(err));
+                    this.alertCtrls.BasicAlert("No log file found", err);
+                });
+
         });
 
+    }
+
+    composeEmail() {
+        let email = {
+            to: 'manish@drake.in',
+            attachments: [cordova.file.externalRootDirectory + "SportsPIP/data.db"],
+            subject: "Logs for Sports PIP " + this.versionNumber + " from " + Device.platform + " (See attachment)",
+            body:
+            "App Version: " + "<b>" + this.versionNumber + "</b><br>" +
+            "OS: " + "<b>" + Device.platform + " " + Device.version + "</b><br>" +
+            "Device: " + "<b>" + Device.manufacturer + " " + Device.model + "</b><br>" +
+
+            "<br><br>" +
+            "Here is the logs file for Sports PIP app as attachment.."
+            ,
+            isHtml: true
+        };
+        EmailComposer.open(email);
     }
 }

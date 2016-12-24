@@ -55,11 +55,8 @@ export class VideoComponent {
             this.OnVideoEnded();
         });
 
-        this.video.addEventListener('error', (error) => {
-            this._logger.Debug('video error');
-            try { this.OnVideoError(error); }
-            catch (err) { this._logger.Error('Error,video error', JSON.stringify(err)); }
-
+        this.video.addEventListener('error', (error) => { 
+            this.OnVideoError(error) 
         });
 
 
@@ -95,11 +92,12 @@ export class VideoComponent {
             clearInterval(this.timelineInterval);
         }
     }
-    
+
     public errormessage: any;
+
     OnVideoError(error) {
-        console.log('Error in video Elmnt:' + JSON.stringify(error));
-        // alert('Error in video Elmnt:' + JSON.stringify(error));
+        console.log('Error loading video: ' + JSON.stringify(error));
+        this._logger.Error('Error loading video: ', JSON.stringify(error));
         this.errormessage = JSON.stringify(error);
         this.videoSrcAvailable = false;
     }
