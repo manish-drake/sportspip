@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { sportspip } from './app.component';
 
-import { HomePage, MoreActionsPopover } from '../pages/home/home';
+import { HomePage } from '../pages/home/home';
+import { HomeMorePopover } from '../pages/homemore-popover/homemore-popover';
 import { Connectivity } from '../pages/connectivity/connectivity';
 import { SettingsPage, UserActionsPopover } from '../pages/settings/settings';
 import { Login } from '../pages/settings/login/login';
@@ -32,9 +33,9 @@ import { WebSqlLogProvider } from '../logging/providers/websqlLogProvider';
   declarations: [
     sportspip,
     HomePage,
+    HomeMorePopover,
     Connectivity,
     SettingsPage,
-    MoreActionsPopover,
 
     UserActionsPopover,
     Login,
@@ -66,9 +67,9 @@ import { WebSqlLogProvider } from '../logging/providers/websqlLogProvider';
   entryComponents: [
     sportspip,
     HomePage,
+    HomeMorePopover,
     Connectivity,
 
-    MoreActionsPopover,
     EditorPage, EditorActionsPopover,
     MatrixInfoPage,
     Ipcameras, IpCamSettingsModal,

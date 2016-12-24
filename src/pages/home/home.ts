@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, ActionSheetController, AlertController, PopoverController, ViewController, ToastController, Platform, LoadingController } from 'ionic-angular';
-import { AppVersion, File, EmailComposer, SQLite, Device } from 'ionic-native';
+import { File } from 'ionic-native';
 
+import { HomeMorePopover } from '../../pages/homemore-popover/homemore-popover';
 import { AlertControllers } from '../../Action/Alerts';
 import { StorageFactory } from '../../Factory/StorageFactory';
 import { ModelFactory } from '../../Factory/ModelFactory';
@@ -85,7 +86,7 @@ export class HomePage {
     }
 
     presentPopover(event) {
-        let popover = this.popoverCtrl.create(MoreActionsPopover);
+        let popover = this.popoverCtrl.create(HomeMorePopover);
         popover.present({ ev: event });
     }
 
@@ -411,80 +412,4 @@ export class HomePage {
     }
     // For testing only --ends
 
-}
-
-@Component({
-    template: `
-    <ion-list no-lines style="margin:0;">
-    <ion-item (click)="onAbout()">
-      <ion-icon item-left name="information-circle"></ion-icon>About
-      </ion-item>
-    <ion-item (click)="sendLogs()">
-      <ion-icon item-left name="attach"></ion-icon>Send Logs
-      </ion-item>
-    </ion-list>
-  `
-})
-export class MoreActionsPopover {
-
-    versionNumber: any;
-
-    constructor(public viewCtrl: ViewController,
-        private alertCtrl: AlertController,
-        private alertCtrls: AlertControllers,
-        private platform: Platform, ) {
-        if (this.platform.is('cordova')) {
-            AppVersion.getVersionNumber().then((s) => {
-                this.versionNumber = s;
-            })
-        }
-    }
-
-    onAbout() {
-        this.viewCtrl.dismiss();
-        this.alertCtrls.BasicAlert('Sports PIP', 'version ' + this.versionNumber);
-    }
-
-    sendLogs() {
-        this.viewCtrl.dismiss();
-
-        this.platform.ready().then(() => {
-            File.checkFile(cordova.file.applicationStorageDirectory + 'databases/', "data.db")
-                .then(promise => {
-                    console.log("Success: " + JSON.stringify(promise));
-                    File.copyFile(cordova.file.applicationStorageDirectory + 'databases/', "data.db", cordova.file.externalRootDirectory + "SportsPIP/", "data.db")
-                        .then(promise => {
-                            this.composeEmail();
-                        })
-                        .catch(err => {
-                            console.log("Error: " + JSON.stringify(err));
-                            this.alertCtrls.BasicAlert("No log file found", err);
-                        });
-                })
-                .catch(err => {
-                    console.log("Error: " + JSON.stringify(err));
-                    this.alertCtrls.BasicAlert("No log file found", err);
-                });
-
-        });
-
-    }
-
-    composeEmail() {
-        let email = {
-            to: 'manish@drake.in',
-            attachments: [cordova.file.externalRootDirectory + "SportsPIP/data.db"],
-            subject: "Logs for Sports PIP " + this.versionNumber + " from " + Device.platform + " (See attachment)",
-            body:
-            "App Version: " + "<b>" + this.versionNumber + "</b><br>" +
-            "OS: " + "<b>" + Device.platform + " " + Device.version + "</b><br>" +
-            "Device: " + "<b>" + Device.manufacturer + " " + Device.model + "</b><br>" +
-
-            "<br><br>" +
-            "Here is the logs file for Sports PIP app as attachment.."
-            ,
-            isHtml: true
-        };
-        EmailComposer.open(email);
-    }
 }
