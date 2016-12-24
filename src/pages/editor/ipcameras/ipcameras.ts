@@ -143,7 +143,7 @@ export class Ipcameras {
         }, 1000);
       }
       catch (err) {
-        this._logger.Error("IPCam", err);
+        this._logger.Error("Error,IPCam Recording", err);
       }
     }
   }

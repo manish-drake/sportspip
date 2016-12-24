@@ -62,7 +62,7 @@ export class ChannelCollectionPage {
       }, 500);
     }
     catch (err) {
-      this._logger.Error('Error,refreshing  channel collection content: ', JSON.stringify(err));
+      this._logger.Error('Error,refreshing  channel collection content: ',err);
     }
   }
 
@@ -91,7 +91,7 @@ export class ChannelCollectionPage {
       });
     }
     catch (err) {
-      this._logger.Error('Error,getting channel matrix: ', JSON.stringify(err));
+      this._logger.Error('Error,getting channel matrix: ', err);
     }
 
   }
@@ -117,7 +117,7 @@ export class ChannelCollectionPage {
         })
     }
     catch (err) {
-      this._logger.Error('Error,getting search items (channel collection): ', JSON.stringify(err));
+      this._logger.Error('Error,getting search items (channel collection): ',err);
     }
   }
 
@@ -135,7 +135,7 @@ export class ChannelCollectionPage {
       return "url(" + cordova.file.applicationStorageDirectory + name + ".jpg" + ")";
     }
     catch (err) {
-      this._logger.Error('Error,retruning thumbnail path (channel collection): ', JSON.stringify(err));
+      this._logger.Error('Error,retruning thumbnail path (channel collection): ', err);
     }
   }
 
@@ -190,7 +190,7 @@ export class ChannelCollectionPage {
       }
     }
     catch (err) {
-      this._logger.Error('Error,downloading server header async: ', JSON.stringify(err));
+      this._logger.Error('Error,downloading server header async: ', err);
     }
   }
 
@@ -221,7 +221,7 @@ export class ChannelCollectionPage {
       confirm.present();
     }
     catch (err) {
-      this._logger.Error('Error,Channel matrix clicked: ', JSON.stringify(err));
+      this._logger.Error('Error,Channel matrix clicked: ', err);
     }
   }
 
@@ -247,7 +247,7 @@ export class ChannelCollectionPage {
     }
 
     catch (err) {
-      this._logger.Error('Error,channel matrix pressed: ', JSON.stringify(err));
+      this._logger.Error('Error,channel matrix pressed: ', err);
     }
   }
 }

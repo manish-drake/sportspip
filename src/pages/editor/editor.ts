@@ -276,7 +276,7 @@ export class EditorPage {
         });
       }
     }
-    catch (err) { this._logger.Error('Error,adding video mannualy: ', JSON.stringify(err)); }
+    catch (err) { this._logger.Error('Error,adding video mannualy: ', err); }
   }
 
   chooseVideoErrorMsg(err) {
@@ -350,7 +350,7 @@ export class EditorPage {
         }
       });
     }
-    catch (err) { this._logger.Error('Error,creating IPCam Video: ', JSON.stringify(err)); }
+    catch (err) { this._logger.Error('Error,creating IPCam Video: ', err); }
 
   }
 

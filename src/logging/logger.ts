@@ -22,7 +22,7 @@ export class Logger {
     Warn(message: string, exception: any = null) {
         this.write(message, 2, exception);
     }
-    Error(message: string, exception: any = null) {
+    Error(message: string, exception: any) {
         this.write(message, 3, exception);
     }
     Fatal(message: string, exception: any = null) {

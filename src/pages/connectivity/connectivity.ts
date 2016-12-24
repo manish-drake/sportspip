@@ -78,7 +78,7 @@ export class Connectivity implements DoCheck {
             }, 500);
          }
          catch (err) {
-            this._logger.Error('Error,refreshing connectivity content: ', JSON.stringify(err));
+            this._logger.Error('Error,refreshing connectivity content: ',err);
          }
     }
 
@@ -112,7 +112,7 @@ export class Connectivity implements DoCheck {
             }
          }
          catch (err) {
-            this._logger.Error('Error,changing connectivity : ', JSON.stringify(err));
+            this._logger.Error('Error,changing connectivity : ',err);
          }
     }
     refreshConnection() {
@@ -132,7 +132,7 @@ export class Connectivity implements DoCheck {
             this.connection.scanUdp();
          }
          catch (err) {
-            this._logger.Error('Error,refreshing connection : ', JSON.stringify(err));
+            this._logger.Error('Error,refreshing connection : ',err);
          }
     }
 

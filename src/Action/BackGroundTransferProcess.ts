@@ -38,7 +38,7 @@ export class BackGroundTransferProcess {
             })
         }
         catch (err) {
-            this._logger.Error('Error,transferring video: ', JSON.stringify(err));
+            this._logger.Error('Error,transferring video: ', err);
         }
     }
 
@@ -60,7 +60,7 @@ export class BackGroundTransferProcess {
             });
         }
         catch (err) {
-            this._logger.Error('Error,transferring matrix: ', JSON.stringify(err));
+            this._logger.Error('Error,transferring matrix: ', err);
         }
     }
 
@@ -73,7 +73,7 @@ export class BackGroundTransferProcess {
             this.AddMatrixClip(name, view, this.data);
         }
         catch (err) {
-            this._logger.Error('Error,creating clips: ', JSON.stringify(err));
+            this._logger.Error('Error,creating clips: ', err);
         }
     }
 
@@ -89,7 +89,7 @@ export class BackGroundTransferProcess {
             data.Matrix.Clips.Clip.push(clip);
         }
         catch (err) {
-            this._logger.Error('Error,adding matrix clip: ', JSON.stringify(err));
+            this._logger.Error('Error,adding matrix clip: ', err);
         }
     }
 
@@ -118,7 +118,7 @@ export class BackGroundTransferProcess {
             return data;
         }
         catch (err) {
-            this._logger.Error('Error,creating phone matrix: ', JSON.stringify(err));
+            this._logger.Error('Error,creating phone matrix: ', err);
         }
     }
 }
