@@ -46,7 +46,6 @@ export class VideoComponent {
         this.video = this.videoElement.nativeElement;
 
         this.video.addEventListener('loadedmetadata', () => {
-            this._logger.Debug('loading video metadata');
             this.OnVideoMatadataLoad();
         });
 
@@ -55,11 +54,8 @@ export class VideoComponent {
         });
 
         this.video.addEventListener('error', (error) => {
-            this._logger.Error('Error,video error', JSON.stringify(error));
             this.OnVideoError(error);
-
         });
-
 
         var interval = setInterval(() => {
             if (this.timelineDuration == undefined || this.timelineDuration == "00:00:00.00" || this.viewBoxSize == "0 0 0 0") {
@@ -80,6 +76,12 @@ export class VideoComponent {
     }
 
     OnVideoMatadataLoad() {
+        this._logger.Debug('OnVideoMatadataLoad');
+        this._logger.Debug('Video Info: ' + "Duration: " + this.video.duration +
+            ", Source: " + this.video.currentSrc +
+            ", Resolution: " + this.video.videoWidth + "*" + this.video.videoHeight
+        );
+
         this.video.currentTime = .1;
         this.video.setAttribute('preload', "auto");
         this.video.play();
@@ -95,9 +97,10 @@ export class VideoComponent {
     }
 
     public errormessage: any;
+
     OnVideoError(error) {
-        console.log('Error in video Elmnt:' + JSON.stringify(error));
-        // alert('Error in video Elmnt:' + JSON.stringify(error));
+        console.log('Error loading video: ' + JSON.stringify(error));
+        this._logger.Error('Error loading video: ', JSON.stringify(error) + JSON.stringify(this.video.error));
         this.errormessage = JSON.stringify(error);
         this.videoSrcAvailable = false;
     }

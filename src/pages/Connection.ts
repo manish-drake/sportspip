@@ -6,12 +6,18 @@ import X2JS from 'x2js';
 
 import { Http } from '@angular/http';
 
+import { AlertControllers } from '../Action/Alerts';
+
 declare var chrome: any;
 declare var cordova: any;
 
 @Injectable()
 export class Connection {
-    constructor(private http: Http, private platform: Platform) { }
+    constructor(private http: Http,
+        private platform: Platform,
+        private alertCtrls: AlertControllers) {
+
+    }
 
     public static servers = [];
 
@@ -56,9 +62,8 @@ export class Connection {
                 }
             }
             var onReceiveError = function (errorinfo) {
-                console.log('onReceiveError:');
-                console.log(errorinfo);
-                // alert('onReceiveError:' + errorinfo);
+                console.log('onReceiveError: ' + errorinfo);
+                this.alertCtrls.BasicAlert("Error listening server broadcast", errorinfo);
             }
             chrome.sockets.udp.create({}, function (createInfo) {
                 Connection.socketId = createInfo.socketId;
@@ -68,7 +73,7 @@ export class Connection {
                     console.log('bind result: ' + result);
                     if (result < 0) {
                         console.log("Error binding socket.");
-                        alert('Error searching servers');
+                        this.alertCtrls.BasicAlert("Error listening server broadcast", result);
                         return;
                     }
                 })
@@ -84,23 +89,6 @@ export class Connection {
             })
         });
     }
-
-    // transferMatrix(channel, sport, fileName) {
-    //     var serverAddress = Connection.connectedServer.Address;
-    //     this.platform.ready().then(() => {
-
-    //         var val=this.
-    //         let parser: any = new X2JS();
-    //         var xmlMatrix = parser.js2xml(data);
-    //         let headers = new Headers({ 'Content-Type': 'application/xml' });
-    //         let options = new RequestOptions({ headers: headers });
-
-    //         this.http.post("http://" + serverAddress + ":10080/imatrix/matrices/", xmlMatrix, options)
-    //             .subscribe(response => {
-    //                 alert(response.json());
-    //             })
-    //     });
-    // }
 
     connect(server) {
         Connection.servers.forEach((element, index) => {

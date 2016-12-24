@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { sportspip } from './app.component';
 
-import { HomePage, MoreActionsPopover } from '../pages/home/home';
+import { HomePage } from '../pages/home/home';
+import { HomeMorePopover } from '../pages/homemore-popover/homemore-popover';
 import { Connectivity } from '../pages/connectivity/connectivity';
 import { SettingsPage, UserActionsPopover } from '../pages/settings/settings';
 import { Login } from '../pages/settings/login/login';
@@ -14,7 +15,8 @@ import { GroupBy } from '../GroupBy/GroupBy';
 
 import { EditorPage, EditorActionsPopover } from '../pages/editor/editor';
 import { MatrixInfoPage } from '../pages/editor/matrixinfo/matrixinfo';
-import { Ipcameras, IpCamSettingsModal } from '../pages/editor/ipcameras/ipcameras'
+import { Ipcameras } from '../pages/editor/ipcameras/ipcameras'
+import { IpCamSettingsModal } from '../pages/editor/ipcamsettings-modal/ipcamsettings-modal'
 import { VideoComponent } from '../pages/editor/video-component/video-component'
 import { CanvasComponent } from '../pages/editor/canvas-component/canvas-component'
 import { Compareview } from '../pages/editor/compareview/compareview'
@@ -31,9 +33,9 @@ import { WebSqlLogProvider } from '../logging/providers/websqlLogProvider';
   declarations: [
     sportspip,
     HomePage,
+    HomeMorePopover,
     Connectivity,
     SettingsPage,
-    MoreActionsPopover,
 
     UserActionsPopover,
     Login,
@@ -65,9 +67,9 @@ import { WebSqlLogProvider } from '../logging/providers/websqlLogProvider';
   entryComponents: [
     sportspip,
     HomePage,
+    HomeMorePopover,
     Connectivity,
 
-    MoreActionsPopover,
     EditorPage, EditorActionsPopover,
     MatrixInfoPage,
     Ipcameras, IpCamSettingsModal,
