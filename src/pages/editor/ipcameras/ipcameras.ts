@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, ModalController, ViewController, AlertController, NavParams, LoadingController, Platform } from 'ionic-angular';
 import { Http } from '@angular/http';
+
+import { IpCamSettingsModal } from '../../../pages/editor/ipcamsettings-modal/ipcamsettings-modal'
 import { Connection } from '../../../pages/Connection';
 import { Connectivity } from '../../connectivity/connectivity';
 import { StorageFactory } from '../../../Factory/StorageFactory';
@@ -331,66 +333,5 @@ export class Ipcameras {
     else {
       this.alertCtrls.BasicAlert('Maximum 8 views!', 'No more views could be added.');
     }
-  }
-}
-
-@Component({
-  selector: 'page-IpCamsSettingsModal',
-  template: `
-  <ion-header no-border>
-
-  <ion-toolbar no-border-bottom>
-    <ion-title color="primary">IP Cam Settings</ion-title>
-    <ion-buttons end>
-      <button ion-button color="primary" (click)="dismiss()">OK</button>
-    </ion-buttons>
-  </ion-toolbar>
-
-</ion-header>
-<ion-content padding style=" ::-webkit-scrollbar,*::-webkit-scrollbar: display: none;">
-
-<ion-item no-lines>
-<ion-label item-left fixed>Timer ({{timerDelay}}s)</ion-label>
-<ion-range item-right min="3" max="15" step="3" snaps="true" [(ngModel)]="timerDelay">
-<ion-label range-left>3s</ion-label>
-<ion-label range-right>15s</ion-label>
-</ion-range>
-</ion-item>
-<ion-item no-lines>
-<ion-label item-left fixed>Brightness</ion-label>
-<ion-range>
-<ion-icon range-left small name="sunny"></ion-icon>
-<ion-icon range-right name="sunny"></ion-icon>
-</ion-range>
-</ion-item>
-<ion-item no-lines>
-<ion-label item-left fixed>AWB</ion-label>
-<ion-range>
-<ion-icon range-left small name="contrast"></ion-icon>
-<ion-icon range-right name="contrast"></ion-icon>
-</ion-range>
-</ion-item>
-<ion-item no-lines>
-<ion-label item-left fixed>Zoom</ion-label>
-<ion-range>
-<ion-icon range-left small name="search"></ion-icon>
-<ion-icon range-right name="search"></ion-icon>
-</ion-range>
-</ion-item>
-
-</ion-content>
-  `
-})
-export class IpCamSettingsModal {
-
-  timerDelay: number;
-
-  constructor(public viewCtrl: ViewController,
-    private navParams: NavParams) {
-    this.timerDelay = navParams.data.timerDelay;
-  }
-
-  dismiss() {
-    this.viewCtrl.dismiss(this.timerDelay);
   }
 }

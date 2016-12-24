@@ -55,7 +55,7 @@ export class VideoComponent {
         });
 
         this.video.addEventListener('error', (error) => { 
-            this.OnVideoError(error) 
+            this.OnVideoError(error);
         });
 
         var interval = setInterval(() => {

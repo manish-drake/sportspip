@@ -14,7 +14,8 @@ import { GroupBy } from '../GroupBy/GroupBy';
 
 import { EditorPage, EditorActionsPopover } from '../pages/editor/editor';
 import { MatrixInfoPage } from '../pages/editor/matrixinfo/matrixinfo';
-import { Ipcameras, IpCamSettingsModal } from '../pages/editor/ipcameras/ipcameras'
+import { Ipcameras } from '../pages/editor/ipcameras/ipcameras'
+import { IpCamSettingsModal } from '../pages/editor/ipcamsettings-modal/ipcamsettings-modal'
 import { VideoComponent } from '../pages/editor/video-component/video-component'
 import { CanvasComponent } from '../pages/editor/canvas-component/canvas-component'
 import { Compareview } from '../pages/editor/compareview/compareview'
