@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Platform, ToastController } from 'ionic-angular';
 import { Http } from '@angular/http';
-import { File, WriteOptions, FileEntry, DirectoryEntry } from 'ionic-native';
+import { File, WriteOptions, FileEntry } from 'ionic-native';
 import { Logger } from '../logging/logger';
 
 declare var cordova: any;
