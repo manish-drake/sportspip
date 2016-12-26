@@ -11,6 +11,9 @@ export class SqliteLogProvider extends AProvider {
         this._sqlite = new SQLite();
     }
     write(log: string) {
+        //For showing logs on console
+        console.log(log);
+        //For collecting logs data
         this._platform.ready().then(() => {
             let db = new SQLite();
             db.openDatabase({
@@ -20,9 +23,9 @@ export class SqliteLogProvider extends AProvider {
                 var dtLog = new Date().toDateString();
 
                 db.executeSql("CREATE TABLE IF NOT EXISTS logs (id INTEGER PRIMARY KEY AUTOINCREMENT, dtLog TEXT, message TEXT)", {}).then((data) => {
-                    console.log("TABLE CREATED: ");
+                    // console.log("TABLE CREATED: ");
                     db.executeSql("INSERT INTO logs (dtLog, message) VALUES ('" + dtLog + "', '" + log + "')", {}).then((data) => {
-                        console.log("LOG CREATED: ", data);
+                        // console.log("LOG CREATED: ", data);
                     }, (error) => {
                         console.error("Unable to execute sql", error);
                     })
