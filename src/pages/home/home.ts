@@ -313,20 +313,16 @@ export class HomePage {
 
     newMatrix() {
         this._logger.Debug('Creating new matrix..');
-
         var data = this.storagefactory.ComposeNewMatrix();
-
         var result = data.Matrix;
+
         this.storagefactory.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices");
-
         var headerContent = this.storagefactory.ComposeNewMatrixHeader(result);
-
         this.storagefactory.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
+        
         this.navCtrl.push(EditorPage, {
             matrixData: result
         });
-
-
     }
 
     // For testing only --starts

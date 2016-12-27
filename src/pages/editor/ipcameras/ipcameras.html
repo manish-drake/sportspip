@@ -6,60 +6,57 @@
 -->
 <ion-header no-border>
 
-  <ion-toolbar color="primary">
-    <ion-buttons start>
-      <button ion-button icon-only [disabled]="isRecording" (click)="loadIPCams()"><ion-icon name="refresh"></ion-icon></button>
-    </ion-buttons>
+  <ion-navbar color="primary">
     <ion-title>IP Cams Capture</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="dismiss()"><ion-icon name="close"></ion-icon></button>
+      <button ion-button icon-only [disabled]="isRecording" (click)="loadIPCams()"><ion-icon name="refresh"></ion-icon></button>
     </ion-buttons>
-  </ion-toolbar>
+  </ion-navbar>
 
 </ion-header>
 
 
 <ion-content style="background:#f4f4f4;position: relative;">
-  <ion-refresher [enabled]="isConnected" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
-  <ion-row>
-    <ion-col center style="width:auto;flex:0 0 auto;min-width:160px;">
-      <b item-left>Rec. Duration </b>
-      <ion-badge>{{recordingDuration}} sec</ion-badge>
-    </ion-col>
-    <ion-col center style="width:100%;">
-      <ion-range min="5" max="45" step="5" snaps="true" [(ngModel)]="recordingDuration" style="padding:0;">
-        <ion-label range-left>5s</ion-label>
-        <ion-label range-right>45s</ion-label>
-      </ion-range>
-    </ion-col>
-  </ion-row>
-  <div class="items">
-    <div class="item" *ngFor="let cam of ipCams;let i = index">
-      <ion-card style="position: relative;max-height:350px;min-height:100px;
+<ion-refresher [enabled]="isConnected" (ionRefresh)="doRefresh($event)">
+  <ion-refresher-content></ion-refresher-content>
+</ion-refresher>
+<ion-row>
+  <ion-col center style="width:auto;flex:0 0 auto;min-width:160px;">
+<b item-left>Rec. Duration </b>
+<ion-badge>{{recordingDuration}} sec</ion-badge>
+</ion-col>
+<ion-col center style="width:100%;">
+<ion-range min="5" max="45" step="5" snaps="true" [(ngModel)]="recordingDuration" style="padding:0;">
+<ion-label range-left>5s</ion-label>
+<ion-label range-right>45s</ion-label>
+</ion-range>
+</ion-col>
+</ion-row>
+<div class="items">
+  <div class="item" *ngFor="let cam of ipCams;let i = index">
+    <ion-card style="position: relative;max-height:350px;min-height:100px;
       background-color: #cccccc;background-image: url(assets/sample.jpg);background-repeat:no;background-size: cover;background-position: center;">
-        <img [attr.src]="getIPCamPreview(cam)" />
-        <b style="position: absolute;top: 10px; margin: 0 10px;font-size: 1.0em;;font-weight: bold;color: #fff;">{{cam._IPAdd}}</b>
-      </ion-card>
-    </div>
-  </div>
+<img [attr.src]="getIPCamPreview(cam)" />
+<b style="position: absolute;top: 10px; margin: 0 10px;font-size: 1.0em;;font-weight: bold;color: #fff;">{{cam._IPAdd}}</b>
+</ion-card>
+</div>
+</div>
 
-  <ion-row center style="position: absolute;top:40%; color: gray;">
-    <ion-col text-center center>
-      <ion-spinner *ngIf="isLoading" name="dots"></ion-spinner>
-      <b *ngIf="isConnected && ipCams.length==0 && !isLoading && !refreshing">No IP Camera found</b>
-      <b *ngIf="!isConnected">Not connected to any server</b>
-    </ion-col>
-  </ion-row>
+<ion-row center style="position: absolute;top:40%; color: gray;">
+<ion-col text-center center>
+  <ion-spinner *ngIf="isLoading" name="dots"></ion-spinner>
+  <b *ngIf="isConnected && ipCams.length==0 && !isLoading && !refreshing">No IP Camera found</b>
+  <b *ngIf="!isConnected">Not connected to any server</b>
+</ion-col>
+</ion-row>
 
-  <ion-fab bottom left (click)="presentSettingsModal()">
-    <button ion-fab mini><ion-icon name="md-settings"></ion-icon></button>
-  </ion-fab>
-  <ion-fab bottom center>
-    <button ion-fab color="danger" [disabled]="ipCams.length==0 || isRecording" (click)="startRecording()"><ion-icon name="radio-button-on"></ion-icon></button>
-  </ion-fab>
-  <ion-fab bottom right>
-    <button ion-fab mini (click)="timerONOFF()" [style.opacity]="timerButtonOpacity"><ion-icon name="timer"></ion-icon></button>
-  </ion-fab>
+<ion-fab bottom left (click)="presentSettingsModal()">
+  <button ion-fab mini><ion-icon name="md-settings"></ion-icon></button>
+</ion-fab>
+<ion-fab bottom center>
+  <button ion-fab color="danger" [disabled]="ipCams.length==0 || isRecording" (click)="startRecording()"><ion-icon name="radio-button-on"></ion-icon></button>
+</ion-fab>
+<ion-fab bottom right>
+  <button ion-fab mini (click)="timerONOFF()" [style.opacity]="timerButtonOpacity"><ion-icon name="timer"></ion-icon></button>
+</ion-fab>
 </ion-content>
