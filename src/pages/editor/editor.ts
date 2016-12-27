@@ -254,13 +254,11 @@ export class EditorPage {
               var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
               var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
               var newFileName = Date.now() + ".mp4";
-              console.log(newFileName);
 
               File.copyFile(path, fileName, cordova.file.externalRootDirectory + "SportsPIP/Video", newFileName)
                 .then(success => {
                   console.log('Successfully copied video');
                   this.CreateVideoView(newFileName);
-
                   if (Connection.connectedServer != null)
                     this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
 
