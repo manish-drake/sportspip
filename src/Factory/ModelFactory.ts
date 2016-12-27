@@ -35,29 +35,23 @@ export class ModelFactory {
     }
 
     b64toBlob(b64Data, contentType, sliceSize) {
-        this._logger.Debug('Parse b64 to Blob..');
-        try {
-            contentType = contentType || '';
-            sliceSize = sliceSize || 512;
+        contentType = contentType || '';
+        sliceSize = sliceSize || 512;
 
-            var byteCharacters = atob(b64Data);
-            var byteArrays = [];
+        var byteCharacters = atob(b64Data);
+        var byteArrays = [];
 
-            for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-                var slice = byteCharacters.slice(offset, offset + sliceSize);
-                var byteNumbers = new Array(slice.length);
-                for (var i = 0; i < slice.length; i++) {
-                    byteNumbers[i] = slice.charCodeAt(i);
-                }
-                var byteArray = new Uint8Array(byteNumbers);
-                byteArrays.push(byteArray);
+        for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            var slice = byteCharacters.slice(offset, offset + sliceSize);
+            var byteNumbers = new Array(slice.length);
+            for (var i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
             }
-            var blob = new Blob(byteArrays, { type: contentType });
-            return blob;
+            var byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
         }
-        catch (err) {
-            this._logger.Error('Error,parsing b64 to blob: ', err);
-        }
+        var blob = new Blob(byteArrays, { type: contentType });
+        return blob;
     }
 
 }

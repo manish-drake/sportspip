@@ -51,18 +51,13 @@ export class ChannelCollectionPage {
 
   doRefreshContent(refresher) {
     this._logger.Debug('Refresh channel collection content..');
-    try {
-      this.refreshing = true;
+     this.refreshing = true;
       this.channelMatrices = [];
       setTimeout(() => {
         refresher.complete();
         this.GetChannelMatrix(this.channel);
         this.refreshing = false;
       }, 500);
-    }
-    catch (err) {
-      this._logger.Error('Error,refreshing  channel collection content: ', err);
-    }
   }
 
   GetChannelMatrix(channel) {

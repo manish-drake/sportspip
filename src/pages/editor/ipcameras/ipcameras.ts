@@ -9,6 +9,7 @@ import { StorageFactory } from '../../../Factory/StorageFactory';
 import { BackGroundTransferProcessIP } from '../../../Action/BackGroundTransferProcessIP';
 import { AlertControllers } from '../../../Action/Alerts';
 import X2JS from 'x2js';
+import { File, WriteOptions } from 'ionic-native';
 import { Logger } from '../../../logging/logger';
 
 /*
@@ -195,7 +196,7 @@ export class Ipcameras {
 
   loader = this.loadingCtrl.create({
     content: '... ',
-    duration: (this.timerDelay * 1000) + (this.recordingDuration * 1000) +  180000,
+    duration: (this.timerDelay * 1000) + (this.recordingDuration * 1000) + 180000,
     dismissOnPageChange: true
   });
 
@@ -272,14 +273,27 @@ export class Ipcameras {
       })
   }
 
+  writeOptions: WriteOptions = { replace: true }
+  index = 1;
   GetVideoFileFromServer(name, connectedServerIP) {
     this._logger.Debug("Getting IP Cams Video from network");
-    this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP)
-      .then((success) => {
-        this._logger.Info("Video transfered successfully  " + JSON.stringify(cordova.file.externalRootDirectory) + "SportsPIP/Video");
-        this.loader.dismiss();
-        this.viewCtrl.dismiss(this.views);
-      })
+    this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP).then((blob) => {
+
+      File.createFile(cordova.file.externalRootDirectory + "SportsPIP/Video", name, true)
+        .then((success) => {
+          File.writeFile(cordova.file.externalRootDirectory + "SportsPIP/Video", name, blob["response"].slice(8), this.writeOptions)
+            .then((success) => {
+              if (this.index == this.ipCams.length) {
+                alert(this.index);
+                this._logger.Info("Video transfered successfully  " + JSON.stringify(cordova.file.externalRootDirectory) + "SportsPIP/Video");
+                this.loader.dismiss();
+                this.viewCtrl.dismiss(this.views);
+              }
+              this.index++;
+            })
+        })
+
+    })
       .catch((err) => {
         this._logger.Error("Error,Getting IP Cams Video from network.", err);
         this.loader.dismiss();

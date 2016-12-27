@@ -59,15 +59,7 @@ export class BackGroundTransferProcessIP {
             xhr.responseType = 'blob';
             xhr.onload = function (e) {
                 if (xhr.status == 200) {
-                    var writeOptions: WriteOptions = { replace: true }
-                    var blob = xhr.response;
-                    return File.createFile(cordova.file.externalRootDirectory + "SportsPIP/Video", fileName, true)
-                        .then((success) => {
-                            return File.writeFile(cordova.file.externalRootDirectory + "SportsPIP/Video", fileName, blob.slice(8), writeOptions)
-                                .then((success) => {
-                                    return resolve(xhr.response);
-                                })
-                        })
+                     resolve(xhr);
                 } else { return reject('This request has failed ' + xhr.status); }
             };
             xhr.onerror = function (err) {

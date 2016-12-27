@@ -5,7 +5,9 @@ import { Connection } from '../pages/Connection';
 import { File } from 'ionic-native';
 import X2JS from 'x2js';
 import { Logger } from '../logging/logger';
+import { Observable } from 'rxjs/Rx';
 declare var cordova: any;
+
 
 @Injectable()
 export class BackGroundTransferProcess {
@@ -16,52 +18,44 @@ export class BackGroundTransferProcess {
     }
     TransferVideo(fileName, serverIP, views) {
         this._logger.Debug('Transfer video');
-        try {
-            File.readAsArrayBuffer(cordova.file.applicationStorageDirectory, fileName).then(success => {
-                let headers = new Headers({ 'Content-Type': 'video/mp4' }); // ... Set content type to JSON
-                let options = new RequestOptions({ headers: headers });
-                this.http.post("http://" + serverIP + ":10080/imatrix/matrices/" + fileName.slice(0, -4) + "/videos", success, options)
-                    .subscribe(res => {
-                        console.log(res);
+        File.readAsArrayBuffer(cordova.file.applicationStorageDirectory, fileName).then(success => {
+            let headers = new Headers({ 'Content-Type': 'video/mp4' }); // ... Set content type to JSON
+            let options = new RequestOptions({ headers: headers });
+            this.http.post("http://" + serverIP + ":10080/imatrix/matrices/" + fileName.slice(0, -4) + "/videos", success, options)
+                .catch(err => new Observable(err => { return this._logger.Error('Error,transferring phone video: ', err) }))
+                .subscribe(res => {
+                    console.log(res);
 
-                        this.data = this.createNewPhoneMatrix(0);
-                        views.forEach((view, index) => {
-                            if (view.Content !== undefined) {
-                                if (view.Content.Capture != undefined) {
-                                    this.createClips(view.Content.Capture._Kernel, 0, index + 1);
-                                }
+                    this.data = this.createNewPhoneMatrix(0);
+                    views.forEach((view, index) => {
+                        if (view.Content !== undefined) {
+                            if (view.Content.Capture != undefined) {
+                                this.createClips(view.Content.Capture._Kernel, 0, index + 1);
                             }
+                        }
 
-                        });
-                        this.transferMatrix();
-                    })
-            })
-        }
-        catch (err) {
-            this._logger.Error('Error,transferring video: ', err);
-        }
+                    });
+                    this.transferMatrix();
+                })
+        })
     }
 
     transferMatrix() {
         this._logger.Debug('Transfer matrix');
-        try {
-            var serverAddress = Connection.connectedServer.Address;
-            this.platform.ready().then(() => {
-                let parser: any = new X2JS();
-                var xmlMatrix = parser.js2xml(this.data);
+        var serverAddress = Connection.connectedServer.Address;
+        this.platform.ready().then(() => {
+            let parser: any = new X2JS();
+            var xmlMatrix = parser.js2xml(this.data);
 
-                let headers = new Headers({ 'Content-Type': 'application/xml' });
-                let options = new RequestOptions({ headers: headers });
+            let headers = new Headers({ 'Content-Type': 'application/xml' });
+            let options = new RequestOptions({ headers: headers });
 
-                this.http.post("http://" + serverAddress + ":10080/imatrix/matrices/", xmlMatrix, options)
-                    .subscribe(response => {
-                        console.log("matrix successfully sent");
-                    })
-            });
-        }
-        catch (err) {
-            this._logger.Error('Error,transferring matrix: ', err);
-        }
+            this.http.post("http://" + serverAddress + ":10080/imatrix/matrices/", xmlMatrix, options)
+                .catch(err => new Observable(err => { return this._logger.Error('Error,transferring matrix: ', err); }))
+                .subscribe(response => {
+                    console.log("matrix successfully sent");
+                })
+        });
     }
 
 
