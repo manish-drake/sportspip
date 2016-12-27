@@ -43,26 +43,4 @@ export class OpenMatrix {
         }
 
     }
-
-    createNewMatrix(matrixName, Channel) {
-        this._logger.Debug('Create new matrix..');
-        try {
-            var data = this.storagefactory.ComposeNewMatrix();
-            var result = data.Matrix;
-            result._name = matrixName;
-            result._Name = matrixName;
-            result._Channel = Channel;
-            this.storagefactory.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices");
-
-            var headerContent = this.storagefactory.ComposeMatrixHeader(result);
-            this.storagefactory.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
-
-            this.navCtrl.push(EditorPage, {
-                matrixData: result
-            });
-        }
-        catch (err) {
-            this._logger.Error('Error,creating new matrix: ', err);
-        }
-    }
 }
