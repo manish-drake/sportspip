@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ActionSheetController, AlertController, PopoverController, ViewController, ToastController, Platform, LoadingController } from 'ionic-angular';
+import { NavController, ActionSheetController, AlertController, PopoverController, ToastController, Platform, LoadingController } from 'ionic-angular';
 import { File } from 'ionic-native';
 
 import { HomeMorePopover } from '../../pages/homemore-popover/homemore-popover';

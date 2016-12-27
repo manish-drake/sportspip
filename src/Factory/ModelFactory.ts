@@ -19,7 +19,7 @@ export class ModelFactory {
         var sourcePath = cordova.file.externalRootDirectory + "SportsPIP/Video/" + name;
         navigator.createThumbnail(sourcePath, function (err, imageData) {
             blob = imageData;
-            if (err != null) { alert("ddd"); this._logger.Error('Error,creating thumbnail: ', err); }
+            if (err != null) { this._logger.Error('Error,creating thumbnail: ', err); }
         });
         Observable.interval(1000)
             .take(1).map((x) => x + 5)

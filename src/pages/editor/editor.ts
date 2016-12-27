@@ -67,7 +67,7 @@ export class EditorPage {
     this._logger.Debug('Editor page loaded');
     if (this.params.data != null) {
       this.matrix = this.params.data.matrixData;
-      console.log("editor page: " + JSON.stringify(this.matrix));
+      // console.log("editor page: " + this.matrix));
     }
 
     this.selectedViewIndex = 0;
@@ -248,16 +248,20 @@ export class EditorPage {
               console.log(filePath);
               var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
               var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
+              var newFileName = new Date().toISOString().replace(/[^0-9]/g, "").slice(0, 14)+".mp4";
+              console.log(newFileName);
 
-              File.copyFile(path, fileName, cordova.file.externalRootDirectory + "SportsPIP/Video", fileName).then(success => {
+              File.copyFile(path, fileName, cordova.file.externalRootDirectory + "SportsPIP/Video", newFileName)
+              .then(success => {
                 console.log('Successfully copied video');
-                this.CreateVideoView(fileName);
+                this.CreateVideoView(newFileName);
 
                 if (Connection.connectedServer != null)
                   this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
 
-              }).catch(err => {
-                console.log('Failed copying video:' + err)
+              })
+              .catch(err => {
+                console.log('Failed copying video:' + JSON.stringify(err))
                 this.chooseVideoErrorMsg('Failed copying video:' + err);
               });
 
@@ -278,7 +282,7 @@ export class EditorPage {
 
   chooseVideoErrorMsg(err) {
     this._logger.Error("Error in chooseVideo", err);
-    this.alertCtrls.BasicAlert('Failed saving video!', err);
+    this.alertCtrls.BasicAlert('Failed saving video!', JSON.stringify(err));
 
   }
 

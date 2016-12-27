@@ -25,9 +25,7 @@ import { Swipeview } from '../pages/editor/swipeview/swipeview'
 
 import { Logger } from '../logging/logger';
 import { AProvider } from '../logging/aProvider';
-import { ConsoleLogProvider } from '../logging/providers/consoleLogProvider';
 import { SqliteLogProvider } from '../logging/providers/sqliteLogProvider';
-import { WebSqlLogProvider } from '../logging/providers/websqlLogProvider';
 
 @NgModule({
   declarations: [

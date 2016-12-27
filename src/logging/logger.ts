@@ -30,12 +30,12 @@ export class Logger {
     }
 
     private write(message: string, level: number = 0, exception: any = null) {
-        console.log("writing log..");
+        // console.log("writing log..");
         if (this.Level >= level) {
             var log = this.createLog(message, exception);
             this._provider.write(log)
         }
-        console.log("written log..");
+        // console.log("written log..");
     }
     private createLog(message: string, exception: any): string {
         var log = "";
