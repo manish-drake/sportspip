@@ -198,34 +198,38 @@ export class Ipcameras {
 
   isRecording: boolean = false;
 
+  loader = this.loadingCtrl.create({
+    content: '... ',
+    duration: (this.timerDelay * 1000) + (this.recordingDuration * 1000) +  180000,
+    dismissOnPageChange: true
+  });
+
   startRecording() {
     this.isRecording = true;
     if (this.isTimerOn) {
       var time = Number(this.timerDelay);
-
-      let loader = this.loadingCtrl.create({
-        content: 'Wait ' + time.toString() + 's',
-        duration: this.timerDelay * 1000,
-        dismissOnPageChange: true
-      });
-      loader.present();
+      this.loader.present();
+      this.loader.setContent('Wait ' + time.toString() + 's');
 
       var interval = setInterval(() => {
         time--;
-        loader.setContent('Wait ' + time.toString() + 's');
+        this.loader.setContent('Wait ' + time.toString() + 's');
         if (time <= 0) {
           clearInterval(interval);
+          // this.loader.dismiss();
           this.record();
         }
       }, 1000)
     }
     else {
+      this.loader.present();
       this.record();
     }
   }
 
   record() {
-    this._logger.Debug("Recording for IP Cams on network");
+    this.loader.setContent('Starting Recording..');
+
     var connectedServerIP = Connection.connectedServer.Data.Location;
     var fileName = Date.now();
     var uri: string = "http://" + connectedServerIP + ":10080/icamera/cams/ip/" + fileName + "/rec?duration=" + this.recordingDuration;
@@ -233,53 +237,58 @@ export class Ipcameras {
     this.http.post(uri, null)
       .toPromise()
       .then(res => {
+        this._logger.Debug("Recording for IP Cams on network");
         console.log('Response: ' + res);
-        this.createViews(fileName);
-        var time = Number(0);
-        let loader = this.loadingCtrl.create({
-          content: 'Recording ' + time.toString() + 's',
-          duration: this.recordingDuration * 1000,
-          dismissOnPageChange: true
-        });
-        loader.present();
-
+        var time: number = 0;
         var interval = setInterval(() => {
           time++;
-          loader.setContent('Recording ' + time.toString() + 's');
+          this.loader.setContent('Recording ' + time.toString() + 's');
+
           if (time >= this.recordingDuration) {
             clearInterval(interval);
-            this.isRecording = false;
-            
+            // this.loader.dismiss();
             this.TransferMatrix(fileName, connectedServerIP);
+            this.createViews(fileName);
           }
         }, 1000);
       })
       .catch(err => {
         this._logger.Error("Error,Recording IPCam Video", err);
+        this.loader.dismiss();
         this.alertCtrls.BasicAlert('Error', err);
         this.isRecording = false;
       });
   }
 
+
   TransferMatrix(fileName, connectedServerIP) {
-    this._logger.Debug("transferring IP Cams matrix on network");
+    this.loader.setContent('Transferring..');
     this.backGroundTransferProcessIP.transferMatrix(fileName, this.recordingDuration, this.ipCams.length, connectedServerIP)
       .then(() => {
+        this._logger.Debug("transferring IP Cams matrix on network");
         this.ipCams.forEach((element, index) => {
           var name = fileName + "_" + (index + 1) + ".mp4";
           this.GetVideoFileFromServer(name, connectedServerIP)
         })
-      }).catch((err) => {
+      })
+      .catch((err) => {
         this._logger.Error("Error,transferring IP Cams matrix on network", err);
+        this.loader.dismiss();
       })
   }
 
   GetVideoFileFromServer(name, connectedServerIP) {
     this._logger.Debug("Getting IP Cams Video from network");
-    this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP).then((success) => {
-      this._logger.Info("Video transfered successfully  " + JSON.stringify(cordova.file.externalRootDirectory) + "SportsPIP/Video");
-      this.viewCtrl.dismiss(this.views);
-    }).catch((err) => { this._logger.Error("Error,Getting IP Cams Video from network.", err); });
+    this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP)
+      .then((success) => {
+        this._logger.Info("Video transfered successfully  " + JSON.stringify(cordova.file.externalRootDirectory) + "SportsPIP/Video");
+        this.loader.dismiss();
+        this.viewCtrl.dismiss(this.views);
+      })
+      .catch((err) => {
+        this._logger.Error("Error,Getting IP Cams Video from network.", err);
+        this.loader.dismiss();
+      });
   }
 
   createViews(fileName) {
