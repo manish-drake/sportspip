@@ -357,4 +357,12 @@ export class StorageFactory {
             return success;
         })
     }
+
+    CopyFile(oldPath,fileName,newPath,newFileName){
+
+    }
+
+    MoveFile(){
+
+    }
 }

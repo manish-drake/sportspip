@@ -53,34 +53,28 @@ export class BackGroundTransferProcessIP {
         }
     }
     GetServerIPVideo(fileName, serverAddress) {
-        this._logger.Debug('Get server IP video');
-        try {
-            return new Promise(function (resolve, reject) {
-                var xhr = new XMLHttpRequest();
-                xhr.open('GET', "http://" + serverAddress + ":10080/isportspip/sports/video/" + fileName, true); // url is my google cloud storage url
-                xhr.responseType = 'blob';
-                xhr.onload = function (e) {
-                    if (xhr.status == 200) {
-                        var writeOptions: WriteOptions = { replace: true }
-                        var blob = xhr.response;
-                        return File.createFile(cordova.file.externalRootDirectory + "SportsPIP/Video", fileName, true)
-                            .then((success) => {
-                                return File.writeFile(cordova.file.externalRootDirectory + "SportsPIP/Video", fileName, blob.slice(8), writeOptions)
-                                    .then((success) => {
-                                        return resolve(xhr.response);
-                                    })
-                            })
-                    } else { return reject('This request has failed ' + xhr.status); }
-                };
-                xhr.onerror = function (err) {
-                    return reject(err + xhr.statusText);
-                };
-                xhr.send()
-            })
-        }
-        catch (err) {
-            this._logger.Error('Error,getting server IP video: ', err);
-        }
+        return new Promise(function (resolve, reject) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', "http://" + serverAddress + ":10080/isportspip/sports/video/" + fileName, true); // url is my google cloud storage url
+            xhr.responseType = 'blob';
+            xhr.onload = function (e) {
+                if (xhr.status == 200) {
+                    var writeOptions: WriteOptions = { replace: true }
+                    var blob = xhr.response;
+                    return File.createFile(cordova.file.externalRootDirectory + "SportsPIP/Video", fileName, true)
+                        .then((success) => {
+                            return File.writeFile(cordova.file.externalRootDirectory + "SportsPIP/Video", fileName, blob.slice(8), writeOptions)
+                                .then((success) => {
+                                    return resolve(xhr.response);
+                                })
+                        })
+                } else { return reject('This request has failed ' + xhr.status); }
+            };
+            xhr.onerror = function (err) {
+                return reject(err + xhr.statusText);
+            };
+            xhr.send()
+        })
     }
 
     private createNewIPMatrix(fileName, duration) {

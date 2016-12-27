@@ -99,7 +99,7 @@ export class EditorPage {
   saveMatrix() {
     if (this.platform.is('cordova')) {
       this._logger.Debug("Matrix file saving..")
-      this.storagefactory.ReadFileAync("Local",this.matrix._Channel, this.matrix._Name, this.matrix._Name + ".mtx")
+      this.storagefactory.ReadFileAync("Local", this.matrix._Channel, this.matrix._Name, this.matrix._Name + ".mtx")
         .then((data) => {
           let loader = this.loadingCtrl.create({
             content: "Saving..",
@@ -248,22 +248,20 @@ export class EditorPage {
               console.log(filePath);
               var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
               var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
-              var newFileName = new Date().toISOString().replace(/[^0-9]/g, "").slice(0, 14)+".mp4";
+              var newFileName = new Date().toISOString().replace(/[^0-9]/g, "").slice(0, 14) + ".mp4";
               console.log(newFileName);
 
               File.copyFile(path, fileName, cordova.file.externalRootDirectory + "SportsPIP/Video", newFileName)
-              .then(success => {
-                console.log('Successfully copied video');
-                this.CreateVideoView(newFileName);
+                .then(success => {
+                  console.log('Successfully copied video');
+                  this.CreateVideoView(newFileName);
+                  if (Connection.connectedServer != null)
+                    this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
 
-                if (Connection.connectedServer != null)
-                  this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
-
-              })
-              .catch(err => {
-                console.log('Failed copying video:' + JSON.stringify(err))
-                this.chooseVideoErrorMsg('Failed copying video:' + err);
-              });
+                }).catch(err => {
+                  console.log('Failed copying video:' + JSON.stringify(err))
+                  this.chooseVideoErrorMsg('Failed copying video:' + err);
+                });
 
             })
             .catch(err => {

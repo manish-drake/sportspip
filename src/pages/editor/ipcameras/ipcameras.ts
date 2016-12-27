@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, ModalController, ViewController, AlertController, NavParams, LoadingController, Platform } from 'ionic-angular';
 import { Http } from '@angular/http';
-
+import { Observable } from 'rxjs/Rx';
 import { IpCamSettingsModal } from '../../../pages/editor/ipcamsettings-modal/ipcamsettings-modal'
 import { Connection } from '../../../pages/Connection';
 import { Connectivity } from '../../connectivity/connectivity';
@@ -110,43 +110,38 @@ export class Ipcameras {
       alert.present();
     }
     else {
-      try {
-        this.isLoading = false;
-        this.isConnected = true;
-        this.isLoading = true;
-        var connectedServerIP = Connection.connectedServer.Address;
+      this.isLoading = false;
+      this.isConnected = true;
+      this.isLoading = true;
+      var connectedServerIP = Connection.connectedServer.Address;
 
-        var requestUri = "http://" + connectedServerIP + ":10080/icamera/cams/ip/";
+      var requestUri = "http://" + connectedServerIP + ":10080/icamera/cams/ip/";
 
-        setTimeout(() => {
-          this.http.get(requestUri)
-            .map(res => res.text())
-            .subscribe(
-            data => {
-              let parser: any = new X2JS();
-              var jsonData = parser.xml2js(data);
-              if (jsonData.Cams.IPCam != undefined) {
-                if (jsonData.Cams.IPCam instanceof Array) {
-                  this.ipCams = jsonData.Cams.IPCam;
-                }
-                else {
-                  this.ipCams.push(jsonData.Cams.IPCam);
-                }
+      setTimeout(() => {
+        this.http.get(requestUri)
+          .map(res => res.text()).catch((err) => new Observable(err => { this._logger.Error("Error,IPCam loading", err); }))
+          .subscribe(
+          data => {
+            let parser: any = new X2JS();
+            var jsonData = parser.xml2js(data);
+            if (jsonData.Cams.IPCam != undefined) {
+              if (jsonData.Cams.IPCam instanceof Array) {
+                this.ipCams = jsonData.Cams.IPCam;
               }
-            },
-            err => {
-              console.error('There was an error: ' + err);
-              this.isLoading = false;
-            },
-            () => {
-              console.log('Random Quote Complete');
-              this.isLoading = false;
-            });
-        }, 1000);
-      }
-      catch (err) {
-        this._logger.Error("Error,IPCam Recording", err);
-      }
+              else {
+                this.ipCams.push(jsonData.Cams.IPCam);
+              }
+            }
+          },
+          err => {
+            console.error('There was an error: ' + err);
+            this.isLoading = false;
+          },
+          () => {
+            console.log('Random Quote Complete');
+            this.isLoading = false;
+          });
+      }, 1000);
     }
   }
 
@@ -249,7 +244,7 @@ export class Ipcameras {
           if (time >= this.recordingDuration) {
             clearInterval(interval);
             this.isRecording = false;
-            
+
             this.TransferMatrix(fileName, connectedServerIP);
           }
         }, 1000);
@@ -278,8 +273,10 @@ export class Ipcameras {
     this._logger.Debug("Getting IP Cams Video from network");
     this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP).then((success) => {
       this._logger.Info("Video transfered successfully  " + JSON.stringify(cordova.file.externalRootDirectory) + "SportsPIP/Video");
+      alert("receive");
       this.viewCtrl.dismiss(this.views);
     }).catch((err) => { this._logger.Error("Error,Getting IP Cams Video from network.", err); });
+
   }
 
   createViews(fileName) {
