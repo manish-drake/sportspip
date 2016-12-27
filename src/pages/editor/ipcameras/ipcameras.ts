@@ -282,7 +282,6 @@ export class Ipcameras {
           File.writeFile(cordova.file.externalRootDirectory + "SportsPIP/Video", name, blob["response"].slice(8), this.writeOptions)
             .then(() => {
               if (this.index == this.ipCams.length) {
-                alert(this.index);
                 this._logger.Info("Video transfered successfully  " + JSON.stringify(cordova.file.externalRootDirectory) + "SportsPIP/Video");
                 this.saveMatrix();
               }
