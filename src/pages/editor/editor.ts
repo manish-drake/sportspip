@@ -124,10 +124,10 @@ export class EditorPage {
               this.navCtrl.pop();
               loader.dismiss();
             });
-        }).catch((err) => { 
+        }).catch((err) => {
           this._logger.Error("Error,Matrix file saving..", err); this.navCtrl.pop();
           loader.dismiss();
-         });
+        });
 
     } else this.navCtrl.pop();
   }
@@ -340,27 +340,12 @@ export class EditorPage {
   // Code for Camera Recording Starts
 
   IPCamCapture() {
-    this._logger.Debug('creating IPCam Video..');
-    try {
-      let modalOptions: ModalOptions = { showBackdrop: true, enableBackdropDismiss: false };
-
-      var modal = this.modalCtrl.create(Ipcameras, {
-        matrix: this.matrix,
-        views: this.views,
-        selectedViewIndex: this.selectedViewIndex
-      }, modalOptions);
-      modal.present();
-
-      modal.onDidDismiss((views) => {
-        if (views != null) {
-          this.views = views;
-          this.saveMatrix();
-          // this.connection.transferMatrix(this.matrix._Name,duration);
-        }
-      });
-    }
-    catch (err) { this._logger.Error('Error,creating IPCam Video: ', err); }
-
+    this._logger.Debug('Navigates to IP Cameras page..');
+    this.navCtrl.push(Ipcameras, {
+      matrix: this.matrix,
+      views: this.views,
+      selectedViewIndex: this.selectedViewIndex
+    });
   }
 
   CreateVideoView(fileName) {

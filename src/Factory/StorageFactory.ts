@@ -55,32 +55,34 @@ export class StorageFactory {
     }
 
     SaveMatrixAsync(content, channel, sport, matrixName, typeFolder): Promise<FileEntry> {
-        this._logger.Debug('Save matrix async..');
+        if (this.platform.is('cordova')) {
+            this._logger.Debug('Save matrix async..');
 
-        const fs: string = cordova.file.dataDirectory;
-        //create Server Folder
-        return File.createDir(fs, "Local", true).then((success) => {
-            var localFolder = fs + "Local/";
-            return File.createDir(localFolder, channel, true).then(() => {
-                var channelFolder = localFolder + channel + "/";
-                return File.createDir(channelFolder, sport, true).then(() => {
-                    var sportFolder = channelFolder + sport + "/";
-                    return File.createDir(sportFolder, typeFolder, true).then(() => {
-                        var contentFolder = sportFolder + typeFolder + "/";
-                        return File.createDir(contentFolder, matrixName, true).then((success) => {
-                            var fileLocation = contentFolder + matrixName;
-                            return File.createFile(fileLocation, matrixName + ".mtx", true).then(() => {
-                                return File.writeFile(fileLocation, matrixName + ".mtx", content, this.writeOptions)
-                                    .then(function (success) {
-                                        console.log('Saved in SF');
-                                        return success["nativeUrl"]
-                                    }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
+            const fs: string = cordova.file.dataDirectory;
+            //create Server Folder
+            return File.createDir(fs, "Local", true).then((success) => {
+                var localFolder = fs + "Local/";
+                return File.createDir(localFolder, channel, true).then(() => {
+                    var channelFolder = localFolder + channel + "/";
+                    return File.createDir(channelFolder, sport, true).then(() => {
+                        var sportFolder = channelFolder + sport + "/";
+                        return File.createDir(sportFolder, typeFolder, true).then(() => {
+                            var contentFolder = sportFolder + typeFolder + "/";
+                            return File.createDir(contentFolder, matrixName, true).then((success) => {
+                                var fileLocation = contentFolder + matrixName;
+                                return File.createFile(fileLocation, matrixName + ".mtx", true).then(() => {
+                                    return File.writeFile(fileLocation, matrixName + ".mtx", content, this.writeOptions)
+                                        .then(function (success) {
+                                            console.log('Saved in SF');
+                                            return success["nativeUrl"]
+                                        }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
+                                }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
                             }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
                         }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
                     }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
                 }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
-            }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
-        }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
+            }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); });
+        }
     }
 
     SaveLocalHeader(content, channel, sport, matrixName, typeFolder) {
@@ -176,37 +178,32 @@ export class StorageFactory {
     }
 
     ComposeNewMatrix() {
-        this._logger.Debug('Compose new matrix..');
-        try {
-            var name = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
-            let data =
-                {
-                    "Matrix": {
-                        "_name": name,
-                        "_Name": name,
-                        "_Title": "Title1",
-                        "_Skill": "Serve",
-                        "_Location": "Field",
-                        "_Duration": "00:00:00",
-                        "_DateCreated": name,
-                        "_Sport": "Tennis",
-                        "_Channel": "Local",
-                        "Matrix.Children": {
-                            "View":
-                            {
-                                "_name": "View 1",
-                                "_Title": "View 1",
-                                "_Source": "(Blank)",
-                                "Content": {}
-                            }
+        this._logger.Debug('Composing new matrix..');
+        var name = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
+        let data =
+            {
+                "Matrix": {
+                    "_name": name,
+                    "_Name": name,
+                    "_Title": "Title1",
+                    "_Skill": "Serve",
+                    "_Location": "Field",
+                    "_Duration": "00:00:00",
+                    "_DateCreated": name,
+                    "_Sport": "Tennis",
+                    "_Channel": "Local",
+                    "Matrix.Children": {
+                        "View":
+                        {
+                            "_name": "View 1",
+                            "_Title": "View 1",
+                            "_Source": "(Blank)",
+                            "Content": {}
                         }
                     }
-                };
-            return data;
-        }
-        catch (err) {
-            this._logger.Error('Error,composing new matrix: ', err);
-        }
+                }
+            };
+        return data;
     }
 
     ComposeMatrixHeader(fromMatrix) {
@@ -358,11 +355,11 @@ export class StorageFactory {
         })
     }
 
-    CopyFile(oldPath,fileName,newPath,newFileName){
+    CopyFile(oldPath, fileName, newPath, newFileName) {
 
     }
 
-    MoveFile(){
+    MoveFile() {
 
     }
 }

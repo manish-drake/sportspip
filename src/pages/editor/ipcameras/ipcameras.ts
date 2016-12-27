@@ -10,6 +10,7 @@ import { BackGroundTransferProcessIP } from '../../../Action/BackGroundTransferP
 import { AlertControllers } from '../../../Action/Alerts';
 import X2JS from 'x2js';
 import { Logger } from '../../../logging/logger';
+import { ModelFactory } from '../../../Factory/ModelFactory';
 
 /*
   Generated class for the Ipcamera page.
@@ -22,7 +23,7 @@ declare var cordova: any;
 @Component({
   selector: 'page-ipcameras',
   templateUrl: 'ipcameras.html',
-  providers: [StorageFactory, Connection, BackGroundTransferProcessIP]
+  providers: [StorageFactory, ModelFactory, Connection, BackGroundTransferProcessIP]
 })
 export class Ipcameras {
   matrix: any;
@@ -40,12 +41,12 @@ export class Ipcameras {
     private platform: Platform,
     private navParams: NavParams,
     private storagefactory: StorageFactory,
+    private modelFactory: ModelFactory,
     private _logger: Logger) {
 
     this.matrix = this.navParams.data.matrix;
     this.views = this.navParams.data.views;
     this.selectedViewIndex = this.navParams.data.selectedViewIndex;
-
   }
 
   isConnected: boolean = true;
@@ -61,6 +62,8 @@ export class Ipcameras {
     this.loadIPCams();
   }
 
+  recordingDuration: number = 5;
+  isRecording: boolean = false;
   refreshing: boolean = false;
 
   doRefresh(refresher) {
@@ -75,10 +78,6 @@ export class Ipcameras {
 
   openConnectivity() {
     this.navCtrl.push(Connectivity);
-  }
-
-  dismiss() {
-    this.viewCtrl.dismiss(null);
   }
 
   ipCams = [];
@@ -186,16 +185,12 @@ export class Ipcameras {
 
     modal.onDidDismiss(TimerDelay => {
       this.timerDelay = TimerDelay;
-    })
+    });
   }
-
-  recordingDuration: number = 5;
-
-  isRecording: boolean = false;
 
   loader = this.loadingCtrl.create({
     content: '... ',
-    duration: (this.timerDelay * 1000) + (this.recordingDuration * 1000) +  180000,
+    duration: (this.timerDelay * 1000) + (this.recordingDuration * 1000) + 180000,
     dismissOnPageChange: true
   });
 
@@ -241,23 +236,22 @@ export class Ipcameras {
 
           if (time >= this.recordingDuration) {
             clearInterval(interval);
-            this.isRecording = false;
             this.TransferMatrix(fileName, connectedServerIP);
             this.createViews(fileName);
           }
         }, 1000);
       })
       .catch(err => {
-        this._logger.Error("Error,Recording IPCam Video", err);
         this.loader.dismiss();
-        this.alertCtrls.BasicAlert('Error', err);
         this.isRecording = false;
+        this._logger.Error("Error,Recording IPCam Videos", err);
+        this.alertCtrls.BasicAlert('Error,Recording IPCam Videos', err);
       });
   }
 
 
   TransferMatrix(fileName, connectedServerIP) {
-    this.loader.setContent('Transferring..');
+    this.loader.setContent('Transferring Matrix..');
     this.backGroundTransferProcessIP.transferMatrix(fileName, this.recordingDuration, this.ipCams.length, connectedServerIP)
       .then(() => {
         this._logger.Debug("transferring IP Cams matrix on network");
@@ -267,24 +261,74 @@ export class Ipcameras {
         })
       })
       .catch((err) => {
-        this._logger.Error("Error,transferring IP Cams matrix on network", err);
         this.loader.dismiss();
+        this._logger.Error("Error,transferring IP Cams matrix to service", err);
+        this.alertCtrls.BasicAlert('Error,transferring matrix to service', err);
       })
   }
 
   GetVideoFileFromServer(name, connectedServerIP) {
+    this.loader.setContent('Getting Videos..');
     this._logger.Debug("Getting IP Cams Video from network");
     this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP)
       .then((success) => {
         this._logger.Info("Video transfered successfully  " + JSON.stringify(cordova.file.externalRootDirectory) + "SportsPIP/Video");
-        this.loader.dismiss();
-        this.viewCtrl.dismiss(this.views);
+        this.saveMatrix();
       })
       .catch((err) => {
         this._logger.Error("Error,Getting IP Cams Video from network.", err);
         this.loader.dismiss();
       });
   }
+
+  saveMatrix() {
+      this.loader.setContent('Saving..');
+
+      this.storagefactory.ReadFileAync("Local", this.matrix._Channel, this.matrix._Name, this.matrix._Name + ".mtx")
+        .then((data) => {
+          this._logger.Debug("Matrix file saving..")
+
+          var res = JSON.parse(data.toString());
+          var matrix = res.Matrix;
+          matrix['Matrix.Children'].View = this.views;
+          var thumbName = this.GetThumbName(matrix);
+          this.storagefactory.SaveMatrixAsync(res, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
+          var header = this.storagefactory.ComposeMatrixHeader(matrix);
+          header.ThumbnailSource = thumbName.toString();
+          this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
+
+          Observable.interval(1000)
+            .take(1).map((x) => x + 5)
+            .subscribe((x) => {
+              this.loader.dismiss();
+              this.navCtrl.popToRoot();
+            });
+        })
+        .catch((err) => {
+          this.loader.dismiss();
+          this._logger.Error("Error,Matrix file saving..", err); 
+          this.navCtrl.pop();
+        });
+  }
+
+  GetThumbName(matrix) {
+    var name: "thumbnail";
+    matrix['Matrix.Children'].View.forEach(view => {
+      if (name == undefined) {
+        if (view.Content !== undefined) {
+          if (view.Content.Capture != undefined) {
+            console.log("enter........")
+            var kernel = view.Content.Capture._Kernel;
+            name = kernel.slice(0, -4).split(" ");
+            this.modelFactory.CreateThumbnail(kernel, name);
+          }
+        }
+      }
+    });
+    return name;
+  }
+
+
 
   createViews(fileName) {
     if (this.ipCams.length == 1) {
