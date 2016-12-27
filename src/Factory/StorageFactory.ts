@@ -114,76 +114,65 @@ export class StorageFactory {
 
 
     DeleteServerHeader(DirName, channel) {
-        this._logger.Debug('Delete server header..');
-        try {
-            this.platform.ready().then(() => {
-                var headerFolder = cordova.file.dataDirectory + "Server/" + channel + "/Tennis/Matrices/"
-                File.removeRecursively(headerFolder, DirName).then(() => {
-                    console.log('Deleted Successfully.');
-                })
+        this._logger.Debug('Deleteing server header..');
+        this.platform.ready().then(() => {
+            var headerFolder = cordova.file.dataDirectory + "Server/" + channel + "/Tennis/Matrices/"
+            this.RemoveFileAsync(headerFolder, DirName).then((res) => {
+                let toast = this.toastCtrl.create({
+                    message: 'Deleted Successfully..',
+                    duration: 2000,
+                });
+                toast.present();
             })
-        }
-        catch (err) {
+        }).catch((err) => {
             this._logger.Error('Error,deleting server header: ', err);
-        }
+        })
+
+
     }
 
     DeleteLocalHeader(DirName, channel) {
         this._logger.Debug('Delete local header..');
-        try {
-            this.platform.ready().then(() => {
-                var headerFolder = cordova.file.dataDirectory + "Local/" + channel + "/Tennis/Matrices/"
-                File.removeRecursively(headerFolder, DirName).then(() => {
-                    let toast = this.toastCtrl.create({
-                        message: 'Deleted Successfully..',
-                        duration: 2000,
-                    });
-                    toast.present();
-                })
-            })
-        }
-        catch (err) {
-            this._logger.Error('Error,deleting local header: ', err);
-        }
+        this.platform.ready().then(() => {
+            var headerFolder = cordova.file.dataDirectory + "Local/" + channel + "/Tennis/Matrices/"
+            this.RemoveFileAsync(headerFolder, DirName).then((res) => {
+                let toast = this.toastCtrl.create({
+                    message: 'Deleted Successfully..',
+                    duration: 2000,
+                });
+                toast.present();
+            }).catch((err) => { this._logger.Error('Error,deleting local header: ', err); })
+        })
+
     }
 
     SaveUserAsync(content) {
         this._logger.Debug('Save user async..');
-        try {
-            this.platform.ready().then(() => {
-                const fs: string = cordova.file.dataDirectory;
-                File.createDir(fs, "Server", true).then((success) => {
-                    var serverFolder = fs + "Server/";
-                    File.createFile(serverFolder, "User.json", true).then(() => {
-                        File.writeFile(serverFolder, "User.json", content, this.writeOptions)
-                            .then(function (success) {
-                                console.log("registraion complited..");
-                            })
-                    })
-                })
-            })
-        }
-        catch (err) {
-            this._logger.Error('Error,saving user async: ', err);
-        }
+        this.platform.ready().then(() => {
+            const fs: string = cordova.file.dataDirectory;
+            File.createDir(fs, "Server", true).then((success) => {
+                var serverFolder = fs + "Server/";
+                File.createFile(serverFolder, "User.json", true).then(() => {
+                    File.writeFile(serverFolder, "User.json", content, this.writeOptions)
+                        .then(function (success) {
+                            console.log("registraion complited..");
+                        }).catch((err) => { this._logger.Error('Error,saving user async: ', err); })
+                }).catch((err) => { this._logger.Error('Error,saving user async: ', err); })
+            }).catch((err) => { this._logger.Error('Error,saving user async: ', err); })
+        })
     }
 
     CreateVideoFolder() {
         this._logger.Debug('Create video folder..');
-        try {
-            this.platform.ready().then(() => {
-                const fs: string = cordova.file.externalRootDirectory;
-                File.createDir(fs, "SportsPIP", true).then((success) => {
-                    var videoPath = fs + "SportsPIP"
-                    File.createDir(videoPath, "Video", true).then((success) => {
-                        console.log("video folder created");
-                    })
-                })
-            })
-        }
-        catch (err) {
-            this._logger.Error('Error,creating video folder: ', err);
-        }
+        this.platform.ready().then(() => {
+            const fs: string = cordova.file.externalRootDirectory;
+            File.createDir(fs, "SportsPIP", true).then((success) => {
+                var videoPath = fs + "SportsPIP"
+                File.createDir(videoPath, "Video", true).then((success) => {
+                    console.log("video folder created");
+                }).catch((err) => { this._logger.Error('Error,creating video folder: ', err); })
+            }).catch((err) => { this._logger.Error('Error,creating video folder: ', err); })
+        })
     }
 
     ComposeNewMatrix() {
@@ -222,24 +211,19 @@ export class StorageFactory {
 
     ComposeMatrixHeader(fromMatrix) {
         this._logger.Debug('composing matrix header..');
-        try {
-            var header = {
-                Title: fromMatrix._Title,
-                DateCreated: fromMatrix._DateCreated,
-                Name: fromMatrix._Name,
-                Channel: fromMatrix._Channel,
-                ThumbnailSource: "thumbnail",
-                Sport: fromMatrix._Sport,
-                Skill: fromMatrix._Skill,
-                UploadID: "0",
-                Duration: fromMatrix._Duration,
-                Views: fromMatrix["Matrix.Children"].View.length
-            };
-            return header;
-        }
-        catch (err) {
-            this._logger.Error('Error,composing matrix header: ', err);
-        }
+        var header = {
+            Title: fromMatrix._Title,
+            DateCreated: fromMatrix._DateCreated,
+            Name: fromMatrix._Name,
+            Channel: fromMatrix._Channel,
+            ThumbnailSource: "thumbnail",
+            Sport: fromMatrix._Sport,
+            Skill: fromMatrix._Skill,
+            UploadID: "0",
+            Duration: fromMatrix._Duration,
+            Views: fromMatrix["Matrix.Children"].View.length
+        };
+        return header;
     }
 
     ComposeNewMatrixHeader(fromMatrix) {
@@ -259,33 +243,58 @@ export class StorageFactory {
         return header;
     }
 
+    ComposeHeader(header) {
+        var hea = {
+            Title: header.Title,
+            DateCreated: header.DateCreated,
+            Name: header.Name,
+            Channel: header.Channel,
+            ThumbnailSource: header.ThumbnailSource,
+            Sport: header.Sport,
+            Skill: header.Skill,
+            UploadID: header.UploadID,
+            Duration: header.Duration,
+            Views: header.Views
+        };
+        return hea;
+    }
 
-    ReadLocalFileAync(channelName, matrixname, fileName): Promise<any> {
-        this._logger.Debug("reading file async.. ")
-        return File.readAsText(cordova.file.dataDirectory + "Local/" + channelName + "/Tennis/Matrices/" + matrixname, fileName)
+    RemoveFileAsync(path, dirName) {
+        return File.removeRecursively(path, dirName).then((res) => {
+            return res;
+        }).catch((err) => { return err })
+    }
+
+    ReadFileAync(dirName, channelName, matrixname, fileName): Promise<any> {
+        this._logger.Debug("reading local file async.. ")
+        return File.readAsText(cordova.file.dataDirectory + dirName + "/" + channelName + "/Tennis/Matrices/" + matrixname, fileName)
             .then(res => {
                 return res;
-            }).catch((err) => { this._logger.Error("Error,reading file async.. ", err) })
+            }).catch((err) => { this._logger.Error("Error,reading local file async.. ", err) })
     }
+
+    // ReadServerFileAync(channelName, matrixname, fileName): Promise<any> {
+    //     this._logger.Debug("reading server file async.. ")
+    //     return File.readAsText(cordova.file.dataDirectory + "Server/" + channelName + "/Tennis/Matrices/" + matrixname, fileName)
+    //         .then(res => {
+    //             return res;
+    //         }).catch((err) => { this._logger.Error("Error,reading server file async.. ", err) })
+    // }
 
     GetLocalHeader(): Promise<any> {
         var localMatrices = [];
         return new Promise((resolve, reject) => {
-            return this.GetLisOfDirectory(cordova.file.dataDirectory, "Local/").then((list) => {
+            return this.GetLisOfDirectory(cordova.file.dataDirectory, "Local").then((list) => {
                 list.forEach((channelName) => {
-                    return this.GetLisOfDirectory(cordova.file.dataDirectory, "Local/" + channelName.name + "/Tennis/Matrices/").then((success) => {
+                    return this.GetLisOfDirectory(cordova.file.dataDirectory + "Local/" + channelName.name + "/Tennis", "Matrices").then((success) => {
                         success.forEach((res) => {
-                            return this.ReadLocalFileAync(channelName.name, res.name, "Header.xml").then((data) => {
+                            return this.ReadFileAync("Local", channelName.name, res.name, "Header.xml").then((data) => {
                                 //deserialiae server header  
                                 var result = JSON.parse(data.toString());
                                 // console.log(result);
-                                var item = {
-                                    Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
-                                    ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
-                                    Views: result.Views
-                                };
-                                localMatrices.unshift(item)
-                                resolve(localMatrices);
+                                var item = this.ComposeHeader(result);
+                                localMatrices.unshift(item);
+                                return resolve(localMatrices);
                             })
                         })
 
@@ -293,6 +302,52 @@ export class StorageFactory {
                 })
 
             })
+        })
+
+    }
+
+    GetServerHeader(): Promise<any> {
+        var channels = [];
+        return new Promise((resolve, reject) => {
+            return this.GetLisOfDirectory(cordova.file.dataDirectory, "Server/").then((success) => {
+                success.forEach((channelName) => {
+                    return this.GetLisOfDirectory(cordova.file.dataDirectory, "Server/" + channelName.name + "/Tennis/Matrices/").then((success) => {
+                        success.forEach((res) => {
+                            return this.ReadFileAync("Server", channelName.name, res.name, "Header.xml")
+                                .then(data => {
+                                    // deserialiae server header  
+                                    var result = JSON.parse(data.toString());
+                                    var item = this.ComposeHeader(result);
+                                    channels.unshift(item);
+                                    resolve(channels);
+                                });
+                        });
+                    });
+                })
+            }).catch((err) => {
+                this._logger.Error('Error,Getting server matrix header..', err);
+            });
+        })
+    }
+
+    GetChannelListByChannel(channel): Promise<any> {
+        var channels = [];
+        return new Promise((resolve, reject) => {
+            return this.GetLisOfDirectory(cordova.file.dataDirectory, "Server/" + channel + "/Tennis/Matrices/").then((success) => {
+                success.forEach((res) => {
+                    return this.ReadFileAync("Server", channel, res.name, "Header.xml")
+                        .then(data => {
+                            //deserialiae server header  
+                            var result = JSON.parse(data.toString());
+                            // var result = header.Header;
+                            var item = this.ComposeHeader(result);
+                            channels.unshift(item);
+
+                            return resolve(channels);
+                        });
+                });
+
+            });
         })
 
     }

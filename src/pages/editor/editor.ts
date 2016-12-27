@@ -99,7 +99,7 @@ export class EditorPage {
   saveMatrix() {
     if (this.platform.is('cordova')) {
       this._logger.Debug("Matrix file saving..")
-      this.storagefactory.ReadLocalFileAync(this.matrix._Channel, this.matrix._Name, this.matrix._Name + ".mtx")
+      this.storagefactory.ReadFileAync("Local",this.matrix._Channel, this.matrix._Name, this.matrix._Name + ".mtx")
         .then((data) => {
           let loader = this.loadingCtrl.create({
             content: "Saving..",
@@ -113,7 +113,7 @@ export class EditorPage {
           var thumbName = this.GetThumbName(matrix);
           this.storagefactory.SaveMatrixAsync(res, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
           var header = this.storagefactory.ComposeMatrixHeader(matrix);
-          header.ThumbnailSource = thumbName;
+          header.ThumbnailSource = thumbName.toString();
           this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
 
           Observable.interval(1000)
@@ -134,9 +134,9 @@ export class EditorPage {
         if (view.Content !== undefined) {
           if (view.Content.Capture != undefined) {
             console.log("enter........")
-            var nm = view.Content.Capture._Kernel;
-            name = nm.split(" ");
-            this.modelFactory.CreateThumbnail(view.Content.Capture._Kernel, name);
+            var kernel = view.Content.Capture._Kernel;
+            name = kernel.slice(0, -4).split(" ");
+            this.modelFactory.CreateThumbnail(kernel, name);
           }
         }
       }

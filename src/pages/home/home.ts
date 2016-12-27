@@ -211,13 +211,13 @@ export class HomePage {
     DuplicateMatrix(channelName, matrixname) {
         var name = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
         this.platform.ready().then(() => {
-            this.storagefactory.ReadLocalFileAync(channelName, matrixname, "Header.xml").then((res) => {
+            this.storagefactory.ReadFileAync("Local", channelName, matrixname, "Header.xml").then((res) => {
                 var header = JSON.parse(res.toString());
                 header.Name = name;
                 header.DateCreated = name;
                 this.storagefactory.SaveLocalHeader(header, channelName, header.Sport, name, "Matrices");
             })
-            this.storagefactory.ReadLocalFileAync(channelName, matrixname, matrixname + ".mtx").then((res) => {
+            this.storagefactory.ReadFileAync("Local", channelName, matrixname, matrixname + ".mtx").then((res) => {
                 var matrix = JSON.parse(res.toString());
                 matrix.Matrix._Name = name;
                 matrix.Matrix._DateCreated = name;
@@ -239,25 +239,8 @@ export class HomePage {
     GetLocalMatrixHeader() {
         this._logger.Debug('Getting local matrix header..');
         this.platform.ready().then(() => {
-            File.listDir(cordova.file.dataDirectory, "Local/").then((success) => {
-                success.forEach((channelName) => {
-                    File.listDir(cordova.file.dataDirectory, "Local/" + channelName.name + "/Tennis/Matrices/").then((success) => {
-                        success.forEach((res) => {
-                            File.readAsText(cordova.file.dataDirectory + "Local/" + channelName.name + "/Tennis/Matrices/" + res.name, "Header.xml")
-                                .then(data => {
-                                    //deserialiae server header  
-                                    var result = JSON.parse(data.toString());
-                                    // console.log(result);
-                                    var item = {
-                                        Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
-                                        ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID, Duration: result.Duration,
-                                        Views: result.Views
-                                    };
-                                    this.localMatrices.unshift(item);
-                                });
-                        });
-                    });
-                })
+            this.storagefactory.GetLocalHeader().then((res) => {
+                this.localMatrices = res;
             }).catch((err) => {
                 this._logger.Error('Error,Getting local matrix header..', err);
             });
@@ -277,25 +260,8 @@ export class HomePage {
     GetServerHeader() {
         this._logger.Debug('Getting server matrix header..');
         this.platform.ready().then(() => {
-            File.listDir(cordova.file.dataDirectory, "Server/").then((success) => {
-                success.forEach((channelName) => {
-                    File.listDir(cordova.file.dataDirectory, "Server/" + channelName.name + "/Tennis/Matrices/").then((success) => {
-                        success.forEach((res) => {
-                            File.readAsText(cordova.file.dataDirectory + "Server/" + channelName.name + "/Tennis/Matrices/" + res.name, "Header.xml")
-                                .then(data => {
-                                    // deserialiae server header  
-                                    var result = JSON.parse(data.toString());
-                                    var item = {
-                                        Title: result.Title, DateCreated: result.DateCreated, Name: result.Name, Channel: result.Channel,
-                                        ThumbnailSource: result.ThumbnailSource, Sport: result.Sport, Skill: result.Skill, UploadID: result.UploadID,
-                                        Duration: result.Duration,
-                                        Views: result.Views
-                                    };
-                                    this.channels.unshift(item);
-                                });
-                        });
-                    });
-                })
+            this.storagefactory.GetServerHeader().then((res) => {
+                this.channels = res;
             }).catch((err) => {
                 this._logger.Error('Error,Getting server matrix header..', err);
             });
@@ -327,7 +293,7 @@ export class HomePage {
                     .take(1).map((x) => x + 5)
                     .subscribe((x) => {
                         this.platform.ready().then(() => {
-                            File.removeRecursively(cordova.file.dataDirectory, "Temp").then(() => {
+                            this.storagefactory.RemoveFileAsync(cordova.file.dataDirectory, "Temp").then(() => {
                                 this.localMatrices = [];
                                 this.GetLocalMatrixHeader();
                                 this.deleteServerHeader(fileName, index, value, channelName);
@@ -354,7 +320,7 @@ export class HomePage {
         this.storagefactory.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices");
 
         var headerContent = this.storagefactory.ComposeNewMatrixHeader(result);
-        
+
         this.storagefactory.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
         this.navCtrl.push(EditorPage, {
             matrixData: result

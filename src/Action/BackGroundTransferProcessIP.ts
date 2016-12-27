@@ -29,7 +29,9 @@ export class BackGroundTransferProcessIP {
         return this.http.post("http://" + server + ":10080/imatrix/matrices/", xmlMatrix, options)
             .catch(err => new Observable(err => { return this._logger.Error('Error,transferring IP matrix: ', err) }))
             .map(response => {
-                return response;
+                if (response["status"] == 200)
+                    return response;
+                else return this._logger.Error('Error,transferring IP matrix,Staus code: ', response["status"])
             }).toPromise()
 
 
@@ -58,15 +60,17 @@ export class BackGroundTransferProcessIP {
                 xhr.open('GET', "http://" + serverAddress + ":10080/isportspip/sports/video/" + fileName, true); // url is my google cloud storage url
                 xhr.responseType = 'blob';
                 xhr.onload = function (e) {
-                    var writeOptions: WriteOptions = { replace: true }
-                    var blob = xhr.response;
-                    return File.createFile(cordova.file.externalRootDirectory + "SportsPIP/Video", fileName, true)
-                        .then((success) => {
-                            return File.writeFile(cordova.file.externalRootDirectory + "SportsPIP/Video", fileName, blob.slice(8), writeOptions)
-                                .then((success) => {
-                                    return resolve(xhr.response);
-                                })
-                        })
+                    if (xhr.status == 200) {
+                        var writeOptions: WriteOptions = { replace: true }
+                        var blob = xhr.response;
+                        return File.createFile(cordova.file.externalRootDirectory + "SportsPIP/Video", fileName, true)
+                            .then((success) => {
+                                return File.writeFile(cordova.file.externalRootDirectory + "SportsPIP/Video", fileName, blob.slice(8), writeOptions)
+                                    .then((success) => {
+                                        return resolve(xhr.response);
+                                    })
+                            })
+                    } else { return reject('This request has failed ' + xhr.status); }
                 };
                 xhr.onerror = function (err) {
                     return reject(err + xhr.statusText);
