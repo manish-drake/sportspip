@@ -30,7 +30,7 @@ export class BackGroundTransferProcessIP {
             .catch(err => new Observable(err => { return this._logger.Error('Error,transferring IP matrix: ', err) }))
             .map(response => {
                 if (response["status"] == 200)
-                    return response;
+                    return true;
                 else return this._logger.Error('Error,transferring IP matrix,Staus code: ', response["status"])
             }).toPromise()
 
@@ -59,7 +59,7 @@ export class BackGroundTransferProcessIP {
             xhr.responseType = 'blob';
             xhr.onload = function (e) {
                 if (xhr.status == 200) {
-                     resolve(xhr);
+                    resolve(xhr);
                 } else { return reject('This request has failed ' + xhr.status); }
             };
             xhr.onerror = function (err) {

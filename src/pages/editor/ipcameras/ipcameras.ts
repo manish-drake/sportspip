@@ -254,12 +254,14 @@ export class Ipcameras {
   TransferMatrix(fileName, connectedServerIP) {
     this.loader.setContent('Transferring Matrix..');
     this.backGroundTransferProcessIP.transferMatrix(fileName, this.recordingDuration, this.ipCams.length, connectedServerIP)
-      .then(() => {
-        this._logger.Debug("transferring IP Cams matrix on network");
-        this.ipCams.forEach((element, index) => {
-          var name = fileName + "_" + (index + 1) + ".mp4";
-          this.GetVideoFileFromServer(name, connectedServerIP)
-        })
+      .then((res) => {
+        if (res) {
+          this._logger.Debug("transferring IP Cams matrix on network");
+          this.ipCams.forEach((element, index) => {
+            var name = fileName + "_" + (index + 1) + ".mp4";
+            this.GetVideoFileFromServer(name, connectedServerIP)
+          })
+        }
       })
       .catch((err) => {
         this.loader.dismiss();
@@ -280,6 +282,7 @@ export class Ipcameras {
           File.writeFile(cordova.file.externalRootDirectory + "SportsPIP/Video", name, blob["response"].slice(8), this.writeOptions)
             .then(() => {
               if (this.index == this.ipCams.length) {
+                alert(this.index);
                 this._logger.Info("Video transfered successfully  " + JSON.stringify(cordova.file.externalRootDirectory) + "SportsPIP/Video");
                 this.saveMatrix();
               }
