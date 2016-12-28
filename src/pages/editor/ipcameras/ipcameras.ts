@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, ModalController, ViewController, AlertController, NavParams, LoadingController, Platform } from 'ionic-angular';
 import { Http } from '@angular/http';
-import { File, WriteOptions } from 'ionic-native';
+import { File, WriteOptions, DirectoryEntry } from 'ionic-native';
 import { Observable } from 'rxjs/Rx';
 import { IpCamSettingsModal } from '../../../pages/editor/ipcamsettings-modal/ipcamsettings-modal'
 import { Connection } from '../../../pages/Connection';
@@ -250,7 +250,7 @@ export class Ipcameras {
       });
   }
 
-
+  index = 1;
   TransferMatrix(fileName, connectedServerIP) {
     this.loader.setContent('Transferring Matrix..');
     this.backGroundTransferProcessIP.transferMatrix(fileName, this.recordingDuration, this.ipCams.length, connectedServerIP)
@@ -259,7 +259,13 @@ export class Ipcameras {
           this._logger.Debug("transferring IP Cams matrix on network");
           this.ipCams.forEach((element, index) => {
             var name = fileName + "_" + (index + 1) + ".mp4";
-            this.GetVideoFileFromServer(name, connectedServerIP)
+            this.GetVideoFileFromServer(name, connectedServerIP).then(() => {
+              if (this.index == this.ipCams.length) {
+                this._logger.Info("Video transfered successfully  " + JSON.stringify(cordova.file.externalRootDirectory) + "SportsPIP/Video");
+                this.saveMatrix();
+              }
+              this.index++;
+            })
           })
         }
       })
@@ -271,30 +277,19 @@ export class Ipcameras {
   }
 
   writeOptions: WriteOptions = { replace: true }
-  index = 1;
-  GetVideoFileFromServer(name, connectedServerIP) {
+  GetVideoFileFromServer(name, connectedServerIP): Promise<DirectoryEntry> {
     this.loader.setContent('Getting Videos..');
     this._logger.Debug("Getting IP Cams Video from network");
-    this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP).then((blob) => {
-
-      File.createFile(cordova.file.externalRootDirectory + "SportsPIP/Video", name, true)
+    return this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP).then((blob) => {
+      return File.createFile(cordova.file.externalRootDirectory + "SportsPIP/Video", name, true)
         .then(() => {
-          File.writeFile(cordova.file.externalRootDirectory + "SportsPIP/Video", name, blob["response"].slice(8), this.writeOptions)
-            .then(() => {
-              if (this.index == this.ipCams.length) {
-                alert(this.index);
-                this._logger.Info("Video transfered successfully  " + JSON.stringify(cordova.file.externalRootDirectory) + "SportsPIP/Video");
-                this.saveMatrix();
-              }
-              this.index++;
-            })
+          return File.writeFile(cordova.file.externalRootDirectory + "SportsPIP/Video", name, blob["response"].slice(8), this.writeOptions)
+            .then((success) => { return success["nativeURL"] })
         })
-
+    }).catch((err) => {
+      this._logger.Error("Error,Getting IP Cams Video from network.", err);
+      this.loader.dismiss();
     })
-      .catch((err) => {
-        this._logger.Error("Error,Getting IP Cams Video from network.", err);
-        this.loader.dismiss();
-      });
   }
 
   saveMatrix() {
