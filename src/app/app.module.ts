@@ -22,7 +22,7 @@ import { CanvasComponent } from '../pages/editor/canvas-component/canvas-compone
 import { Compareview } from '../pages/editor/compareview/compareview'
 import { CompareviewComponent, CaptureViewsPopover } from '../pages/editor/Compareview-Component/Compareview-Component'
 import { Swipeview } from '../pages/editor/swipeview/swipeview'
-
+import { StorageFactory } from '../Factory/StorageFactory';
 import { Logger } from '../logging/logger';
 import { AProvider } from '../logging/aProvider';
 import { SqliteLogProvider } from '../logging/providers/sqliteLogProvider';
@@ -56,7 +56,7 @@ import { SqliteLogProvider } from '../logging/providers/sqliteLogProvider';
   providers: [
     AlertControllers,
     { provide: AProvider, useClass: SqliteLogProvider },
-    Logger
+    Logger,StorageFactory
     ],
   imports: [
     IonicModule.forRoot(sportspip)

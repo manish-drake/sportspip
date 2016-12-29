@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Platform, ToastController } from 'ionic-angular';
 import { Http } from '@angular/http';
+import { Observable } from 'Rxjs';
 import { File, WriteOptions, FileEntry } from 'ionic-native';
 import { Logger } from '../logging/logger';
 
@@ -256,6 +257,25 @@ export class StorageFactory {
         return hea;
     }
 
+    CreateFile(path, fileName): Promise<string> {
+        return File.createFile(path, fileName, true).then((success) => {
+            return success["nativeUrl"];
+        })
+    }
+    WriteFile(path, fileName, content): Promise<string> {
+        return File.writeFile(path, fileName, content, this.writeOptions).then((success) => {
+            return success["nativeUrl"]
+        })
+    }
+
+    CopyFile(oldPath, fileName, newPath, newFileName) {
+
+    }
+
+    MoveFile() {
+
+    }
+
     RemoveFileAsync(path, dirName) {
         return File.removeRecursively(path, dirName).then((res) => {
             return res;
@@ -353,13 +373,5 @@ export class StorageFactory {
         return File.listDir(path, DirName).then((success) => {
             return success;
         })
-    }
-
-    CopyFile(oldPath, fileName, newPath, newFileName) {
-
-    }
-
-    MoveFile() {
-
     }
 }

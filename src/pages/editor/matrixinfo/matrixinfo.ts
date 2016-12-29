@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { ViewController, NavParams, Platform } from 'ionic-angular';
 import { Http } from '@angular/http';
-import { File } from 'ionic-native';
 import { StorageFactory } from '../../../Factory/StorageFactory';
 import { Package } from '../../../pages/Package';
 import { Logger } from '../../../logging/logger';
@@ -17,7 +16,7 @@ declare var cordova: any;
 @Component({
     selector: 'page-matrixinfo',
     templateUrl: 'matrixinfo.html',
-    providers: [StorageFactory, Package]
+    providers: [Package]
 })
 
 export class MatrixInfoPage {
@@ -51,7 +50,7 @@ export class MatrixInfoPage {
     ionViewWillUnload() {
         if (this.validatematrixInfo()) {
             this.platform.ready().then(() => {
-                File.readAsText(cordova.file.dataDirectory + "Local/" + this.matrixData._Channel + "/Tennis/Matrices/" + this.matrixData._Name, this.matrixData._Name + ".mtx")
+                this.storagefactory.ReadFileAync("Local", this.matrixData._Channel, this.matrixData._Name, this.matrixData._Name + ".mtx")
                     .then(data => {
                         var res = JSON.parse(data.toString());
                         var matrix = res.Matrix;
