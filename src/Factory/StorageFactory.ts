@@ -130,8 +130,6 @@ export class StorageFactory {
         }).catch((err) => {
             this._logger.Error('Error,deleting server header: ', err);
         })
-
-
     }
 
     DeleteLocalHeader(DirName, channel) {
@@ -153,8 +151,8 @@ export class StorageFactory {
         this._logger.Debug('Save user async..');
         this.platform.ready().then(() => {
             const fs: string = cordova.file.dataDirectory;
-            File.createDir(fs, "Server", true).then((success) => {
-                var serverFolder = fs + "Server/";
+            File.createDir(fs, "Roaming", true).then((success) => {
+                var serverFolder = fs + "Roaming/";
                 File.createFile(serverFolder, "User.json", true).then(() => {
                     File.writeFile(serverFolder, "User.json", content, this.writeOptions)
                         .then(function (success) {
