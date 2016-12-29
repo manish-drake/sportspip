@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Platform } from 'ionic-angular';
 import X2JS from 'x2js';
-import { File, WriteOptions } from 'ionic-native';
 import { Logger } from '../logging/logger';
 import { Observable } from 'rxjs/Rx';
 declare var FileTransfer: any;

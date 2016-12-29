@@ -1,7 +1,7 @@
 import { Component, Injectable } from '@angular/core';
 
 import {
-  NavController, NavParams, AlertController, ModalController, ModalOptions, Platform,
+  NavController, NavParams, AlertController, ModalController, Platform,
   App, LoadingController, Events, PopoverController, ViewController
 } from 'ionic-angular';
 import { BackGroundTransferProcess } from '../../Action/BackGroundTransferProcess';
