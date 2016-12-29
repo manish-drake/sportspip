@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Platform } from 'ionic-angular';
 import X2JS from 'x2js';
+import { StorageFactory } from '../Factory/StorageFactory';
 import { File, WriteOptions } from 'ionic-native';
 import { Logger } from '../logging/logger';
 import { Observable } from 'rxjs/Rx';
@@ -11,7 +12,7 @@ declare var cordova: any;
 export class BackGroundTransferProcessIP {
     private data: any;
 
-    constructor(private platform: Platform, private http: Http, private _logger: Logger) {
+    constructor(private platform: Platform, private http: Http, private _logger: Logger,private storageFactory:StorageFactory) {
 
     }
 

@@ -74,7 +74,6 @@ export class Subscription {
             .map(res => res.json())
             .map(us => {
                 // var data = JSON.parse(us);
-                console.log(us);
                 return true;
             }).toPromise();
     }
@@ -84,9 +83,7 @@ export class Subscription {
         return this.http.get("http://sportspipservice.cloudapp.net:10106/IMobile/users/" + firstName + "/" + lastName + "/" + email + "/abc123/0")
             .map(res => res.json())
             .map(us => {
-                console.log(us);
                 var data = JSON.parse(us);
-                console.log(data);
                 var user = { Name: firstName + " " + lastName, FirstName: firstName, LastName: lastName, Email: email, UserId: data.ID };
                 return user;
             }).toPromise();
@@ -97,7 +94,6 @@ export class Subscription {
             .map(res => res.json())
             .map(us => {
                 var data = JSON.parse(us);
-                console.log(data);
                 var user = { Name: data.Returns.Name, FirstName: data.Returns.FirstName, LastName: data.Returns.LastName, Email: data.Returns.Email, UserId: data.Returns.ID }
                 return user;
             }).toPromise();

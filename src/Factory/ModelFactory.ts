@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable } from 'rxjs/Rx';
-import { File, WriteOptions } from 'ionic-native';
+import { StorageFactory } from '../Factory/StorageFactory';
 import { Logger } from '../logging/logger';
 
 declare var navigator: any;
@@ -9,8 +9,8 @@ import 'rxjs/Rx';
 
 @Injectable()
 export class ModelFactory {
-    writeOptions: WriteOptions = { replace: true }
-    constructor(private _logger: Logger) { }
+
+    constructor(private _logger: Logger, private storageFactory: StorageFactory) { }
 
     CreateThumbnail(name, thumbname) {
         this._logger.Debug('Create thumbnail..');
@@ -25,8 +25,10 @@ export class ModelFactory {
             .take(1).map((x) => x + 5)
             .subscribe((x) => {
                 var data = this.b64toBlob(blob, 'image/jpeg', 1024);
-                File.createFile(cordova.file.applicationStorageDirectory, thumbname + ".jpg", true).then(() => {
-                    File.writeFile(cordova.file.applicationStorageDirectory, thumbname + ".jpg", data, this.writeOptions).then(() => {
+                this.storageFactory.CreateFile(cordova.file.applicationStorageDirectory, thumbname + ".jpg")
+                .then(() => {
+                    this.storageFactory.WriteFile(cordova.file.applicationStorageDirectory, thumbname + ".jpg", data)
+                    .then(() => {
                         this._logger.Debug("thumbanil created successfully..");
                     })
                 })

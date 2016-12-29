@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavController, ModalController, PopoverController, ViewController, Platform, LoadingController } from 'ionic-angular';
-import { File,WriteOptions } from 'ionic-native';
 import { Login } from '../settings/login/login'
 import { Subscription } from '../../Stubs/Subscription';
 import { StorageFactory } from '../../Factory/StorageFactory';
@@ -20,7 +19,7 @@ declare var cordova: any;
 @Component({
   selector: 'page-settings',
   templateUrl: 'settings.html',
-  providers: [Subscription, StorageFactory, Package]
+  providers: [Subscription, Package]
 })
 
 export class SettingsPage {
@@ -100,7 +99,7 @@ export class SettingsPage {
       this.chanelList = [];
       this.subscribeList = [];
       this.createSettingsasync()
-      File.removeRecursively(cordova.file.dataDirectory + "Server", channelName).then(() => {
+      this.storagefactory.RemoveFileAsync(cordova.file.dataDirectory + "Server", channelName).then(() => {
       })
     });
   }
@@ -170,11 +169,10 @@ export class SettingsPage {
           });
       });
   }
-writeOptions: WriteOptions = { replace: true }
   Save(blob, filename) {
-    File.createFile(cordova.file.dataDirectory, filename, true).then(() => {
-      File.writeFile(cordova.file.dataDirectory, filename, blob, this.writeOptions).then(() => {
-        console.log("saving headers list file..");
+    this.storagefactory.CreateFile(cordova.file.dataDirectory, filename).then((res) => {
+      this.storagefactory.WriteFile(cordova.file.dataDirectory, filename, blob).then((res) => {
+        this._logger.Debug("Saving user");
       })
     })
   }
@@ -238,12 +236,12 @@ writeOptions: WriteOptions = { replace: true }
     popover.onDidDismiss(data => {
       if (data != null) {
         this.platform.ready().then(() => {
-          File.removeFile(cordova.file.dataDirectory + "Server", "User.json").then((res) => {
+          this.storagefactory.RemoveFileAsync(cordova.file.dataDirectory + "Server", "User.json").then((res) => {
+            this.FirstName = null;
+            this.UserID = 0;
+            this.subscribeList = [];
+            this.InvalidateChannelListAsync(this.UserID);
           })
-          this.FirstName = null;
-          this.UserID = 0;
-          this.subscribeList = [];
-          this.InvalidateChannelListAsync(this.UserID);
         })
       }
     })
