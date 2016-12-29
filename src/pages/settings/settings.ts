@@ -47,11 +47,11 @@ export class SettingsPage {
 
   ionViewDidLoad() {
     this._logger.Debug('Settings Page loaded');
-    console.log('Hello Settings Page');
     this.createSettingsasync();
   }
 
   InvalidateSubscribeListAsync(userId) {
+    this._logger.Debug('Invalidating subscribe channel list..');
     this.subscribeList = [];
     this.subscription.GetSubscriptionList(userId).then((data) => {
       this.subscribeList = data;
@@ -59,6 +59,7 @@ export class SettingsPage {
   }
 
   InvalidateChannelListAsync(userId) {
+    this._logger.Debug('Invalidating UnSubscribe channel list..');
     this.chanelList = [];
     this.subscription.GetChannelsAsync(userId).then((data) => {
       data.forEach(channel => {
@@ -67,11 +68,12 @@ export class SettingsPage {
           this.chanelList.push(channel);
         }
       });
-    });
+    }).catch((err) => { });
 
   }
 
   SubscribeList(index, channelName) {
+    this._logger.Debug('Subscribing channel list..');
     if (this.FirstName == null) {
       this.presentLoginModal();
     }
@@ -86,7 +88,7 @@ export class SettingsPage {
         });
         loader.present();
         this.GetserverHeader(channelName);
-      });
+      }).catch((err) => { this._logger.Error('Error,Subscribing channel list..', err); });
       // var channel = this.subscription.RequestSubscriptionAsync(channelName, this.UserID);
       // this.subscribeList.push(channel);
       // this.chanelList.splice(index, 1);
@@ -95,17 +97,19 @@ export class SettingsPage {
   }
 
   UnSubscribeList(index, channelName) {
+    this._logger.Debug('unSubscribing channel list..');
     this.subscription.RemoveSubscriptionAsync(channelName, this.UserID).then((data) => {
       this.chanelList = [];
       this.subscribeList = [];
       this.createSettingsasync()
       this.storagefactory.RemoveFileAsync(cordova.file.dataDirectory + "Server", channelName).then(() => {
       })
-    });
+    }).catch((err) => { this._logger.Error('Error,unSubscribing channel list..', err); });
   }
 
   createSettingsasync() {
-    this.http.get(cordova.file.dataDirectory + "Server/User.json").map(response => response.json())
+    this._logger.Debug('Creating Settings channel list..');
+    this.http.get(cordova.file.dataDirectory + "Roaming/User.json").map(response => response.json())
       .catch(err => new Observable(observer => { this.UserID = 0; this.InvalidateChannelListAsync("0"); console.log("no user find"); }))
       .subscribe(result => {
         this.SetUserAcync(result)
@@ -236,7 +240,7 @@ export class SettingsPage {
     popover.onDidDismiss(data => {
       if (data != null) {
         this.platform.ready().then(() => {
-          this.storagefactory.RemoveFileAsync(cordova.file.dataDirectory + "Server", "User.json").then((res) => {
+          this.storagefactory.RemoveFileAsync(cordova.file.dataDirectory + "Roaming", "User.json").then((res) => {
             this.FirstName = null;
             this.UserID = 0;
             this.subscribeList = [];
