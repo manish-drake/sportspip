@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, ActionSheetController, AlertController, PopoverController, ToastController, Platform, LoadingController } from 'ionic-angular';
-import { File } from 'ionic-native';
+import { File, AppVersion, Device } from 'ionic-native';
 
 import { HomeMorePopover } from '../../pages/homemore-popover/homemore-popover';
 import { AlertControllers } from '../../Action/Alerts';
@@ -71,8 +71,19 @@ export class HomePage {
     }
 
     ionViewDidLoad() {
+        this.logDeviceInfo();
         this.storagefactory.CreateVideoFolder();
         this.connection.scanUdp();
+    }
+
+    logDeviceInfo(){
+        if (this.platform.is('cordova')) {
+            AppVersion.getVersionNumber().then((ver) => {
+                this._logger.Info('App Version: ', ver);
+            });
+            this._logger.Info('OS: ', Device.platform + " " + Device.version);
+            this._logger.Info('Device: ', Device.manufacturer.toUpperCase() + " " + Device.model);
+        }
     }
 
     showSegment(segment) {

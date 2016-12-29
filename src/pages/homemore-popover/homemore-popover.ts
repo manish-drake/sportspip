@@ -62,11 +62,11 @@ export class HomeMorePopover {
         let email = {
             to: 'manish@drake.in',
             attachments: [cordova.file.externalRootDirectory + "SportsPIP/data.db"],
-            subject: "Logs for Sports PIP " + this.versionNumber + " from " + Device.platform + " (See attachment)",
+            subject: "Logs for Sports PIP (" + this.versionNumber + ") from " + Device.platform + " (See attachment)",
             body:
             "App Version: " + "<b>" + this.versionNumber + "</b><br>" +
             "OS: " + "<b>" + Device.platform + " " + Device.version + "</b><br>" +
-            "Device: " + "<b>" + Device.manufacturer + " " + Device.model + "</b><br>" +
+            "Device: " + "<b>" + Device.manufacturer.toUpperCase() + " " + Device.model + "</b><br>" +
 
             "<br><br>" +
             "Here is the logs file for Sports PIP app as attachment.."

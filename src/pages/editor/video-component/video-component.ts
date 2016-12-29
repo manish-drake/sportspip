@@ -35,7 +35,7 @@ export class VideoComponent {
     playPauseButtonIcon: string = "play";
     videoSrcAvailable: boolean = true;
     markersDirectory = [];
-    index = 0;
+
     viewBoxSize: any;
     markersobjects = [];
     video: HTMLVideoElement;
@@ -326,10 +326,11 @@ export class VideoComponent {
         }
     }
 
+    index = 0;
+
     PlayStoryBoard() {
         var marker = this.markers.find(x => x.checked == true)
         if (marker != undefined && this.index == 0) {
-
             this.markersobjects = [];
             this.markersDirectory = [];
             this.InvalidateObjects(marker);
@@ -483,7 +484,6 @@ export class VideoComponent {
         console.log("Saving markers..");
         var ChronoMarker = { ChronoMarker: this.markers };
         this.view["Content"]["Capture"]["View.ChronoMarker"] = ChronoMarker;
-        console.log(this.view["Content"]["Capture"]["View.ChronoMarker"]);
     }
 
     canAddMarker(position) {

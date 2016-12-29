@@ -244,7 +244,6 @@ export class EditorPage {
 
   chooseVideo() {
     this._logger.Debug("Adding file mannualy..");
-    try {
       if (this.platform.is('cordova')) {
         FileChooser.open().then(uri => {
           console.log(uri);
@@ -265,27 +264,25 @@ export class EditorPage {
                 })
                 .catch(err => {
                   console.log('Failed copying video:' + JSON.stringify(err))
-                  this.chooseVideoErrorMsg('Failed copying video:' + err);
+                  this.chooseVideoErrorMsg('Failed copying video:' + JSON.stringify(err));
                 });
 
             })
             .catch(err => {
               console.log(err);
-              this.chooseVideoErrorMsg('Failed Resolving nativepath:' + err);
+              this.chooseVideoErrorMsg('Failed Resolving nativepath:' + JSON.stringify(err));
             });
 
         }).catch(err => {
           console.log(err);
-          this.chooseVideoErrorMsg('Error opening file chooser:' + err);
+          this.chooseVideoErrorMsg('Error opening file chooser:' + JSON.stringify(err));
         });
       }
-    }
-    catch (err) { this._logger.Error('Error,adding video mannualy: ', err); }
   }
 
   chooseVideoErrorMsg(err) {
     this._logger.Error("Error in chooseVideo", err);
-    this.alertCtrls.BasicAlert('Failed saving video!', JSON.stringify(err));
+    this.alertCtrls.BasicAlert('Failed saving video!', err);
 
   }
 
