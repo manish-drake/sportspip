@@ -353,7 +353,6 @@ export class VideoComponent {
 
     InvalidateObjects(selctedMarker) {
         var objs = selctedMarker["Marker.Objects"];
-
         if (selctedMarker._Position == "00:00:00") {
             if (this.IsMarkerObjectExist(selctedMarker) == -1) {
                 var durationMS = this.formatDurationInMiliSecond(selctedMarker._Duration);

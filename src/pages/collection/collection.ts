@@ -123,6 +123,7 @@ export class CollectionPage {
         title: title,
         buttons: [
           {
+            icon: 'trash',
             text: 'Delete',
             role: 'destructive',
             handler: () => {
@@ -130,11 +131,13 @@ export class CollectionPage {
               this.localMatrices.splice(index, 1);
             }
           }, {
+            icon: 'copy',
             text: 'Save Copy',
             handler: () => {
               this.DuplicateMatrix(matrixName, channel);
             }
           }, {
+            icon: 'close',
             text: 'Cancel',
             role: 'cancel',
             handler: () => {

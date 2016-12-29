@@ -194,12 +194,14 @@ export class ChannelCollectionPage {
       let actionSheet = this.actionSheetCtrl.create({
         title: title,
         buttons: [{
+          icon: 'trash',
           text: 'Delete',
           role: 'destructive',
           handler: () => {
             this.DeleteChannelMatrix(DirName, channel, index);
           }
         }, {
+          icon: 'close',
           text: 'Cancel',
           role: 'cancel',
           handler: () => { }
