@@ -76,7 +76,7 @@ export class HomePage {
         this.connection.scanUdp();
     }
 
-    logDeviceInfo(){
+    logDeviceInfo() {
         if (this.platform.is('cordova')) {
             AppVersion.getVersionNumber().then((ver) => {
                 this._logger.Info('App Version: ', ver);
@@ -149,6 +149,7 @@ export class HomePage {
             title: title,
             buttons: [
                 {
+                    icon: 'trash',
                     text: 'Delete',
                     role: 'destructive',
                     handler: () => {
@@ -157,12 +158,14 @@ export class HomePage {
                         this.localMatrices.splice(index, 1);
                     }
                 }, {
+                    icon: 'copy',
                     text: 'Save Copy',
                     handler: () => {
                         console.log('Copy clicked');
                         this.DuplicateMatrix(channel, Name);
                     }
                 }, {
+                    icon: 'close',
                     text: 'Cancel',
                     role: 'cancel',
                     handler: () => {
@@ -204,12 +207,14 @@ export class HomePage {
         let actionSheet = this.actionSheetCtrl.create({
             title: title,
             buttons: [{
+                icon: 'trash',
                 text: 'Delete',
                 role: 'destructive',
                 handler: () => {
                     this.deleteServerHeader(name, index, value, channel)
                 }
             }, {
+                icon: 'close',
                 text: 'Cancel',
                 role: 'cancel',
                 handler: () => { }
@@ -244,7 +249,7 @@ export class HomePage {
     }
 
     retrunThumbnailPath(name) {
-        return "url(" + cordova.file.applicationStorageDirectory + name + ".jpg" + ")";
+        return "url(" + cordova.file.externalDataDirectory + name + ".jpg" + ")";
     }
 
     GetLocalMatrixHeader() {
@@ -304,7 +309,7 @@ export class HomePage {
                     .take(1).map((x) => x + 5)
                     .subscribe((x) => {
                         this.platform.ready().then(() => {
-                            this.storagefactory.RemoveFileAsync(cordova.file.dataDirectory, "Temp").then(() => {
+                            this.storagefactory.RemoveFileAsync(cordova.file.externalDataDirectory, "Temp").then(() => {
                                 this.localMatrices = [];
                                 this.GetLocalMatrixHeader();
                                 this.deleteServerHeader(fileName, index, value, channelName);
@@ -330,7 +335,7 @@ export class HomePage {
         this.storagefactory.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices");
         var headerContent = this.storagefactory.ComposeNewMatrixHeader(result);
         this.storagefactory.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
-        
+
         this.navCtrl.push(EditorPage, {
             matrixData: result
         });

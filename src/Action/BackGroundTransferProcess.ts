@@ -18,7 +18,7 @@ export class BackGroundTransferProcess {
     }
     TransferVideo(fileName, serverIP, views) {
         this._logger.Debug('Transfer video');
-        File.readAsArrayBuffer(cordova.file.applicationStorageDirectory, fileName).then(success => {
+        File.readAsArrayBuffer(cordova.file.externalDataDirectory, fileName).then(success => {
             let headers = new Headers({ 'Content-Type': 'video/mp4' }); // ... Set content type to JSON
             let options = new RequestOptions({ headers: headers });
             this.http.post("http://" + serverIP + ":10080/imatrix/matrices/" + fileName.slice(0, -4) + "/videos", success, options)

@@ -33,7 +33,8 @@ export class VideoComponent {
     timelineDuration: any;
     repeatColor: any = "inactive";
     playPauseButtonIcon: string = "play";
-    videoSrcAvailable: boolean = true;
+    isVideoComponentVisible: boolean = true;
+    isErrorVisible: boolean = false;
     markersDirectory = [];
 
     viewBoxSize: any;
@@ -101,19 +102,20 @@ export class VideoComponent {
     public errormessage: any;
 
     OnVideoError(error) {
-        this.videoSrcAvailable = false;
         console.log('Error loading video: ' + JSON.stringify(error));
 
         var filePath = this.video.currentSrc;
         var dirpath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
         var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
-
         File.checkFile(dirpath, fileName)
             .then(success => {
+                this.isErrorVisible = true;
                 this._logger.Error("View " + (this.viewindex + 1) + ': Error loading video: ', this.videoErrorHandling(this.video.error.code));
                 this.errormessage = this.videoErrorHandling(this.video.error.code);
             })
             .catch(err => {
+                this.isVideoComponentVisible = false;
+                this.isErrorVisible = true;
                 this._logger.Error("View " + (this.viewindex + 1) + ': Video file not exists in the desired directory: ', error);
                 this.errormessage = "Video file not found";
             });
@@ -199,7 +201,7 @@ export class VideoComponent {
 
     returnImagePath(name) {
         if (this.platform.is('cordova')) {
-            return cordova.file.applicationStorageDirectory + name;
+            return cordova.file.externalDataDirectory + name;
         }
         else {
             return 'assets/sample.jpg';
@@ -208,7 +210,7 @@ export class VideoComponent {
 
     returnInkPath(name) {
         if (this.platform.is('cordova')) {
-            return cordova.file.applicationStorageDirectory + name + ".gif";
+            return cordova.file.externalDataDirectory + name + ".gif";
         }
         else {
             return 'assets/inksample.gif';
@@ -353,7 +355,6 @@ export class VideoComponent {
 
     InvalidateObjects(selctedMarker) {
         var objs = selctedMarker["Marker.Objects"];
-
         if (selctedMarker._Position == "00:00:00") {
             if (this.IsMarkerObjectExist(selctedMarker) == -1) {
                 var durationMS = this.formatDurationInMiliSecond(selctedMarker._Duration);

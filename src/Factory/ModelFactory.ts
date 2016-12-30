@@ -10,7 +10,11 @@ import 'rxjs/Rx';
 @Injectable()
 export class ModelFactory {
 
-    constructor(private _logger: Logger, private storageFactory: StorageFactory) { }
+    private storageDataDir:string;
+
+    constructor(private _logger: Logger, private storageFactory: StorageFactory) {
+        this.storageDataDir = cordova.file.externalDataDirectory;
+     }
 
     CreateThumbnail(name, thumbname) {
         this._logger.Debug('Create thumbnail..');
@@ -25,9 +29,9 @@ export class ModelFactory {
             .take(1).map((x) => x + 5)
             .subscribe((x) => {
                 var data = this.b64toBlob(blob, 'image/jpeg', 1024);
-                this.storageFactory.CreateFile(cordova.file.applicationStorageDirectory, thumbname + ".jpg")
+                this.storageFactory.CreateFile(this.storageDataDir, thumbname + ".jpg")
                 .then(() => {
-                    this.storageFactory.WriteFile(cordova.file.applicationStorageDirectory, thumbname + ".jpg", data)
+                    this.storageFactory.WriteFile(this.storageDataDir, thumbname + ".jpg", data)
                     .then(() => {
                         this._logger.Debug("thumbanil created successfully..");
                     })

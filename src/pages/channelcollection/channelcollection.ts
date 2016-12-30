@@ -99,7 +99,7 @@ export class ChannelCollectionPage {
   // }
 
   retrunThumbnailPath(name) {
-    return "url(" + cordova.file.applicationStorageDirectory + name + ".jpg" + ")";
+    return "url(" + cordova.file.externalDataDirectory + name + ".jpg" + ")";
   }
 
   presentPopover(event) {
@@ -194,12 +194,14 @@ export class ChannelCollectionPage {
       let actionSheet = this.actionSheetCtrl.create({
         title: title,
         buttons: [{
+          icon: 'trash',
           text: 'Delete',
           role: 'destructive',
           handler: () => {
             this.DeleteChannelMatrix(DirName, channel, index);
           }
         }, {
+          icon: 'close',
           text: 'Cancel',
           role: 'cancel',
           handler: () => { }
