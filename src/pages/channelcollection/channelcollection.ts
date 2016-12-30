@@ -99,7 +99,7 @@ export class ChannelCollectionPage {
   // }
 
   retrunThumbnailPath(name) {
-    return "url(" + cordova.file.applicationStorageDirectory + name + ".jpg" + ")";
+    return "url(" + cordova.file.externalDataDirectory + name + ".jpg" + ")";
   }
 
   presentPopover(event) {

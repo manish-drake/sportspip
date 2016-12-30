@@ -31,6 +31,7 @@ export class SettingsPage {
   public LastName: any;
   Header = [];
 
+  private storageDataDir:string;
 
   constructor(public navCtrl: NavController,
     private subscription: Subscription,
@@ -42,7 +43,7 @@ export class SettingsPage {
     private platform: Platform,
     private loadingCtrl: LoadingController,
     private _logger: Logger) {
-
+      this.storageDataDir = cordova.file.externalDataDirectory;
   }
 
   ionViewDidLoad() {
@@ -102,14 +103,14 @@ export class SettingsPage {
       this.chanelList = [];
       this.subscribeList = [];
       this.createSettingsasync()
-      this.storagefactory.RemoveFileAsync(cordova.file.dataDirectory + "Server", channelName).then(() => {
+      this.storagefactory.RemoveFileAsync(this.storageDataDir + "Server", channelName).then(() => {
       })
     }).catch((err) => { this._logger.Error('Error,unSubscribing channel list..', err); });
   }
 
   createSettingsasync() {
     this._logger.Debug('Creating Settings channel list..');
-    this.http.get(cordova.file.dataDirectory + "Roaming/User.json").map(response => response.json())
+    this.http.get(this.storageDataDir + "Roaming/User.json").map(response => response.json())
       .catch(err => new Observable(observer => { this.UserID = 0; this.InvalidateChannelListAsync("0"); console.log("no user find"); }))
       .subscribe(result => {
         this.SetUserAcync(result)
@@ -174,8 +175,8 @@ export class SettingsPage {
       });
   }
   Save(blob, filename) {
-    this.storagefactory.CreateFile(cordova.file.dataDirectory, filename).then((res) => {
-      this.storagefactory.WriteFile(cordova.file.dataDirectory, filename, blob).then((res) => {
+    this.storagefactory.CreateFile(this.storageDataDir, filename).then((res) => {
+      this.storagefactory.WriteFile(this.storageDataDir, filename, blob).then((res) => {
         this._logger.Debug("Saving user");
       })
     })
@@ -183,7 +184,7 @@ export class SettingsPage {
 
   //server header
   SaveServerHeaders(channel) {
-    this.http.get(cordova.file.dataDirectory + "/header.xml").subscribe(data => {
+    this.http.get(this.storageDataDir + "/header.xml").subscribe(data => {
       var headerList = JSON.parse(data.text());
       headerList.forEach(header => {
         var result = header;
@@ -240,7 +241,7 @@ export class SettingsPage {
     popover.onDidDismiss(data => {
       if (data != null) {
         this.platform.ready().then(() => {
-          this.storagefactory.RemoveFileAsync(cordova.file.dataDirectory + "Roaming", "User.json").then((res) => {
+          this.storagefactory.RemoveFileAsync(this.storageDataDir + "Roaming", "User.json").then((res) => {
             this.FirstName = null;
             this.UserID = 0;
             this.subscribeList = [];

@@ -249,7 +249,7 @@ export class HomePage {
     }
 
     retrunThumbnailPath(name) {
-        return "url(" + cordova.file.applicationStorageDirectory + name + ".jpg" + ")";
+        return "url(" + cordova.file.externalDataDirectory + name + ".jpg" + ")";
     }
 
     GetLocalMatrixHeader() {
@@ -309,7 +309,7 @@ export class HomePage {
                     .take(1).map((x) => x + 5)
                     .subscribe((x) => {
                         this.platform.ready().then(() => {
-                            this.storagefactory.RemoveFileAsync(cordova.file.dataDirectory, "Temp").then(() => {
+                            this.storagefactory.RemoveFileAsync(cordova.file.externalDataDirectory, "Temp").then(() => {
                                 this.localMatrices = [];
                                 this.GetLocalMatrixHeader();
                                 this.deleteServerHeader(fileName, index, value, channelName);

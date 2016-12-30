@@ -15,8 +15,11 @@ declare var navigator: any;
 
 @Injectable()
 export class Package {
-    constructor(private http: Http, private platform: Platform, private storagefactory: StorageFactory) {
 
+    private storageDataDir:string;
+
+    constructor(private http: Http, private platform: Platform, private storagefactory: StorageFactory) {
+        this.storageDataDir = cordova.file.externalDataDirectory;
     }
 
     public fileName: any;
@@ -25,7 +28,7 @@ export class Package {
     MoveToLocalCollection(channelName) {
         this.fileName = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
         this.platform.ready().then(() => {
-            File.readAsText(cordova.file.dataDirectory + "Temp/matrix1", "Header.xml").then((result => {
+            File.readAsText(this.storageDataDir + "Temp/matrix1", "Header.xml").then((result => {
                 console.log("header moving..");
                 var header = JSON.parse(result.toString());
                 header.Name = this.fileName;
@@ -35,7 +38,7 @@ export class Package {
                 this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
                 console.log("header moved");
             }));
-            File.listDir(cordova.file.dataDirectory + "Temp/", "matrix1").then((success) => {
+            File.listDir(this.storageDataDir  + "Temp/", "matrix1").then((success) => {
                 success.forEach(file => {
                     var sliced = file.name.substr(-4);
                     switch (sliced) {
@@ -54,16 +57,16 @@ export class Package {
                             }).toPromise()
                         case '.mp4':
                             console.log("video moving...");
-                            return File.moveFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.externalRootDirectory + "SportsPIP/Video", file.name)
+                            return File.moveFile(this.storageDataDir + "Temp/matrix1", file.name, cordova.file.externalRootDirectory + "SportsPIP/Video", file.name)
                                 .then((success) => { console.log("video moved"); });
                         case ".gif":
                         case ".rtf":
                             console.log("ink moving...");
-                            return File.moveFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.applicationStorageDirectory, file.name)
+                            return File.moveFile(this.storageDataDir + "Temp/matrix1", file.name, cordova.file.externalDataDirectory, file.name)
                                 .then((success) => { console.log("ink moved..."); });
                         case ".jpg":
                             console.log("image moving...");
-                            return File.moveFile(cordova.file.dataDirectory + "Temp/matrix1", file.name, cordova.file.applicationStorageDirectory, file.name)
+                            return File.moveFile(this.storageDataDir + "Temp/matrix1", file.name, cordova.file.externalDataDirectory, file.name)
                                 .then(() => { console.log("image moved"); });
                         default:
                     }
@@ -74,11 +77,11 @@ export class Package {
     }
 
     DownloadServerHeader(fileName, channelName): Promise<DirectoryEntry> {
-        return File.createDir(cordova.file.dataDirectory, "Temp", true).then(() => {
-            var NewPath = cordova.file.dataDirectory + "Temp/";
+        return File.createDir(this.storageDataDir , "Temp", true).then(() => {
+            var NewPath = this.storageDataDir  + "Temp/";
             return File.createDir(NewPath, "matrix1", true).then(() => {
                 var matrixPath = NewPath + "matrix1/";
-                var oldPath = cordova.file.dataDirectory + "Server/" + channelName + "/Tennis/Matrices/" + fileName + "/";
+                var oldPath = this.storageDataDir + "Server/" + channelName + "/Tennis/Matrices/" + fileName + "/";
                 return File.copyFile(oldPath, "Header.xml", matrixPath, "Header.xml").then((success) => {
                     const ft = new FileTransfer();
                     var url = encodeURI("https://sportspipstorage.blob.core.windows.net/matrices/" + channelName + "/" + fileName + ".sar");
@@ -113,8 +116,8 @@ export class Package {
     }
 
     unzipPackage() {
-        var PathToFileInString = cordova.file.dataDirectory + "Temp/m1.zip";
-        var PathToResultZip = cordova.file.dataDirectory + "Temp/matrix1";
+        var PathToFileInString = this.storageDataDir + "Temp/m1.zip";
+        var PathToResultZip = this.storageDataDir + "Temp/matrix1";
         zip.unzip(PathToFileInString, PathToResultZip)
     }
 
@@ -123,7 +126,7 @@ export class Package {
         var url = encodeURI("https://sportspipstorage.blob.core.windows.net/thumbnails/" + channelName + "/" + matrixName + ".jpg");
         ft.download(
             url,
-            cordova.file.applicationStorageDirectory + matrixName + ".jpg",
+            this.storageDataDir + matrixName + ".jpg",
             function (entry) {
                 console.log("download complete: " + entry.toURL());
             },

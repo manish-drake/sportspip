@@ -21,7 +21,7 @@ export class OpenMatrix {
 
     run(matrixName, Channel) {
         this._logger.Debug('open matrix..');
-        File.readAsText(cordova.file.dataDirectory + "Local/" + Channel + "/Tennis/Matrices/" + matrixName, matrixName + ".mtx")
+        File.readAsText(cordova.file.externalDataDirectory + "Local/" + Channel + "/Tennis/Matrices/" + matrixName, matrixName + ".mtx")
             .then(data => {
                 console.log("open matrix");
                 var res = JSON.parse(data.toString());

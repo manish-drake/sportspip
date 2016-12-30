@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, ModalController, ViewController, AlertController, NavParams, LoadingController, Platform } from 'ionic-angular';
 import { Http } from '@angular/http';
-import { File, WriteOptions, DirectoryEntry } from 'ionic-native';
+import { DirectoryEntry } from 'ionic-native';
 import { Observable } from 'rxjs/Rx';
 import { IpCamSettingsModal } from '../../../pages/editor/ipcamsettings-modal/ipcamsettings-modal'
 import { Connection } from '../../../pages/Connection';
@@ -276,7 +276,6 @@ export class Ipcameras {
       })
   }
 
-  writeOptions: WriteOptions = { replace: true }
   GetVideoFileFromServer(name, connectedServerIP): Promise<DirectoryEntry> {
     this.loader.setContent('Getting Videos..');
     name = name + "_" + this.index + ".mp4";
