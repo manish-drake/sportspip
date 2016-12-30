@@ -62,7 +62,6 @@ export class HomePage {
 
     ionViewDidEnter() {
         this._logger.Debug('Home page loaded');
-        console.log("main page");
         this.selectedSegment = "local";
         this.channels = [];
         this.localMatrices = [];
@@ -253,13 +252,15 @@ export class HomePage {
     }
 
     GetLocalMatrixHeader() {
-        this._logger.Debug('Getting local matrix header..');
         this.platform.ready().then(() => {
-            this.storagefactory.GetLocalHeader().then((res) => {
-                this.localMatrices = res;
-            }).catch((err) => {
-                this._logger.Error('Error,Getting local matrix header..', err);
-            });
+            if (this.platform.is('cordova')) {
+                this._logger.Debug('Getting local matrix header..');
+                this.storagefactory.GetLocalHeader().then((res) => {
+                    this.localMatrices = res;
+                }).catch((err) => {
+                    this._logger.Error('Error,Getting local matrix header..', err);
+                });
+            }
         });
     }
 
@@ -274,13 +275,15 @@ export class HomePage {
 
     //Display Server Header
     GetServerHeader() {
-        this._logger.Debug('Getting server matrix header..');
         this.platform.ready().then(() => {
-            this.storagefactory.GetServerHeader().then((res) => {
-                this.channels = res;
-            }).catch((err) => {
-                this._logger.Error('Error,Getting server matrix header..', err);
-            });
+            if (this.platform.is('cordova')) {
+                this._logger.Debug('Getting server matrix header..');
+                this.storagefactory.GetServerHeader().then((res) => {
+                    this.channels = res;
+                }).catch((err) => {
+                    this._logger.Error('Error,Getting server matrix header..', err);
+                });
+            }
         });
     }
 

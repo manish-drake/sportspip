@@ -1,5 +1,7 @@
 import { Injectable } from "@angular/core";
+import { Platform } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
+
 import { StorageFactory } from '../Factory/StorageFactory';
 import { Logger } from '../logging/logger';
 
@@ -10,11 +12,15 @@ import 'rxjs/Rx';
 @Injectable()
 export class ModelFactory {
 
-    private storageDataDir:string;
+    private storageDataDir: string;
 
-    constructor(private _logger: Logger, private storageFactory: StorageFactory) {
-        this.storageDataDir = cordova.file.externalDataDirectory;
-     }
+    constructor(private _logger: Logger,
+        private storageFactory: StorageFactory,
+        private platform: Platform) {
+        if (this.platform.is('cordova')) {
+            this.storageDataDir = cordova.file.externalDataDirectory;
+        }
+    }
 
     CreateThumbnail(name, thumbname) {
         this._logger.Debug('Create thumbnail..');
@@ -30,12 +36,12 @@ export class ModelFactory {
             .subscribe((x) => {
                 var data = this.b64toBlob(blob, 'image/jpeg', 1024);
                 this.storageFactory.CreateFile(this.storageDataDir, thumbname + ".jpg")
-                .then(() => {
-                    this.storageFactory.WriteFile(this.storageDataDir, thumbname + ".jpg", data)
                     .then(() => {
-                        this._logger.Debug("thumbanil created successfully..");
+                        this.storageFactory.WriteFile(this.storageDataDir, thumbname + ".jpg", data)
+                            .then(() => {
+                                this._logger.Debug("thumbanil created successfully..");
+                            })
                     })
-                })
             })
 
     }

@@ -19,7 +19,9 @@ export class Package {
     private storageDataDir:string;
 
     constructor(private http: Http, private platform: Platform, private storagefactory: StorageFactory) {
-        this.storageDataDir = cordova.file.externalDataDirectory;
+        if(this.platform.is('cordova')){
+            this.storageDataDir = cordova.file.externalDataDirectory;
+        }
     }
 
     public fileName: any;

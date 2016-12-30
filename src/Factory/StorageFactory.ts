@@ -12,13 +12,13 @@ import 'rxjs/Rx';
 export class StorageFactory {
     writeOptions: WriteOptions = { replace: true }
     private storageRoot: string;
-    private storageDataDir:string;
-    
+    private storageDataDir: string;
+
     constructor(private http: Http, private platform: Platform, private toastCtrl: ToastController, private _logger: Logger) {
-
-        this.storageDataDir = cordova.file.externalDataDirectory;
-
-        this.storageRoot = cordova.file.externalRootDirectory;
+        if (this.platform.is('cordova')) {
+            this.storageDataDir = cordova.file.externalDataDirectory;
+            this.storageRoot = cordova.file.externalRootDirectory;
+        }
     }
     SaveRoamingHeader(content, channel, sport, matrixName) {
         this.SaveServerHeader(content, channel, sport, matrixName, "Matrices");
@@ -91,7 +91,7 @@ export class StorageFactory {
     SaveLocalHeader(content, channel, sport, matrixName, typeFolder) {
         this._logger.Debug('Save local header..');
         this.platform.ready().then(() => {
-            
+
             //create local Folder
             File.createDir(this.storageDataDir, "Local", true).then((success) => {
                 var localFolder = this.storageDataDir + "Local/";
@@ -152,7 +152,7 @@ export class StorageFactory {
     SaveUserAsync(content) {
         this._logger.Debug('Save user async..');
         this.platform.ready().then(() => {
-            
+
             File.createDir(this.storageDataDir, "Roaming", true).then((success) => {
                 var serverFolder = this.storageDataDir + "Roaming/";
                 File.createFile(serverFolder, "User.json", true).then(() => {
@@ -166,14 +166,18 @@ export class StorageFactory {
     }
 
     CreateVideoFolder() {
-        this._logger.Debug('Create video folder..');
         this.platform.ready().then(() => {
-            File.createDir(this.storageRoot, "SportsPIP", true).then((success) => {
-                var videoPath = this.storageRoot + "SportsPIP"
-                File.createDir(videoPath, "Video", true).then((success) => {
-                    console.log("video folder created");
-                }).catch((err) => { this._logger.Error('Error,creating video folder: ', err); })
-            }).catch((err) => { this._logger.Error('Error,creating video folder: ', err); })
+            if (this.platform.is("cordova")) {
+                this._logger.Debug('Create video folder..');
+                File.createDir(this.storageRoot, "SportsPIP", true)
+                    .then((success) => {
+                        var videoPath = this.storageRoot + "SportsPIP"
+                        File.createDir(videoPath, "Video", true).then((success) => {
+                            console.log("video folder created");
+                        }).catch((err) => { this._logger.Error('Error,creating video folder: ', err); })
+                    })
+                    .catch((err) => { this._logger.Error('Error,creating video folder: ', err); });
+            }
         })
     }
 
