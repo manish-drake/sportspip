@@ -257,14 +257,11 @@ export class Ipcameras {
       .then((res) => {
         if (res) {
           this._logger.Debug("transferring IP Cams matrix on network");
-          this.GetVideoFileFromServer(fileName, connectedServerIP).then((success) => {      
-            var value=success;    
-            Observable.interval(1000)
-              .take(1).map((x) => x + 5)
-              .subscribe((x) => {
-                this._logger.Info("Video transfered successfully  " + JSON.stringify(cordova.file.externalRootDirectory) + "SportsPIP/Video");
-                this.saveMatrix();
-              })
+
+          this.GetVideoFileFromServer(fileName, connectedServerIP).then((success) => {
+            var value = success;
+            this._logger.Info("Video transfered successfully  " + JSON.stringify(cordova.file.externalRootDirectory) + "SportsPIP/Video");
+            this.saveMatrix();
 
           })
         }

@@ -20,7 +20,7 @@ export class SqliteLogProvider extends AProvider {
                 name: "data.db",
                 location: "default"
             }).then(() => {
-                var dtLog = new Date().toDateString();
+                var dtLog = new Date().toUTCString();
 
                 db.executeSql("CREATE TABLE IF NOT EXISTS logs (id INTEGER PRIMARY KEY AUTOINCREMENT, dtLog TEXT, message TEXT)", {}).then((data) => {
                     // console.log("TABLE CREATED: ");
