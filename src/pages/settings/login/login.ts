@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ViewController } from 'ionic-angular';
-import { Subscription } from '../../../Stubs/Subscription';
+import { Subscription } from '../../../Services/Subscription';
 import { StorageFactory } from '../../../Services/Factory/StorageFactory';
 import { user } from '../user';
 import { Logger } from '../../../logging/logger';
@@ -38,7 +38,7 @@ export class Login {
     dismiss(user) {
         this.viewCtrl.dismiss(user);
     }
-   
+
     presentRegister() {
         console.log('Hello Register Page');
         this.LoginAvailable = false;

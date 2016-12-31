@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Platform, ToastController } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { Observable } from 'Rxjs';
-import { File, WriteOptions, FileEntry,DirectoryEntry } from 'ionic-native';
+import { File, WriteOptions, FileEntry, DirectoryEntry } from 'ionic-native';
 import { Logger } from '../../logging/logger';
 
 declare var cordova: any;
@@ -89,25 +89,23 @@ export class StorageFactory {
         }
     }
 
-    SaveLocalHeader(content, channel, sport, matrixName, typeFolder) {
+    SaveLocalHeader(content, channel, sport, matrixName, typeFolder): Promise<any> {
         this._logger.Debug('Save local header..');
-        this.platform.ready().then(() => {
-
-            //create local Folder
-            File.createDir(this.storageDataDir, "Local", true).then((success) => {
+        return this.platform.ready().then(() => {
+            return File.createDir(this.storageDataDir, "Local", true).then((success) => {
                 var localFolder = this.storageDataDir + "Local/";
-                File.createDir(localFolder, channel, true).then(() => {
+                return File.createDir(localFolder, channel, true).then(() => {
                     var channelFolder = localFolder + channel + "/";
-                    File.createDir(channelFolder, sport, true).then(() => {
+                    return File.createDir(channelFolder, sport, true).then(() => {
                         var sportFolder = channelFolder + sport + "/";
-                        File.createDir(sportFolder, typeFolder, true).then(() => {
+                        return File.createDir(sportFolder, typeFolder, true).then(() => {
                             var contentFolder = sportFolder + typeFolder + "/";
-                            File.createDir(contentFolder, matrixName, true).then((success) => {
+                            return File.createDir(contentFolder, matrixName, true).then((success) => {
                                 var fileLocation = contentFolder + matrixName;
-                                File.createFile(fileLocation, "Header.xml", true).then(() => {
-                                    File.writeFile(fileLocation, "Header.xml", content, this.writeOptions)
+                                return File.createFile(fileLocation, "Header.xml", true).then(() => {
+                                    return File.writeFile(fileLocation, "Header.xml", content, this.writeOptions)
                                         .then(function (success) {
-                                            console.log("saved local header");
+                                            return success["nativeURL"];
                                         }).catch((err) => { this._logger.Error('Error,saving local header: ', err); })
                                 }).catch((err) => { this._logger.Error('Error,saving local header: ', err); })
                             }).catch((err) => { this._logger.Error('Error,saving local header: ', err); })
@@ -182,7 +180,7 @@ export class StorageFactory {
         })
     }
 
-      CreatePictureFolder() {
+    CreatePictureFolder() {
         this.platform.ready().then(() => {
             if (this.platform.is("cordova")) {
                 this._logger.Debug('Create Picture folder..');
@@ -306,7 +304,7 @@ export class StorageFactory {
         })
     }
 
-     CopyFile(oldPath, newPath, fileName): Promise<string> {
+    CopyFile(oldPath, newPath, fileName): Promise<string> {
         return File.copyFile(oldPath, fileName, newPath, fileName)
             .then((success) => { return success["nativeURL"] });
     }

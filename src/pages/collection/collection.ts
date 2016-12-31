@@ -19,7 +19,7 @@ declare var cordova: any;
 @Component({
   selector: 'page-collection',
   templateUrl: 'collection.html',
-  providers: [Package, OpenMatrix, StorageFactory, DeleteHeader,Duplicate],
+  providers: [Package, OpenMatrix, StorageFactory, DeleteHeader, Duplicate],
 })
 export class CollectionPage {
   localMatrices = [];
@@ -95,13 +95,10 @@ export class CollectionPage {
   DuplicateMatrix(matrixname, channelName) {
     this._logger.Debug('Creating duplicate matrix..');
     this.platform.ready().then(() => {
-      this.duplicate.Run(channelName, matrixname);
-      Observable.interval(1000)
-        .take(1).map((x) => x + 5)
-        .subscribe((x) => {
-          this.localMatrices = [];
-          this.LoadCollectionMatrix();
-        })
+      this.duplicate.Run(channelName, matrixname).then((res) => {
+        this.localMatrices = [];
+        this.LoadCollectionMatrix();
+      }).catch((err) => { this._logger.Error('Erro,Creating duplicate matrix..', err); });
     })
   }
 

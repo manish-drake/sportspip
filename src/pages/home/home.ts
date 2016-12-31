@@ -225,14 +225,12 @@ export class HomePage {
     }
 
     DuplicateMatrix(channelName, matrixname) {
+        this._logger.Debug('Duplicate  matrix..', );
         this.platform.ready().then(() => {
-            this.duplicate.Run(channelName, matrixname);
-            Observable.interval(1000)
-                .take(1).map((x) => x + 5)
-                .subscribe((x) => {
-                    this.localMatrices = [];
-                    this.GetLocalMatrixHeader();
-                })
+            this.duplicate.Run(channelName, matrixname).then((res) => {
+                this.localMatrices = [];
+                this.GetLocalMatrixHeader();
+            }).catch((err) => { this._logger.Error('Error,Duplicate  matrix..', err); })
         })
 
     }
