@@ -2,11 +2,12 @@ import { Injectable } from "@angular/core";
 import { Platform, ToastController } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { Observable } from 'Rxjs';
-import { File, WriteOptions, FileEntry } from 'ionic-native';
+import { File, WriteOptions, FileEntry,DirectoryEntry } from 'ionic-native';
 import { Logger } from '../logging/logger';
 
 declare var cordova: any;
 import 'rxjs/Rx';
+
 
 @Injectable()
 export class StorageFactory {
@@ -181,6 +182,22 @@ export class StorageFactory {
         })
     }
 
+      CreatePictureFolder() {
+        this.platform.ready().then(() => {
+            if (this.platform.is("cordova")) {
+                this._logger.Debug('Create Picture folder..');
+                File.createDir(this.storageRoot, "SportsPIP", true)
+                    .then((success) => {
+                        var picturePath = this.storageRoot + "SportsPIP"
+                        File.createDir(picturePath, "Picture", true).then((success) => {
+                            console.log("Picture folder created");
+                        }).catch((err) => { this._logger.Error('Error,creating Picture folder: ', err); })
+                    })
+                    .catch((err) => { this._logger.Error('Error,creating Picture folder: ', err); });
+            }
+        })
+    }
+
     ComposeNewMatrix() {
         this._logger.Debug('Composing new matrix..');
         var name = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
@@ -258,6 +275,24 @@ export class StorageFactory {
             Views: header.Views
         };
         return hea;
+    }
+
+    createFolderRx(fullPath: string/*DCIM/rootFolder/File/*/, parentFullPath: string/*file:/storage/emulated/0*/): Promise<DirectoryEntry> {
+        var urlParts = fullPath.split("/");
+        if (urlParts.length > 0) {
+            var name = urlParts[0];
+            if (!parentFullPath)
+                parentFullPath = "file:/storage/emulated/0";
+            return File.createDir(parentFullPath, name, true).then(success => {
+                parentFullPath += "/" + name;
+                if (urlParts.length >= 2) {
+                    fullPath = urlParts.slice(1).join("/");
+                } else {
+                    return success["nativeURL"];
+                }
+                return this.createFolderRx(fullPath, parentFullPath);
+            });
+        }
     }
 
     CreateFile(path, fileName): Promise<string> {

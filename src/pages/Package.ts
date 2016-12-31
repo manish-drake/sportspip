@@ -16,10 +16,10 @@ declare var navigator: any;
 @Injectable()
 export class Package {
 
-    private storageDataDir:string;
+    private storageDataDir: string;
 
     constructor(private http: Http, private platform: Platform, private storagefactory: StorageFactory) {
-        if(this.platform.is('cordova')){
+        if (this.platform.is('cordova')) {
             this.storageDataDir = cordova.file.externalDataDirectory;
         }
     }
@@ -40,7 +40,7 @@ export class Package {
                 this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
                 console.log("header moved");
             }));
-            File.listDir(this.storageDataDir  + "Temp/", "matrix1").then((success) => {
+            File.listDir(this.storageDataDir + "Temp/", "matrix1").then((success) => {
                 success.forEach(file => {
                     var sliced = file.name.substr(-4);
                     switch (sliced) {
@@ -64,11 +64,11 @@ export class Package {
                         case ".gif":
                         case ".rtf":
                             console.log("ink moving...");
-                            return File.moveFile(this.storageDataDir + "Temp/matrix1", file.name, cordova.file.externalDataDirectory, file.name)
+                            return File.moveFile(this.storageDataDir + "Temp/matrix1", file.name, cordova.file.externalDataDirectory + "SportsPIP/Picture", file.name)
                                 .then((success) => { console.log("ink moved..."); });
                         case ".jpg":
                             console.log("image moving...");
-                            return File.moveFile(this.storageDataDir + "Temp/matrix1", file.name, cordova.file.externalDataDirectory, file.name)
+                            return File.moveFile(this.storageDataDir + "Temp/matrix1", file.name, cordova.file.externalDataDirectory + "SportsPIP/Picture", file.name)
                                 .then(() => { console.log("image moved"); });
                         default:
                     }
@@ -79,8 +79,8 @@ export class Package {
     }
 
     DownloadServerHeader(fileName, channelName): Promise<DirectoryEntry> {
-        return File.createDir(this.storageDataDir , "Temp", true).then(() => {
-            var NewPath = this.storageDataDir  + "Temp/";
+        return File.createDir(this.storageDataDir, "Temp", true).then(() => {
+            var NewPath = this.storageDataDir + "Temp/";
             return File.createDir(NewPath, "matrix1", true).then(() => {
                 var matrixPath = NewPath + "matrix1/";
                 var oldPath = this.storageDataDir + "Server/" + channelName + "/Tennis/Matrices/" + fileName + "/";

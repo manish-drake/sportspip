@@ -72,6 +72,7 @@ export class HomePage {
     ionViewDidLoad() {
         this.logDeviceInfo();
         this.storagefactory.CreateVideoFolder();
+        this.storagefactory.CreatePictureFolder();
         this.connection.scanUdp();
     }
 

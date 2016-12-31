@@ -2,7 +2,8 @@
 
 <ion-grid *ngIf="isVideoComponentVisible" no-padding style="height: 100%;">
 	<ion-row style="height: 100%;position: relative;">
-		<video #video preload="auto" src="{{returnVidPath(view.Content.Capture._Kernel)}}" style="position: absolute; background-color:black;" width="100%" height="100%" poster="assets/poster.png" >
+		<video #video class="video-js vjs-default-skin" type="video/mp4" preload="auto" src="{{returnVidPath(view.Content.Capture._Kernel)}}"
+		 style="position: absolute; background-color:black;" width="100%" height="100%" poster="assets/poster.png" >
 		</video>
 		<svg *ngFor="let obj of objects;" [ngSwitch]="obj.key" [attr.viewBox]="viewBoxSize" height="100%" width="100%" style="position:absolute">
 			<rect *ngSwitchCase="'Rectangle'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"

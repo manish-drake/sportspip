@@ -201,7 +201,7 @@ export class VideoComponent {
 
     returnImagePath(name) {
         if (this.platform.is('cordova')) {
-            return cordova.file.externalDataDirectory + name;
+            return cordova.file.externalDataDirectory + "SportsPIP/Picture" + name;
         }
         else {
             return 'assets/sample.jpg';
@@ -210,7 +210,7 @@ export class VideoComponent {
 
     returnInkPath(name) {
         if (this.platform.is('cordova')) {
-            return cordova.file.externalDataDirectory + name + ".gif";
+            return cordova.file.externalDataDirectory + "SportsPIP/Picture" + name + ".gif";
         }
         else {
             return 'assets/inksample.gif';

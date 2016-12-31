@@ -47,7 +47,7 @@ export class CanvasComponent {
 
   returnImagePath(name) {
     if (this.platform.is('cordova')) {
-      return cordova.file.externalDataDirectory + name;
+      return cordova.file.externalDataDirectory + "SportsPIP/Picture" + name;
     }
     else {
       return 'assets/sample.jpg';
@@ -56,7 +56,7 @@ export class CanvasComponent {
 
   returnInkPath(name) {
     if (this.platform.is('cordova')) {
-      return cordova.file.externalDataDirectory + name + ".gif";
+      return cordova.file.externalDataDirectory + "SportsPIP/Picture" + name + ".gif";
     }
     else {
       return 'assets/inksample.gif';

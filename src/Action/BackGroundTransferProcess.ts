@@ -4,6 +4,7 @@ import { Platform } from 'ionic-angular';
 import { Connection } from '../pages/Connection';
 import { File } from 'ionic-native';
 import X2JS from 'x2js';
+import { IStorage } from '../Factory/Storage';
 import { Logger } from '../logging/logger';
 import { Observable } from 'rxjs/Rx';
 declare var cordova: any;
@@ -14,7 +15,6 @@ export class BackGroundTransferProcess {
     private data: any;
 
     constructor(private platform: Platform, private http: Http, private _logger: Logger) {
-
     }
     TransferVideo(fileName, serverIP, views) {
         this._logger.Debug('Transfer video');
