@@ -3,7 +3,7 @@ import { Platform } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
 
 import { StorageFactory } from '../Factory/StorageFactory';
-import { Logger } from '../logging/logger';
+import { Logger } from '../../logging/logger';
 
 declare var navigator: any;
 declare var cordova: any;

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { StorageFactory } from '../../Factory/StorageFactory';
+import { StorageFactory } from '../../Services/Factory/StorageFactory';
 import { Http } from '@angular/http';
-import { Package } from '../../pages/Package';
+import { Package } from '../../Services/Package';
 import { Observable } from 'rxjs/Rx';
-import { AlertControllers } from '../../Action/Alerts';
+import { AlertControllers } from '../../Services/Alerts';
 import {
   NavController, ToastController, PopoverController, NavParams,
   ActionSheetController, AlertController, ViewController, Platform, LoadingController

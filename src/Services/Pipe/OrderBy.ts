@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Logger } from '../logging/logger';
 
 // @Pipe({
 //   name: 'sort'
@@ -22,7 +21,7 @@ import { Logger } from '../logging/logger';
 @Pipe({ name: 'filter' })
 
 export class OrderBy implements PipeTransform {
-    constructor(private _logger: Logger) { }
+    constructor() { }
     transform(items: any[], field: string, value: string): any[] {
 
         if (!items) return [];

@@ -3,7 +3,7 @@ import { Platform, ToastController } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { Observable } from 'Rxjs';
 import { File, WriteOptions, FileEntry,DirectoryEntry } from 'ionic-native';
-import { Logger } from '../logging/logger';
+import { Logger } from '../../logging/logger';
 
 declare var cordova: any;
 import 'rxjs/Rx';
@@ -306,12 +306,14 @@ export class StorageFactory {
         })
     }
 
-    CopyFile(oldPath, fileName, newPath, newFileName) {
-
+     CopyFile(oldPath, newPath, fileName): Promise<string> {
+        return File.copyFile(oldPath, fileName, newPath, fileName)
+            .then((success) => { return success["nativeURL"] });
     }
 
-    MoveFile() {
-
+    MoveFile(oldPath, newPath, fileName): Promise<string> {
+        return File.moveFile(oldPath, fileName, newPath, fileName)
+            .then((success) => { return success["nativeURL"] });
     }
 
     RemoveFileAsync(path, dirName) {

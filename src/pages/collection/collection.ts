@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { NavController, ActionSheetController, Platform } from 'ionic-angular';
-import { Package } from '../../pages/Package';
+import { Package } from '../../Services/Package';
 import { Http } from '@angular/http';
-import { OpenMatrix } from '../../Action/OpenMatrix';
+import { Duplicate } from '../../Services/Action/Duplicate';
+import { OpenMatrix } from '../../Services/Action/OpenMatrix';
 import { Observable } from 'rxjs/Rx';
-import { StorageFactory } from '../../Factory/StorageFactory';
-import { DeleteHeader } from '../../Action/DeleteHeader';
+import { StorageFactory } from '../../Services/Factory/StorageFactory';
+import { DeleteHeader } from '../../Services/Action/DeleteHeader';
 import { Logger } from '../../logging/logger';
 declare var cordova: any;
 
@@ -18,12 +19,13 @@ declare var cordova: any;
 @Component({
   selector: 'page-collection',
   templateUrl: 'collection.html',
-  providers: [Package, OpenMatrix, StorageFactory, DeleteHeader],
+  providers: [Package, OpenMatrix, StorageFactory, DeleteHeader,Duplicate],
 })
 export class CollectionPage {
   localMatrices = [];
   constructor(public navCtrl: NavController, private actionSheetCtrl: ActionSheetController,
     private deleteHeader: DeleteHeader,
+    private duplicate: Duplicate,
     private storagefactory: StorageFactory,
     private openmatrix: OpenMatrix,
     private packages: Package,
@@ -72,7 +74,6 @@ export class CollectionPage {
         this.localMatrices = res;
       })
     });
-
   }
 
   FormatDate(value) {
@@ -93,20 +94,8 @@ export class CollectionPage {
 
   DuplicateMatrix(matrixname, channelName) {
     this._logger.Debug('Creating duplicate matrix..');
-    var name = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
     this.platform.ready().then(() => {
-      this.storagefactory.ReadFileAync("Local",channelName, matrixname, "Header.xml").then((res) => {
-        var header = JSON.parse(res.toString());
-        header.Name = name;
-        header.DateCreated = name;
-        this.storagefactory.SaveLocalHeader(header, channelName, header.Sport, name, "Matrices");
-      })
-      this.storagefactory.ReadFileAync("Local",channelName, matrixname, matrixname + ".mtx").then((res) => {
-        var matrix = JSON.parse(res.toString());
-        matrix.Matrix._Name = name;
-        matrix.Matrix._DateCreated = name;
-        this.storagefactory.SaveMatrixAsync(matrix, channelName, matrix.Matrix._Sport, name, "Matrices");
-      })
+      this.duplicate.Run(channelName, matrixname);
       Observable.interval(1000)
         .take(1).map((x) => x + 5)
         .subscribe((x) => {

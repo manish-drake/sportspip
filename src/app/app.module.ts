@@ -7,11 +7,11 @@ import { HomeMorePopover } from '../pages/homemore-popover/homemore-popover';
 import { Connectivity } from '../pages/connectivity/connectivity';
 import { SettingsPage, UserActionsPopover } from '../pages/settings/settings';
 import { Login } from '../pages/settings/login/login';
-import { AlertControllers } from '../Action/Alerts';
+import { AlertControllers } from '../Services/Alerts';
 import { CollectionPage } from '../pages/collection/collection'
 import { ChannelCollectionPage, PopoverPage2 } from '../pages/channelcollection/channelcollection'
-import { OrderBy } from '../GroupBy/OrderBy';
-import { GroupBy } from '../GroupBy/GroupBy';
+import { OrderBy } from '../Services/Pipe/OrderBy';
+import { GroupBy } from '../Services/Pipe/GroupBy';
 
 import { EditorPage, EditorActionsPopover } from '../pages/editor/editor';
 import { MatrixInfoPage } from '../pages/editor/matrixinfo/matrixinfo';
@@ -22,7 +22,7 @@ import { CanvasComponent } from '../pages/editor/canvas-component/canvas-compone
 import { Compareview } from '../pages/editor/compareview/compareview'
 import { CompareviewComponent, CaptureViewsPopover } from '../pages/editor/Compareview-Component/Compareview-Component'
 import { Swipeview } from '../pages/editor/swipeview/swipeview'
-import { StorageFactory } from '../Factory/StorageFactory';
+import { StorageFactory } from '../Services/Factory/StorageFactory';
 import { Logger } from '../logging/logger';
 import { AProvider } from '../logging/aProvider';
 import { SqliteLogProvider } from '../logging/providers/sqliteLogProvider';
@@ -56,8 +56,8 @@ import { SqliteLogProvider } from '../logging/providers/sqliteLogProvider';
   providers: [
     AlertControllers,
     { provide: AProvider, useClass: SqliteLogProvider },
-    Logger,StorageFactory
-    ],
+    Logger, StorageFactory
+  ],
   imports: [
     IonicModule.forRoot(sportspip)
   ],

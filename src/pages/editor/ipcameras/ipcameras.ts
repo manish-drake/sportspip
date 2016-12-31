@@ -4,14 +4,14 @@ import { Http } from '@angular/http';
 import { DirectoryEntry } from 'ionic-native';
 import { Observable } from 'rxjs/Rx';
 import { IpCamSettingsModal } from '../../../pages/editor/ipcamsettings-modal/ipcamsettings-modal'
-import { Connection } from '../../../pages/Connection';
+import { Connection } from '../../../Services/Connection';
 import { Connectivity } from '../../connectivity/connectivity';
-import { StorageFactory } from '../../../Factory/StorageFactory';
-import { BackGroundTransferProcessIP } from '../../../Action/BackGroundTransferProcessIP';
-import { AlertControllers } from '../../../Action/Alerts';
+import { StorageFactory } from '../../../Services/Factory/StorageFactory';
+import { BackGroundTransferProcessIP } from '../../../Services/BackGroundTransferProcessIP';
+import { AlertControllers } from '../../../Services/Alerts';
 import X2JS from 'x2js';
 import { Logger } from '../../../logging/logger';
-import { ModelFactory } from '../../../Factory/ModelFactory';
+import { ModelFactory } from '../../../Services/Factory/ModelFactory';
 
 /*
   Generated class for the Ipcamera page.

@@ -1,7 +1,7 @@
 import { Component, ViewChild, Input, ElementRef } from '@angular/core';
 import { File } from 'ionic-native';
 
-import { AlertControllers } from '../../../Action/Alerts';
+import { AlertControllers } from '../../../Services/Alerts';
 import { AlertController, ModalController, Platform, Events } from 'ionic-angular';
 import { Logger } from '../../../logging/logger';
 

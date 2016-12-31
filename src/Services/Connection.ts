@@ -6,7 +6,7 @@ import X2JS from 'x2js';
 
 import { Http } from '@angular/http';
 
-import { AlertControllers } from '../Action/Alerts';
+import { AlertControllers } from '../Services/Alerts';
 
 declare var chrome: any;
 declare var cordova: any;

@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, ModalController, PopoverController, ViewController, Platform, LoadingController } from 'ionic-angular';
 import { Login } from '../settings/login/login'
 import { Subscription } from '../../Stubs/Subscription';
-import { StorageFactory } from '../../Factory/StorageFactory';
-import { Package } from '../../pages/Package';
+import { StorageFactory } from '../../Services/Factory/StorageFactory';
+import { Package } from '../../Services/Package';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { Logger } from '../../logging/logger';

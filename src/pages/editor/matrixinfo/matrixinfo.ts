@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ViewController, NavParams, Platform } from 'ionic-angular';
 import { Http } from '@angular/http';
-import { StorageFactory } from '../../../Factory/StorageFactory';
-import { Package } from '../../../pages/Package';
+import { StorageFactory } from '../../../Services/Factory/StorageFactory';
+import { Package } from '../../../Services/Package';
 import { Logger } from '../../../logging/logger';
 
 declare var cordova: any;

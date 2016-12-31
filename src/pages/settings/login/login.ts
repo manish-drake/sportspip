@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ViewController } from 'ionic-angular';
 import { Subscription } from '../../../Stubs/Subscription';
-import { StorageFactory } from '../../../Factory/StorageFactory';
+import { StorageFactory } from '../../../Services/Factory/StorageFactory';
 import { user } from '../user';
 import { Logger } from '../../../logging/logger';
 

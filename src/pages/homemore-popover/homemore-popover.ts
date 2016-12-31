@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ViewController, Platform } from 'ionic-angular';
 import { AppVersion, File, EmailComposer, Device } from 'ionic-native';
 
-import { AlertControllers } from '../../Action/Alerts';
+import { AlertControllers } from '../../Services/Alerts';
 
 import { Logger } from '../../logging/logger';
 

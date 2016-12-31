@@ -4,13 +4,13 @@ import {
   NavController, NavParams, AlertController, ModalController, Platform,
   App, LoadingController, Events, PopoverController, ViewController
 } from 'ionic-angular';
-import { BackGroundTransferProcess } from '../../Action/BackGroundTransferProcess';
+import { BackGroundTransferProcess } from '../../Services/BackGroundTransferProcess';
 import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError, FilePath } from 'ionic-native';
-import { AlertControllers } from '../../Action/Alerts';
+import { AlertControllers } from '../../Services/Alerts';
 import { Http } from '@angular/http';
-import { Connection } from '../../pages/Connection'
-import { StorageFactory } from '../../Factory/StorageFactory';
-import { ModelFactory } from '../../Factory/ModelFactory';
+import { Connection } from '../../Services/Connection'
+import { StorageFactory } from '../../Services/Factory/StorageFactory';
+import { ModelFactory } from '../../Services/Factory/ModelFactory';
 import { Observable } from 'rxjs/Rx';
 import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 import { Compareview } from '../editor/compareview/compareview'

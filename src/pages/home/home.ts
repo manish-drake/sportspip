@@ -1,29 +1,28 @@
 import { Component } from '@angular/core';
 import { NavController, ActionSheetController, AlertController, PopoverController, ToastController, Platform, LoadingController } from 'ionic-angular';
 import { File, AppVersion, Device } from 'ionic-native';
-
 import { HomeMorePopover } from '../../pages/homemore-popover/homemore-popover';
-import { AlertControllers } from '../../Action/Alerts';
-import { StorageFactory } from '../../Factory/StorageFactory';
-import { ModelFactory } from '../../Factory/ModelFactory';
-import { Package } from '../../pages/Package';
-import { DeleteHeader } from '../../Action/DeleteHeader';
-import { OpenMatrix } from '../../Action/OpenMatrix';
+import { AlertControllers } from '../../Services/Alerts';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
-import { Observable } from 'rxjs/Rx';
 import { DatePipe } from '@angular/common';
-
-import { Connectivity } from '../connectivity/connectivity';
+import { Observable } from 'rxjs/Rx';
 import { SettingsPage } from '../settings/settings';
 import { CollectionPage } from '../collection/collection';
 import { ChannelCollectionPage } from '../channelcollection/channelcollection';
 import { EditorPage } from '../editor/editor';
-
-import { Connection } from '../../pages/Connection';
-
+//Service
+import { Connection } from '../../Services/Connection';
 import { Logger } from '../../logging/logger';
+import { Connectivity } from '../connectivity/connectivity';
+import { StorageFactory } from '../../Services/Factory/StorageFactory';
+import { ModelFactory } from '../../Services/Factory/ModelFactory';
+import { Package } from '../../Services/Package';
+//Action
+import { Duplicate } from '../../Services/Action/Duplicate';
+import { DeleteHeader } from '../../Services/Action/DeleteHeader';
+import { OpenMatrix } from '../../Services/Action/OpenMatrix';
 
 declare var FileTransfer: any;
 declare var cordova: any;
@@ -32,7 +31,7 @@ declare var navigator: any;
 @Component({
     selector: 'page-home',
     templateUrl: 'home.html',
-    providers: [StorageFactory, ModelFactory, DeleteHeader, Package, OpenMatrix, DatePipe, Connection]
+    providers: [ModelFactory, DeleteHeader, Package, OpenMatrix, DatePipe, Connection, Duplicate]
 })
 
 export class HomePage {
@@ -43,6 +42,7 @@ export class HomePage {
     Header = [];
 
     constructor(private http: Http, private platform: Platform, public navCtrl: NavController,
+        private duplicate: Duplicate,
         private datepipe: DatePipe,
         private storagefactory: StorageFactory,
         private modelfactory: ModelFactory,
@@ -225,20 +225,8 @@ export class HomePage {
     }
 
     DuplicateMatrix(channelName, matrixname) {
-        var name = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
         this.platform.ready().then(() => {
-            this.storagefactory.ReadFileAync("Local", channelName, matrixname, "Header.xml").then((res) => {
-                var header = JSON.parse(res.toString());
-                header.Name = name;
-                header.DateCreated = name;
-                this.storagefactory.SaveLocalHeader(header, channelName, header.Sport, name, "Matrices");
-            })
-            this.storagefactory.ReadFileAync("Local", channelName, matrixname, matrixname + ".mtx").then((res) => {
-                var matrix = JSON.parse(res.toString());
-                matrix.Matrix._Name = name;
-                matrix.Matrix._DateCreated = name;
-                this.storagefactory.SaveMatrixAsync(matrix, channelName, matrix.Matrix._Sport, name, "Matrices");
-            })
+            this.duplicate.Run(channelName, matrixname);
             Observable.interval(1000)
                 .take(1).map((x) => x + 5)
                 .subscribe((x) => {
@@ -246,6 +234,7 @@ export class HomePage {
                     this.GetLocalMatrixHeader();
                 })
         })
+
     }
 
     retrunThumbnailPath(name) {

@@ -1,7 +1,7 @@
 import { Component, DoCheck } from '@angular/core';
 import { NavController, ToastController } from 'ionic-angular';
 
-import { Connection } from '../../pages/Connection';
+import { Connection } from '../../Services/Connection';
 import { Logger } from '../../logging/logger';
 
 /*
