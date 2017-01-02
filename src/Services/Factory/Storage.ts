@@ -1,25 +1,35 @@
 declare var cordova: any;
 import { Injectable } from '@angular/core';
 
+import { Platform } from 'ionic-angular'
+
 @Injectable()
 export class Storage {
 
-    constructor() { }
+    constructor(private platform: Platform) { }
 
     externalDataDirectory() {
-        return cordova.file.externalDataDirectory;
+        if (this.platform.is('cordova')) {
+            return cordova.file.externalDataDirectory;
+        }
     }
 
     externalRootDirectory() {
-        return cordova.file.externalRootDirectory;
+        if (this.platform.is('cordova')) {
+            return cordova.file.externalRootDirectory;
+        }
     }
 
     applicationDirectory() {
-        return cordova.file.applicationDirectory
+        if (this.platform.is('cordova')) {
+            return cordova.file.applicationDirectory
+        }
     }
 
     applicationStorageDirectory() {
-        return cordova.file.applicationStorageDirectory;
+        if (this.platform.is('cordova')) {
+            return cordova.file.applicationStorageDirectory;
+        }
     }
 
 }

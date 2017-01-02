@@ -60,10 +60,8 @@ export class HomePage {
         private loadingCtrl: LoadingController,
         private connection: Connection,
         private _logger: Logger) {
-
         this.dataDirectory = this.storage.externalDataDirectory();
         this.applicationDirectory = this.storage.applicationDirectory();
-
     }
 
     ionViewDidEnter() {

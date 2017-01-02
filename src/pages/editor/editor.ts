@@ -51,7 +51,7 @@ export class EditorPage {
     private events: Events,
     private popoverCtrl: PopoverController,
     private _logger: Logger) {
-    this.rootDirectory = this.storage.externalRootDirectory();
+      this.rootDirectory = this.storage.externalRootDirectory();
   }
 
 

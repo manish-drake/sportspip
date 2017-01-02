@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { NavController, Platform } from 'ionic-angular';
 import { EditorPage } from '../../pages/editor/editor';
 import { Http } from '@angular/http';
-import { File } from 'ionic-native';
 import { StorageFactory } from '../Factory/StorageFactory';
 import { Logger } from '../../logging/logger';
 import { AlertControllers } from '../Alerts';

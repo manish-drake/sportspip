@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Platform, ToastController } from 'ionic-angular';
 import { Http } from '@angular/http';
-import { Observable } from 'Rxjs';
 import { Storage } from './Storage';
 import { File, WriteOptions, FileEntry, DirectoryEntry } from 'ionic-native';
 import { Logger } from '../../logging/logger';
@@ -20,10 +19,8 @@ export class StorageFactory {
         private platform: Platform,
         private toastCtrl: ToastController,
         private _logger: Logger) {
-        if (this.platform.is('cordova')) {
             this.storageDataDir = this.storage.externalDataDirectory();
             this.storageRoot = this.storage.externalRootDirectory();
-        }
     }
     SaveRoamingHeader(content, channel, sport, matrixName) {
         this.SaveServerHeader(content, channel, sport, matrixName, "Matrices");

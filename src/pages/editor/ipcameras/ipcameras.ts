@@ -49,7 +49,7 @@ export class Ipcameras {
     this.matrix = this.navParams.data.matrix;
     this.views = this.navParams.data.views;
     this.selectedViewIndex = this.navParams.data.selectedViewIndex;
-    this.rootDir = this.storage.externalRootDirectory();
+      this.rootDir = this.storage.externalRootDirectory();
   }
 
   isConnected: boolean = true;
@@ -261,7 +261,7 @@ export class Ipcameras {
           this._logger.Debug("transferring IP Cams matrix on network");
 
           this.GetVideoFileFromServer(fileName, connectedServerIP).then((success) => {
-            var value = success;
+            // var value = success;
             this._logger.Info("Video transfered successfully  " + JSON.stringify(this.rootDir) + "SportsPIP/Video");
             this.saveMatrix();
 
