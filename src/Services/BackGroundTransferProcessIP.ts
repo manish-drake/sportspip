@@ -5,7 +5,6 @@ import X2JS from 'x2js';
 import { Logger } from '../logging/logger';
 import { Observable } from 'rxjs/Rx';
 declare var FileTransfer: any;
-declare var cordova: any;
 @Injectable()
 export class BackGroundTransferProcessIP {
     private data: any;
@@ -37,18 +36,13 @@ export class BackGroundTransferProcessIP {
     }
 
     private createClips(fileName, duration, CamsCount, serverAddress) {
-        try {
-            this.data = this.createNewIPMatrix(fileName, duration);
-            var i = 1;
-            while (i <= CamsCount) {
-                var name = fileName + "_" + i + ".mp4"
-                var view = "View" + " " + i;
-                this.AddMatrixClip(name, view, this.data);
-                i++;
-            }
-        }
-        catch (err) {
-            this._logger.Error('Error,creating clips (IP): ', err);
+        this.data = this.createNewIPMatrix(fileName, duration);
+        var i = 1;
+        while (i <= CamsCount) {
+            var name = fileName + "_" + i + ".mp4"
+            var view = "View" + " " + i;
+            this.AddMatrixClip(name, view, this.data);
+            i++;
         }
     }
     GetServerIPVideo(fileName, serverAddress) {
@@ -69,47 +63,37 @@ export class BackGroundTransferProcessIP {
     }
 
     private createNewIPMatrix(fileName, duration) {
-        try {
-            var name = Date.now().toString();
-            let data =
-                {
-                    "Matrix": {
-                        "_Name": fileName,
-                        "_Title": "Title1",
-                        "_Sport": "Tennis",
-                        "_Skill": "Serve",
-                        "_PIN": " ",
-                        "_DateModified": name,
-                        "_Duration": duration,
-                        "_Location": "Field",
-                        "_HasTransferred": false,
-                        "_Source": "IP",
-                        "Clips": {
-                            "Clip": []
-                        }
+        var name = Date.now().toString();
+        let data =
+            {
+                "Matrix": {
+                    "_Name": fileName,
+                    "_Title": "Title1",
+                    "_Sport": "Tennis",
+                    "_Skill": "Serve",
+                    "_PIN": " ",
+                    "_DateModified": name,
+                    "_Duration": duration,
+                    "_Location": "Field",
+                    "_HasTransferred": false,
+                    "_Source": "IP",
+                    "Clips": {
+                        "Clip": []
                     }
-                };
-            return data;
-        }
-        catch (err) {
-            this._logger.Error('Error,creating IP matrix: ', err);
-        }
+                }
+            };
+        return data;
     }
 
 
     private AddMatrixClip(kernel, view, data) {
-        try {
-            var clip = {
-                "_Name": kernel,
-                "_name": "",
-                "_Key": view,
-                "_Duration": "0"
-            }
-            data.Matrix.Clips.Clip.push(clip);
+        var clip = {
+            "_Name": kernel,
+            "_name": "",
+            "_Key": view,
+            "_Duration": "0"
         }
-        catch (err) {
-            this._logger.Error('Error,adding matrix clip (IP): ', err);
-        }
+        data.Matrix.Clips.Clip.push(clip);
     }
 
     //..............................matrix transfered.......................................

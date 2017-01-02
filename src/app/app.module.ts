@@ -12,7 +12,7 @@ import { CollectionPage } from '../pages/collection/collection'
 import { ChannelCollectionPage, PopoverPage2 } from '../pages/channelcollection/channelcollection'
 import { OrderBy } from '../Services/Pipe/OrderBy';
 import { GroupBy } from '../Services/Pipe/GroupBy';
-
+import { Storage } from '../Services/Factory/Storage';
 import { EditorPage, EditorActionsPopover } from '../pages/editor/editor';
 import { MatrixInfoPage } from '../pages/editor/matrixinfo/matrixinfo';
 import { Ipcameras } from '../pages/editor/ipcameras/ipcameras'
@@ -56,7 +56,7 @@ import { SqliteLogProvider } from '../logging/providers/sqliteLogProvider';
   providers: [
     AlertControllers,
     { provide: AProvider, useClass: SqliteLogProvider },
-    Logger, StorageFactory
+    Logger, StorageFactory,Storage
   ],
   imports: [
     IonicModule.forRoot(sportspip)

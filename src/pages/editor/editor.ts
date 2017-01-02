@@ -10,6 +10,7 @@ import { AlertControllers } from '../../Services/Alerts';
 import { Http } from '@angular/http';
 import { Connection } from '../../Services/Connection'
 import { StorageFactory } from '../../Services/Factory/StorageFactory';
+import { Storage } from '../../Services/Factory/Storage';
 import { ModelFactory } from '../../Services/Factory/ModelFactory';
 import { Observable } from 'rxjs/Rx';
 import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
@@ -18,23 +19,23 @@ import { Swipeview } from '../editor/swipeview/swipeview'
 import { Ipcameras } from '../editor/ipcameras/ipcameras'
 import { Logger } from '../../logging/logger';
 declare var navigator: any;
-declare var cordova: any;
 
 @Injectable()
 @Component({
   selector: 'page-editor',
   templateUrl: 'editor.html',
-  providers: [StorageFactory, Connection, ModelFactory, BackGroundTransferProcess],
+  providers: [Connection, ModelFactory, BackGroundTransferProcess],
 })
 
 export class EditorPage {
 
   selectedViewIndex: number;
-
+  rootDirectory: any;
   matrix: any;
   views = [];
 
   constructor(public navCtrl: NavController,
+    private storage: Storage,
     private backGroundTransferProcess: BackGroundTransferProcess,
     private params: NavParams,
     private alertCtrls: AlertControllers,
@@ -50,16 +51,7 @@ export class EditorPage {
     private events: Events,
     private popoverCtrl: PopoverController,
     private _logger: Logger) {
-    // if (params.data != null) {
-    //   this.matrix = params.data.matrixData;
-    //   console.log("editor page: " + this.matrix);
-    // }
-
-    // this.platform.registerBackButtonAction(() => {
-    //   let view = this.navCtrl.getActive();
-    //   if (view.instance instanceof EditorPage) this.saveMatrix();
-    //   else this.navCtrl.pop();
-    // });    
+    this.rootDirectory = this.storage.externalRootDirectory();
   }
 
 
@@ -244,40 +236,40 @@ export class EditorPage {
 
   chooseVideo() {
     this._logger.Debug("Adding file mannualy..");
-      if (this.platform.is('cordova')) {
-        FileChooser.open().then(uri => {
-          console.log(uri);
-          FilePath.resolveNativePath(uri)
-            .then(filePath => {
-              console.log(filePath);
-              var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-              var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
-              var newFileName = Date.now() + ".mp4";
+    if (this.platform.is('cordova')) {
+      FileChooser.open().then(uri => {
+        console.log(uri);
+        FilePath.resolveNativePath(uri)
+          .then(filePath => {
+            console.log(filePath);
+            var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+            var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
+            var newFileName = Date.now() + ".mp4";
 
-              File.copyFile(path, fileName, cordova.file.externalRootDirectory + "SportsPIP/Video", newFileName)
-                .then(success => {
-                  console.log('Successfully copied video');
-                  this.CreateVideoView(newFileName);
-                  if (Connection.connectedServer != null)
-                    this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
+            File.copyFile(path, fileName, this.rootDirectory + "SportsPIP/Video", newFileName)
+              .then(success => {
+                console.log('Successfully copied video');
+                this.CreateVideoView(newFileName);
+                if (Connection.connectedServer != null)
+                  this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
 
-                })
-                .catch(err => {
-                  console.log('Failed copying video:' + JSON.stringify(err))
-                  this.chooseVideoErrorMsg('Failed copying video:' + JSON.stringify(err));
-                });
+              })
+              .catch(err => {
+                console.log('Failed copying video:' + JSON.stringify(err))
+                this.chooseVideoErrorMsg('Failed copying video:' + JSON.stringify(err));
+              });
 
-            })
-            .catch(err => {
-              console.log(err);
-              this.chooseVideoErrorMsg('Failed Resolving nativepath:' + JSON.stringify(err));
-            });
+          })
+          .catch(err => {
+            console.log(err);
+            this.chooseVideoErrorMsg('Failed Resolving nativepath:' + JSON.stringify(err));
+          });
 
-        }).catch(err => {
-          console.log(err);
-          this.chooseVideoErrorMsg('Error opening file chooser:' + JSON.stringify(err));
-        });
-      }
+      }).catch(err => {
+        console.log(err);
+        this.chooseVideoErrorMsg('Error opening file chooser:' + JSON.stringify(err));
+      });
+    }
   }
 
   chooseVideoErrorMsg(err) {
@@ -303,7 +295,7 @@ export class EditorPage {
       var path = fileUrl.substr(0, fileUrl.lastIndexOf('/') + 1);
       var fileName = fileUrl.substr(fileUrl.lastIndexOf('/') + 1);
 
-      File.moveFile(path, fileName, cordova.file.externalRootDirectory + "SportsPIP/Video", fileName)
+      File.moveFile(path, fileName, this.rootDirectory + "SportsPIP/Video", fileName)
         .then(_ => {
           this.CreateVideoView(fileName);
           console.log('Successfully saved video')

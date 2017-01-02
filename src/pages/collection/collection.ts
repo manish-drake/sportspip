@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Rx';
 import { StorageFactory } from '../../Services/Factory/StorageFactory';
 import { DeleteHeader } from '../../Services/Action/DeleteHeader';
 import { Logger } from '../../logging/logger';
-declare var cordova: any;
+import { Storage } from '../../Services/Factory/Storage';
 
 /*
   Generated class for the Collection page.
@@ -23,7 +23,9 @@ declare var cordova: any;
 })
 export class CollectionPage {
   localMatrices = [];
+  dataDir: any;
   constructor(public navCtrl: NavController, private actionSheetCtrl: ActionSheetController,
+    private storage: Storage,
     private deleteHeader: DeleteHeader,
     private duplicate: Duplicate,
     private storagefactory: StorageFactory,
@@ -31,6 +33,7 @@ export class CollectionPage {
     private packages: Package,
     private platform: Platform, private http: Http,
     private _logger: Logger) {
+    this.dataDir = this.storage.externalDataDirectory();
     this.LoadCollectionMatrix();
   }
 
@@ -81,7 +84,7 @@ export class CollectionPage {
   }
 
   retrunThumbnailPath(name) {
-    return "url(" + cordova.file.externalDataDirectory + name + ".jpg" + ")";
+    return "url(" + this.dataDir + name + ".jpg" + ")";
   }
 
   ionViewDidLoad() {

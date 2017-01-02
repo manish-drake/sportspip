@@ -3,12 +3,12 @@ import { NavController, ModalController, PopoverController, ViewController, Plat
 import { Login } from '../settings/login/login'
 import { Subscription } from '../../Services/Subscription';
 import { StorageFactory } from '../../Services/Factory/StorageFactory';
+import { Storage } from '../../Services/Factory/Storage';
 import { Package } from '../../Services/Package';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { Logger } from '../../logging/logger';
 
-declare var cordova: any;
 /*
   Generated class for the Settings page.
 
@@ -31,9 +31,10 @@ export class SettingsPage {
   public LastName: any;
   Header = [];
 
-  private storageDataDir:string;
+  private storageDataDir: string;
 
   constructor(public navCtrl: NavController,
+    private storage: Storage,
     private subscription: Subscription,
     private http: Http,
     private storagefactory: StorageFactory,
@@ -43,7 +44,7 @@ export class SettingsPage {
     private platform: Platform,
     private loadingCtrl: LoadingController,
     private _logger: Logger) {
-      this.storageDataDir = cordova.file.externalDataDirectory;
+    this.storageDataDir = this.storage.externalDataDirectory();
   }
 
   ionViewDidLoad() {

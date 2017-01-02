@@ -6,8 +6,6 @@ import { File } from 'ionic-native';
 import { StorageFactory } from '../Factory/StorageFactory';
 import { Logger } from '../../logging/logger';
 import { AlertControllers } from '../Alerts';
-
-declare var cordova: any;
 @Injectable()
 export class OpenMatrix {
 

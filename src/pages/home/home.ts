@@ -13,6 +13,7 @@ import { CollectionPage } from '../collection/collection';
 import { ChannelCollectionPage } from '../channelcollection/channelcollection';
 import { EditorPage } from '../editor/editor';
 //Service
+import { Storage } from '../../Services/Factory/Storage';
 import { Connection } from '../../Services/Connection';
 import { Logger } from '../../logging/logger';
 import { Connectivity } from '../connectivity/connectivity';
@@ -25,7 +26,6 @@ import { DeleteHeader } from '../../Services/Action/DeleteHeader';
 import { OpenMatrix } from '../../Services/Action/OpenMatrix';
 
 declare var FileTransfer: any;
-declare var cordova: any;
 declare var navigator: any;
 
 @Component({
@@ -40,9 +40,12 @@ export class HomePage {
     localMatrices = [];
     channels = [];
     Header = [];
+    dataDirectory: any;
+    applicationDirectory: any;
 
     constructor(private http: Http, private platform: Platform, public navCtrl: NavController,
         private duplicate: Duplicate,
+        private storage: Storage,
         private datepipe: DatePipe,
         private storagefactory: StorageFactory,
         private modelfactory: ModelFactory,
@@ -57,6 +60,9 @@ export class HomePage {
         private loadingCtrl: LoadingController,
         private connection: Connection,
         private _logger: Logger) {
+
+        this.dataDirectory = this.storage.externalDataDirectory();
+        this.applicationDirectory = this.storage.applicationDirectory();
 
     }
 
@@ -236,7 +242,7 @@ export class HomePage {
     }
 
     retrunThumbnailPath(name) {
-        return "url(" + cordova.file.externalDataDirectory + name + ".jpg" + ")";
+        return "url(" + this.dataDirectory + name + ".jpg" + ")";
     }
 
     GetLocalMatrixHeader() {
@@ -300,7 +306,7 @@ export class HomePage {
                     .take(1).map((x) => x + 5)
                     .subscribe((x) => {
                         this.platform.ready().then(() => {
-                            this.storagefactory.RemoveFileAsync(cordova.file.externalDataDirectory, "Temp").then(() => {
+                            this.storagefactory.RemoveFileAsync(this.dataDirectory, "Temp").then(() => {
                                 this.localMatrices = [];
                                 this.GetLocalMatrixHeader();
                                 this.deleteServerHeader(fileName, index, value, channelName);
@@ -339,14 +345,14 @@ export class HomePage {
                 var res = JSON.parse(data.text());
 
                 if (this.platform.is('cordova')) {
-                    File.checkFile(cordova.file.externalRootDirectory + "SportsPIP/Video", 'sample.mp4').then(_ => {
+                    File.checkFile(this.dataDirectory + "SportsPIP/Video", 'sample.mp4').then(_ => {
                         console.log('Sample video already exists');
                         this.testNavToEditor(res);
                     }).catch(err => {
 
-                        File.checkFile(cordova.file.applicationDirectory + '/www/assets/', 'sample.mp4').then(_ => {
+                        File.checkFile(this.applicationDirectory + '/www/assets/', 'sample.mp4').then(_ => {
 
-                            File.copyFile(cordova.file.applicationDirectory + '/www/assets/', 'sample.mp4', cordova.file.externalRootDirectory + "SportsPIP/Video", 'sample.mp4').then(_ => {
+                            File.copyFile(this.applicationDirectory + '/www/assets/', 'sample.mp4', this.dataDirectory + "SportsPIP/Video", 'sample.mp4').then(_ => {
                                 console.log('Sample video saved to application directory');
                                 this.testNavToEditor(res);
                             }).catch(err => {

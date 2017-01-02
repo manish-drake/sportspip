@@ -7,6 +7,7 @@ import { IpCamSettingsModal } from '../../../pages/editor/ipcamsettings-modal/ip
 import { Connection } from '../../../Services/Connection';
 import { Connectivity } from '../../connectivity/connectivity';
 import { StorageFactory } from '../../../Services/Factory/StorageFactory';
+import { Storage } from '../../../Services/Factory/Storage';
 import { BackGroundTransferProcessIP } from '../../../Services/BackGroundTransferProcessIP';
 import { AlertControllers } from '../../../Services/Alerts';
 import X2JS from 'x2js';
@@ -19,7 +20,6 @@ import { ModelFactory } from '../../../Services/Factory/ModelFactory';
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 */
-declare var cordova: any;
 
 @Component({
   selector: 'page-ipcameras',
@@ -30,8 +30,9 @@ export class Ipcameras {
   matrix: any;
   views: any;
   selectedViewIndex: any;
-
+  rootDir: String;
   constructor(public viewCtrl: ViewController,
+    private storage: Storage,
     public navCtrl: NavController,
     private modalCtrl: ModalController,
     private http: Http,
@@ -48,6 +49,7 @@ export class Ipcameras {
     this.matrix = this.navParams.data.matrix;
     this.views = this.navParams.data.views;
     this.selectedViewIndex = this.navParams.data.selectedViewIndex;
+    this.rootDir = this.storage.externalRootDirectory();
   }
 
   isConnected: boolean = true;
@@ -260,7 +262,7 @@ export class Ipcameras {
 
           this.GetVideoFileFromServer(fileName, connectedServerIP).then((success) => {
             var value = success;
-            this._logger.Info("Video transfered successfully  " + JSON.stringify(cordova.file.externalRootDirectory) + "SportsPIP/Video");
+            this._logger.Info("Video transfered successfully  " + JSON.stringify(this.rootDir) + "SportsPIP/Video");
             this.saveMatrix();
 
           })
@@ -278,9 +280,9 @@ export class Ipcameras {
     name = name + "_" + this.index + ".mp4";
     this._logger.Debug("Getting IP Cams " + name + " from network");
     return this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP).then((blob) => {
-      return this.storagefactory.CreateFile(cordova.file.externalRootDirectory + "SportsPIP/Video", name)
+      return this.storagefactory.CreateFile(this.rootDir + "SportsPIP/Video", name)
         .then((success) => {
-          return this.storagefactory.WriteFile(cordova.file.externalRootDirectory + "SportsPIP/Video", name, blob["response"].slice(8))
+          return this.storagefactory.WriteFile(this.rootDir + "SportsPIP/Video", name, blob["response"].slice(8))
             .then((success) => {
               this._logger.Debug(name + " video received successfully from network");
               this.index++;

@@ -3,10 +3,8 @@ import { ViewController, Platform } from 'ionic-angular';
 import { AppVersion, File, EmailComposer, Device } from 'ionic-native';
 
 import { AlertControllers } from '../../Services/Alerts';
-
+import { Storage } from '../../Services/Factory/Storage';
 import { Logger } from '../../logging/logger';
-
-declare var cordova: any;
 
 @Component({
     selector: 'homemore-popover',
@@ -15,12 +13,17 @@ declare var cordova: any;
 export class HomeMorePopover {
 
     versionNumber: any;
+    storageDirectory: any;
+    rootDirectory: any;
 
     constructor(public viewCtrl: ViewController,
+        private storage: Storage,
         private alertCtrls: AlertControllers,
         private platform: Platform,
         private _Logger: Logger) {
         if (this.platform.is('cordova')) {
+            this.storageDirectory = this.storage.applicationStorageDirectory();
+            this.rootDirectory = this.storage.externalRootDirectory();
             AppVersion.getVersionNumber().then((s) => {
                 this.versionNumber = s;
             })
@@ -36,10 +39,10 @@ export class HomeMorePopover {
         this.viewCtrl.dismiss();
 
         this.platform.ready().then(() => {
-            File.checkFile(cordova.file.applicationStorageDirectory + 'databases/', "data.db")
+            File.checkFile(this.storageDirectory + 'databases/', "data.db")
                 .then(promise => {
                     console.log("Success: " + JSON.stringify(promise));
-                    File.copyFile(cordova.file.applicationStorageDirectory + 'databases/', "data.db", cordova.file.externalRootDirectory + "SportsPIP/", "data.db")
+                    File.copyFile(this.storageDirectory + 'databases/', "data.db", this.rootDirectory + "SportsPIP/", "data.db")
                         .then(promise => {
                             this._Logger.Debug("Composing email");
                             this.composeEmail();
@@ -61,7 +64,7 @@ export class HomeMorePopover {
     composeEmail() {
         let email = {
             to: 'manish@drake.in',
-            attachments: [cordova.file.externalRootDirectory + "SportsPIP/data.db"],
+            attachments: [this.rootDirectory + "SportsPIP/data.db"],
             subject: "Logs for Sports PIP (" + this.versionNumber + ") from " + Device.platform + " (See attachment)",
             body:
             "App Version: " + "<b>" + this.versionNumber + "</b><br>" +

@@ -9,7 +9,6 @@ import { Http } from '@angular/http';
 import { AlertControllers } from '../Services/Alerts';
 
 declare var chrome: any;
-declare var cordova: any;
 
 @Injectable()
 export class Connection {

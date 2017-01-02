@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import { StorageFactory } from '../../Services/Factory/StorageFactory';
+import { Storage } from '../../Services/Factory/Storage';
 import { Http } from '@angular/http';
 import { Package } from '../../Services/Package';
+import { Download } from '../../Services/Action/Download';
 import { Observable } from 'rxjs/Rx';
+
 import { AlertControllers } from '../../Services/Alerts';
 import {
   NavController, ToastController, PopoverController, NavParams,
@@ -11,7 +14,6 @@ import {
 
 import { Logger } from '../../logging/logger';
 
-declare var cordova: any;
 
 /*
   Generated class for the Channelcollection page.
@@ -22,15 +24,18 @@ declare var cordova: any;
 @Component({
   selector: 'page-channelcollection',
   templateUrl: 'channelcollection.html',
-  providers: [StorageFactory, Package],
+  providers: [Package, Download],
 })
 export class ChannelCollectionPage {
 
   public channel: any;
   channelMatrices = [];
   TempMatrix = [];
+  dataDir: any;
 
   constructor(public navCtrl: NavController, params: NavParams,
+    private storage: Storage,
+    private download: Download,
     private storagefactory: StorageFactory,
     private actionSheetCtrl: ActionSheetController,
     private platform: Platform,
@@ -44,6 +49,7 @@ export class ChannelCollectionPage {
     private _logger: Logger) {
 
     this.channel = params.get("firstPassed");
+    this.dataDir = this.storage.externalDataDirectory();
     this.GetChannelMatrix(this.channel);
   }
 
@@ -51,13 +57,13 @@ export class ChannelCollectionPage {
 
   doRefreshContent(refresher) {
     this._logger.Debug('Refresh channel collection content..');
-     this.refreshing = true;
-      this.channelMatrices = [];
-      setTimeout(() => {
-        refresher.complete();
-        this.GetChannelMatrix(this.channel);
-        this.refreshing = false;
-      }, 500);
+    this.refreshing = true;
+    this.channelMatrices = [];
+    setTimeout(() => {
+      refresher.complete();
+      this.GetChannelMatrix(this.channel);
+      this.refreshing = false;
+    }, 500);
   }
 
   GetChannelMatrix(channel) {
@@ -99,7 +105,7 @@ export class ChannelCollectionPage {
   // }
 
   retrunThumbnailPath(name) {
-    return "url(" + cordova.file.externalDataDirectory + name + ".jpg" + ")";
+    return "url(" + this.dataDir + name + ".jpg" + ")";
   }
 
   presentPopover(event) {
@@ -114,47 +120,19 @@ export class ChannelCollectionPage {
 
   DownloadServerHeaderAsync(fileName, channelName, index) {
     this._logger.Debug('Download server header async..');
-    try {
-      let loader = this.loadingCtrl.create({
-        content: 'Downloading..',
-        duration: 300000
-      });
-      loader.present();
+    let loader = this.loadingCtrl.create({
+      content: 'Downloading..',
+      duration: 300000
+    });
+    loader.present();
 
-      var authenticate = this.AuthenticateUser();
-      if (authenticate) {
-
-        this.packages.DownloadServerHeader(fileName, channelName).then((serverHeader) => {
-          Observable.interval(2000)
-            .take(3).map((x) => x + 5)
-            .subscribe((x) => {
-              this.packages.unzipPackage();
-              console.log("unzip");
-            })
-          Observable.interval(4000)
-            .take(1).map((x) => x + 5)
-            .subscribe((x) => {
-              this.packages.MoveToLocalCollection(channelName);
-              console.log("matrix moved");
-            })
-          Observable.interval(6000)
-            .take(1).map((x) => x + 5)
-            .subscribe((x) => {
-              this.platform.ready().then(() => {
-                this.storagefactory.RemoveFileAsync("file:/storage/emulated/0/DCIM", "Temp").then(() => {
-                  this.DeleteChannelMatrix(fileName, channelName, index);
-                  console.log("delete server header");
-                  loader.dismiss();
-                });
-              })
-            })
-        })
-
+    this.download.Run(fileName, channelName).then((success) => {
+      if (success == true) {
+        this.DeleteChannelMatrix(fileName, channelName, index);
+        console.log("delete server header");
+        loader.dismiss();
       }
-    }
-    catch (err) {
-      this._logger.Error('Error,downloading server header async: ', err);
-    }
+    })
   }
 
   AuthenticateUser() {

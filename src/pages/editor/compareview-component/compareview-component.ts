@@ -1,10 +1,9 @@
 import { Component, ViewChild, Input, ElementRef } from '@angular/core';
-
-import {ModalController, Platform,
+import { Storage } from '../../../Services/Factory/Storage';
+import {
+    ModalController, Platform,
     PopoverController, ViewController, NavParams, Events
 } from 'ionic-angular';
-
-declare var cordova: any;
 
 @Component({
     selector: 'compareview-component',
@@ -26,13 +25,15 @@ export class CompareviewComponent {
     @ViewChild('fadableTitle') fadableTitle: ElementRef;
 
     video: HTMLVideoElement;
-
+    rootDir: string;
     constructor(
+        private storage: Storage,
         private modalCtrl: ModalController,
         private platform: Platform,
         private popoverCtrl: PopoverController,
         private events: Events) {
         this.playPauseButtonIcon = "play";
+        this.rootDir = this.storage.externalRootDirectory()
         this.timelinePosition = this.formatTime(0);
     }
 
@@ -224,7 +225,7 @@ export class CompareviewComponent {
 
     returnVidPath(filename) {
         if (this.platform.is('cordova')) {
-            return cordova.file.externalRootDirectory + "SportsPIP/Video/" + filename;
+            return this.rootDir + "SportsPIP/Video/" + filename;
         }
         else {
             return 'assets/' + filename;

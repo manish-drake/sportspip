@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
-
+import { Storage } from '../../../Services/Factory/Storage';
 import { Platform, Events } from 'ionic-angular'
-declare var cordova: any;
 
 @Component({
   selector: 'canvas-component',
@@ -19,8 +18,9 @@ export class CanvasComponent {
   sliderValue: any = 0;
   duration: any;
   isTimelineAvailable: boolean = false;
-
-  constructor(private platform: Platform, private events: Events) {
+  rootDir: any;
+  constructor(private platform: Platform, private events: Events, private storage: Storage) {
+    this.rootDir = this.storage.externalRootDirectory();
     this.timelinePosition = "00:00:00:00";
     this.playPauseButtonIcon = "play";
     this.repeatColor = "inactive";
@@ -47,7 +47,7 @@ export class CanvasComponent {
 
   returnImagePath(name) {
     if (this.platform.is('cordova')) {
-      return cordova.file.externalDataDirectory + "SportsPIP/Picture" + name;
+      return this.rootDir + "SportsPIP/Picture" + name;
     }
     else {
       return 'assets/sample.jpg';
@@ -56,7 +56,7 @@ export class CanvasComponent {
 
   returnInkPath(name) {
     if (this.platform.is('cordova')) {
-      return cordova.file.externalDataDirectory + "SportsPIP/Picture" + name + ".gif";
+      return this.rootDir + "SportsPIP/Picture" + name + ".gif";
     }
     else {
       return 'assets/inksample.gif';

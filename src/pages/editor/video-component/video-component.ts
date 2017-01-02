@@ -1,11 +1,9 @@
 import { Component, ViewChild, Input, ElementRef } from '@angular/core';
 import { File } from 'ionic-native';
-
+import { Storage } from '../../../Services/Factory/Storage';
 import { AlertControllers } from '../../../Services/Alerts';
 import { AlertController, ModalController, Platform, Events } from 'ionic-angular';
 import { Logger } from '../../../logging/logger';
-
-declare var cordova: any;
 
 @Component({
     selector: 'video-component',
@@ -18,13 +16,15 @@ export class VideoComponent {
     @Input() viewindex: any;
 
     @ViewChild('video') videoElement: ElementRef;
-
+    rootDir: String;
     constructor(private alertCtrls: AlertControllers,
+        private storage: Storage,
         private alertCtrl: AlertController,
         private modalCtrl: ModalController,
         private platform: Platform,
         private events: Events,
         private _logger: Logger) {
+        this.rootDir = this.storage.externalRootDirectory();
         this.timelinePosition = this.formatTime(0);
     }
 
@@ -192,7 +192,7 @@ export class VideoComponent {
 
     returnVidPath(filename) {
         if (this.platform.is('cordova')) {
-            return cordova.file.externalRootDirectory + "SportsPIP/Video/" + filename;
+            return this.rootDir + "SportsPIP/Video/" + filename;
         }
         else {
             return 'assets/' + filename;
@@ -201,7 +201,7 @@ export class VideoComponent {
 
     returnImagePath(name) {
         if (this.platform.is('cordova')) {
-            return cordova.file.externalDataDirectory + "SportsPIP/Picture" + name;
+            return this.rootDir + "SportsPIP/Picture" + name;
         }
         else {
             return 'assets/sample.jpg';
@@ -210,7 +210,7 @@ export class VideoComponent {
 
     returnInkPath(name) {
         if (this.platform.is('cordova')) {
-            return cordova.file.externalDataDirectory + "SportsPIP/Picture" + name + ".gif";
+            return this.rootDir + "SportsPIP/Picture" + name + ".gif";
         }
         else {
             return 'assets/inksample.gif';

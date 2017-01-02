@@ -3,10 +3,10 @@ import { Platform } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
 
 import { StorageFactory } from '../Factory/StorageFactory';
+import { Storage } from '../Factory/Storage';
 import { Logger } from '../../logging/logger';
 
 declare var navigator: any;
-declare var cordova: any;
 import 'rxjs/Rx';
 
 @Injectable()
@@ -15,10 +15,11 @@ export class ModelFactory {
     private storageDataDir: string;
 
     constructor(private _logger: Logger,
+        private storage: Storage,
         private storageFactory: StorageFactory,
         private platform: Platform) {
         if (this.platform.is('cordova')) {
-            this.storageDataDir = cordova.file.externalDataDirectory;
+            this.storageDataDir = this.storage.externalDataDirectory();
         }
     }
 
@@ -26,7 +27,7 @@ export class ModelFactory {
         this._logger.Debug('Create thumbnail..');
 
         var blob: any;
-        var sourcePath = cordova.file.externalRootDirectory + "SportsPIP/Video/" + name;
+        var sourcePath = this.storageDataDir + "SportsPIP/Video/" + name;
         navigator.createThumbnail(sourcePath, function (err, imageData) {
             blob = imageData;
             if (err != null) { this._logger.Error('Error,creating thumbnail: ', err); }

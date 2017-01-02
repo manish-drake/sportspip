@@ -1,13 +1,13 @@
 import { Injectable } from "@angular/core";
 import { Platform } from 'ionic-angular';
 import { StorageFactory } from './Factory/StorageFactory';
+import { Storage } from './Factory/Storage';
 import { Http } from '@angular/http';
 import { File, DirectoryEntry } from 'ionic-native';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import X2JS from 'x2js';
 
-declare var cordova: any;
 declare var zip: any;
 declare var FileTransfer: any;
 declare var navigator: any;
@@ -17,10 +17,14 @@ declare var navigator: any;
 export class Package {
 
     private storageDataDir: string;
-
-    constructor(private http: Http, private platform: Platform, private storagefactory: StorageFactory) {
+    private storageRootDirectory: string;
+    constructor(private http: Http,
+        private storage: Storage,
+        private platform: Platform,
+        private storagefactory: StorageFactory) {
         if (this.platform.is('cordova')) {
-            this.storageDataDir = cordova.file.externalDataDirectory;
+            this.storageDataDir = this.storage.externalDataDirectory();
+            this.storageRootDirectory = this.storage.externalRootDirectory();
         }
     }
 
@@ -46,29 +50,29 @@ export class Package {
                     switch (sliced) {
                         case '.mtx':
                             let parser: any = new X2JS();
-                           this.http.get(file.nativeURL).map(data => {
+                            this.http.get(file.nativeURL).map(data => {
                                 console.log("mtx moving...");
                                 var matrixdata = parser.xml2js(data["_body"]);
                                 var matrix = matrixdata.Matrix;
                                 matrix._Name = this.fileName;
                                 matrix._Channel = this.channelName;
-                             this.storagefactory.SaveMatrixAsync(matrixdata, matrix._Channel, matrix._Sport, matrix._Name, "Matrices").then(() => {
+                                this.storagefactory.SaveMatrixAsync(matrixdata, matrix._Channel, matrix._Sport, matrix._Name, "Matrices").then(() => {
                                     console.log("mtx moved");
                                 });
 
                             }).toPromise()
                         case '.mp4':
                             console.log("video moving...");
-                         this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", cordova.file.externalRootDirectory + "SportsPIP/Video", file.name)
+                            this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", this.storageRootDirectory + "SportsPIP/Video", file.name)
                                 .then((success) => { console.log("video moved"); });
                         case ".gif":
                         case ".rtf":
                             console.log("ink moving...");
-                         this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", cordova.file.externalDataDirectory + "SportsPIP/Picture", file.name)
+                            this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", this.storageRootDirectory + "SportsPIP/Picture", file.name)
                                 .then((success) => { console.log("ink moved..."); });
                         case ".jpg":
                             console.log("image moving...");
-                         this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", cordova.file.externalDataDirectory + "SportsPIP/Picture", file.name)
+                            this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", this.storageRootDirectory + "SportsPIP/Picture", file.name)
                                 .then(() => { console.log("image moved"); });
                         default:
                     }

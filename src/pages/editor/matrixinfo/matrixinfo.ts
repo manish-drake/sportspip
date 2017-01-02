@@ -5,8 +5,6 @@ import { StorageFactory } from '../../../Services/Factory/StorageFactory';
 import { Package } from '../../../Services/Package';
 import { Logger } from '../../../logging/logger';
 
-declare var cordova: any;
-
 /*
   Generated class for the Matrixinfo page.
 

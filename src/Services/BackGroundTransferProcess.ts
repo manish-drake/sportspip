@@ -3,21 +3,22 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { Platform } from 'ionic-angular';
 import { Connection } from '../Services/Connection';
 import { File } from 'ionic-native';
+import { Storage } from './Factory/Storage';
 import X2JS from 'x2js';
 import { Logger } from '../logging/logger';
 import { Observable } from 'rxjs/Rx';
-declare var cordova: any;
+import {} from '';
 
 
 @Injectable()
 export class BackGroundTransferProcess {
     private data: any;
 
-    constructor(private platform: Platform, private http: Http, private _logger: Logger) {
+    constructor(private platform: Platform, private http: Http, private _logger: Logger,private storage:Storage) {
     }
     TransferVideo(fileName, serverIP, views) {
         this._logger.Debug('Transfer video');
-        File.readAsArrayBuffer(cordova.file.externalDataDirectory, fileName).then(success => {
+        File.readAsArrayBuffer(this.storage.applicationStorageDirectory(), fileName).then(success => {
             let headers = new Headers({ 'Content-Type': 'video/mp4' }); // ... Set content type to JSON
             let options = new RequestOptions({ headers: headers });
             this.http.post("http://" + serverIP + ":10080/imatrix/matrices/" + fileName.slice(0, -4) + "/videos", success, options)
