@@ -1,6 +1,6 @@
 import { Component, ViewChild, Input, ElementRef } from '@angular/core';
-import { File } from 'ionic-native';
 import { Storage } from '../../../Services/Factory/Storage';
+import { StorageFactory } from '../../../Services/Factory/StorageFactory';
 import { AlertControllers } from '../../../Services/Alerts';
 import { AlertController, ModalController, Platform, Events } from 'ionic-angular';
 import { Logger } from '../../../logging/logger';
@@ -19,6 +19,7 @@ export class VideoComponent {
     rootDir: String;
     constructor(private alertCtrls: AlertControllers,
         private storage: Storage,
+        private storageFactory: StorageFactory,
         private alertCtrl: AlertController,
         private modalCtrl: ModalController,
         private platform: Platform,
@@ -107,7 +108,7 @@ export class VideoComponent {
         var filePath = this.video.currentSrc;
         var dirpath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
         var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
-        File.checkFile(dirpath, fileName)
+        this.storageFactory.CheckFile(dirpath, fileName)
             .then(success => {
                 this.isErrorVisible = true;
                 this._logger.Error("View " + (this.viewindex + 1) + ': Error loading video: ', this.videoErrorHandling(this.video.error.code));

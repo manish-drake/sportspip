@@ -300,7 +300,7 @@ export class Ipcameras {
   saveMatrix() {
     this.loader.setContent('Saving..');
 
-    this.storagefactory.ReadFileAync("Local", this.matrix._Channel, this.matrix._Name, this.matrix._Name + ".mtx")
+    this.storagefactory.ReadMatixFileAync("Local", this.matrix._Channel, this.matrix._Name, this.matrix._Name + ".mtx")
       .then((data) => {
         this._logger.Debug("Matrix file saving..")
 

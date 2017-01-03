@@ -13,6 +13,7 @@ import 'rxjs/Rx';
 export class ModelFactory {
 
     private storageDataDir: string;
+    private rootDir: string;
 
     constructor(private _logger: Logger,
         private storage: Storage,
@@ -20,6 +21,7 @@ export class ModelFactory {
         private platform: Platform) {
         if (this.platform.is('cordova')) {
             this.storageDataDir = this.storage.externalDataDirectory();
+            this.rootDir = this.storage.externalRootDirectory();
         }
     }
 
@@ -27,10 +29,10 @@ export class ModelFactory {
         this._logger.Debug('Create thumbnail..');
 
         var blob: any;
-        var sourcePath = this.storageDataDir + "SportsPIP/Video/" + name;
+        var sourcePath = this.rootDir + "SportsPIP/Video/" + name;
         navigator.createThumbnail(sourcePath, function (err, imageData) {
-            blob = imageData;
             if (err != null) { this._logger.Error('Error,creating thumbnail: ', err); }
+            else { blob = imageData;  }
         });
         Observable.interval(1000)
             .take(1).map((x) => x + 5)

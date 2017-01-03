@@ -48,7 +48,7 @@ export class MatrixInfoPage {
     ionViewWillUnload() {
         if (this.validatematrixInfo()) {
             this.platform.ready().then(() => {
-                this.storagefactory.ReadFileAync("Local", this.matrixData._Channel, this.matrixData._Name, this.matrixData._Name + ".mtx")
+                this.storagefactory.ReadMatixFileAync("Local", this.matrixData._Channel, this.matrixData._Name, this.matrixData._Name + ".mtx")
                     .then(data => {
                         var res = JSON.parse(data.toString());
                         var matrix = res.Matrix;

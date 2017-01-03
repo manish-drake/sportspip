@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Directive } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { sportspip } from './app.component';
 
@@ -26,9 +26,12 @@ import { StorageFactory } from '../Services/Factory/StorageFactory';
 import { Logger } from '../logging/logger';
 import { AProvider } from '../logging/aProvider';
 import { SqliteLogProvider } from '../logging/providers/sqliteLogProvider';
+import { CommandDirective } from './directives/command.directive';
+
 
 @NgModule({
   declarations: [
+    CommandDirective,
     sportspip,
     HomePage,
     HomeMorePopover,
@@ -56,7 +59,7 @@ import { SqliteLogProvider } from '../logging/providers/sqliteLogProvider';
   providers: [
     AlertControllers,
     { provide: AProvider, useClass: SqliteLogProvider },
-    Logger, StorageFactory,Storage
+    Logger, StorageFactory, Storage
   ],
   imports: [
     IonicModule.forRoot(sportspip)
