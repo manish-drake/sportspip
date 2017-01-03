@@ -1,7 +1,7 @@
-declare var cordova: any;
 import { Injectable } from '@angular/core';
-
 import { Platform } from 'ionic-angular'
+
+declare var cordova: any;
 
 @Injectable()
 export class Storage {
@@ -16,7 +16,7 @@ export class Storage {
                 return cordova.file.externalDataDirectory;
             }
             if (this.platform.is('ios')) {
-                return cordova.file.documentsDirectory;
+                return cordova.file.dataDirectory;
             }
         }
     }
@@ -27,7 +27,7 @@ export class Storage {
                 return cordova.file.externalRootDirectory;
             }
             else if (this.platform.is('ios')) {
-                return cordova.file.dataDirectory;
+                return cordova.file.documentsDirectory;
             }
         }
     }
@@ -49,7 +49,7 @@ export class Storage {
                 return cordova.file.applicationStorageDirectory;
             }
             else if (this.platform.is('ios')) {
-                return cordova.file.documentsDirectory;
+                return cordova.file.applicationStorageDirectory;
             }
         }
     }

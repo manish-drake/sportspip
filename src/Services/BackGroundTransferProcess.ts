@@ -18,7 +18,7 @@ export class BackGroundTransferProcess {
     }
     TransferVideo(fileName, serverIP, views) {
         this._logger.Debug('Transfer video');
-        File.readAsArrayBuffer(this.storage.applicationStorageDirectory(), fileName).then(success => {
+        File.readAsArrayBuffer(this.storage.externalRootDirectory()+"SportsPIP/Video", fileName).then(success => {
             let headers = new Headers({ 'Content-Type': 'video/mp4' }); // ... Set content type to JSON
             let options = new RequestOptions({ headers: headers });
             this.http.post("http://" + serverIP + ":10080/imatrix/matrices/" + fileName.slice(0, -4) + "/videos", success, options)
