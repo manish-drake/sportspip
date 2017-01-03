@@ -5,7 +5,7 @@ import {
   App, LoadingController, Events, PopoverController, ViewController
 } from 'ionic-angular';
 import { BackGroundTransferProcess } from '../../Services/BackGroundTransferProcess';
-import { File, FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError, FilePath } from 'ionic-native';
+import { FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError, FilePath } from 'ionic-native';
 import { AlertControllers } from '../../Services/Alerts';
 import { Http } from '@angular/http';
 import { Connection } from '../../Services/Connection'
@@ -97,7 +97,7 @@ export class EditorPage {
       });
       loader.present();
 
-      this.storagefactory.ReadFileAync("Local", this.matrix._Channel, this.matrix._Name, this.matrix._Name + ".mtx")
+      this.storagefactory.ReadMatixFileAync("Local", this.matrix._Channel, this.matrix._Name, this.matrix._Name + ".mtx")
         .then((data) => {
           this._logger.Debug("Matrix file saving..")
 
@@ -140,7 +140,6 @@ export class EditorPage {
     });
     return name;
   }
-
 
   presentInfoModal() {
     let modal = this.modalCtrl.create(MatrixInfoPage, {
@@ -246,7 +245,7 @@ export class EditorPage {
             var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
             var newFileName = Date.now() + ".mp4";
 
-            File.copyFile(path, fileName, this.rootDirectory + "SportsPIP/Video", newFileName)
+            this.storagefactory.CopyFile(path, this.rootDirectory + "SportsPIP/Video", fileName)
               .then(success => {
                 console.log('Successfully copied video');
                 this.CreateVideoView(newFileName);
@@ -295,7 +294,7 @@ export class EditorPage {
       var path = fileUrl.substr(0, fileUrl.lastIndexOf('/') + 1);
       var fileName = fileUrl.substr(fileUrl.lastIndexOf('/') + 1);
 
-      File.moveFile(path, fileName, this.rootDirectory + "SportsPIP/Video", fileName)
+      this.storagefactory.MoveFile(path, this.rootDirectory + "SportsPIP/Video", fileName)
         .then(_ => {
           this.CreateVideoView(fileName);
           console.log('Successfully saved video')

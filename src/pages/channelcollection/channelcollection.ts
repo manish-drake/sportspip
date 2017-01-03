@@ -120,19 +120,45 @@ export class ChannelCollectionPage {
 
   DownloadServerHeaderAsync(fileName, channelName, index) {
     this._logger.Debug('Download server header async..');
-    let loader = this.loadingCtrl.create({
-      content: 'Downloading..',
-      duration: 300000
-    });
-    loader.present();
+    try {
+      let loader = this.loadingCtrl.create({
+        content: 'Downloading..',
+        duration: 300000
+      });
+      loader.present();
 
-    this.download.Run(fileName, channelName).then((success) => {
-      if (success == true) {
-        this.DeleteChannelMatrix(fileName, channelName, index);
-        console.log("delete server header");
-        loader.dismiss();
+      var authenticate = this.AuthenticateUser();
+      if (authenticate) {
+
+        this.packages.DownloadServerHeader(fileName, channelName).then((serverHeader) => {
+          Observable.interval(2000)
+            .take(3).map((x) => x + 5)
+            .subscribe((x) => {
+              this.packages.unzipPackage();
+              console.log("unzip");
+            })
+          Observable.interval(4000)
+            .take(1).map((x) => x + 5)
+            .subscribe((x) => {
+              this.packages.MoveToLocalCollection(channelName);
+              console.log("matrix moved");
+            })
+          Observable.interval(6000)
+            .take(1).map((x) => x + 5)
+            .subscribe((x) => {
+              this.storagefactory.RemoveFileAsync("file:/storage/emulated/0/DCIM", "Temp").then(() => {
+                this.DeleteChannelMatrix(fileName, channelName, index);
+                console.log("delete server header");
+                loader.dismiss();
+              });
+            })
+        })
+
       }
-    })
+    }
+    catch (err) {
+      this._logger.Error('Error,downloading server header async: ', err);
+    }
   }
 
   AuthenticateUser() {

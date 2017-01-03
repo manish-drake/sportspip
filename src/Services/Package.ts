@@ -3,7 +3,7 @@ import { Platform } from 'ionic-angular';
 import { StorageFactory } from './Factory/StorageFactory';
 import { Storage } from './Factory/Storage';
 import { Http } from '@angular/http';
-import { File, DirectoryEntry } from 'ionic-native';
+import { DirectoryEntry } from 'ionic-native';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import X2JS from 'x2js';
@@ -34,7 +34,7 @@ export class Package {
     MoveToLocalCollection(channelName) {
         this.fileName = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
         this.platform.ready().then(() => {
-            File.readAsText(this.storageDataDir + "Temp/matrix1", "Header.xml").then((result => {
+            this.storagefactory.ReadFileAync(this.storageDataDir + "Temp/matrix1", "Header.xml").then((result => {
                 console.log("header moving..");
                 var header = JSON.parse(result.toString());
                 header.Name = this.fileName;
@@ -44,7 +44,7 @@ export class Package {
                 this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
                 console.log("header moved");
             }));
-            File.listDir(this.storageDataDir + "Temp/", "matrix1").then((success) => {
+            this.storagefactory.GetLisOfDirectory(this.storageDataDir + "Temp/", "matrix1").then((success) => {
                 success.forEach(file => {
                     var sliced = file.name.substr(-4);
                     switch (sliced) {
@@ -56,10 +56,7 @@ export class Package {
                                 var matrix = matrixdata.Matrix;
                                 matrix._Name = this.fileName;
                                 matrix._Channel = this.channelName;
-                                this.storagefactory.SaveMatrixAsync(matrixdata, matrix._Channel, matrix._Sport, matrix._Name, "Matrices").then(() => {
-                                    console.log("mtx moved");
-                                });
-
+                                this.storagefactory.SaveMatrixAsync(matrixdata, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
                             }).toPromise()
                         case '.mp4':
                             console.log("video moving...");
@@ -83,12 +80,12 @@ export class Package {
     }
 
     DownloadServerHeader(fileName, channelName): Promise<DirectoryEntry> {
-        return File.createDir(this.storageDataDir, "Temp", true).then(() => {
+        return this.storagefactory.createFolder(this.storageDataDir, "Temp").then(() => {
             var NewPath = this.storageDataDir + "Temp/";
-            return File.createDir(NewPath, "matrix1", true).then(() => {
+            return this.storagefactory.createFolder(NewPath, "matrix1").then(() => {
                 var matrixPath = NewPath + "matrix1/";
                 var oldPath = this.storageDataDir + "Server/" + channelName + "/Tennis/Matrices/" + fileName + "/";
-                return File.copyFile(oldPath, "Header.xml", matrixPath, "Header.xml").then((success) => {
+                return this.storagefactory.CopyFile(oldPath, matrixPath, "Header.xml").then((success) => {
                     const ft = new FileTransfer();
                     var url = encodeURI("https://sportspipstorage.blob.core.windows.net/matrices/" + channelName + "/" + fileName + ".sar");
                     // var url = encodeURI("https://drake.blob.core.windows.net/matrices/Harvest/636049183928404138.sar");

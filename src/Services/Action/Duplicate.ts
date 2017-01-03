@@ -8,12 +8,12 @@ export class Duplicate {
 
     Run(channelName, matrixname): Promise<any> {
         var name = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
-        return this.storagefactory.ReadFileAync("Local", channelName, matrixname, "Header.xml").then((res) => {
+        return this.storagefactory.ReadMatixFileAync("Local", channelName, matrixname, "Header.xml").then((res) => {
             var header = JSON.parse(res.toString());
             header.Name = name;
             header.DateCreated = name;
             return this.storagefactory.SaveLocalHeader(header, channelName, header.Sport, name, "Matrices").then(() => {
-                return this.storagefactory.ReadFileAync("Local", channelName, matrixname, matrixname + ".mtx").then((res1) => {
+                return this.storagefactory.ReadMatixFileAync("Local", channelName, matrixname, matrixname + ".mtx").then((res1) => {
                     var matrix = JSON.parse(res1.toString());
                     matrix.Matrix._Name = name;
                     matrix.Matrix._DateCreated = name;
