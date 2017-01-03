@@ -6,7 +6,9 @@ import { Platform } from 'ionic-angular'
 @Injectable()
 export class Storage {
 
-    constructor(private platform: Platform) { }
+    constructor(private platform: Platform) {
+        this.platform = platform;
+    }
 
     externalDataDirectory() {
         if (this.platform.is('cordova')) {
