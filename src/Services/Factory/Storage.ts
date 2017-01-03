@@ -10,25 +10,45 @@ export class Storage {
 
     externalDataDirectory() {
         if (this.platform.is('cordova')) {
-            return cordova.file.externalDataDirectory;
+            if (this.platform.is('android')) {
+                return cordova.file.externalDataDirectory;
+            }
+            if (this.platform.is('ios')) {
+                return cordova.file.documentsDirectory;
+            }
         }
     }
 
     externalRootDirectory() {
         if (this.platform.is('cordova')) {
-            return cordova.file.externalRootDirectory;
+            if (this.platform.is('android')) {
+                return cordova.file.externalRootDirectory;
+            }
+            else if (this.platform.is('ios')) {
+                return cordova.file.dataDirectory;
+            }
         }
     }
 
     applicationDirectory() {
         if (this.platform.is('cordova')) {
-            return cordova.file.applicationDirectory
+            if (this.platform.is('android')) {
+                return cordova.file.applicationDirectory;
+            }
+            else if (this.platform.is('ios')) {
+                return cordova.file.applicationDirectory;
+            }
         }
     }
 
     applicationStorageDirectory() {
         if (this.platform.is('cordova')) {
-            return cordova.file.applicationStorageDirectory;
+            if (this.platform.is('android')) {
+                return cordova.file.applicationStorageDirectory;
+            }
+            else if (this.platform.is('ios')) {
+                return cordova.file.documentsDirectory;
+            }
         }
     }
 
