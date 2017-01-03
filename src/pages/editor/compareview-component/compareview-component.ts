@@ -33,7 +33,7 @@ export class CompareviewComponent {
         private popoverCtrl: PopoverController,
         private events: Events) {
         this.playPauseButtonIcon = "play";
-        this.rootDir = this.storage.externalRootDirectory()
+        this.rootDir = this.storage.externalRootDirectory();
         this.timelinePosition = this.formatTime(0);
     }
 

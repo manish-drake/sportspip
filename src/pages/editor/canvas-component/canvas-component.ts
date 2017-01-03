@@ -20,11 +20,11 @@ export class CanvasComponent {
   isTimelineAvailable: boolean = false;
   rootDir: any;
   constructor(private platform: Platform, private events: Events, private storage: Storage) {
-    this.rootDir = this.storage.externalRootDirectory();
     this.timelinePosition = "00:00:00:00";
     this.playPauseButtonIcon = "play";
     this.repeatColor = "inactive";
     this.volumeButtonIcon = "volume-up";
+    this.rootDir = this.storage.externalRootDirectory();
   }
 
   objects = [];
