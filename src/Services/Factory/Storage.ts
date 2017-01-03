@@ -6,9 +6,7 @@ declare var cordova: any;
 @Injectable()
 export class Storage {
 
-    constructor(private platform: Platform) {
-        this.platform = platform;
-    }
+    constructor(private platform: Platform) { }
 
     externalDataDirectory() {
         if (this.platform.is('cordova')) {
