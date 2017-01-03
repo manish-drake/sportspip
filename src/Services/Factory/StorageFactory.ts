@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Platform, ToastController } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { Storage } from './Storage';
-import { File, WriteOptions, FileEntry, DirectoryEntry } from 'ionic-native';
+import { File, WriteOptions, DirectoryEntry } from 'ionic-native';
 import { Logger } from '../../logging/logger';
 
 import 'rxjs/Rx';
