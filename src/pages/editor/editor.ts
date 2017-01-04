@@ -294,22 +294,13 @@ export class EditorPage {
       var path = fileUrl.substr(0, fileUrl.lastIndexOf('/') + 1);
       var fileName = fileUrl.substr(fileUrl.lastIndexOf('/') + 1);
 
-      this.storagefactory.CopyFile(path, fileName, this.rootDirectory + "SportsPIP/Video", fileName)
-        .then(_ => {
+      this.storagefactory.MoveFile(path,this.rootDirectory + "SportsPIP/Video", fileName)
+        .subscribe(success => {
           this.CreateVideoView(fileName);
           console.log('Successfully saved video')
           if (Connection.connectedServer != null)
             this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
         })
-        .catch(err => {
-          console.log('Failed saving video' + err)
-          // let alert = this.alertCtrl.create({
-          //   title: 'Failed saving video!',
-          //   subTitle: JSON.stringify(err),
-          //   buttons: ['OK']
-          // });
-          // alert.present();
-        });
     });
   }
 

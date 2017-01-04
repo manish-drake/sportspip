@@ -104,7 +104,7 @@ export class SettingsPage {
       this.chanelList = [];
       this.subscribeList = [];
       this.createSettingsasync()
-      this.storagefactory.RemoveFileAsync(this.storageDataDir + "Server", channelName).then(() => {
+      this.storagefactory.RemoveFileAsync(this.storageDataDir + "Server", channelName).subscribe(() => {
       })
     }).catch((err) => { this._logger.Error('Error,unSubscribing channel list..', err); });
   }
@@ -242,7 +242,7 @@ export class SettingsPage {
     popover.onDidDismiss(data => {
       if (data != null) {
         this.platform.ready().then(() => {
-          this.storagefactory.RemoveFileAsync(this.storageDataDir + "Roaming", "User.json").then((res) => {
+          this.storagefactory.RemoveFileAsync(this.storageDataDir + "Roaming", "User.json").subscribe((res) => {
             this.FirstName = null;
             this.UserID = 0;
             this.subscribeList = [];

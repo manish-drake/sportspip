@@ -41,10 +41,12 @@ export class Package {
                 header.DateCreated = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
                 header.ThumbnailSource = header.UploadID;
                 this.channelName = header.Channel;
-                this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
-                console.log("header moved");
+                this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices").then((res) => {
+                    console.log("header moved");
+                });
+
             }));
-            this.storagefactory.GetLisOfDirectory(this.storageDataDir + "Temp/", "matrix1").then((success) => {
+            return this.storagefactory.GetLisOfDirectory(this.storageDataDir + "Temp/", "matrix1").then((success) => {
                 success.forEach(file => {
                     var sliced = file.name.substr(-4);
                     switch (sliced) {
@@ -56,21 +58,23 @@ export class Package {
                                 var matrix = matrixdata.Matrix;
                                 matrix._Name = this.fileName;
                                 matrix._Channel = this.channelName;
-                                this.storagefactory.SaveMatrixAsync(matrixdata, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
+                                return this.storagefactory.SaveMatrixAsync(matrixdata, matrix._Channel, matrix._Sport, matrix._Name, "Matrices").then((res) => {
+                                    console.log("mtx moved...");
+                                });
                             }).toPromise()
                         case '.mp4':
                             console.log("video moving...");
-                            this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", this.storageRootDirectory + "SportsPIP/Video", file.name)
-                                .then((success) => { console.log("video moved"); });
+                            return this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", this.storageRootDirectory + "SportsPIP/Video", file.name)
+                                .subscribe((success) => { console.log("video moved"); });
                         case ".gif":
                         case ".rtf":
                             console.log("ink moving...");
-                            this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", this.storageRootDirectory + "SportsPIP/Picture", file.name)
-                                .then((success) => { console.log("ink moved..."); });
+                            return this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", this.storageRootDirectory + "SportsPIP/Picture", file.name)
+                                .subscribe((success) => { console.log("ink moved..."); });
                         case ".jpg":
                             console.log("image moving...");
-                            this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", this.storageRootDirectory + "SportsPIP/Picture", file.name)
-                                .then(() => { console.log("image moved"); });
+                            return this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", this.storageRootDirectory + "SportsPIP/Picture", file.name)
+                                .subscribe(() => { console.log("image moved"); });
                         default:
                     }
                 });

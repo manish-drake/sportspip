@@ -60,20 +60,20 @@ export class StorageFactory {
         if (this.platform.is('cordova')) {
             this._logger.Debug('Save matrix async..');
             //create Server Folder
-            this.createFolder(this.storageDataDir, "Local").then((success) => {
+            return this.createFolder(this.storageDataDir, "Local").then((success) => {
                 var localFolder = this.storageDataDir + "Local/";
-                this.createFolder(localFolder, channel).then(() => {
+                return this.createFolder(localFolder, channel).then(() => {
                     var channelFolder = localFolder + channel + "/";
-                    this.createFolder(channelFolder, sport).then(() => {
+                    return this.createFolder(channelFolder, sport).then(() => {
                         var sportFolder = channelFolder + sport + "/";
-                        this.createFolder(sportFolder, typeFolder).then(() => {
+                        return this.createFolder(sportFolder, typeFolder).then(() => {
                             var contentFolder = sportFolder + typeFolder + "/";
-                            this.createFolder(contentFolder, matrixName).then((success) => {
+                            return this.createFolder(contentFolder, matrixName).then((success) => {
                                 var fileLocation = contentFolder + matrixName;
-                                this.CreateFile(fileLocation, matrixName + ".mtx").then(() => {
-                                    this.WriteFile(fileLocation, matrixName + ".mtx", content)
+                                return this.CreateFile(fileLocation, matrixName + ".mtx").then(() => {
+                                    return this.WriteFile(fileLocation, matrixName + ".mtx", content)
                                         .then(function (success) {
-                                            console.log('Saved in SF');
+                                            return success["nativeUrl"]
                                         }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
                                 }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
                             }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
@@ -115,7 +115,7 @@ export class StorageFactory {
         this._logger.Debug('Deleteing server header..');
         this.platform.ready().then(() => {
             var headerFolder = this.storageDataDir + "Server/" + channel + "/Tennis/Matrices/"
-            this.RemoveFileAsync(headerFolder, DirName).then((res) => {
+            this.RemoveFileAsync(headerFolder, DirName).subscribe((res) => {
                 let toast = this.toastCtrl.create({
                     message: 'Deleted Successfully..',
                     duration: 2000,
@@ -131,13 +131,13 @@ export class StorageFactory {
         this._logger.Debug('Delete local header..');
         this.platform.ready().then(() => {
             var headerFolder = this.storageDataDir + "Local/" + channel + "/Tennis/Matrices/"
-            this.RemoveFileAsync(headerFolder, DirName).then((res) => {
+            this.RemoveFileAsync(headerFolder, DirName).subscribe((res) => {
                 let toast = this.toastCtrl.create({
                     message: 'Deleted Successfully..',
                     duration: 2000,
                 });
                 toast.present();
-            }).catch((err) => { this._logger.Error('Error,deleting local header: ', err); })
+            })
         })
 
     }
@@ -268,16 +268,16 @@ export class StorageFactory {
         return hea;
     }
 
-    CheckFile(dirpath, fileName): Promise<boolean> {
-        return File.checkFile(dirpath, fileName).then((res) => {
-            return res;
-        })
+    CheckFile(dirpath, fileName): Promise<any> {
+        return File.checkFile(dirpath, fileName);
     }
 
 
 
-    createFolder(path: string, dirName: string): Promise<DirectoryEntry> {
-        return File.createDir(path, dirName, true);
+    createFolder(path: string, dirName: string): Promise<any> {
+        return File.createDir(path, dirName, true).then((success) => {
+            return success
+        });
     }
 
 
@@ -288,16 +288,18 @@ export class StorageFactory {
         return File.writeFile(path, fileName, content, this.writeOptions);
     }
 
-    CopyFile(oldPath,oldName, newPath, fileName): Promise<any> {
+    CopyFile(oldPath, oldName, newPath, fileName): Promise<any> {
         return File.copyFile(oldPath, oldName, newPath, fileName)
     }
 
-    MoveFile(oldPath, newPath, fileName): Promise<any> {
-        return File.moveFile(oldPath, fileName, newPath, fileName);
+    MoveFile(oldPath, newPath, fileName): Observable<string> {
+        return Observable.fromPromise(File.moveFile(oldPath, fileName, newPath, fileName))
+            .map(x => x["nativeUrl"]);
     }
 
-    RemoveFileAsync(path, dirName): Promise<any> {
-        return File.removeRecursively(path, dirName);
+    RemoveFileAsync(path, dirName): Observable<boolean> {
+        return Observable.fromPromise(File.removeRecursively(path, dirName))
+            .map(x => x.success);
     }
 
     ReadMatixFileAync(dirName, channelName, matrixname, fileName): Promise<any> {

@@ -4,9 +4,10 @@ import { StorageFactory } from '../Factory/StorageFactory';
 @Injectable()
 export class Duplicate {
     constructor(private storagefactory: StorageFactory) {
+        
     }
 
-    Run(channelName, matrixname): Promise<any> {
+    Run(channelName, matrixname) {
         var name = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
         return this.storagefactory.ReadMatixFileAync("Local", channelName, matrixname, "Header.xml").then((res) => {
             var header = JSON.parse(res.toString());
