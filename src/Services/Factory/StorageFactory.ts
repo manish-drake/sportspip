@@ -4,7 +4,7 @@ import { Http } from '@angular/http';
 import { Storage } from './Storage';
 import { File, WriteOptions, FileEntry, DirectoryEntry } from 'ionic-native';
 import { Logger } from '../../logging/logger';
-
+import { Observable } from 'rxjs/Rx';
 import 'rxjs/Rx';
 
 
@@ -19,8 +19,8 @@ export class StorageFactory {
         private platform: Platform,
         private toastCtrl: ToastController,
         private _logger: Logger) {
-            this.storageDataDir = this.storage.externalDataDirectory();
-            this.storageRoot = this.storage.externalRootDirectory();
+        this.storageDataDir = this.storage.externalDataDirectory();
+        this.storageRoot = this.storage.externalRootDirectory();
     }
     SaveRoamingHeader(content, channel, sport, matrixName) {
         this.SaveServerHeader(content, channel, sport, matrixName, "Matrices");
@@ -84,7 +84,7 @@ export class StorageFactory {
         }
     }
 
-    SaveLocalHeader(content, channel, sport, matrixName, typeFolder): Promise<any> {
+    SaveLocalHeader(content, channel, sport, matrixName, typeFolder) {
         this._logger.Debug('Save local header..');
         return this.platform.ready().then(() => {
             return this.createFolder(this.storageDataDir, "Local").then((success) => {
@@ -277,45 +277,32 @@ export class StorageFactory {
 
 
     createFolder(path: string, dirName: string): Promise<DirectoryEntry> {
-        return File.createDir(path, dirName, true).then((res) => {
-            return res["nativeUrl"];
-        })
+        return File.createDir(path, dirName, true);
     }
 
 
-    CreateFile(path, fileName): Promise<string> {
-        return File.createFile(path, fileName, true).then((success) => {
-            return success["nativeUrl"];
-        })
+    CreateFile(path, fileName): Promise<any> {
+        return File.createFile(path, fileName, true);
     }
-    WriteFile(path, fileName, content): Promise<string> {
-        return File.writeFile(path, fileName, content, this.writeOptions).then((success) => {
-            return success["nativeUrl"]
-        })
+    WriteFile(path, fileName, content): Promise<any> {
+        return File.writeFile(path, fileName, content, this.writeOptions);
     }
 
-    CopyFile(oldPath, newPath, fileName): Promise<string> {
-        return File.copyFile(oldPath, fileName, newPath, fileName)
-            .then((success) => { return success["nativeURL"] });
+    CopyFile(oldPath,oldName, newPath, fileName): Promise<any> {
+        return File.copyFile(oldPath, oldName, newPath, fileName)
     }
 
-    MoveFile(oldPath, newPath, fileName): Promise<string> {
-        return File.moveFile(oldPath, fileName, newPath, fileName)
-            .then((success) => { return success["nativeURL"] });
+    MoveFile(oldPath, newPath, fileName): Promise<any> {
+        return File.moveFile(oldPath, fileName, newPath, fileName);
     }
 
-    RemoveFileAsync(path, dirName) {
-        return File.removeRecursively(path, dirName).then((res) => {
-            return res;
-        }).catch((err) => { return err })
+    RemoveFileAsync(path, dirName): Promise<any> {
+        return File.removeRecursively(path, dirName);
     }
 
     ReadMatixFileAync(dirName, channelName, matrixname, fileName): Promise<any> {
         this._logger.Debug("reading local file async.. ")
-        return File.readAsText(this.storageDataDir + dirName + "/" + channelName + "/Tennis/Matrices/" + matrixname, fileName)
-            .then(res => {
-                return res;
-            }).catch((err) => { this._logger.Error("Error,reading local file async.. ", err) })
+        return File.readAsText(this.storageDataDir + dirName + "/" + channelName + "/Tennis/Matrices/" + matrixname, fileName);
     }
 
     GetLisOfDirectory(path, DirName) {
@@ -326,10 +313,7 @@ export class StorageFactory {
 
     ReadFileAync(path, dirName): Promise<any> {
         this._logger.Debug("reading local file async.. ")
-        return File.readAsText(path, dirName)
-            .then(res => {
-                return res;
-            }).catch((err) => { this._logger.Error("Error,reading local file async.. ", err) })
+        return File.readAsText(path, dirName);
     }
 
     // ReadServerFileAync(channelName, matrixname, fileName): Promise<any> {

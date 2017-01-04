@@ -6,11 +6,12 @@ import { ICommand } from '../../Contracts/ICommand'
 })
 export class CommandDirective {
     @Input() command: ICommand;
+    @Input() cmdArgs:any;
     constructor(el: ElementRef) {
 
     }
 
     @HostListener('click') onClick() {
-        this.command.run();
+        this.command.run(this.cmdArgs);
     }
 }

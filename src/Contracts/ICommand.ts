@@ -1,4 +1,3 @@
 export interface ICommand{
-    args:any;
-    run();
+    run(cmdArgs:any);
 }

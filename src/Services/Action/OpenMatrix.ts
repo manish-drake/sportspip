@@ -1,24 +1,23 @@
-import { Injectable } from '@angular/core';
-import { NavController, Platform } from 'ionic-angular';
+import { Injectable, Inject } from '@angular/core';
+import { NavController } from 'ionic-angular';
 import { EditorPage } from '../../pages/editor/editor';
-import { Http } from '@angular/http';
 import { StorageFactory } from '../Factory/StorageFactory';
 import { Logger } from '../../logging/logger';
+import { ICommand } from '../../Contracts/ICommand';
 import { AlertControllers } from '../Alerts';
-@Injectable()
-export class OpenMatrix {
 
-    constructor(private http: Http,
-        private alertCtrls: AlertControllers,
+@Injectable()
+export class OpenMatrix implements ICommand {
+
+    constructor(private alertCtrls: AlertControllers,
         private navCtrl: NavController,
-        private platform: Platform,
         private storagefactory: StorageFactory,
         private _logger: Logger) {
     }
 
-    run(matrixName, Channel) {
+    run(cmdArgs) {
         this._logger.Debug('open matrix..');
-        this.storagefactory.ReadMatixFileAync("Local", Channel, matrixName, matrixName + ".mtx")
+        this.storagefactory.ReadMatixFileAync("Local", cmdArgs.Channel, cmdArgs.Name, cmdArgs.Name + ".mtx")
             .then(data => {
                 console.log("open matrix");
                 var res = JSON.parse(data.toString());
@@ -29,7 +28,7 @@ export class OpenMatrix {
                     });
                 }
             }).catch(err => {
-                this._logger.Error('Error,open matrix: ', err);
+                this._logger.Error('Error,open matrix: ', JSON.stringify(err));
                 this.alertCtrls.BasicAlert('File Error!', "Either file is corrupt or did not download properly");
                 // this.createNewMatrix(matrixName, Channel);
             });

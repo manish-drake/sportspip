@@ -51,7 +51,7 @@ export class EditorPage {
     private events: Events,
     private popoverCtrl: PopoverController,
     private _logger: Logger) {
-      this.rootDirectory = this.storage.externalRootDirectory();
+    this.rootDirectory = this.storage.externalRootDirectory();
   }
 
 
@@ -245,7 +245,7 @@ export class EditorPage {
             var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
             var newFileName = Date.now() + ".mp4";
 
-            this.storagefactory.CopyFile(path, this.rootDirectory + "SportsPIP/Video", fileName)
+            this.storagefactory.CopyFile(path, fileName, this.rootDirectory + "SportsPIP/Video", newFileName)
               .then(success => {
                 console.log('Successfully copied video');
                 this.CreateVideoView(newFileName);
@@ -294,7 +294,7 @@ export class EditorPage {
       var path = fileUrl.substr(0, fileUrl.lastIndexOf('/') + 1);
       var fileName = fileUrl.substr(fileUrl.lastIndexOf('/') + 1);
 
-      this.storagefactory.MoveFile(path, this.rootDirectory + "SportsPIP/Video", fileName)
+      this.storagefactory.CopyFile(path, fileName, this.rootDirectory + "SportsPIP/Video", fileName)
         .then(_ => {
           this.CreateVideoView(fileName);
           console.log('Successfully saved video')

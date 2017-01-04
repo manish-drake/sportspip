@@ -85,7 +85,7 @@ export class Package {
             return this.storagefactory.createFolder(NewPath, "matrix1").then(() => {
                 var matrixPath = NewPath + "matrix1/";
                 var oldPath = this.storageDataDir + "Server/" + channelName + "/Tennis/Matrices/" + fileName + "/";
-                return this.storagefactory.CopyFile(oldPath, matrixPath, "Header.xml").then((success) => {
+                return this.storagefactory.CopyFile(oldPath, "Header.xml", matrixPath, "Header.xml").then((success) => {
                     const ft = new FileTransfer();
                     var url = encodeURI("https://sportspipstorage.blob.core.windows.net/matrices/" + channelName + "/" + fileName + ".sar");
                     // var url = encodeURI("https://drake.blob.core.windows.net/matrices/Harvest/636049183928404138.sar");

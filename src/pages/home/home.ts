@@ -60,10 +60,10 @@ export class HomePage {
         private loadingCtrl: LoadingController,
         private connection: Connection,
         private _logger: Logger) {
-            platform.ready().then(() => {
-                this.dataDirectory = this.storage.externalDataDirectory();
-                this.applicationDirectory = this.storage.applicationDirectory();
-            });
+        platform.ready().then(() => {
+            this.dataDirectory = this.storage.externalDataDirectory();
+            this.applicationDirectory = this.storage.applicationDirectory();
+        });
     }
 
     ionViewDidEnter() {
@@ -123,9 +123,16 @@ export class HomePage {
         });
     }
 
-    openMatrix(matrixName, Channel) {
-        this.openmatrix.run(matrixName, Channel);
+
+    private _OpenMatrix: OpenMatrix;
+    public get OpenMatrix(): OpenMatrix {
+        return this.openmatrix;
     }
+
+
+    // openMatrix(matrixName, Channel) {
+    //     this.openmatrix.run(matrixName, Channel);
+    // }
 
     refreshing: boolean = false;
 
@@ -150,9 +157,9 @@ export class HomePage {
         }, 500);
     }
 
-    matrixPressed(index, Name, channel, title) {
+    matrixPressed(index, matrix) {
         let actionSheet = this.actionSheetCtrl.create({
-            title: title,
+            title: matrix.Title,
             buttons: [
                 {
                     icon: 'trash',
@@ -160,7 +167,7 @@ export class HomePage {
                     role: 'destructive',
                     handler: () => {
                         console.log('Destructive clicked');
-                        this.deleteHeader.DeleteLocalHeader(Name, channel);
+                        this.deleteHeader.DeleteLocalHeader(matrix.Name, matrix.Channel);
                         this.localMatrices.splice(index, 1);
                     }
                 }, {
@@ -168,7 +175,7 @@ export class HomePage {
                     text: 'Save Copy',
                     handler: () => {
                         console.log('Copy clicked');
-                        this.DuplicateMatrix(channel, Name);
+                        this.DuplicateMatrix(matrix.Channel, matrix.Name);
                     }
                 }, {
                     icon: 'close',
@@ -250,7 +257,7 @@ export class HomePage {
             if (this.platform.is('cordova')) {
                 this._logger.Debug('Getting local matrix header..');
                 this.storagefactory.GetLocalHeader().then((res) => {
-                    this.localMatrices = res;
+                    this.localMatrices=res;
                 }).catch((err) => {
                     this._logger.Error('Error,Getting local matrix header..', err);
                 });

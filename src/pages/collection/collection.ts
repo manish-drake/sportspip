@@ -92,7 +92,7 @@ export class CollectionPage {
   }
 
   openMatrix(matrixName, Channel) {
-    this.openmatrix.run(matrixName, Channel);
+    // this.openmatrix.run(matrixName, Channel);
   }
 
   DuplicateMatrix(matrixname, channelName) {
