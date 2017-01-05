@@ -59,7 +59,7 @@ import { CommandDirective } from './directives/command.directive';
   providers: [
     AlertControllers,
     { provide: AProvider, useClass: SqliteLogProvider },
-    Logger, StorageFactory, Storage
+    Logger, StorageFactory, Storage,EditorPage
   ],
   imports: [
     IonicModule.forRoot(sportspip)

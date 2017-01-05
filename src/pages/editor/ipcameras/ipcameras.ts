@@ -13,6 +13,7 @@ import { AlertControllers } from '../../../Services/Alerts';
 import X2JS from 'x2js';
 import { Logger } from '../../../logging/logger';
 import { ModelFactory } from '../../../Services/Factory/ModelFactory';
+import { SaveMatrix } from '../action/saveMatrix';
 
 /*
   Generated class for the Ipcamera page.
@@ -24,7 +25,7 @@ import { ModelFactory } from '../../../Services/Factory/ModelFactory';
 @Component({
   selector: 'page-ipcameras',
   templateUrl: 'ipcameras.html',
-  providers: [StorageFactory, ModelFactory, Connection, BackGroundTransferProcessIP]
+  providers: [StorageFactory, ModelFactory, Connection, BackGroundTransferProcessIP, SaveMatrix]
 })
 export class Ipcameras {
   matrix: any;
@@ -32,6 +33,7 @@ export class Ipcameras {
   selectedViewIndex: any;
   rootDir: String;
   constructor(public viewCtrl: ViewController,
+    private saveMatrices: SaveMatrix,
     private storage: Storage,
     public navCtrl: NavController,
     private modalCtrl: ModalController,
@@ -49,7 +51,7 @@ export class Ipcameras {
     this.matrix = this.navParams.data.matrix;
     this.views = this.navParams.data.views;
     this.selectedViewIndex = this.navParams.data.selectedViewIndex;
-      this.rootDir = this.storage.externalRootDirectory();
+    this.rootDir = this.storage.externalRootDirectory();
   }
 
   isConnected: boolean = true;
@@ -299,51 +301,19 @@ export class Ipcameras {
 
   saveMatrix() {
     this.loader.setContent('Saving..');
-
-    this.storagefactory.ReadMatixFileAync("Local", this.matrix._Channel, this.matrix._Name, this.matrix._Name + ".mtx")
-      .then((data) => {
-        this._logger.Debug("Matrix file saving..")
-
-        var res = JSON.parse(data.toString());
-        var matrix = res.Matrix;
-        matrix['Matrix.Children'].View = this.views;
-        var thumbName = this.GetThumbName(matrix);
-        this.storagefactory.SaveMatrixAsync(res, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
-        var header = this.storagefactory.ComposeMatrixHeader(matrix);
-        header.ThumbnailSource = thumbName.toString();
-        this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
-
-        Observable.interval(1000)
-          .take(1).map((x) => x + 5)
-          .subscribe((x) => {
-            this.loader.dismiss();
-            this.navCtrl.popToRoot();
-          });
-      })
-      .catch((err) => {
-        this.loader.dismiss();
-        this._logger.Error("Error,Matrix file saving..", err);
-        this.navCtrl.pop();
-      });
-  }
-
-  GetThumbName(matrix) {
-    var name: "thumbnail";
-    matrix['Matrix.Children'].View.forEach(view => {
-      if (name == undefined) {
-        if (view.Content !== undefined) {
-          if (view.Content.Capture != undefined) {
-            console.log("enter........")
-            var kernel = view.Content.Capture._Kernel;
-            name = kernel.slice(0, -4).split(" ");
-            this.modelFactory.CreateThumbnail(kernel, name);
-          }
-        }
-      }
+    this.saveMatrices.run(this.matrix._Channel, this.matrix._Name, this.views).then((res) => {
+      Observable.interval(1000)
+        .take(1).map((x) => x + 5)
+        .subscribe((x) => {
+          this.navCtrl.pop();
+          this.loader.dismiss();
+        });
+    }).catch((err) => {
+      this.loader.dismiss();
+      this._logger.Error("Error,Matrix file saving..", err);
+      this.navCtrl.pop();
     });
-    return name;
   }
-
 
 
   createViews(fileName) {

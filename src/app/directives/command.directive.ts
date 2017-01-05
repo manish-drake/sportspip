@@ -5,13 +5,20 @@ import { ICommand } from '../../Contracts/ICommand'
     selector: '[command]'
 })
 export class CommandDirective {
+    @Input() usePress: boolean;
     @Input() command: ICommand;
-    @Input() cmdArgs:any;
+    @Input() cmdArgs: any;
     constructor(el: ElementRef) {
 
     }
 
     @HostListener('click') onClick() {
-        this.command.run(this.cmdArgs);
+        if (!this.usePress)
+            this.command.run(this.cmdArgs);
+    }
+
+    @HostListener('press') onPress() {
+        if (this.usePress)
+            this.command.run(this.cmdArgs);
     }
 }

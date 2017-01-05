@@ -84,7 +84,7 @@ export class StorageFactory {
         }
     }
 
-    SaveLocalHeader(content, channel, sport, matrixName, typeFolder) {
+    SaveLocalHeader(content, channel, sport, matrixName, typeFolder):Promise<string> {
         this._logger.Debug('Save local header..');
         return this.platform.ready().then(() => {
             return this.createFolder(this.storageDataDir, "Local").then((success) => {
