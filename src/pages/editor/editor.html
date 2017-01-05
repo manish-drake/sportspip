@@ -18,7 +18,7 @@
 		[class.selectedview]="i == selectedViewIndex" [class.view]="i != selectedViewIndex">
 		<span ion-text [hidden]="views.length > 5" color="primary">View </span><span color="primary">{{i+1}}</span>
 	</ion-col>
-	<button ion-button icon-only clear (click)="addView()"><ion-icon name="add-circle"></ion-icon></button>
+	<button ion-button icon-only clear [command]="addView" [cmdArgs]="views"><ion-icon name="add-circle"></ion-icon></button>
 </ion-row>
 
 </ion-header>

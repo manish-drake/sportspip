@@ -15,7 +15,8 @@ import { ModelFactory } from '../../Services/Factory/ModelFactory';
 import { Observable } from 'rxjs/Rx';
 import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 import { Compareview } from '../editor/compareview/compareview'
-import { Swipeview } from '../editor/swipeview/swipeview'
+import { Swipeview } from '../editor/swipeview/swipeview';
+import { AddView } from '../editor/action/addView';
 import { Ipcameras } from '../editor/ipcameras/ipcameras'
 import { Logger } from '../../logging/logger';
 declare var navigator: any;
@@ -24,7 +25,7 @@ declare var navigator: any;
 @Component({
   selector: 'page-editor',
   templateUrl: 'editor.html',
-  providers: [Connection, ModelFactory, BackGroundTransferProcess],
+  providers: [Connection, ModelFactory, BackGroundTransferProcess, AddView],
 })
 
 export class EditorPage {
@@ -36,9 +37,10 @@ export class EditorPage {
 
   constructor(public navCtrl: NavController,
     private storage: Storage,
+    private addViewCmd: AddView,
     private backGroundTransferProcess: BackGroundTransferProcess,
     private params: NavParams,
-    private alertCtrls: AlertControllers,
+    public alertCtrls: AlertControllers,
     private alertCtrl: AlertController,
     private modalCtrl: ModalController,
     private loadingCtrl: LoadingController,
@@ -162,21 +164,11 @@ export class EditorPage {
       return true;
   }
 
-  addView() {
 
-    if (this.views.length <= 7) {
-      var inum: number = this.views.length + 1;
-      this.views.push({
-        "Content": {},
-        "_name": "View " + inum,
-        "_Title": "View " + inum,
-        "_Source": "(Blank)"
-      });
-      this.showViewSegment(inum - 1);
-    }
-    else {
-      this.alertCtrls.BasicAlert('Maximum 8 views!', 'No more views could be added.');
-    }
+
+  private _addView: AddView;
+  public get addView(): AddView {
+    return this.addViewCmd;
   }
 
   deleteView(index) {
@@ -294,7 +286,7 @@ export class EditorPage {
       var path = fileUrl.substr(0, fileUrl.lastIndexOf('/') + 1);
       var fileName = fileUrl.substr(fileUrl.lastIndexOf('/') + 1);
 
-      this.storagefactory.MoveFile(path,this.rootDirectory + "SportsPIP/Video", fileName)
+      this.storagefactory.MoveFile(path, this.rootDirectory + "SportsPIP/Video", fileName)
         .subscribe(success => {
           this.CreateVideoView(fileName);
           console.log('Successfully saved video')
