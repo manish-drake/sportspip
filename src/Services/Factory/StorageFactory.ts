@@ -288,12 +288,16 @@ export class StorageFactory {
     }
 
     CopyFile(oldPath, oldName, newPath, fileName): Promise<any> {
-        return File.copyFile(oldPath, oldName, newPath, fileName)
+        return File.copyFile(oldPath, oldName, newPath, fileName);
     }
 
     MoveFile(oldPath, newPath, fileName): Observable<string> {
         return Observable.fromPromise(File.moveFile(oldPath, fileName, newPath, fileName))
             .map(x => x["nativeUrl"]);
+    }
+
+    RemoveFile(path, fileName): Promise<any> {
+        return File.removeFile(path, fileName);
     }
 
     RemoveFileAsync(path, dirName): Observable<boolean> {

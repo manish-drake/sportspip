@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { ViewController, Platform } from 'ionic-angular';
-import { AppVersion, File, EmailComposer, Device } from 'ionic-native';
+import { AppVersion, EmailComposer, Device } from 'ionic-native';
 
 import { AlertControllers } from '../../Services/Alerts';
 import { Storage } from '../../Services/Factory/Storage';
+import { StorageFactory } from '../../Services/Factory/StorageFactory';
 import { Logger } from '../../logging/logger';
 
 @Component({
@@ -18,6 +19,7 @@ export class HomeMorePopover {
 
     constructor(public viewCtrl: ViewController,
         private storage: Storage,
+        private storageFactory: StorageFactory,
         private alertCtrls: AlertControllers,
         private platform: Platform,
         private _Logger: Logger) {
@@ -45,12 +47,12 @@ export class HomeMorePopover {
         this.viewCtrl.dismiss();
 
         this.platform.ready().then(() => {
-            File.checkFile(this.sqliteLogDirectory, "data.db")
+            this.storageFactory.CheckFile(this.sqliteLogDirectory, "data.db")
                 .then(promise => {
                     console.log("Success: " + JSON.stringify(promise));
-                    File.checkFile(this.rootDirectory + "SportsPIP/", "data.db")
+                    this.storageFactory.CheckFile(this.rootDirectory + "SportsPIP/", "data.db")
                         .then(promise => {
-                            File.removeFile(this.rootDirectory + "SportsPIP/", "data.db")
+                            this.storageFactory.RemoveFile(this.rootDirectory + "SportsPIP/", "data.db")
                             .then(promise => {
                                 this.getLogsFile();
                             })
@@ -69,7 +71,7 @@ export class HomeMorePopover {
     }
 
     getLogsFile() {
-        File.copyFile(this.sqliteLogDirectory, "data.db", this.rootDirectory + "SportsPIP/", "data.db")
+        this.storageFactory.CopyFile(this.sqliteLogDirectory, "data.db", this.rootDirectory + "SportsPIP/", "data.db")
             .then(promise => {
                 this._Logger.Debug("Composing email");
                 this.composeEmail();
