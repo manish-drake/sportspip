@@ -13,7 +13,7 @@ export class Storage {
             if (this.platform.is('android')) {
                 return cordova.file.externalDataDirectory;
             }
-            if (this.platform.is('ios')) {
+            else if (this.platform.is('ios')) {
                 // alert(cordova.file.dataDirectory);
                 return cordova.file.dataDirectory;
             }
