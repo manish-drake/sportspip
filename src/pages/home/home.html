@@ -90,7 +90,7 @@
 			<div class="items">
 				<div class="item" *ngFor="let matrix of channel.value | slice: 0:6; let i = index">
 
-					<ion-card (click)="channelMatrixClicked(i,matrix.Name,channel.value,matrix.Channel,matrix.Title)" (press)="channelMatrixPressed(i,matrix.Name,channel.value,matrix.Channel,matrix.Title)">
+					<ion-card (click)="channelMatrixClicked(i,matrix,channel.value)" (press)="channelMatrixPressed(i,matrix,channel.value)">
 						<ion-row>
 							<ion-col no-padding [style.background-image]="retrunThumbnailPath(matrix.UploadID)" style="position: relative; height: 120px;background-size: cover;background-color:lightgray;background-position: center;">
 								<ion-row center style="position: absolute;top: 0;width: 100%;height: 100%;background-color: rgba(0,0,0,0.2);">

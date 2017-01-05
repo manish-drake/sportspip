@@ -145,7 +145,7 @@ export class ChannelCollectionPage {
           Observable.interval(6000)
             .take(1).map((x) => x + 5)
             .subscribe((x) => {
-              this.storagefactory.RemoveFileAsync("file:/storage/emulated/0/DCIM", "Temp").then(() => {
+              this.storagefactory.RemoveFileAsync("file:/storage/emulated/0/DCIM", "Temp").subscribe(() => {
                 this.DeleteChannelMatrix(fileName, channelName, index);
                 console.log("delete server header");
                 loader.dismiss();

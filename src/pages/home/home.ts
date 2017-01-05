@@ -199,7 +199,7 @@ export class HomePage {
         this.channels.splice(index, 1);
     }
 
-    channelMatrixClicked(index, name, value, channel, title) {
+    channelMatrixClicked(index, matrix, value) {
         let confirm = this.alertCtrl.create({
             title: ' Download Confirmation?',
             buttons: [
@@ -211,7 +211,7 @@ export class HomePage {
                     text: 'Download',
                     handler: () => {
                         console.log('Download clicked');
-                        this.DownloadServerHeaderAsync(name, channel, index, value);
+                        this.DownloadServerHeaderAsync(matrix.Name, matrix.Channel, index, value);
                     }
                 }
             ]
@@ -219,16 +219,14 @@ export class HomePage {
         confirm.present();
     }
 
-    channelMatrixPressed(index, name, value, channel, title) {
+    channelMatrixPressed(index, matrix, value) {
         let actionSheet = this.actionSheetCtrl.create({
-            title: title,
+            title: matrix.Title,
             buttons: [{
                 icon: 'trash',
                 text: 'Delete',
                 role: 'destructive',
-                handler: () => {
-                    this.deleteServerHeader(name, index, value, channel)
-                }
+                handler: () => { this.deleteServerHeader(matrix.Name, index, value, matrix.Channel) }
             }, {
                 icon: 'close',
                 text: 'Cancel',
@@ -316,7 +314,7 @@ export class HomePage {
                     .take(1).map((x) => x + 5)
                     .subscribe((x) => {
                         this.platform.ready().then(() => {
-                            this.storagefactory.RemoveFileAsync(this.dataDirectory, "Temp").then(() => {
+                            this.storagefactory.RemoveFileAsync(this.dataDirectory, "Temp").subscribe(() => {
                                 this.localMatrices = [];
                                 this.GetLocalMatrixHeader();
                                 this.deleteServerHeader(fileName, index, value, channelName);
