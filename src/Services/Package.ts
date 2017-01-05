@@ -22,10 +22,12 @@ export class Package {
         private storage: Storage,
         private platform: Platform,
         private storagefactory: StorageFactory) {
-        if (this.platform.is('cordova')) {
-            this.storageDataDir = this.storage.externalDataDirectory();
-            this.storageRootDirectory = this.storage.externalRootDirectory();
-        }
+        platform.ready().then(() => {
+            if (this.platform.is('cordova')) {
+                this.storageDataDir = this.storage.externalDataDirectory();
+                this.storageRootDirectory = this.storage.externalRootDirectory();
+            }
+        });
     }
 
     public fileName: any;

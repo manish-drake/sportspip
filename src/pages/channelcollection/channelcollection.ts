@@ -47,9 +47,8 @@ export class ChannelCollectionPage {
     private http: Http,
     private loadingCtrl: LoadingController,
     private _logger: Logger) {
-
-    this.channel = params.get("firstPassed");
     this.dataDir = this.storage.externalDataDirectory();
+    this.channel = params.get("firstPassed");
     this.GetChannelMatrix(this.channel);
   }
 

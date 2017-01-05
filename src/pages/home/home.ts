@@ -43,7 +43,8 @@ export class HomePage {
     dataDirectory: any;
     applicationDirectory: any;
 
-    constructor(private http: Http, private platform: Platform, public navCtrl: NavController,
+    constructor(private platform: Platform, public navCtrl: NavController,
+        private http: Http,
         private duplicate: Duplicate,
         private storage: Storage,
         private datepipe: DatePipe,
@@ -83,13 +84,15 @@ export class HomePage {
     }
 
     logDeviceInfo() {
-        if (this.platform.is('cordova')) {
-            AppVersion.getVersionNumber().then((ver) => {
-                this._logger.Info('App Version: ', ver);
-            });
-            this._logger.Info('OS: ', Device.platform + " " + Device.version);
-            this._logger.Info('Device: ', Device.manufacturer.toUpperCase() + " " + Device.model);
-        }
+        this.platform.ready().then(() => {
+            if (this.platform.is('cordova')) {
+                AppVersion.getVersionNumber().then((ver) => {
+                    this._logger.Info('App Version: ', ver);
+                });
+                this._logger.Info('OS: ', Device.platform + " " + Device.version);
+                this._logger.Info('Device: ', Device.manufacturer.toUpperCase() + " " + Device.model);
+            }
+        });
     }
 
     showSegment(segment) {
@@ -257,7 +260,7 @@ export class HomePage {
             if (this.platform.is('cordova')) {
                 this._logger.Debug('Getting local matrix header..');
                 this.storagefactory.GetLocalHeader().then((res) => {
-                    this.localMatrices=res;
+                    this.localMatrices = res;
                 }).catch((err) => {
                     this._logger.Error('Error,Getting local matrix header..', err);
                 });

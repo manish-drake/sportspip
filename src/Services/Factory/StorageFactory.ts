@@ -19,8 +19,10 @@ export class StorageFactory {
         private platform: Platform,
         private toastCtrl: ToastController,
         private _logger: Logger) {
-        this.storageDataDir = this.storage.externalDataDirectory();
-        this.storageRoot = this.storage.externalRootDirectory();
+        platform.ready().then(() => {
+            this.storageDataDir = this.storage.externalDataDirectory();
+            this.storageRoot = this.storage.externalRootDirectory();
+        });
     }
     SaveRoamingHeader(content, channel, sport, matrixName) {
         this.SaveServerHeader(content, channel, sport, matrixName, "Matrices");
@@ -143,14 +145,13 @@ export class StorageFactory {
     }
 
     SaveUserAsync(content) {
-        this._logger.Debug('Save user async..');
         this.platform.ready().then(() => {
             this.createFolder(this.storageDataDir, "Roaming").then((success) => {
                 var serverFolder = this.storageDataDir + "Roaming/";
                 this.CreateFile(serverFolder, "User.json").then(() => {
                     this.WriteFile(serverFolder, "User.json", content)
                         .then(function (success) {
-                            console.log("registraion complited..");
+                            this._logger.Debug("registraion complited..");
                         }).catch((err) => { this._logger.Error('Error,saving user async: ', err); })
                 }).catch((err) => { this._logger.Error('Error,saving user async: ', err); })
             }).catch((err) => { this._logger.Error('Error,saving user async: ', err); })
@@ -160,12 +161,11 @@ export class StorageFactory {
     CreateVideoFolder() {
         this.platform.ready().then(() => {
             if (this.platform.is("cordova")) {
-                this._logger.Debug('Create video folder..');
                 this.createFolder(this.storageRoot, "SportsPIP")
                     .then((success) => {
                         var videoPath = this.storageRoot + "SportsPIP"
                         this.createFolder(videoPath, "Video").then((success) => {
-                            console.log("video folder created");
+                            this._logger.Debug("video folder created");
                         }).catch((err) => { this._logger.Error('Error,creating video folder: ', err); })
                     })
                     .catch((err) => { this._logger.Error('Error,creating video folder: ', err); });
@@ -176,12 +176,11 @@ export class StorageFactory {
     CreatePictureFolder() {
         this.platform.ready().then(() => {
             if (this.platform.is("cordova")) {
-                this._logger.Debug('Create Picture folder..');
                 this.createFolder(this.storageRoot, "SportsPIP")
                     .then((success) => {
                         var picturePath = this.storageRoot + "SportsPIP"
                         this.createFolder(picturePath, "Picture").then((success) => {
-                            console.log("Picture folder created");
+                            this._logger.Debug("Picture folder created");
                         }).catch((err) => { this._logger.Error('Error,creating Picture folder: ', err); })
                     })
                     .catch((err) => { this._logger.Error('Error,creating Picture folder: ', err); });
@@ -288,7 +287,7 @@ export class StorageFactory {
         return File.writeFile(path, fileName, content, this.writeOptions);
     }
 
-    CopyFile(oldPath,oldName, newPath, fileName): Promise<any> {
+    CopyFile(oldPath, oldName, newPath, fileName): Promise<any> {
         return File.copyFile(oldPath, oldName, newPath, fileName)
     }
 
