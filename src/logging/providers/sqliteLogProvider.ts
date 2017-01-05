@@ -18,8 +18,7 @@ export class SqliteLogProvider extends AProvider {
             let db = new SQLite();
             db.openDatabase({
                 name: "data.db",
-                location: "default",
-                iosDatabaseLocation: 'Documents'
+                location: "default"
             }).then(() => {
                 var dtLog = new Date().toUTCString();
 
