@@ -19,10 +19,10 @@ export class ModelFactory {
         private storage: Storage,
         private storageFactory: StorageFactory,
         private platform: Platform) {
-        if (this.platform.is('cordova')) {
+        platform.ready().then(() => {
             this.storageDataDir = this.storage.externalDataDirectory();
             this.rootDir = this.storage.externalRootDirectory();
-        }
+        });
     }
 
     CreateThumbnail(name, thumbname) {
@@ -32,7 +32,7 @@ export class ModelFactory {
         var sourcePath = this.rootDir + "SportsPIP/Video/" + name;
         navigator.createThumbnail(sourcePath, function (err, imageData) {
             if (err != null) { this._logger.Error('Error,creating thumbnail: ', err); }
-            else { blob = imageData;  }
+            else { blob = imageData; }
         });
         Observable.interval(1000)
             .take(1).map((x) => x + 5)

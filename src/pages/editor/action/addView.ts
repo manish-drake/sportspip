@@ -1,7 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { ICommand } from '../../../Contracts/ICommand';
 import { AlertControllers } from '../../../Services/Alerts';
-import { EditorPage } from '../../editor/editor';
 
 @Injectable()
 export class AddView implements ICommand {

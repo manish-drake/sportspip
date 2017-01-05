@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { ViewController, Platform } from 'ionic-angular';
-import { AppVersion, File, EmailComposer, Device } from 'ionic-native';
+import { AppVersion, EmailComposer, Device } from 'ionic-native';
 
 import { AlertControllers } from '../../Services/Alerts';
 import { Storage } from '../../Services/Factory/Storage';
+import { StorageFactory } from '../../Services/Factory/StorageFactory';
 import { Logger } from '../../logging/logger';
 
 @Component({
@@ -13,16 +14,23 @@ import { Logger } from '../../logging/logger';
 export class HomeMorePopover {
 
     versionNumber: any;
-    storageDirectory: any;
+    sqliteLogDirectory: any;
     rootDirectory: any;
 
     constructor(public viewCtrl: ViewController,
         private storage: Storage,
+        private storageFactory: StorageFactory,
         private alertCtrls: AlertControllers,
         private platform: Platform,
         private _Logger: Logger) {
         if (this.platform.is('cordova')) {
-            this.storageDirectory = this.storage.applicationStorageDirectory();
+            if (this.platform.is('android')) {
+                this.sqliteLogDirectory = this.storage.applicationStorageDirectory() + 'databases/';
+            }
+            else if (this.platform.is('ios')) {
+                this.sqliteLogDirectory = this.storage.externalRootDirectory();
+            }
+
             this.rootDirectory = this.storage.externalRootDirectory();
             AppVersion.getVersionNumber().then((s) => {
                 this.versionNumber = s;
@@ -39,26 +47,39 @@ export class HomeMorePopover {
         this.viewCtrl.dismiss();
 
         this.platform.ready().then(() => {
-            File.checkFile(this.storageDirectory + 'databases/', "data.db")
+            this.storageFactory.CheckFile(this.sqliteLogDirectory, "data.db")
                 .then(promise => {
                     console.log("Success: " + JSON.stringify(promise));
-                    File.copyFile(this.storageDirectory + 'databases/', "data.db", this.rootDirectory + "SportsPIP/", "data.db")
+                    this.storageFactory.CheckFile(this.rootDirectory + "SportsPIP/", "data.db")
                         .then(promise => {
-                            this._Logger.Debug("Composing email");
-                            this.composeEmail();
+                            this.storageFactory.RemoveFile(this.rootDirectory + "SportsPIP/", "data.db")
+                            .then(promise => {
+                                this.getLogsFile();
+                            })
                         })
                         .catch(err => {
-                            this._Logger.Error("Error copying log file: ", JSON.stringify(err));
-                            this.alertCtrls.BasicAlert("No log file found", err);
+                            this.getLogsFile();
                         });
                 })
                 .catch(err => {
                     this._Logger.Error("Error: no log file exists", JSON.stringify(err));
-                    this.alertCtrls.BasicAlert("No log file found", err);
+                    this.alertCtrls.BasicAlert("No log file found", JSON.stringify(err));
                 });
 
         });
 
+    }
+
+    getLogsFile() {
+        this.storageFactory.CopyFile(this.sqliteLogDirectory, "data.db", this.rootDirectory + "SportsPIP/", "data.db")
+            .then(promise => {
+                this._Logger.Debug("Composing email");
+                this.composeEmail();
+            })
+            .catch(err => {
+                this._Logger.Error("Error copying log file: ", JSON.stringify(err));
+                this.alertCtrls.BasicAlert("Error getting logs file", JSON.stringify(err));
+            });
     }
 
     composeEmail() {
