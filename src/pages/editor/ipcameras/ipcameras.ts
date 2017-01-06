@@ -301,6 +301,7 @@ export class Ipcameras {
 
   saveMatrix() {
     this.loader.setContent('Saving..');
+
     this.saveMatrices.run(this.matrix._Channel, this.matrix._Name, this.views).then((res) => {
       Observable.interval(1000)
         .take(1).map((x) => x + 5)
@@ -308,6 +309,7 @@ export class Ipcameras {
           this.navCtrl.pop();
           this.loader.dismiss();
         });
+        
     }).catch((err) => {
       this.loader.dismiss();
       this._logger.Error("Error,Matrix file saving..", err);
@@ -335,25 +337,7 @@ export class Ipcameras {
   }
 
   createVideoView(fileName) {
-    var localView = {
-      "Content": {
-        "Capture": {
-          "Marker": {
-            "Marker.Objects": "",
-            "_name": "c379224ff2704c5ea5ad1f10275a28c1"
-          },
-          "View.ChronoMarker": "",
-          "_name": "ba160173f284474c9412192dcd77cb1c",
-          "_Kernel": fileName,
-          "_Title": "View " + this.selectedViewIndex,
-          "_Name": "ba160173f284474c9412192dcd77cb1c",
-          "_IsActive": "False"
-        }
-      },
-      "_name": "View " + this.selectedViewIndex,
-      "_Title": "View " + this.selectedViewIndex,
-      "_Source": "IP"
-    }
+   var localView=this.modelFactory.CreateVideoView(fileName,this.selectedViewIndex,"IP")
     this.views[this.selectedViewIndex] = localView;
   }
 

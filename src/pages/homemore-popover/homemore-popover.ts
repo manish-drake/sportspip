@@ -23,7 +23,7 @@ export class HomeMorePopover {
         private alertCtrls: AlertControllers,
         private platform: Platform,
         private _Logger: Logger) {
-        if (this.platform.is('cordova')) {
+        if (this.platform.is('cordova')) {/*$Candidate for refactoring$*///must go inside storage
             if (this.platform.is('android')) {
                 this.sqliteLogDirectory = this.storage.applicationStorageDirectory() + 'databases/';
             }
@@ -43,6 +43,8 @@ export class HomeMorePopover {
         this.alertCtrls.BasicAlert('Sports PIP', 'version ' + this.versionNumber);
     }
 
+/*$Candidate for refactoring$*/
+//why storage still lurking outside the storage file
     sendLogs() {
         this.viewCtrl.dismiss();
 

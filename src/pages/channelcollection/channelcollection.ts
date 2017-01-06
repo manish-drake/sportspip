@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { StorageFactory } from '../../Services/Factory/StorageFactory';
 import { Storage } from '../../Services/Factory/Storage';
-import { Http } from '@angular/http';
+import { Http } from '@angular/http';/*$Candidate for refactoring$*///Don't use http directly here. Delegate the task to a service (are you even using it anywhere in this class??)
 import { Package } from '../../Services/Package';
 import { Download } from '../../Services/Action/Download';
 import { Observable } from 'rxjs/Rx';
@@ -68,7 +68,7 @@ export class ChannelCollectionPage {
   GetChannelMatrix(channel) {
     this._logger.Debug('Get channel matrix..');
     this.platform.ready().then(() => {
-      this.storagefactory.GetChannelListByChannel(channel).then((res) => {
+      this.storagefactory.GetMatrixListByChannel(channel).then((res) => {
         this.channelMatrices = res;
       }).catch((err) => { this._logger.Error('Error,getting channel matrix: ', err); })
     });
@@ -81,7 +81,7 @@ export class ChannelCollectionPage {
     this.channelMatrices = [];
     this.channelMatrices = this.TempMatrix;
 
-    Observable.interval(1000)
+    Observable.interval(1000)/*$Candidate for refactoring$*///Please don't do this!!!
       .take(1).map((x) => x + 5)
       .subscribe((x) => {
         // set val to the value of the searchbar
@@ -95,7 +95,7 @@ export class ChannelCollectionPage {
       })
   }
 
-  FormatDate(value) {
+  FormatDate(value) {/*$Candidate for refactoring$*///Is it a standard function? If yes, please take it to /services/common/utils.ts 
     return this.packages.FormatDate(value);
   }
 
@@ -103,12 +103,12 @@ export class ChannelCollectionPage {
   //   return this.packages.FormatDuration(dur);
   // }
 
-  retrunThumbnailPath(name) {
+  retrunThumbnailPath(name) {/*$Candidate for refactoring$*///Is this function in use? remove if not..
     return "url(" + this.dataDir + name + ".jpg" + ")";
   }
 
   presentPopover(event) {
-    let popover = this.popoverController.create(PopoverPage2);
+    let popover = this.popoverController.create(PopoverPage2);/*$Candidate for refactoring$*///Bad name - PopoverPage2. Please rename to something more meaningful
     popover.present({ ev: event });
   }
 
@@ -117,7 +117,7 @@ export class ChannelCollectionPage {
     this.channelMatrices.splice(index, 1);
   }
 
-  DownloadServerHeaderAsync(fileName, channelName, index) {
+  DownloadServerHeaderAsync(fileName, channelName, index) {/*$Candidate for refactoring$*///This function really needs SOME refactoring..
     this._logger.Debug('Download server header async..');
     try {
       let loader = this.loadingCtrl.create({
@@ -130,19 +130,19 @@ export class ChannelCollectionPage {
       if (authenticate) {
 
         this.packages.DownloadServerHeader(fileName, channelName).then((serverHeader) => {
-          Observable.interval(2000)
+          Observable.interval(2000)/*$Candidate for refactoring$*///BAD!!
             .take(3).map((x) => x + 5)
             .subscribe((x) => {
               this.packages.unzipPackage();
               console.log("unzip");
             })
-          Observable.interval(4000)
+          Observable.interval(4000)/*$Candidate for refactoring$*///BAD!!
             .take(1).map((x) => x + 5)
             .subscribe((x) => {
               this.packages.MoveToLocalCollection(channelName);
               console.log("matrix moved");
             })
-          Observable.interval(6000)
+          Observable.interval(6000)/*$Candidate for refactoring$*///BAD!!
             .take(1).map((x) => x + 5)
             .subscribe((x) => {
               this.storagefactory.RemoveFileAsync("file:/storage/emulated/0/DCIM", "Temp").subscribe(() => {
@@ -168,7 +168,7 @@ export class ChannelCollectionPage {
   channelMatrixClicked(index, channel, DirName, title) {
     this._logger.Debug('Channel matrix clicked..');
     try {
-      let confirm = this.alertCtrl.create({
+      let confirm = this.alertCtrl.create({/*$Candidate for refactoring$*///I see this code snippet used at many places elesewhere to create alert. Can't you create one function in /services/common/alerts.ts that can help create alerts from all the places?  
         title: ' Download Confirmation?',
         buttons: [
           {
@@ -194,7 +194,7 @@ export class ChannelCollectionPage {
   channelMatrixPressed(index, channel, DirName, title) {
     this._logger.Debug('Channel matrix pressed..');
     try {
-      let actionSheet = this.actionSheetCtrl.create({
+      let actionSheet = this.actionSheetCtrl.create({/*$Candidate for refactoring$*///same as the comment for alerts..
         title: title,
         buttons: [{
           icon: 'trash',
@@ -219,7 +219,7 @@ export class ChannelCollectionPage {
     }
   }
 }
-@Component({
+@Component({/*$Candidate for refactoring$*///Rename this class and take it to a separate file or justify why this class is hding here?
   template: `
     <ion-list radio-group (ionChange)="changeSortBy($event)">
       <ion-list-header>

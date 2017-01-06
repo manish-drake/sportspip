@@ -41,7 +41,7 @@ export class AddPhoneCapture implements ICommand {
 
             this.storagefactory.MoveFile(path, this.rootDirectory + "SportsPIP/Video", fileName)
                 .subscribe(success => {
-                    Model.editor.CreateVideoView(fileName);
+                    Model.editor.CreateVideoView(fileName,Model.editor.selectedViewIndex,"Phone");
                     console.log('Successfully saved video')
                     if (Connection.connectedServer != null)
                         this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, Model.editor.views);
