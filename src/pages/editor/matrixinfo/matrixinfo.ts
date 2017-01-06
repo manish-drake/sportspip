@@ -47,7 +47,7 @@ export class MatrixInfoPage {
 
     ionViewWillUnload() {
         if (this.validatematrixInfo()) {
-            this.platform.ready().then(() => {
+            this.platform.ready().then(() => {/*$Candidate for refactoring$*///what is the need of checking if the platform is ready now
                 this.storagefactory.ReadMatixFileAync("Local", this.matrixData._Channel, this.matrixData._Name, this.matrixData._Name + ".mtx")
                     .then(data => {
                         var res = JSON.parse(data.toString());

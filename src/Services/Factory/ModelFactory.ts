@@ -92,7 +92,7 @@ export class ModelFactory {
         return localView;
     }
 
-        ComposeNewMatrix() {
+    ComposeNewMatrix() {
         this._logger.Debug('Composing new matrix..');
         var name = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
         let data =
