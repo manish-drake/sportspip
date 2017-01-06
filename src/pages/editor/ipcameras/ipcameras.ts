@@ -122,7 +122,7 @@ export class Ipcameras {
       var requestUri = "http://" + connectedServerIP + ":10080/icamera/cams/ip/";
 
       setTimeout(() => {
-        this.http.get(requestUri)
+        this.http.get(requestUri)/*$Candidate for refactoring$*///please delegate http tasks to a separate service, may be an http service serving similar functions
           .map(res => res.text()).catch((err) => new Observable(err => { this._logger.Error("Error,IPCam loading", err); }))
           .subscribe(
           data => {

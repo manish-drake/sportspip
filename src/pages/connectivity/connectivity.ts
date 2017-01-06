@@ -78,7 +78,7 @@ export class Connectivity implements DoCheck {
             }, 500);
          }
          catch (err) {
-            this._logger.Error('Error,refreshing connectivity content: ',err);
+            this._logger.Error('Error,refreshing connectivity content: ', err);
          }
     }
 

@@ -1,0 +1,1 @@
+//This would be a static service class with functions that are all static. It shouldbe used for creating general purpose functions

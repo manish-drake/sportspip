@@ -112,12 +112,12 @@ export class ChannelCollectionPage {
     popover.present({ ev: event });
   }
 
-  DeleteChannelMatrix(DirName, Channel, index) {
+  DeleteChannelMatrix(DirName, Channel, index) {/*$Candidate for refactoring$*///can go to actions
     this.storagefactory.DeleteServerHeader(DirName, Channel);
     this.channelMatrices.splice(index, 1);
   }
 
-  DownloadServerHeaderAsync(fileName, channelName, index) {/*$Candidate for refactoring$*///This function really needs SOME refactoring..
+  DownloadServerHeaderAsync(fileName, channelName, index) {/*$Candidate for refactoring$*///This function really needs SOME refactoring..also, can go to actions
     this._logger.Debug('Download server header async..');
     try {
       let loader = this.loadingCtrl.create({
@@ -162,10 +162,10 @@ export class ChannelCollectionPage {
 
   AuthenticateUser() {
     console.log("Authenticatnig user..");
-    return true;
+    return true;/*$Candidate for refactoring$*///WOW! We'll have to write the code some day!
   }
 
-  channelMatrixClicked(index, channel, DirName, title) {
+  channelMatrixClicked(index, channel, DirName, title) {/*$Candidate for refactoring$*///can go to actions
     this._logger.Debug('Channel matrix clicked..');
     try {
       let confirm = this.alertCtrl.create({/*$Candidate for refactoring$*///I see this code snippet used at many places elesewhere to create alert. Can't you create one function in /services/common/alerts.ts that can help create alerts from all the places?  
@@ -191,7 +191,7 @@ export class ChannelCollectionPage {
     }
   }
 
-  channelMatrixPressed(index, channel, DirName, title) {
+  channelMatrixPressed(index, channel, DirName, title) {/*$Candidate for refactoring$*///can go to actions
     this._logger.Debug('Channel matrix pressed..');
     try {
       let actionSheet = this.actionSheetCtrl.create({/*$Candidate for refactoring$*///same as the comment for alerts..

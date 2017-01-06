@@ -8,11 +8,10 @@ import {
 @Component({
     selector: 'compareview-component',
     templateUrl: 'compareview-component.html',
-    providers: [CompareviewComponent]
+    providers: [CompareviewComponent]/*$Candidate for refactoring$*///why is this class its own provider and for what??
 })
 
 export class CompareviewComponent {
-
     @Input() view: any;
     @Input() views: any;
     @Input() isSelected: boolean;
@@ -32,9 +31,9 @@ export class CompareviewComponent {
         private platform: Platform,
         private popoverCtrl: PopoverController,
         private events: Events) {
-        this.playPauseButtonIcon = "play";
-        this.rootDir = this.storage.externalRootDirectory();
-        this.timelinePosition = this.formatTime(0);
+            this.playPauseButtonIcon = "play";
+            this.rootDir = this.storage.externalRootDirectory();
+            this.timelinePosition = this.formatTime(0);
     }
 
     sliderValue: any = 0;
@@ -48,10 +47,10 @@ export class CompareviewComponent {
     markersobjects = [];
     viewBoxSize: any;
 
-    ngAfterViewInit() {
+    ngAfterViewInit() {/*$Candidate for refactoring$*///Function too big, multiple intents targeted. try separating different intents into independent functions
         this.loadObjects();
         this.LoadMarkers();
-        this.video = this.videoElement.nativeElement;
+        this.video = this.videoElement.nativeElement;/*$Candidate for refactoring$*///
 
         this.video.addEventListener('loadedmetadata', () => { this.OnVideoMatadataLoad(); });
 
@@ -139,7 +138,7 @@ export class CompareviewComponent {
         }
     }
 
-    OnVideoError(error) {
+    OnVideoError(error) {        
         console.log('Error in video Elmnt:' + JSON.stringify(error));
         // this.videoSrcAvailable = false;
     }
