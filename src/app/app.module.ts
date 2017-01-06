@@ -14,6 +14,7 @@ import { OrderBy } from '../Services/Pipe/OrderBy';
 import { GroupBy } from '../Services/Pipe/GroupBy';
 import { Storage } from '../Services/Factory/Storage';
 import { EditorPage, EditorActionsPopover } from '../pages/editor/editor';
+import { BackGroundTransferProcess } from '../Services/BackGroundTransferProcess';
 import { MatrixInfoPage } from '../pages/editor/matrixinfo/matrixinfo';
 import { Ipcameras } from '../pages/editor/ipcameras/ipcameras'
 import { IpCamSettingsModal } from '../pages/editor/ipcamsettings-modal/ipcamsettings-modal'
@@ -59,7 +60,7 @@ import { CommandDirective } from './directives/command.directive';
   providers: [
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     { provide: AProvider, useClass: SqliteLogProvider },
-    AlertControllers, Logger, StorageFactory, Storage
+    AlertControllers, Logger, StorageFactory, Storage,BackGroundTransferProcess
 
   ],
   imports: [

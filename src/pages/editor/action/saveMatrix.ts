@@ -26,11 +26,7 @@ export class SaveMatrix {
                         });
                     });
 
-                })
-                .catch((err) => {
-                    return reject(err);
-                    // this._logger.Error("Error,Matrix file saving..", err);
-                });
+                }).catch((err) => { return reject(err);});
         })
 
     }
