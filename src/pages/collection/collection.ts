@@ -9,6 +9,7 @@ import { StorageFactory } from '../../Services/Factory/StorageFactory';
 import { DeleteHeader } from '../../Services/Action/DeleteHeader';
 import { Logger } from '../../logging/logger';
 import { Storage } from '../../Services/Factory/Storage';
+import { Core } from '../../Services/core';
 
 /*
   Generated class for the Collection page.
@@ -19,13 +20,14 @@ import { Storage } from '../../Services/Factory/Storage';
 @Component({
   selector: 'page-collection',
   templateUrl: 'collection.html',
-  providers: [Package, OpenMatrix, StorageFactory, DeleteHeader, Duplicate],
+  providers: [OpenMatrix, DeleteHeader, Duplicate],
 })
 export class CollectionPage {
   localMatrices = [];
   dataDir: any;
   constructor(public navCtrl: NavController, private actionSheetCtrl: ActionSheetController,
     private storage: Storage,
+    private core: Core,
     private deleteHeader: DeleteHeader,
     private duplicate: Duplicate,
     private storagefactory: StorageFactory,
@@ -73,7 +75,7 @@ export class CollectionPage {
   LoadCollectionMatrix() {
     this._logger.Debug('Getting local matrix collection..');
     this.platform.ready().then(() => {
-      this.storagefactory.GetLocalHeader().then((res) => {
+      this.core.GetLocalHeader().then((res) => {
         this.localMatrices = res;
       })
     });

@@ -35,7 +35,7 @@ export class AddCapture implements ICommand {
                         this.storagefactory.CopyFile(path, fileName, this.rootDirectory + "SportsPIP/Video", newFileName)
                             .then(success => {
                                 console.log('Successfully copied video');
-                                cmdArgs.editor.CreateVideoView(newFileName);
+                                cmdArgs.editor.CreateVideoView(newFileName,cmdArgs.editor.selectedViewIndex,"Local");
                                 if (Connection.connectedServer != null)
                                     this.backGroundTransferProcess.TransferVideo(fileName, cmdArgs.editor.Connection.connectedServer.Address, cmdArgs.editor.views);
 

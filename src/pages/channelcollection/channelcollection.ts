@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
 import { StorageFactory } from '../../Services/Factory/StorageFactory';
-import { Storage } from '../../Services/Factory/Storage';
-import { Http } from '@angular/http';/*$Candidate for refactoring$*///Don't use http directly here. Delegate the task to a service (are you even using it anywhere in this class??)
-import { Package } from '../../Services/Package';
-import { Download } from '../../Services/Action/Download';
-import { Observable } from 'rxjs/Rx';
 
+import { Storage } from '../../Services/Factory/Storage';
+import { Package } from '../../Services/Package';
+import { Observable } from 'rxjs/Rx';
 import { AlertControllers } from '../../Services/Alerts';
+import { Core } from '../../Services/core';
 import {
-  NavController, ToastController, PopoverController, NavParams,
+  NavController, PopoverController, NavParams,
   ActionSheetController, AlertController, ViewController, Platform, LoadingController
 } from 'ionic-angular';
 
@@ -24,7 +23,6 @@ import { Logger } from '../../logging/logger';
 @Component({
   selector: 'page-channelcollection',
   templateUrl: 'channelcollection.html',
-  providers: [Package, Download],
 })
 export class ChannelCollectionPage {
 
@@ -35,16 +33,14 @@ export class ChannelCollectionPage {
 
   constructor(public navCtrl: NavController, params: NavParams,
     private storage: Storage,
-    private download: Download,
+    private core: Core,
     private storagefactory: StorageFactory,
     private actionSheetCtrl: ActionSheetController,
     private platform: Platform,
-    private toastCtrl: ToastController,
     private alertCtrl: AlertController,
     private alertCtrls: AlertControllers,
     private popoverController: PopoverController,
     private packages: Package,
-    private http: Http,
     private loadingCtrl: LoadingController,
     private _logger: Logger) {
     this.dataDir = this.storage.externalDataDirectory();
@@ -68,7 +64,7 @@ export class ChannelCollectionPage {
   GetChannelMatrix(channel) {
     this._logger.Debug('Get channel matrix..');
     this.platform.ready().then(() => {
-      this.storagefactory.GetChannelListByChannel(channel).then((res) => {
+      this.core.GetMatrixListByChannel(channel).then((res) => {
         this.channelMatrices = res;
       }).catch((err) => { this._logger.Error('Error,getting channel matrix: ', err); })
     });

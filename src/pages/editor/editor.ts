@@ -3,7 +3,6 @@ import {
   NavController, NavParams, ModalController, Platform,
   App, LoadingController, Events, PopoverController, ViewController
 } from 'ionic-angular';
-import { Observable } from 'rxjs/Rx';
 import { Http } from '@angular/http';
 import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 import { Compareview } from '../editor/compareview/compareview'
@@ -125,6 +124,7 @@ export class EditorPage {
         duration: 10000
       });
       loader.present();
+
       this.saveMatrices.run(this.matrix._Channel, this.matrix._Name, this.views).then((res) => {
         this.navCtrl.pop();
         loader.dismiss();
@@ -133,6 +133,7 @@ export class EditorPage {
         this._logger.Error("Error,Matrix file saving..", err);
         this.navCtrl.pop();
       });
+      
     } else this.navCtrl.pop();
   }
 
@@ -213,26 +214,8 @@ export class EditorPage {
   }
 
 
-  CreateVideoView(fileName) {
-    var localView = {
-      "Content": {
-        "Capture": {
-          "Marker": {
-            "Marker.Objects": "",
-            "_name": "c379224ff2704c5ea5ad1f10275a28c1"
-          },
-          "View.ChronoMarker": "",
-          "_name": "ba160173f284474c9412192dcd77cb1c",
-          "_Kernel": fileName,
-          "_Title": "View " + (this.selectedViewIndex + 1),
-          "_Name": "ba160173f284474c9412192dcd77cb1c",
-          "_IsActive": "False"
-        }
-      },
-      "_name": "View " + (this.selectedViewIndex + 1),
-      "_Title": "View " + (this.selectedViewIndex + 1),
-      "_Source": "Local"
-    }
+  CreateVideoView(fileName,selectedViewIndex,source) {
+   var localView =this.modelFactory.CreateVideoView(fileName,selectedViewIndex,source)
     this.views[this.selectedViewIndex] = localView;
     this.evaluateCaptureViews();
   }

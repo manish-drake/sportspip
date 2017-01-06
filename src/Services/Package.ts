@@ -65,16 +65,13 @@ export class Package {
                                 });
                             }).toPromise()
                         case '.mp4':
-                            console.log("video moving...");
                             return this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", this.storageRootDirectory + "SportsPIP/Video", file.name)
                                 .subscribe((success) => { console.log("video moved"); });
                         case ".gif":
                         case ".rtf":
-                            console.log("ink moving...");
                             return this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", this.storageRootDirectory + "SportsPIP/Picture", file.name)
                                 .subscribe((success) => { console.log("ink moved..."); });
                         case ".jpg":
-                            console.log("image moving...");
                             return this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", this.storageRootDirectory + "SportsPIP/Picture", file.name)
                                 .subscribe(() => { console.log("image moved"); });
                         default:

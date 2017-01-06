@@ -10,7 +10,7 @@ import 'rxjs/Rx';
 
 @Injectable()
 export class StorageFactory {
-    writeOptions: WriteOptions = { replace: true }
+
     private storageRoot: string;
     private storageDataDir: string;
 
@@ -42,23 +42,20 @@ export class StorageFactory {
                             this.createFolder(contentFolder, matrixName).then((success) => {
                                 var fileLocation = contentFolder + matrixName;
                                 this.CreateFile(fileLocation, "Header.xml").then(() => {
-                                    this.WriteFile(fileLocation, "Header.xml", content)
+                                    this.WriteFile(fileLocation, "Header.xml",JSON.stringify(content))
                                         .then(function (success) {
                                             console.log("server header saved ..")
                                         }).catch((err) => { this._logger.Error('Error,saving server header: ', err); })
-
                                 })
                             })
-
                         })
-
                     })
                 })
             })
         })
     }
 
-    SaveMatrixAsync(content, channel, sport, matrixName, typeFolder) {
+    SaveMatrixAsync(content, channel, sport, matrixName, typeFolder):Promise<any> {
         if (this.platform.is('cordova')) {
             this._logger.Debug('Save matrix async..');
             //create Server Folder
@@ -73,7 +70,7 @@ export class StorageFactory {
                             return this.createFolder(contentFolder, matrixName).then((success) => {
                                 var fileLocation = contentFolder + matrixName;
                                 return this.CreateFile(fileLocation, matrixName + ".mtx").then(() => {
-                                    return this.WriteFile(fileLocation, matrixName + ".mtx", content)
+                                    return this.WriteFile(fileLocation, matrixName + ".mtx", JSON.stringify(content))
                                         .then(function (success) {
                                             return success["nativeUrl"]
                                         }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
@@ -86,7 +83,7 @@ export class StorageFactory {
         }
     }
 
-    SaveLocalHeader(content, channel, sport, matrixName, typeFolder):Promise<string> {
+    SaveLocalHeader(content, channel, sport, matrixName, typeFolder): Promise<string> {
         this._logger.Debug('Save local header..');
         return this.platform.ready().then(() => {
             return this.createFolder(this.storageDataDir, "Local").then((success) => {
@@ -100,7 +97,7 @@ export class StorageFactory {
                             return this.createFolder(contentFolder, matrixName).then((success) => {
                                 var fileLocation = contentFolder + matrixName;
                                 return this.CreateFile(fileLocation, "Header.xml").then(() => {
-                                    this.WriteFile(fileLocation, "Header.xml", content)
+                                    this.WriteFile(fileLocation, "Header.xml", JSON.stringify(content))
                                         .then(function (success) {
                                             return success["nativeUrl"]
                                         }).catch((err) => { this._logger.Error('Error,saving local header: ', err); })
@@ -149,7 +146,7 @@ export class StorageFactory {
             this.createFolder(this.storageDataDir, "Roaming").then((success) => {
                 var serverFolder = this.storageDataDir + "Roaming/";
                 this.CreateFile(serverFolder, "User.json").then(() => {
-                    this.WriteFile(serverFolder, "User.json", content)
+                    this.WriteFile(serverFolder, "User.json", JSON.stringify(content))
                         .then(function (success) {
                             this._logger.Debug("registraion complited..");
                         }).catch((err) => { this._logger.Error('Error,saving user async: ', err); })
@@ -188,85 +185,6 @@ export class StorageFactory {
         })
     }
 
-    ComposeNewMatrix() {
-        this._logger.Debug('Composing new matrix..');
-        var name = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
-        let data =
-            {
-                "Matrix": {
-                    "_name": name,
-                    "_Name": name,
-                    "_Title": "Title1",
-                    "_Skill": "Serve",
-                    "_Location": "Field",
-                    "_Duration": "00:00:00",
-                    "_DateCreated": name,
-                    "_Sport": "Tennis",
-                    "_Channel": "Local",
-                    "Matrix.Children": {
-                        "View":
-                        {
-                            "_name": "View 1",
-                            "_Title": "View 1",
-                            "_Source": "(Blank)",
-                            "Content": {}
-                        }
-                    }
-                }
-            };
-        return data;
-    }
-
-    ComposeMatrixHeader(fromMatrix) {
-        this._logger.Debug('composing matrix header..');
-        var header = {
-            Title: fromMatrix._Title,
-            DateCreated: fromMatrix._DateCreated,
-            Name: fromMatrix._Name,
-            Channel: fromMatrix._Channel,
-            ThumbnailSource: "thumbnail",
-            Sport: fromMatrix._Sport,
-            Skill: fromMatrix._Skill,
-            UploadID: "0",
-            Duration: fromMatrix._Duration,
-            Views: fromMatrix["Matrix.Children"].View.length
-        };
-        return header;
-    }
-
-    ComposeNewMatrixHeader(fromMatrix) {
-        this._logger.Debug('composing new matrix header..');
-        var header = {
-            Title: fromMatrix._Title,
-            DateCreated: fromMatrix._DateCreated,
-            Name: fromMatrix._Name,
-            Channel: fromMatrix._Channel,
-            ThumbnailSource: "thumbnail",
-            Sport: fromMatrix._Sport,
-            Skill: fromMatrix._Skill,
-            UploadID: "0",
-            Duration: fromMatrix._Duration,
-            Views: "1"
-        };
-        return header;
-    }
-
-    ComposeHeader(header) {
-        var hea = {
-            Title: header.Title,
-            DateCreated: header.DateCreated,
-            Name: header.Name,
-            Channel: header.Channel,
-            ThumbnailSource: header.ThumbnailSource,
-            Sport: header.Sport,
-            Skill: header.Skill,
-            UploadID: header.UploadID,
-            Duration: header.Duration,
-            Views: header.Views
-        };
-        return hea;
-    }
-
     CheckFile(dirpath, fileName): Promise<any> {
         return File.checkFile(dirpath, fileName);
     }
@@ -283,6 +201,9 @@ export class StorageFactory {
     CreateFile(path, fileName): Promise<any> {
         return File.createFile(path, fileName, true);
     }
+
+    writeOptions: WriteOptions = { replace: true }
+
     WriteFile(path, fileName, content): Promise<any> {
         return File.writeFile(path, fileName, content, this.writeOptions);
     }
@@ -321,82 +242,5 @@ export class StorageFactory {
         return File.readAsText(path, dirName);
     }
 
-    // ReadServerFileAync(channelName, matrixname, fileName): Promise<any> {
-    //     this._logger.Debug("reading server file async.. ")
-    //     return File.readAsText(this.storageDataDir + "Server/" + channelName + "/Tennis/Matrices/" + matrixname, fileName)
-    //         .then(res => {
-    //             return res;
-    //         }).catch((err) => { this._logger.Error("Error,reading server file async.. ", err) })
-    // }
-
-    GetLocalHeader(): Promise<any> {
-        var localMatrices = [];
-        return new Promise((resolve, reject) => {
-            return this.GetLisOfDirectory(this.storageDataDir, "Local").then((list) => {
-                list.forEach((channelName) => {
-                    return this.GetLisOfDirectory(this.storageDataDir + "Local/" + channelName.name + "/Tennis", "Matrices").then((success) => {
-                        success.forEach((res) => {
-                            return this.ReadMatixFileAync("Local", channelName.name, res.name, "Header.xml").then((data) => {
-                                //deserialiae server header  
-                                var result = JSON.parse(data.toString());
-                                // console.log(result);
-                                var item = this.ComposeHeader(result);
-                                localMatrices.unshift(item);
-                                return resolve(localMatrices);
-                            })
-                        })
-
-                    })
-                })
-
-            })
-        })
-
-    }
-
-    GetServerHeader(): Promise<any> {
-        var channels = [];
-        return new Promise((resolve, reject) => {
-            return this.GetLisOfDirectory(this.storageDataDir, "Server/").then((success) => {
-                success.forEach((channelName) => {
-                    return this.GetLisOfDirectory(this.storageDataDir, "Server/" + channelName.name + "/Tennis/Matrices/").then((success) => {
-                        success.forEach((res) => {
-                            return this.ReadMatixFileAync("Server", channelName.name, res.name, "Header.xml")
-                                .then(data => {
-                                    // deserialiae server header  
-                                    var result = JSON.parse(data.toString());
-                                    var item = this.ComposeHeader(result);
-                                    channels.unshift(item);
-                                    resolve(channels);
-                                });
-                        });
-                    });
-                })
-            }).catch((err) => {
-                this._logger.Error('Error,Getting server matrix header..', err);
-            });
-        })
-    }
-
-    GetChannelListByChannel(channel): Promise<any> {/*$Candidate for refactoring$*///This function does not belong to Storage. Move to core.ts. The name is misleading. Please rename..
-        var channels = [];
-        return new Promise((resolve, reject) => {
-            return this.GetLisOfDirectory(this.storageDataDir, "Server/" + channel + "/Tennis/Matrices/").then((success) => {
-                success.forEach((res) => {
-                    return this.ReadMatixFileAync("Server", channel, res.name, "Header.xml")
-                        .then(data => {
-                            //deserialiae server header  
-                            var result = JSON.parse(data.toString());
-                            // var result = header.Header;
-                            var item = this.ComposeHeader(result);
-                            channels.unshift(item);
-
-                            return resolve(channels);
-                        });
-                });
-
-            });
-        })
-
-    }
+  
 }
