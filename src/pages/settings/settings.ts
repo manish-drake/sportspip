@@ -154,31 +154,19 @@ export class SettingsPage {
   }
 
   GetserverHeader(channelname) {
-    //stub
-    // this.http.get("assets/Header.xml")
-    //   .subscribe(res => {
-    //     console.log("getting header");
-    //     this.SerializeServerData(res);
-    //   })
-
-    //server
     console.log("saving headers list file..");
     this.http.get("http://sportspipservice.cloudapp.net:10106/IMobile/getmtxhdrs")
       .subscribe(res => {
         var headerData = JSON.parse(res.text());
-        this.Save(headerData, "header.xml");
-        Observable.interval(2000)
-          .take(1).map((x) => x + 5)
-          .subscribe((x) => {
-            console.log("saving headers list file..")
-            this.SaveServerHeaders(channelname);
-          });
+        this.Save(headerData, "header.xml").then((res) => {
+          this.SaveServerHeaders(channelname);
+        })
       });
   }
-  Save(blob, filename) {
-    this.storagefactory.CreateFile(this.storageDataDir, filename).then((res) => {
-      this.storagefactory.WriteFile(this.storageDataDir, filename, blob).then((res) => {
-        this._logger.Debug("Saving user");
+  Save(blob, filename): Promise<any> {
+    return this.storagefactory.CreateFile(this.storageDataDir, filename).then((res) => {
+      return this.storagefactory.WriteFile(this.storageDataDir, filename, blob).then((res) => {
+        return res
       })
     })
   }

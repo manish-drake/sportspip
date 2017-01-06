@@ -68,7 +68,7 @@ export class ChannelCollectionPage {
   GetChannelMatrix(channel) {
     this._logger.Debug('Get channel matrix..');
     this.platform.ready().then(() => {
-      this.storagefactory.GetChannelListByChannel(channel).then((res) => {
+      this.storagefactory.GetMatrixListByChannel(channel).then((res) => {
         this.channelMatrices = res;
       }).catch((err) => { this._logger.Error('Error,getting channel matrix: ', err); })
     });
