@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StorageFactory } from '../Factory/StorageFactory';
 
+/*$Candidate for refactoring$*/
 @Injectable()
 export class DeleteHeader {
   localMatrices = [];

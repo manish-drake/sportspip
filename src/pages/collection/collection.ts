@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, ActionSheetController, Platform } from 'ionic-angular';
 import { Package } from '../../Services/Package';
-import { Http } from '@angular/http';
+import { Http } from '@angular/http';/*$Candidate for refactoring$*///Don't use http directly here. Delegate the task to a service (are you even using it anywhere in this class??)
 import { Duplicate } from '../../Services/Action/Duplicate';
 import { OpenMatrix } from '../../Services/Action/OpenMatrix';
 import { Observable } from 'rxjs/Rx';
@@ -45,7 +45,7 @@ export class CollectionPage {
     this.localMatrices = [];
     this.LoadCollectionMatrix();
 
-    Observable.interval(1000)
+    Observable.interval(1000)/*$Candidate for refactoring$*///BAD!! Please remove this until unless it is part of the core logic
       .take(1).map((x) => x + 5)
       .subscribe((x) => {
         // set val to the value of the searchbar
