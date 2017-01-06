@@ -15,11 +15,16 @@ export class SqliteLogProvider extends AProvider {
         console.log(log);
         //For collecting logs data
         this._platform.ready().then(() => {
+            var databaseConfig;
+            if (this._platform.is('android')) {
+                databaseConfig = { name: "data.db", location: "default" }
+            }
+            else if (this._platform.is('ios')) {
+                databaseConfig = { name: "data.db", iosDatabaseLocation: 'Documents' }
+            }
+
             let db = new SQLite();
-            db.openDatabase({
-                name: "data.db",
-                location: "default"
-            }).then(() => {
+            db.openDatabase(databaseConfig).then(() => {
                 var dtLog = new Date().toUTCString();
 
                 db.executeSql("CREATE TABLE IF NOT EXISTS logs (id INTEGER PRIMARY KEY AUTOINCREMENT, dtLog TEXT, message TEXT)", {}).then((data) => {

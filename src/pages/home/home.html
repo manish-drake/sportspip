@@ -1,6 +1,6 @@
 <ion-header no-border>
 	<ion-navbar color="primary" no-border-bottom>
-		<ion-title start>
+		<ion-title>
 			Sports PIP
 		</ion-title>
 		<ion-buttons end>
@@ -12,126 +12,121 @@
 	<ion-row>
 		<ion-col text-center center (click)="showSegment('local')" [class.selectedsegment]="selectedSegment != 'local'">
 			<b ion-text style="padding:9px 0; display: inline-block;" color="primary">Matrices</b>
-		</ion-col>
-		<ion-col text-center center (click)="showSegment('server')" [class.selectedsegment]="selectedSegment != 'server'">
-			<b ion-text style="padding:9px 0; display: inline-block;" color="primary">Channels</b>
-		</ion-col>
-	</ion-row>
+</ion-col>
+<ion-col text-center center (click)="showSegment('server')" [class.selectedsegment]="selectedSegment != 'server'">
+	<b ion-text style="padding:9px 0; display: inline-block;" color="primary">Channels</b>
+</ion-col>
+</ion-row>
 </ion-header>
 
 <ion-content style="background:#f4f4f4;" [ngSwitch]="selectedSegment">
 
-	<!-- Real floating action button, fixed. It will not scroll with the content -->
-	<ion-fab bottom right>
-		<button ion-fab (click)="newMatrix()"><ion-icon name="add"></ion-icon></button>
-	</ion-fab>
-	<!--(For testing only) - Open matrix file placed in assets-->
-	<!--<ion-fab bottom center>
+<!-- Real floating action button, fixed. It will not scroll with the content -->
+<ion-fab bottom right>
+	<button ion-fab (click)="newMatrix()"><ion-icon name="add"></ion-icon></button>
+</ion-fab>
+<!--(For testing only) - Open matrix file placed in assets-->
+<!--<ion-fab bottom center>
 		<button ion-fab color="light" (click)="testOpenMatrix()">M</button>
 	</ion-fab>-->
 
-	<div *ngSwitchCase="'local'" style="position: relative; height:100%;">
-		<ion-refresher (ionRefresh)="doRefreshLocal($event)" no-lines>
-			<ion-refresher-content></ion-refresher-content>
-		</ion-refresher>
-		<button ion-item *ngIf="localMatrices.length > 0" style="background:transparent;" (click)="openCollection()">
-			All Matrices
-			<ion-badge item-right>{{localMatrices.length}}</ion-badge>
-			</button>
-		<div class="items">
-			<div class="item" *ngFor='let matrix of localMatrices | slice: 0:12; let i = index'>
-				<ion-card [command]="OpenMatrix" [cmdArgs]="matrix"  (press)="matrixPressed(i,matrix)">
-					<ion-row>
-						<ion-col no-padding [style.background-image]="retrunThumbnailPath(matrix.ThumbnailSource)" style="height: 120px;background-size: cover;background-color:lightgray;background-position: center;">
-						</ion-col>
-					</ion-row>
-					<ion-row>
-						<ion-col no-padding>
-							<ion-card-content style="padding:5px 10px 2px 10px ">
-								<ion-row>
-									<ion-col no-padding style="width: 100%;font-size: 18px;overflow: hidden;text-overflow: ellipsis;">
-										{{matrix.Title}}
-									</ion-col>
-									<ion-col no-padding center text-right style="flex: 0 0 auto; width: auto;">
-										<p>{{FormatDate(matrix.DateCreated)}}</p>
-									</ion-col>
-								</ion-row>
-								<ion-row>
-									<ion-col no-padding style="width: 100%;overflow: hidden;text-overflow: ellipsis;">
-										{{matrix.Sport}}/{{matrix.Skill}}
-									</ion-col>
-									<ion-col no-padding center text-right style="flex: 0 0 auto; width: auto;">
-										<!--<p>{{formatDuration(matrix.Duration)}}</p>-->
-										<p>{{matrix.Views}}</p>
-									</ion-col>
-								</ion-row>
-							</ion-card-content>
-						</ion-col>
-					</ion-row>
-				</ion-card>
-			</div>
-		</div>
-		<ion-row center *ngIf="!(localMatrices.length > 0) && !refreshing" style="position: absolute;height:100%;color: gray;">
-			<ion-col text-center center>
-				<b>No matrix exists</b>
-			</ion-col>
-		</ion-row>
-	</div>
+<div *ngSwitchCase="'local'" style="position: relative; height:100%;">
+<ion-refresher (ionRefresh)="doRefreshLocal($event)" no-lines>
+	<ion-refresher-content></ion-refresher-content>
+</ion-refresher>
+<button ion-item *ngIf="localMatrices.length > 0" style="background:transparent;" (click)="openCollection()"> All Matrices
+<ion-badge item-right>{{localMatrices.length}}</ion-badge>
+</button>
+<div class="items">
+	<div class="item" *ngFor='let matrix of localMatrices | slice: 0:12; let i = index'>
+		<ion-card [command]="OpenMatrix" [cmdArgs]="matrix" [usePress]="false" (press)="matrixPressed(i,matrix)">
+			<ion-row>
+				<ion-col no-padding [style.background-image]="retrunThumbnailPath(matrix.ThumbnailSource)" style="height: 120px;background-size: cover;background-color:lightgray;background-position: center;">
+</ion-col>
+</ion-row>
+<ion-row>
+	<ion-col no-padding>
+		<ion-card-content style="padding:5px 10px 2px 10px ">
+<ion-row>
+	<ion-col no-padding style="width: 100%;font-size: 18px;overflow: hidden;text-overflow: ellipsis;"> {{matrix.Title}}
+</ion-col>
+<ion-col no-padding center text-right style="flex: 0 0 auto; width: auto;">
+<p>{{FormatDate(matrix.DateCreated)}}</p>
+</ion-col>
+</ion-row>
+<ion-row>
+	<ion-col no-padding style="width: 100%;overflow: hidden;text-overflow: ellipsis;"> {{matrix.Sport}}/{{matrix.Skill}}
+</ion-col>
+<ion-col no-padding center text-right style="flex: 0 0 auto; width: auto;">
+<!--<p>{{formatDuration(matrix.Duration)}}</p>-->
+<p>{{matrix.Views}}</p>
+</ion-col>
+</ion-row>
+</ion-card-content>
+</ion-col>
+</ion-row>
+</ion-card>
+</div>
+</div>
+<ion-row center *ngIf="!(localMatrices.length > 0) && !refreshing" style="position: absolute;height:100%;color: gray;">
+<ion-col text-center center>
+	<b>No matrix exists</b>
+</ion-col>
+</ion-row>
+</div>
 
-	<div *ngSwitchCase="'server'" style="position: relative; height:100%;">
-		<ion-refresher (ionRefresh)="doRefreshChannels($event)">
-			<ion-refresher-content></ion-refresher-content>
-		</ion-refresher>
-		<ion-item-group *ngFor="let channel of channels|groupBy:'Channel'">
-			<button ion-item *ngIf="channel.value.length > 0" style="background:transparent;" (click)="openChannelCollection(channel.key)">
-			{{channel.key}}
-			<ion-badge item-right>{{channel.value.length}}</ion-badge>
-			</button>
-			<div class="items">
-				<div class="item" *ngFor="let matrix of channel.value | slice: 0:6; let i = index">
+<div *ngSwitchCase="'server'" style="position: relative; height:100%;">
+<ion-refresher (ionRefresh)="doRefreshChannels($event)">
+	<ion-refresher-content></ion-refresher-content>
+</ion-refresher>
+<ion-item-group *ngFor="let channel of channels|groupBy:'Channel'">
+	<button ion-item *ngIf="channel.value.length > 0" style="background:transparent;" (click)="openChannelCollection(channel.key)"> {{channel.key}}
+<ion-badge item-right>{{channel.value.length}}</ion-badge>
+</button>
+<div class="items">
+	<div class="item" *ngFor="let matrix of channel.value | slice: 0:6; let i = index">
 
-					<ion-card (click)="channelMatrixClicked(i,matrix,channel.value)" (press)="channelMatrixPressed(i,matrix,channel.value)">
-						<ion-row>
-							<ion-col no-padding [style.background-image]="retrunThumbnailPath(matrix.UploadID)" style="position: relative; height: 120px;background-size: cover;background-color:lightgray;background-position: center;">
-								<ion-row center style="position: absolute;top: 0;width: 100%;height: 100%;background-color: rgba(0,0,0,0.2);">
-									<ion-col center text-center>
-										<button ion-button icon-left clear color="light" style="font-size: 20px; font-weight: bold;"><ion-icon name="download"></ion-icon>Download</button>
-									</ion-col>
-								</ion-row>
-							</ion-col>
-						</ion-row>
-						<ion-row>
-							<ion-col no-padding>
-								<ion-card-content style="padding:5px 10px 2px 10px ">
-									<ion-row>
-										<ion-col no-padding style="width: 100%;font-size: 18px;overflow: hidden;text-overflow: ellipsis;">
-											{{matrix.Title}}
-										</ion-col>
-										<ion-col no-padding center text-right style="flex: 0 0 auto; width: auto;">
-											<p>{{FormatDate(matrix.DateCreated)}}</p>
-										</ion-col>
-									</ion-row>
-									<ion-row>
-										<ion-col no-padding style="width: 100%;overflow: hidden;text-overflow: ellipsis;">
-											{{matrix.Sport}}/{{matrix.Skill}}
-										</ion-col>
-										<ion-col no-padding center text-right style="flex: 0 0 auto; width: auto;">
-											<!--<p>{{formatDuration(matrix.Duration)}}</p>-->
-											<p>{{matrix.Views}}</p>
-										</ion-col>
-									</ion-row>
-								</ion-card-content>
-							</ion-col>
-						</ion-row>
-					</ion-card>
-				</div>
-			</div>
-		</ion-item-group>
-		<ion-row center *ngIf="!(channels.length > 0) && !refreshing" style="position: absolute; height:100%;color: gray;">
-			<ion-col text-center center>
-				<b>No channel exists</b>
-			</ion-col>
-		</ion-row>
-	</div>
+		<ion-card (click)="channelMatrixClicked(i,matrix,channel.value)" (press)="channelMatrixPressed(i,matrix,channel.value)">
+			<ion-row>
+				<ion-col no-padding [style.background-image]="retrunThumbnailPath(matrix.UploadID)" style="position: relative; height: 120px;background-size: cover;background-color:lightgray;background-position: center;">
+<ion-row center style="position: absolute;top: 0;width: 100%;height: 100%;background-color: rgba(0,0,0,0.2);">
+<ion-col center text-center>
+	<button ion-button icon-left clear color="light" style="font-size: 20px; font-weight: bold;">
+<ion-icon name="download"></ion-icon>Download</button>
+</ion-col>
+</ion-row>
+</ion-col>
+</ion-row>
+<ion-row>
+	<ion-col no-padding>
+		<ion-card-content style="padding:5px 10px 2px 10px ">
+<ion-row>
+	<ion-col no-padding style="width: 100%;font-size: 18px;overflow: hidden;text-overflow: ellipsis;"> {{matrix.Title}}
+</ion-col>
+<ion-col no-padding center text-right style="flex: 0 0 auto; width: auto;">
+<p>{{FormatDate(matrix.DateCreated)}}</p>
+</ion-col>
+</ion-row>
+<ion-row>
+	<ion-col no-padding style="width: 100%;overflow: hidden;text-overflow: ellipsis;"> {{matrix.Sport}}/{{matrix.Skill}}
+</ion-col>
+<ion-col no-padding center text-right style="flex: 0 0 auto; width: auto;">
+<!--<p>{{formatDuration(matrix.Duration)}}</p>-->
+<p>{{matrix.Views}}</p>
+</ion-col>
+</ion-row>
+</ion-card-content>
+</ion-col>
+</ion-row>
+</ion-card>
+</div>
+</div>
+</ion-item-group>
+<ion-row center *ngIf="!(channels.length > 0) && !refreshing" style="position: absolute; height:100%;color: gray;">
+<ion-col text-center center>
+	<b>No channel exists</b>
+</ion-col>
+</ion-row>
+</div>
 
 </ion-content>

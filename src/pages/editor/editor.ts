@@ -17,15 +17,16 @@ import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 import { Compareview } from '../editor/compareview/compareview'
 import { Swipeview } from '../editor/swipeview/swipeview';
 import { AddView } from '../editor/action/addView';
+import { DeleteView } from '../editor/action/deleteView';
+import { SaveMatrix } from '../editor/action/saveMatrix';
 import { Ipcameras } from '../editor/ipcameras/ipcameras'
 import { Logger } from '../../logging/logger';
 declare var navigator: any;
-
 @Injectable()
 @Component({
   selector: 'page-editor',
   templateUrl: 'editor.html',
-  providers: [Connection, ModelFactory, BackGroundTransferProcess, AddView],
+  providers: [Connection, ModelFactory, BackGroundTransferProcess, AddView, SaveMatrix, DeleteView],
 })
 
 export class EditorPage {
@@ -38,6 +39,8 @@ export class EditorPage {
   constructor(public navCtrl: NavController,
     private storage: Storage,
     private addViewCmd: AddView,
+    private dltView: DeleteView,
+    private saveMatrices: SaveMatrix,
     private backGroundTransferProcess: BackGroundTransferProcess,
     private params: NavParams,
     public alertCtrls: AlertControllers,
@@ -98,49 +101,19 @@ export class EditorPage {
         duration: 10000
       });
       loader.present();
-
-      this.storagefactory.ReadMatixFileAync("Local", this.matrix._Channel, this.matrix._Name, this.matrix._Name + ".mtx")
-        .then((data) => {
-          this._logger.Debug("Matrix file saving..")
-
-          var res = JSON.parse(data.toString());
-          var matrix = res.Matrix;
-          matrix['Matrix.Children'].View = this.views;
-          var thumbName = this.GetThumbName(matrix);
-          this.storagefactory.SaveMatrixAsync(res, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
-          var header = this.storagefactory.ComposeMatrixHeader(matrix);
-          header.ThumbnailSource = thumbName.toString();
-          this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices");
-
-          Observable.interval(1000)
-            .take(1).map((x) => x + 5)
-            .subscribe((x) => {
-              this.navCtrl.pop();
-              loader.dismiss();
-            });
-        }).catch((err) => {
-          this._logger.Error("Error,Matrix file saving..", err); this.navCtrl.pop();
-          loader.dismiss();
-        });
-
+      this.saveMatrices.run(this.matrix._Channel, this.matrix._Name, this.views).then((res) => {
+        Observable.interval(1000)
+          .take(1).map((x) => x + 5)
+          .subscribe((x) => {
+            this.navCtrl.pop();
+            loader.dismiss();
+          });
+      }).catch((err) => {
+        loader.dismiss();
+        this._logger.Error("Error,Matrix file saving..", err);
+        this.navCtrl.pop();
+      });
     } else this.navCtrl.pop();
-  }
-
-  GetThumbName(matrix) {
-    var name: "thumbnail";
-    matrix['Matrix.Children'].View.forEach(view => {
-      if (name == undefined) {
-        if (view.Content !== undefined) {
-          if (view.Content.Capture != undefined) {
-            console.log("enter........")
-            var kernel = view.Content.Capture._Kernel;
-            name = kernel.slice(0, -4).split(" ");
-            this.modelFactory.CreateThumbnail(kernel, name);
-          }
-        }
-      }
-    });
-    return name;
   }
 
   presentInfoModal() {
@@ -165,42 +138,28 @@ export class EditorPage {
   }
 
 
-
   private _addView: AddView;
   public get addView(): AddView {
     return this.addViewCmd;
   }
 
-  deleteView(index) {
-    if (this.views.length > 1) {
-      let confirm = this.alertCtrl.create({
-        title: 'Are you sure?',
-        message: 'Do you want to delete the view pressed?',
-        buttons: [
-          {
-            text: 'Cancel',
-            handler: () => { }
-          },
-          {
-            text: 'Delete',
-            handler: () => {
-              this.views.splice(index, 1);
-              if (this.selectedViewIndex == 0) {
-                this.showViewSegment(0);
-              }
-              else {
-                this.showViewSegment(index - 1)
-              }
-              this.evaluateCaptureViews();
-            }
-          }
-        ]
-      });
-      confirm.present();
+  addViewSource() {
+    return {
+      "editor": this
     }
-    else {
-      this.alertCtrls.BasicAlert('Can not be deleted!', 'Atleast 1 view is required.');
-    }
+  }
+
+
+  private _deleteView: DeleteView;
+  public get deleteView(): DeleteView {
+    return this.dltView;
+  }
+
+  deleteViewSource(i: Number) {
+    return {
+      "editor": this,
+      "index": i
+    };
   }
 
   //Code for ViewOptions start

@@ -1,5 +1,5 @@
-import { NgModule, Directive } from '@angular/core';
-import { IonicApp, IonicModule } from 'ionic-angular';
+import { NgModule, Directive, ErrorHandler } from '@angular/core';
+import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { sportspip } from './app.component';
 
 import { HomePage } from '../pages/home/home';
@@ -57,9 +57,10 @@ import { CommandDirective } from './directives/command.directive';
     Swipeview
   ],
   providers: [
-    AlertControllers,
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     { provide: AProvider, useClass: SqliteLogProvider },
-    Logger, StorageFactory, Storage
+    AlertControllers, Logger, StorageFactory, Storage
+
   ],
   imports: [
     IonicModule.forRoot(sportspip)
