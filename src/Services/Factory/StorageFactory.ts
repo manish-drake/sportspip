@@ -10,7 +10,7 @@ import 'rxjs/Rx';
 
 @Injectable()
 export class StorageFactory {
-    writeOptions: WriteOptions = { replace: true }
+
     private storageRoot: string;
     private storageDataDir: string;
 
@@ -42,16 +42,13 @@ export class StorageFactory {
                             this.createFolder(contentFolder, matrixName).then((success) => {
                                 var fileLocation = contentFolder + matrixName;
                                 this.CreateFile(fileLocation, "Header.xml").then(() => {
-                                    this.WriteFile(fileLocation, "Header.xml", content)
+                                    this.WriteFile(fileLocation, "Header.xml",JSON.stringify(content))
                                         .then(function (success) {
                                             console.log("server header saved ..")
                                         }).catch((err) => { this._logger.Error('Error,saving server header: ', err); })
-
                                 })
                             })
-
                         })
-
                     })
                 })
             })
@@ -73,7 +70,7 @@ export class StorageFactory {
                             return this.createFolder(contentFolder, matrixName).then((success) => {
                                 var fileLocation = contentFolder + matrixName;
                                 return this.CreateFile(fileLocation, matrixName + ".mtx").then(() => {
-                                    return this.WriteFile(fileLocation, matrixName + ".mtx", content)
+                                    return this.WriteFile(fileLocation, matrixName + ".mtx", JSON.stringify(content))
                                         .then(function (success) {
                                             return success["nativeUrl"]
                                         }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
@@ -86,7 +83,7 @@ export class StorageFactory {
         }
     }
 
-    SaveLocalHeader(content, channel, sport, matrixName, typeFolder):Promise<string> {
+    SaveLocalHeader(content, channel, sport, matrixName, typeFolder): Promise<string> {
         this._logger.Debug('Save local header..');
         return this.platform.ready().then(() => {
             return this.createFolder(this.storageDataDir, "Local").then((success) => {
@@ -100,7 +97,7 @@ export class StorageFactory {
                             return this.createFolder(contentFolder, matrixName).then((success) => {
                                 var fileLocation = contentFolder + matrixName;
                                 return this.CreateFile(fileLocation, "Header.xml").then(() => {
-                                    this.WriteFile(fileLocation, "Header.xml", content)
+                                    this.WriteFile(fileLocation, "Header.xml", JSON.stringify(content))
                                         .then(function (success) {
                                             return success["nativeUrl"]
                                         }).catch((err) => { this._logger.Error('Error,saving local header: ', err); })
@@ -149,7 +146,7 @@ export class StorageFactory {
             this.createFolder(this.storageDataDir, "Roaming").then((success) => {
                 var serverFolder = this.storageDataDir + "Roaming/";
                 this.CreateFile(serverFolder, "User.json").then(() => {
-                    this.WriteFile(serverFolder, "User.json", content)
+                    this.WriteFile(serverFolder, "User.json", JSON.stringify(content))
                         .then(function (success) {
                             this._logger.Debug("registraion complited..");
                         }).catch((err) => { this._logger.Error('Error,saving user async: ', err); })
@@ -204,6 +201,9 @@ export class StorageFactory {
     CreateFile(path, fileName): Promise<any> {
         return File.createFile(path, fileName, true);
     }
+
+    writeOptions: WriteOptions = { replace: true }
+
     WriteFile(path, fileName, content): Promise<any> {
         return File.writeFile(path, fileName, content, this.writeOptions);
     }
