@@ -378,7 +378,7 @@ export class StorageFactory {
         })
     }
 
-    GetChannelListByChannel(channel): Promise<any> {
+    GetChannelListByChannel(channel): Promise<any> {/*$Candidate for refactoring$*///This function does not belong to Storage. 
         var channels = [];
         return new Promise((resolve, reject) => {
             return this.GetLisOfDirectory(this.storageDataDir, "Server/" + channel + "/Tennis/Matrices/").then((success) => {
