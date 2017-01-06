@@ -69,4 +69,27 @@ export class ModelFactory {
         return blob;
     }
 
+    CreateVideoView(fileName, selectedViewIndex, source) {
+        var localView = {
+            "Content": {
+                "Capture": {
+                    "Marker": {
+                        "Marker.Objects": "",
+                        "_name": "c379224ff2704c5ea5ad1f10275a28c1"
+                    },
+                    "View.ChronoMarker": "",
+                    "_name": "ba160173f284474c9412192dcd77cb1c",
+                    "_Kernel": fileName,
+                    "_Title": "View " + (selectedViewIndex + 1),
+                    "_Name": "ba160173f284474c9412192dcd77cb1c",
+                    "_IsActive": "False"
+                }
+            },
+            "_name": "View " + (selectedViewIndex + 1),
+            "_Title": "View " + (selectedViewIndex + 1),
+            "_Source": source
+        }
+        return localView;
+    }
+
 }

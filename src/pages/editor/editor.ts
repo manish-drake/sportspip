@@ -1,32 +1,35 @@
 import { Component, Injectable } from '@angular/core';
-
 import {
-  NavController, NavParams, AlertController, ModalController, Platform,
+  NavController, NavParams, ModalController, Platform,
   App, LoadingController, Events, PopoverController, ViewController
 } from 'ionic-angular';
-import { BackGroundTransferProcess } from '../../Services/BackGroundTransferProcess';
-import { FileChooser, MediaCapture, CaptureVideoOptions, MediaFile, CaptureError, FilePath } from 'ionic-native';
-import { AlertControllers } from '../../Services/Alerts';
+import { Observable } from 'rxjs/Rx';
 import { Http } from '@angular/http';
+import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
+import { Compareview } from '../editor/compareview/compareview'
+import { Swipeview } from '../editor/swipeview/swipeview';
+//Service
+import { Logger } from '../../logging/logger';
 import { Connection } from '../../Services/Connection'
 import { StorageFactory } from '../../Services/Factory/StorageFactory';
 import { Storage } from '../../Services/Factory/Storage';
 import { ModelFactory } from '../../Services/Factory/ModelFactory';
-import { Observable } from 'rxjs/Rx';
-import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
-import { Compareview } from '../editor/compareview/compareview'
-import { Swipeview } from '../editor/swipeview/swipeview';
+//Action
 import { AddView } from '../editor/action/addView';
 import { DeleteView } from '../editor/action/deleteView';
+import { AddCapture } from '../editor/action/addCapture';
+import { AddPhoneCapture } from '../editor/action/addPhoneCapture';
+import { AddIpCamCapture } from '../editor/action/addIpCamCapture';
 import { SaveMatrix } from '../editor/action/saveMatrix';
-import { Ipcameras } from '../editor/ipcameras/ipcameras'
-import { Logger } from '../../logging/logger';
+import { AddCanvas } from '../editor/action/addCanvas';
+
 declare var navigator: any;
 @Injectable()
 @Component({
   selector: 'page-editor',
   templateUrl: 'editor.html',
-  providers: [Connection, ModelFactory, BackGroundTransferProcess, AddView, SaveMatrix, DeleteView],
+  providers: [Connection, ModelFactory,
+    AddView, SaveMatrix, DeleteView, AddCapture, AddPhoneCapture, AddCanvas,AddIpCamCapture],
 })
 
 export class EditorPage {
@@ -38,13 +41,14 @@ export class EditorPage {
 
   constructor(public navCtrl: NavController,
     private storage: Storage,
+    private addCanvas: AddCanvas,
+    private addIpCamCapture: AddIpCamCapture,
+    private addPhoneCapture: AddPhoneCapture,
     private addViewCmd: AddView,
     private dltView: DeleteView,
+    private addCapture: AddCapture,
     private saveMatrices: SaveMatrix,
-    private backGroundTransferProcess: BackGroundTransferProcess,
     private params: NavParams,
-    public alertCtrls: AlertControllers,
-    private alertCtrl: AlertController,
     private modalCtrl: ModalController,
     private loadingCtrl: LoadingController,
     private modelFactory: ModelFactory,
@@ -93,29 +97,6 @@ export class EditorPage {
     });
   }
 
-  saveMatrix() {
-    if (this.platform.is('cordova')) {
-
-      let loader = this.loadingCtrl.create({
-        content: "Saving..",
-        duration: 10000
-      });
-      loader.present();
-      this.saveMatrices.run(this.matrix._Channel, this.matrix._Name, this.views).then((res) => {
-        Observable.interval(1000)
-          .take(1).map((x) => x + 5)
-          .subscribe((x) => {
-            this.navCtrl.pop();
-            loader.dismiss();
-          });
-      }).catch((err) => {
-        loader.dismiss();
-        this._logger.Error("Error,Matrix file saving..", err);
-        this.navCtrl.pop();
-      });
-    } else this.navCtrl.pop();
-  }
-
   presentInfoModal() {
     let modal = this.modalCtrl.create(MatrixInfoPage, {
       matrixData: this.matrix,
@@ -137,7 +118,27 @@ export class EditorPage {
       return true;
   }
 
+  saveMatrix() {
+    if (this.platform.is('cordova')) {
+      let loader = this.loadingCtrl.create({
+        content: "Saving..",
+        duration: 10000
+      });
+      loader.present();
 
+      this.saveMatrices.run(this.matrix._Channel, this.matrix._Name, this.views).then((res) => {
+        this.navCtrl.pop();
+        loader.dismiss();
+      }).catch((err) => {
+        loader.dismiss();
+        this._logger.Error("Error,Matrix file saving..", err);
+        this.navCtrl.pop();
+      });
+      
+    } else this.navCtrl.pop();
+  }
+
+  // Code for addView
   private _addView: AddView;
   public get addView(): AddView {
     return this.addViewCmd;
@@ -149,7 +150,7 @@ export class EditorPage {
     }
   }
 
-
+  // Code for deleteView
   private _deleteView: DeleteView;
   public get deleteView(): DeleteView {
     return this.dltView;
@@ -162,142 +163,60 @@ export class EditorPage {
     };
   }
 
-  //Code for ViewOptions start
-  addBlankCanvas() {
-    var canvasView = {
-      "Content": {
-        "PIP": {
-          "PIP.Objects": "",
-          "_name": "d002b8ed5fe24f57aab501f05398262c",
-          "_CanvasBackgroundBrush": "#FFFFFFFF",
-          "_CanvasBackgroundOpacity": "1"
-        }
-      },
-      "_name": "View " + (this.selectedViewIndex + 1),
-      "_Title": "View " + (this.selectedViewIndex + 1),
-      "_Source": 'Canvas'
-    }
-    this.views[this.selectedViewIndex] = canvasView;
+  //Code for add canvas
+
+  private _addBlankCanvas: AddCanvas;
+  public get addBlankCanvas(): AddCanvas {
+    return this.addCanvas;
   }
 
-  import() {
-    this.alertCtrls.BasicAlert('Unavailable!', 'View library not available currently.');
+  addCanvasSource() {
+    return {
+      "editor": this
+    };
   }
 
-  chooseVideo() {
-    this._logger.Debug("Adding file mannualy..");
-    if (this.platform.is('cordova')) {
-      FileChooser.open().then(uri => {
-        console.log(uri);
-        FilePath.resolveNativePath(uri)
-          .then(filePath => {
-            console.log(filePath);
-            var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-            var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
-            var newFileName = Date.now() + ".mp4";
-
-            this.storagefactory.CopyFile(path, fileName, this.rootDirectory + "SportsPIP/Video", newFileName)
-              .then(success => {
-                console.log('Successfully copied video');
-                this.CreateVideoView(newFileName);
-                if (Connection.connectedServer != null)
-                  this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
-
-              })
-              .catch(err => {
-                console.log('Failed copying video:' + JSON.stringify(err))
-                this.chooseVideoErrorMsg('Failed copying video:' + JSON.stringify(err));
-              });
-
-          })
-          .catch(err => {
-            console.log(err);
-            this.chooseVideoErrorMsg('Failed Resolving nativepath:' + JSON.stringify(err));
-          });
-
-      }).catch(err => {
-        console.log(err);
-        this.chooseVideoErrorMsg('Error opening file chooser:' + JSON.stringify(err));
-      });
-    }
+  // Code for add Capture
+  private _chooseVideo: AddCapture;
+  public get chooseVideo(): AddCapture {
+    return this.addCapture;
   }
 
-  chooseVideoErrorMsg(err) {
-    this._logger.Error("Error in chooseVideo", err);
-    this.alertCtrls.BasicAlert('Failed saving video!', err);
-
+  addCaptureSource() {
+    return {
+      "editor": this,
+    };
   }
 
-  // Code for Camera Recording Starts
-  recordVideo() {
-    let options: CaptureVideoOptions = {};
-    MediaCapture.captureVideo(options)
-      .then(
-      (data: MediaFile[]) => { this.captureSuccess(data) },
-      (err: CaptureError) => { this.captureError(err) }
-      );
+  // Code for Phone Camera Recording Starts
+  private _recordVideo: AddPhoneCapture;
+  public get recordVideo(): AddPhoneCapture {
+    return this.addPhoneCapture;
   }
 
-  captureSuccess(MediaFiles) {
-    MediaFiles.forEach(mediaFile => {
-      var fileUrl = mediaFile.localURL;
-
-      var path = fileUrl.substr(0, fileUrl.lastIndexOf('/') + 1);
-      var fileName = fileUrl.substr(fileUrl.lastIndexOf('/') + 1);
-
-      this.storagefactory.MoveFile(path, this.rootDirectory + "SportsPIP/Video", fileName)
-        .subscribe(success => {
-          this.CreateVideoView(fileName);
-          console.log('Successfully saved video')
-          if (Connection.connectedServer != null)
-            this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, this.views);
-        })
-    });
+  addPhoneCaptureSource() {
+    return {
+      "editor": this,
+    };
   }
 
-  captureError(err) {
-    if (err.code == "3") {
-      console.log("Reording: " + err.message + ", Code:" + err.code)
-      this._logger.Error("Reording: ", err.message)
-      this._logger.Error("Code:", err.code)
-    }
-    else {
-      this._logger.Error('Recording Failed!', err.code + ", " + err.message);
-      this.alertCtrls.BasicAlert('Recording Failed!', err.code + ", " + err.message);
-    }
+
+  private _ipCamCapture: AddIpCamCapture;
+  public get ipCamCapture(): AddIpCamCapture {
+    return this.addIpCamCapture;
   }
 
-  // Code for Camera Recording Starts
-
-  IPCamCapture() {
-    this._logger.Debug('Navigates to IP Cameras page..');
-    this.navCtrl.push(Ipcameras, {
-      matrix: this.matrix,
-      views: this.views,
-      selectedViewIndex: this.selectedViewIndex
-    });
+  ipCamCaptureSource() {
+    return {
+      "matrix": this.matrix,
+      "views": this.views,
+      "selectedViewIndex": this.selectedViewIndex
+    };
   }
 
-  CreateVideoView(fileName) {
-    var localView = {
-      "Content": {
-        "Capture": {
-          "Marker": {
-            "Marker.Objects": "",
-            "_name": "c379224ff2704c5ea5ad1f10275a28c1"
-          },
-          "View.ChronoMarker": "",
-          "_name": "ba160173f284474c9412192dcd77cb1c",
-          "_Kernel": fileName,
-          "_Title": "View " + (this.selectedViewIndex + 1),
-          "_Name": "ba160173f284474c9412192dcd77cb1c",
-          "_IsActive": "False"
-        }
-      },
-      "_name": "View " + (this.selectedViewIndex + 1),
-      "_Title": "View " + (this.selectedViewIndex + 1),
-      "_Source": "Local"
-    }
+
+  CreateVideoView(fileName,selectedViewIndex,source) {
+   var localView =this.modelFactory.CreateVideoView(fileName,selectedViewIndex,source)
     this.views[this.selectedViewIndex] = localView;
     this.evaluateCaptureViews();
   }
