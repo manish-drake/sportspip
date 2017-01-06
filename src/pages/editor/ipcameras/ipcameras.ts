@@ -224,7 +224,6 @@ export class Ipcameras {
 
   record() {
     this.loader.setContent('Starting Recording..');
-
     var connectedServerIP = Connection.connectedServer.Data.Location;
     var fileName = Date.now();
     var uri: string = "http://" + connectedServerIP + ":10080/icamera/cams/ip/" + fileName + "/rec?duration=" + this.recordingDuration;

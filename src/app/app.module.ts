@@ -28,6 +28,10 @@ import { Logger } from '../logging/logger';
 import { AProvider } from '../logging/aProvider';
 import { SqliteLogProvider } from '../logging/providers/sqliteLogProvider';
 import { CommandDirective } from './directives/command.directive';
+import { Utils } from '../Services/common/utils';
+import { ModelFactory } from '../Services/Factory/ModelFactory';
+import { Package } from '../Services/Package';
+import { Core } from '../Services/core';
 
 
 @NgModule({
@@ -60,7 +64,8 @@ import { CommandDirective } from './directives/command.directive';
   providers: [
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     { provide: AProvider, useClass: SqliteLogProvider },
-    AlertControllers, Logger, StorageFactory, Storage,BackGroundTransferProcess
+    AlertControllers, Logger, StorageFactory, Storage,BackGroundTransferProcess,Utils,
+    ModelFactory,Package,Core
 
   ],
   imports: [

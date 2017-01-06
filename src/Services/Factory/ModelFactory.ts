@@ -92,4 +92,84 @@ export class ModelFactory {
         return localView;
     }
 
+        ComposeNewMatrix() {
+        this._logger.Debug('Composing new matrix..');
+        var name = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
+        let data =
+            {
+                "Matrix": {
+                    "_name": name,
+                    "_Name": name,
+                    "_Title": "Title1",
+                    "_Skill": "Serve",
+                    "_Location": "Field",
+                    "_Duration": "00:00:00",
+                    "_DateCreated": name,
+                    "_Sport": "Tennis",
+                    "_Channel": "Local",
+                    "Matrix.Children": {
+                        "View":
+                        {
+                            "_name": "View 1",
+                            "_Title": "View 1",
+                            "_Source": "(Blank)",
+                            "Content": {}
+                        }
+                    }
+                }
+            };
+        return data;
+    }
+
+    ComposeMatrixHeader(fromMatrix) {
+        this._logger.Debug('composing matrix header..');
+        var header = {
+            Title: fromMatrix._Title,
+            DateCreated: fromMatrix._DateCreated,
+            Name: fromMatrix._Name,
+            Channel: fromMatrix._Channel,
+            ThumbnailSource: "thumbnail",
+            Sport: fromMatrix._Sport,
+            Skill: fromMatrix._Skill,
+            UploadID: "0",
+            Duration: fromMatrix._Duration,
+            Views: fromMatrix["Matrix.Children"].View.length
+        };
+        return header;
+    }
+
+    ComposeNewMatrixHeader(fromMatrix) {
+        this._logger.Debug('composing new matrix header..');
+        var header = {
+            Title: fromMatrix._Title,
+            DateCreated: fromMatrix._DateCreated,
+            Name: fromMatrix._Name,
+            Channel: fromMatrix._Channel,
+            ThumbnailSource: "thumbnail",
+            Sport: fromMatrix._Sport,
+            Skill: fromMatrix._Skill,
+            UploadID: "0",
+            Duration: fromMatrix._Duration,
+            Views: "1"
+        };
+        return header;
+    }
+
+    ComposeHeader(header) {
+        var hea = {
+            Title: header.Title,
+            DateCreated: header.DateCreated,
+            Name: header.Name,
+            Channel: header.Channel,
+            ThumbnailSource: header.ThumbnailSource,
+            Sport: header.Sport,
+            Skill: header.Skill,
+            UploadID: header.UploadID,
+            Duration: header.Duration,
+            Views: header.Views
+        };
+        return hea;
+    }
+
+
 }

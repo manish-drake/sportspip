@@ -20,6 +20,7 @@ import { Connectivity } from '../connectivity/connectivity';
 import { StorageFactory } from '../../Services/Factory/StorageFactory';
 import { ModelFactory } from '../../Services/Factory/ModelFactory';
 import { Package } from '../../Services/Package';
+import { Core } from '../../Services/core';
 //Action
 import { Duplicate } from '../../Services/Action/Duplicate';
 import { DeleteHeader } from '../../Services/Action/DeleteHeader';
@@ -45,6 +46,7 @@ export class HomePage {
 
     constructor(private platform: Platform, public navCtrl: NavController,
         private http: Http,
+        private core: Core,
         private duplicate: Duplicate,
         private storage: Storage,
         private datepipe: DatePipe,
@@ -257,7 +259,7 @@ export class HomePage {
         this.platform.ready().then(() => {
             if (this.platform.is('cordova')) {
                 this._logger.Debug('Getting local matrix header..');
-                this.storagefactory.GetLocalHeader().then((res) => {
+                this.core.GetLocalHeader().then((res) => {
                     this.localMatrices = res;
                 }).catch((err) => {
                     this._logger.Error('Error,Getting local matrix header..', err);
@@ -280,7 +282,7 @@ export class HomePage {
         this.platform.ready().then(() => {
             if (this.platform.is('cordova')) {
                 this._logger.Debug('Getting server matrix header..');
-                this.storagefactory.GetServerHeader().then((res) => {
+                this.core.GetServerHeader().then((res) => {
                     this.channels = res;
                 }).catch((err) => {
                     this._logger.Error('Error,Getting server matrix header..', err);
@@ -308,7 +310,6 @@ export class HomePage {
                     .take(1).map((x) => x + 5)
                     .subscribe((x) => {
                         this.packages.MoveToLocalCollection(channelName);
-                        console.log("matrix moved");
                     })
                 Observable.interval(6000)
                     .take(1).map((x) => x + 5)
@@ -334,11 +335,11 @@ export class HomePage {
 
     newMatrix() {
         this._logger.Debug('Creating new matrix..');
-        var data = this.storagefactory.ComposeNewMatrix();
+        var data = this.modelfactory.ComposeNewMatrix();
         var result = data.Matrix;
 
         this.storagefactory.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices");
-        var headerContent = this.storagefactory.ComposeNewMatrixHeader(result);
+        var headerContent = this.modelfactory.ComposeNewMatrixHeader(result);
         this.storagefactory.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
 
         this.navCtrl.push(EditorPage, {

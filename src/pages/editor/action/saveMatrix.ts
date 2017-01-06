@@ -19,7 +19,7 @@ export class SaveMatrix {
                     matrix['Matrix.Children'].View = views;
                     var thumbName = this.GetThumbName(matrix);
                     return this.storagefactory.SaveMatrixAsync(res, matrix._Channel, matrix._Sport, matrix._Name, "Matrices").then(() => {
-                        var header = this.storagefactory.ComposeMatrixHeader(matrix);
+                        var header = this.modelFactory.ComposeMatrixHeader(matrix);
                         header.ThumbnailSource = thumbName.toString();
                         return this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices").then((success) => {
                             return resolve(success)

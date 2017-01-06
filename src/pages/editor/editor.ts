@@ -3,7 +3,6 @@ import {
   NavController, NavParams, ModalController, Platform,
   App, LoadingController, Events, PopoverController, ViewController
 } from 'ionic-angular';
-import { Observable } from 'rxjs/Rx';
 import { Http } from '@angular/http';
 import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 import { Compareview } from '../editor/compareview/compareview'
