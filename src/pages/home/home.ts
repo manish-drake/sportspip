@@ -21,6 +21,7 @@ import { StorageFactory } from '../../Services/Factory/StorageFactory';
 import { ModelFactory } from '../../Services/Factory/ModelFactory';
 import { Package } from '../../Services/Package';
 import { Core } from '../../Services/core';
+import { Utils } from '../../Services/common/utils';
 //Action
 import { Duplicate } from '../../Services/Action/Duplicate';
 import { DeleteHeader } from '../../Services/Action/DeleteHeader';
@@ -62,6 +63,7 @@ export class HomePage {
         private packages: Package,
         private loadingCtrl: LoadingController,
         private connection: Connection,
+        private utils: Utils,
         private _logger: Logger) {
         platform.ready().then(() => {
             this.dataDirectory = this.storage.externalDataDirectory();
@@ -269,13 +271,8 @@ export class HomePage {
     }
 
     FormatDate(value) {
-        return this.packages.FormatDate(value);
+        return this.utils.FormatDate(value);
     }
-
-    // formatDuration(dur) {
-    //     console.log(dur);
-    //     return this.packages.FormatDuration(dur);
-    // }
 
     //Display Server Header
     GetServerHeader() {

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { ViewController, NavParams, Platform } from 'ionic-angular';
-import { StorageFactory } from '../../../Services/Factory/StorageFactory';
+import { Storage } from '../../../Services/Factory/Storage';
 import { Core } from '../../../Services/core';
 import { Package } from '../../../Services/Package';
 import { Logger } from '../../../logging/logger';
-
+import { Utils } from '../../../Services/common/utils';
 /*
   Generated class for the Matrixinfo page.
 
@@ -21,22 +21,24 @@ export class MatrixInfoPage {
 
     matrixData: any;
     viewsCount: number;
-
     errorMessege: string;
+    storageDataDir: string;
 
     constructor(private viewCtrl: ViewController, navParams: NavParams,
-        private storagefactory: StorageFactory,
+        private storage: Storage,
         private packages: Package,
         private platform: Platform,
         private core: Core,
+        private utils: Utils,
         private _logger: Logger) {
+        this.storageDataDir = this.storage.externalDataDirectory();
         this.matrixData = navParams.get("matrixData");
         this.viewsCount = navParams.get("viewsCount");
         this.errorMessege = "";
     }
 
     FormateDate(value) {
-        return this.packages.FormatDate(value);
+        return this.utils.FormatDate(value);
     }
 
     ionViewDidLoad() {
@@ -48,7 +50,7 @@ export class MatrixInfoPage {
     ionViewWillUnload() {
         if (this.validatematrixInfo()) {
             this.platform.ready().then(() => {/*$Candidate for refactoring$*///what is the need of checking if the platform is ready now
-                this.storagefactory.ReadMatixFileAync("Local", this.matrixData._Channel, this.matrixData._Name, this.matrixData._Name + ".mtx")
+                this.core.ReadMatrixFile(this.storageDataDir + "Local/" + this.matrixData._Channel + "/Tennis/Matrices/" + this.matrixData._Name, this.matrixData._Name + ".mtx")
                     .then(data => {
                         var res = JSON.parse(data.toString());
                         var matrix = res.Matrix;

@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
-import { StorageFactory } from '../Factory/StorageFactory';
+import { Storage } from '../Factory/Storage';
 import { Core } from '../core';
 
 /*$Candidate for refactoring$*/
 @Injectable()
 export class Duplicate {
-    constructor(private storagefactory: StorageFactory,
-    private core: Core) {
-        
+    storageDataDir:string;
+    constructor(private core: Core,private storage:Storage) {
+        this.storageDataDir=this.storage.externalDataDirectory();
     }
 
     Run(channelName, matrixname) {
         var name = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
-        return this.storagefactory.ReadMatixFileAync("Local", channelName, matrixname, "Header.xml").then((res) => {
+        return this.core.ReadMatrixFile(this.storageDataDir + "Local/" + channelName + "/Tennis/Matrices/" + matrixname, "Header.xml").then((res) => {
             var header = JSON.parse(res.toString());
             header.Name = name;
             header.DateCreated = name;
             return this.core.SaveLocalHeader(header, channelName, header.Sport, name, "Matrices").then(() => {
-                return this.storagefactory.ReadMatixFileAync("Local", channelName, matrixname, matrixname + ".mtx").then((res1) => {
+                return this.core.ReadMatrixFile(this.storageDataDir + "Local/" + channelName + "/Tennis/Matrices/" + matrixname, matrixname + ".mtx").then((res1) => {
                     var matrix = JSON.parse(res1.toString());
                     matrix.Matrix._Name = name;
                     matrix.Matrix._DateCreated = name;

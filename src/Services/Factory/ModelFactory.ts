@@ -69,6 +69,7 @@ export class ModelFactory {
         return blob;
     }
 
+
     CreateVideoView(fileName, selectedViewIndex, source) {
         var localView = {
             "Content": {
@@ -91,6 +92,7 @@ export class ModelFactory {
         }
         return localView;
     }
+    
 
     ComposeNewMatrix() {
         this._logger.Debug('Composing new matrix..');

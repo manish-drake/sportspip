@@ -10,6 +10,7 @@ import { DeleteHeader } from '../../Services/Action/DeleteHeader';
 import { Logger } from '../../logging/logger';
 import { Storage } from '../../Services/Factory/Storage';
 import { Core } from '../../Services/core';
+import { Utils } from '../../Services/common/utils';
 
 /*
   Generated class for the Collection page.
@@ -28,6 +29,7 @@ export class CollectionPage {
   constructor(public navCtrl: NavController, private actionSheetCtrl: ActionSheetController,
     private storage: Storage,
     private core: Core,
+     private utils: Utils,
     private deleteHeader: DeleteHeader,
     private duplicate: Duplicate,
     private storagefactory: StorageFactory,
@@ -82,7 +84,7 @@ export class CollectionPage {
   }
 
   FormatDate(value) {/*$Candidate for refactoring$*///Make standard
-    return this.packages.FormatDate(value);
+    return this.utils.FormatDate(value);
   }
 
   retrunThumbnailPath(name) {

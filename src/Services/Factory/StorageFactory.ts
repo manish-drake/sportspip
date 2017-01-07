@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { Platform } from 'ionic-angular';
-import { Storage } from './Storage';
 import { File, WriteOptions } from 'ionic-native';
 import { Logger } from '../../logging/logger';
 import { Observable } from 'rxjs/Rx';
@@ -10,22 +9,13 @@ import 'rxjs/Rx';
 @Injectable()
 export class StorageFactory {
 
-    private storageRoot: string;
-    private storageDataDir: string;
 
-    constructor(private storage: Storage,
-        private platform: Platform,
-        private _logger: Logger) {
-        platform.ready().then(() => {
-            this.storageDataDir = this.storage.externalDataDirectory();
-            this.storageRoot = this.storage.externalRootDirectory();
-        });
+    constructor( private platform: Platform,private _logger: Logger) {
     }
+
     CheckFile(dirpath, fileName): Promise<any> {
         return File.checkFile(dirpath, fileName);
     }
-
-
 
     createFolder(path: string, dirName: string): Promise<any> {
         return File.createDir(path, dirName, true).then((success) => {
@@ -60,11 +50,6 @@ export class StorageFactory {
     RemoveFileAsync(path, dirName): Observable<boolean> {
         return Observable.fromPromise(File.removeRecursively(path, dirName))
             .map(x => x.success);
-    }
-
-    ReadMatixFileAync(dirName, channelName, matrixname, fileName): Promise<any> {
-        this._logger.Debug("reading local file async.. ")
-        return File.readAsText(this.storageDataDir + dirName + "/" + channelName + "/Tennis/Matrices/" + matrixname, fileName);
     }
 
     GetLisOfDirectory(path, DirName) {
