@@ -32,6 +32,9 @@ export class Ipcameras {
   views: any;
   selectedViewIndex: any;
   rootDir: String;
+  isTimerOn: boolean = false;
+  timerDelay: number = 3;
+  timerButtonOpacity: Number = 0.5;
   constructor(public viewCtrl: ViewController,
     private saveMatrices: SaveMatrix,
     private storage: Storage,
@@ -89,64 +92,61 @@ export class Ipcameras {
 
   loadIPCams() {
     this.ipCams.length = 0;
+    if (Connection.connectedServer == null) this.connectionAlert();
+    else this.getIPCam();
+  }
 
-    if (Connection.connectedServer == null) {
-      this.isLoading = false;
-      this.isConnected = false;
-      let alert = this.alertCtrl.create({
-        title: 'Not connected!',
-        message: 'Please connect to an available server.',
-        buttons: [
-          {
-            text: 'Connect',
-            handler: () => {
-              this.openConnectivity();
-            }
-          },
-          {
-            text: 'Cancel',
-            handler: () => {
-              alert.dismiss();
-            }
+  connectionAlert() {
+    this.isLoading = false;
+    this.isConnected = false;
+    let alert = this.alertCtrl.create({
+      title: 'Not connected!',
+      message: 'Please connect to an available server.',
+      buttons: [
+        {
+          text: 'Connect',
+          handler: () => {
+            this.openConnectivity();
           }
-        ]
-      });
-      alert.present();
-    }
-    else {
-      this.isLoading = false;
-      this.isConnected = true;
-      this.isLoading = true;
-      var connectedServerIP = Connection.connectedServer.Address;
+        },
+        {
+          text: 'Cancel',
+          handler: () => {
+            alert.dismiss();
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
 
-      var requestUri = "http://" + connectedServerIP + ":10080/icamera/cams/ip/";
+  getIPCam() {
+    this.isLoading = false;
+    this.isConnected = true;
+    this.isLoading = true;
+    var connectedServerIP = Connection.connectedServer.Address;
 
-      setTimeout(() => {
-        this.http.get(requestUri)
-          .map(res => res.text()).catch((err) => new Observable(err => { this._logger.Error("Error,IPCam loading", err); }))
-          .subscribe(
-          data => {
-            let parser: any = new X2JS();
-            var jsonData = parser.xml2js(data);
-            if (jsonData.Cams.IPCam != undefined) {
-              if (jsonData.Cams.IPCam instanceof Array) {
-                this.ipCams = jsonData.Cams.IPCam;
-              }
-              else {
-                this.ipCams.push(jsonData.Cams.IPCam);
-              }
-            }
-          },
-          err => {
-            console.error('There was an error: ' + err);
-            this.isLoading = false;
-          },
-          () => {
-            console.log('Random Quote Complete');
-            this.isLoading = false;
-          });
-      }, 1000);
-    }
+    setTimeout(() => {
+      this.http.get("http://" + connectedServerIP + ":10080/icamera/cams/ip/")
+        .map(res => res.text())
+        .catch((err) => new Observable(err => { this._logger.Error("Error,IPCam loading", err); }))
+        .subscribe(data => {
+
+          let parser: any = new X2JS();
+          var jsonData = parser.xml2js(data);
+          if (jsonData.Cams.IPCam != undefined) {
+            if (jsonData.Cams.IPCam instanceof Array) { this.ipCams = jsonData.Cams.IPCam; }
+            else { this.ipCams.push(jsonData.Cams.IPCam); }
+          }
+
+        }, err => {
+          console.error('There was an error: ' + err);
+          this.isLoading = false;
+        }, () => {
+          console.log('Random Quote Complete');
+          this.isLoading = false;
+        });
+    }, 1000);
   }
 
   getIPCamPreview(cam) {
@@ -164,12 +164,6 @@ export class Ipcameras {
     }
     return url;
   }
-
-  isTimerOn: boolean = false;
-
-  timerDelay: number = 3;
-
-  timerButtonOpacity: Number = 0.5;
 
   timerONOFF() {
     if (this.isTimerOn == false) {
@@ -308,7 +302,7 @@ export class Ipcameras {
           this.navCtrl.pop();
           this.loader.dismiss();
         });
-        
+
     }).catch((err) => {
       this.loader.dismiss();
       this._logger.Error("Error,Matrix file saving..", err);
@@ -336,7 +330,7 @@ export class Ipcameras {
   }
 
   createVideoView(fileName) {
-   var localView=this.modelFactory.CreateVideoView(fileName,this.selectedViewIndex,"IP")
+    var localView = this.modelFactory.CreateVideoView(fileName, this.selectedViewIndex, "IP")
     this.views[this.selectedViewIndex] = localView;
   }
 
