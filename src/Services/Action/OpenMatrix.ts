@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { EditorPage } from '../../pages/editor/editor';
 import { StorageFactory } from '../Factory/StorageFactory';

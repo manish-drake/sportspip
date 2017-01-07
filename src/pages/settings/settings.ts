@@ -3,6 +3,7 @@ import { NavController, ModalController, PopoverController, ViewController, Plat
 import { Login } from '../settings/login/login'
 import { Subscription } from '../../Services/Subscription';
 import { StorageFactory } from '../../Services/Factory/StorageFactory';
+import { Core } from '../../Services/core';
 import { Storage } from '../../Services/Factory/Storage';
 import { Package } from '../../Services/Package';
 import { Http } from '@angular/http';
@@ -37,6 +38,7 @@ export class SettingsPage {
     private storage: Storage,
     private subscription: Subscription,
     private http: Http,
+    private core: Core,
     private storagefactory: StorageFactory,
     private packages: Package,
     private modalCtrl: ModalController,
@@ -212,7 +214,7 @@ export class SettingsPage {
       Observable.interval(2000)
         .take(1).map((x) => x + 5)
         .subscribe((x) => {
-          this.storagefactory.SaveRoamingHeader(res, res.Channel, res.Sport, res.Name);
+          this.core.SaveRoamingHeader(res, res.Channel, res.Sport, res.Name);
           this.DownloadThumbnailAsync(res.Channel, res.Name);
         })
     })

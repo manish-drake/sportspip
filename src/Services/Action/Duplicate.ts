@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { StorageFactory } from '../Factory/StorageFactory';
+import { Core } from '../core';
 
 /*$Candidate for refactoring$*/
 @Injectable()
 export class Duplicate {
-    constructor(private storagefactory: StorageFactory) {
+    constructor(private storagefactory: StorageFactory,
+    private core: Core) {
         
     }
 
@@ -14,12 +16,12 @@ export class Duplicate {
             var header = JSON.parse(res.toString());
             header.Name = name;
             header.DateCreated = name;
-            return this.storagefactory.SaveLocalHeader(header, channelName, header.Sport, name, "Matrices").then(() => {
+            return this.core.SaveLocalHeader(header, channelName, header.Sport, name, "Matrices").then(() => {
                 return this.storagefactory.ReadMatixFileAync("Local", channelName, matrixname, matrixname + ".mtx").then((res1) => {
                     var matrix = JSON.parse(res1.toString());
                     matrix.Matrix._Name = name;
                     matrix.Matrix._DateCreated = name;
-                    return this.storagefactory.SaveMatrixAsync(matrix, channelName, matrix.Matrix._Sport, name, "Matrices");
+                    return this.core.SaveMatrixAsync(matrix, channelName, matrix.Matrix._Sport, name, "Matrices");
                 })
             });
 

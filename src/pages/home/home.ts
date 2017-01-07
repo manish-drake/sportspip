@@ -80,8 +80,8 @@ export class HomePage {
 
     ionViewDidLoad() {
         this.logDeviceInfo();
-        this.storagefactory.CreateVideoFolder();
-        this.storagefactory.CreatePictureFolder();
+        this.core.CreateVideoFolder();
+        this.core.CreatePictureFolder();
         this.connection.scanUdp();
     }
 
@@ -338,9 +338,9 @@ export class HomePage {
         var data = this.modelfactory.ComposeNewMatrix();
         var result = data.Matrix;
 
-        this.storagefactory.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices");
+        this.core.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices");
         var headerContent = this.modelfactory.ComposeNewMatrixHeader(result);
-        this.storagefactory.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
+        this.core.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
 
         this.navCtrl.push(EditorPage, {
             matrixData: result

@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ICommand } from '../../../Contracts/ICommand';
 import { NavController } from 'ionic-angular';
 import { Ipcameras } from '../../editor/ipcameras/ipcameras'

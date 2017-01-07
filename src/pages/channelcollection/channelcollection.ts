@@ -109,7 +109,7 @@ export class ChannelCollectionPage {
   }
 
   DeleteChannelMatrix(DirName, Channel, index) {/*$Candidate for refactoring$*///can go to actions
-    this.storagefactory.DeleteServerHeader(DirName, Channel);
+    this.core.DeleteServerHeader(DirName, Channel);
     this.channelMatrices.splice(index, 1);
   }
 

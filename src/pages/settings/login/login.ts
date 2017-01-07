@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ViewController } from 'ionic-angular';
 import { Subscription } from '../../../Services/Subscription';
 import { StorageFactory } from '../../../Services/Factory/StorageFactory';
+import { Core } from '../../../Services/core';
 import { user } from '../user';
 import { Logger } from '../../../logging/logger';
 
@@ -31,6 +32,7 @@ export class Login {
     constructor(private viewCtrl: ViewController,
         private subscription: Subscription,
         private storageFactory: StorageFactory,
+        private core: Core,
         private _logger: Logger) {
         this.IsLoginAvailable = "Login";
         this._logger.Debug('Login page loaded');
@@ -56,7 +58,7 @@ export class Login {
         console.log("Registration..");
         if (this.validateSignUp()) {
             this.subscription.RegisterAsync(firstname, lastname, email).then((user) => {
-                this.storageFactory.SaveUserAsync(user);
+                this.core.SaveUserAsync(user);
                 this.dismiss(user);
             }).catch((err) => {
                 console.log("Registration error: " + err);
@@ -68,7 +70,7 @@ export class Login {
     Login(email, pwd) {
         if (this.validateLogin()) {
             this.subscription.LoginAsync(email, pwd).then((user) => {
-                this.storageFactory.SaveUserAsync(user);
+                this.core.SaveUserAsync(user);
                 this.dismiss(user);
             }).catch((err) => {
                 console.log('Login error: ' + err);

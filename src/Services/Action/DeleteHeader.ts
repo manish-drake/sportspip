@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
-import { StorageFactory } from '../Factory/StorageFactory';
+import { Core } from '../core';
 
 /*$Candidate for refactoring$*/
 @Injectable()
 export class DeleteHeader {
   localMatrices = [];
   channels = [];
-  constructor(private storagefactory: StorageFactory) {
+  constructor(private core: Core) {
 
   }
   DeleteLocalHeader(DirName, channel) {
-    this.storagefactory.DeleteLocalHeader(DirName, channel);
+    this.core.DeleteLocalHeader(DirName, channel);
   }
   //Deleted Server Header
   DeleteServerHeader(DirName, channel) {
-    this.storagefactory.DeleteServerHeader(DirName, channel);
+    this.core.DeleteServerHeader(DirName, channel);
   }
 }

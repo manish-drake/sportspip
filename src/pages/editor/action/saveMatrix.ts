@@ -1,12 +1,13 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ICommand } from '../../../Contracts/ICommand';
 import { StorageFactory } from '../../../Services/Factory/StorageFactory';
+import { Core } from '../../../Services/core';
 import { Logger } from '../../../logging/logger';
 import { ModelFactory } from '../../../Services/Factory/ModelFactory';
 
 @Injectable()
 export class SaveMatrix {
-    constructor(private storagefactory: StorageFactory, private modelFactory: ModelFactory, private _logger: Logger) {
+    constructor(private storagefactory: StorageFactory, private modelFactory: ModelFactory, private _logger: Logger,private core :Core) {
 
     }
     run(channel, matrixName, views): Promise<any> {
@@ -18,10 +19,10 @@ export class SaveMatrix {
                     var matrix = res.Matrix;
                     matrix['Matrix.Children'].View = views;
                     var thumbName = this.GetThumbName(matrix);
-                    return this.storagefactory.SaveMatrixAsync(res, matrix._Channel, matrix._Sport, matrix._Name, "Matrices").then(() => {
+                    return this.core.SaveMatrixAsync(res, matrix._Channel, matrix._Sport, matrix._Name, "Matrices").then(() => {
                         var header = this.modelFactory.ComposeMatrixHeader(matrix);
                         header.ThumbnailSource = thumbName.toString();
-                        return this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices").then((success) => {
+                        return this.core.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices").then((success) => {
                             return resolve(success)
                         });
                     });

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ViewController, NavParams, Platform } from 'ionic-angular';
-import { Http } from '@angular/http';
 import { StorageFactory } from '../../../Services/Factory/StorageFactory';
+import { Core } from '../../../Services/core';
 import { Package } from '../../../Services/Package';
 import { Logger } from '../../../logging/logger';
 
@@ -28,7 +28,7 @@ export class MatrixInfoPage {
         private storagefactory: StorageFactory,
         private packages: Package,
         private platform: Platform,
-        private http: Http,
+        private core: Core,
         private _logger: Logger) {
         this.matrixData = navParams.get("matrixData");
         this.viewsCount = navParams.get("viewsCount");
@@ -55,7 +55,7 @@ export class MatrixInfoPage {
                         matrix._Title = this.matrixData._Title;
                         matrix._Skill = this.matrixData._Skill;
                         matrix._Location = this.matrixData._Location;
-                        this.storagefactory.SaveMatrixAsync(res, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
+                        this.core.SaveMatrixAsync(res, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
                     });
             });
         }

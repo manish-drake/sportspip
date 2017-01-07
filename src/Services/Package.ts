@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Platform } from 'ionic-angular';
 import { StorageFactory } from './Factory/StorageFactory';
+import { Core } from './core';
 import { Storage } from './Factory/Storage';
 import { Http } from '@angular/http';
 import { DirectoryEntry } from 'ionic-native';
@@ -20,6 +21,7 @@ export class Package {
     private storageRootDirectory: string;
     constructor(private http: Http,
         private storage: Storage,
+        private core: Core,
         private platform: Platform,
         private storagefactory: StorageFactory) {
         platform.ready().then(() => {
@@ -43,7 +45,7 @@ export class Package {
                 header.DateCreated = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
                 header.ThumbnailSource = header.UploadID;
                 this.channelName = header.Channel;
-                this.storagefactory.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices").then((res) => {
+                this.core.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices").then((res) => {
                     console.log("header moved");
                 });
 
@@ -60,7 +62,7 @@ export class Package {
                                 var matrix = matrixdata.Matrix;
                                 matrix._Name = this.fileName;
                                 matrix._Channel = this.channelName;
-                                return this.storagefactory.SaveMatrixAsync(matrixdata, matrix._Channel, matrix._Sport, matrix._Name, "Matrices").then((res) => {
+                                return this.core.SaveMatrixAsync(matrixdata, matrix._Channel, matrix._Sport, matrix._Name, "Matrices").then((res) => {
                                     console.log("mtx moved...");
                                 });
                             }).toPromise()
