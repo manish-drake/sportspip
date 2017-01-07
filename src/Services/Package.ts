@@ -3,7 +3,7 @@ import { Platform } from 'ionic-angular';
 import { StorageFactory } from './Factory/StorageFactory';
 import { Core } from './core';
 import { Storage } from './Factory/Storage';
-import { Http } from '@angular/http';
+import { HttpService } from './httpService';
 import { DirectoryEntry } from 'ionic-native';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
@@ -19,7 +19,7 @@ export class Package {
 
     private storageDataDir: string;
     private storageRootDirectory: string;
-    constructor(private http: Http,
+    constructor(private httpService: HttpService,
         private storage: Storage,
         private core: Core,
         private platform: Platform,
@@ -56,7 +56,7 @@ export class Package {
                     switch (sliced) {
                         case '.mtx':
                             let parser: any = new X2JS();
-                            this.http.get(file.nativeURL).map(data => {
+                           return this.httpService.GetFileFromServer(file.nativeURL).then(data => {
                                 console.log("mtx moving...");
                                 var matrixdata = parser.xml2js(data["_body"]);
                                 var matrix = matrixdata.Matrix;
@@ -65,7 +65,7 @@ export class Package {
                                 return this.core.SaveMatrixAsync(matrixdata, matrix._Channel, matrix._Sport, matrix._Name, "Matrices").then((res) => {
                                     console.log("mtx moved...");
                                 });
-                            }).toPromise()
+                            })
                         case '.mp4':
                             return this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", this.storageRootDirectory + "SportsPIP/Video", file.name)
                                 .subscribe((success) => { console.log("video moved"); });
@@ -114,13 +114,12 @@ export class Package {
     }
 
     AuthenticateUser(channel, userid) {
-        return this.http.get("http://sportspipservice.cloudapp.net:10106/IMobile/users/auth/" + channel + "?uid=" + userid + "")
-            .map(res => res.json())
-            .map(us => {
+        return this.httpService.GetFileFromServer("http://sportspipservice.cloudapp.net:10106/IMobile/users/auth/" + channel + "?uid=" + userid)
+            .then(us => {
                 console.log('Authenticatnig user..');
                 var data = JSON.parse(us);
                 return data.Returns;
-            }).toPromise();
+            })
     }
 
     unzipPackage() {

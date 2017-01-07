@@ -1,19 +1,13 @@
 import { Injectable } from "@angular/core";
-
 import { Platform } from 'ionic-angular';
-
 import X2JS from 'x2js';
-
-import { Http } from '@angular/http';
-
 import { AlertControllers } from '../Services/Alerts';
 
 declare var chrome: any;
 
 @Injectable()
 export class Connection {
-    constructor(private http: Http,
-        private platform: Platform,
+    constructor(private platform: Platform,
         private alertCtrls: AlertControllers) {
 
     }

@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, ActionSheetController, AlertController, PopoverController, ToastController, Platform, LoadingController } from 'ionic-angular';
+import { NavController, ActionSheetController, AlertController, PopoverController, Platform, LoadingController } from 'ionic-angular';
 import { File, AppVersion, Device } from 'ionic-native';
 import { HomeMorePopover } from '../../pages/homemore-popover/homemore-popover';
 import { AlertControllers } from '../../Services/Alerts';
-import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
-import { DatePipe } from '@angular/common';
 import { Observable } from 'rxjs/Rx';
 import { SettingsPage } from '../settings/settings';
 import { CollectionPage } from '../collection/collection';
@@ -17,7 +15,6 @@ import { Storage } from '../../Services/Factory/Storage';
 import { Connection } from '../../Services/Connection';
 import { Logger } from '../../logging/logger';
 import { Connectivity } from '../connectivity/connectivity';
-import { StorageFactory } from '../../Services/Factory/StorageFactory';
 import { ModelFactory } from '../../Services/Factory/ModelFactory';
 import { Package } from '../../Services/Package';
 import { Core } from '../../Services/core';
@@ -33,7 +30,7 @@ declare var navigator: any;
 @Component({
     selector: 'page-home',
     templateUrl: 'home.html',
-    providers: [ModelFactory, DeleteHeader, Package, OpenMatrix, DatePipe, Connection, Duplicate]
+    providers: [ModelFactory, DeleteHeader, Package, OpenMatrix, Connection, Duplicate]
 })
 
 export class HomePage {
@@ -46,12 +43,9 @@ export class HomePage {
     applicationDirectory: any;
 
     constructor(private platform: Platform, public navCtrl: NavController,
-        private http: Http,
         private core: Core,
         private duplicate: Duplicate,
         private storage: Storage,
-        private datepipe: DatePipe,
-        private storagefactory: StorageFactory,
         private modelfactory: ModelFactory,
         private deleteHeader: DeleteHeader,
         private openmatrix: OpenMatrix,
@@ -59,7 +53,6 @@ export class HomePage {
         private actionSheetCtrl: ActionSheetController,
         private alertCtrl: AlertController,
         private alertCtrls: AlertControllers,
-        private toastCtrl: ToastController,
         private packages: Package,
         private loadingCtrl: LoadingController,
         private connection: Connection,
@@ -312,7 +305,7 @@ export class HomePage {
                     .take(1).map((x) => x + 5)
                     .subscribe((x) => {
                         this.platform.ready().then(() => {
-                            this.storagefactory.RemoveFileAsync(this.dataDirectory, "Temp").subscribe(() => {
+                            this.core.RemoveMatrixFile(this.dataDirectory, "Temp").then(() => {
                                 this.localMatrices = [];
                                 this.GetLocalMatrixHeader();
                                 this.deleteServerHeader(fileName, index, value, channelName);
@@ -346,9 +339,9 @@ export class HomePage {
 
     // For testing only --starts
     testOpenMatrix() {
-        this.http.get("assets/matrix1.mtx")
-            .subscribe(data => {
-                var res = JSON.parse(data.text());
+        this.core.ReadMatrixFile("assets","matrix1.mtx")
+            .then(data => {
+                var res = JSON.parse(data.toString());
 
                 if (this.platform.is('cordova')) {
                     File.checkFile(this.dataDirectory + "SportsPIP/Video", 'sample.mp4').then(_ => {

@@ -1,16 +1,13 @@
 import { Component, Injectable } from '@angular/core';
 import {
-  NavController, NavParams, ModalController, Platform,
-  App, LoadingController, Events, PopoverController, ViewController
+  NavController, NavParams, ModalController, Platform, LoadingController, Events, PopoverController, ViewController
 } from 'ionic-angular';
-import { Http } from '@angular/http';
 import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 import { Compareview } from '../editor/compareview/compareview'
 import { Swipeview } from '../editor/swipeview/swipeview';
 //Service
 import { Logger } from '../../logging/logger';
 import { Connection } from '../../Services/Connection'
-import { StorageFactory } from '../../Services/Factory/StorageFactory';
 import { Storage } from '../../Services/Factory/Storage';
 import { ModelFactory } from '../../Services/Factory/ModelFactory';
 //Action
@@ -53,9 +50,6 @@ export class EditorPage {
     private modelFactory: ModelFactory,
     private platform: Platform,
     private connection: Connection,
-    private http: Http,
-    private storagefactory: StorageFactory,
-    private app: App,
     private events: Events,
     private popoverCtrl: PopoverController,
     private _logger: Logger) {

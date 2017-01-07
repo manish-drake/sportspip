@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { StorageFactory } from '../../Services/Factory/StorageFactory';
 
 import { Storage } from '../../Services/Factory/Storage';
 import { Package } from '../../Services/Package';
@@ -36,7 +35,6 @@ export class ChannelCollectionPage {
     private storage: Storage,
     private core: Core,
     private utils: Utils,
-    private storagefactory: StorageFactory,
     private actionSheetCtrl: ActionSheetController,
     private platform: Platform,
     private alertCtrl: AlertController,
@@ -140,7 +138,7 @@ export class ChannelCollectionPage {
           Observable.interval(6000)/*$Candidate for refactoring$*///BAD!!
             .take(1).map((x) => x + 5)
             .subscribe((x) => {
-              this.storagefactory.RemoveFileAsync("file:/storage/emulated/0/DCIM", "Temp").subscribe(() => {
+              this.core.ReadMatrixFile("file:/storage/emulated/0/DCIM", "Temp").then(() => {
                 this.DeleteChannelMatrix(fileName, channelName, index);
                 console.log("delete server header");
                 loader.dismiss();

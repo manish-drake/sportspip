@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, ActionSheetController, Platform } from 'ionic-angular';
 import { Package } from '../../Services/Package';
-import { Http } from '@angular/http';/*$Candidate for refactoring$*///Don't use http directly here. Delegate the task to a service (are you even using it anywhere in this class??)
 import { Duplicate } from '../../Services/Action/Duplicate';
 import { OpenMatrix } from '../../Services/Action/OpenMatrix';
 import { Observable } from 'rxjs/Rx';
@@ -35,7 +34,7 @@ export class CollectionPage {
     private storagefactory: StorageFactory,
     private openmatrix: OpenMatrix,
     private packages: Package,
-    private platform: Platform, private http: Http,
+    private platform: Platform,
     private _logger: Logger) {
     this.dataDir = this.storage.externalDataDirectory();
     this.LoadCollectionMatrix();

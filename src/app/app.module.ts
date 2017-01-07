@@ -32,6 +32,7 @@ import { Utils } from '../Services/common/utils';
 import { ModelFactory } from '../Services/Factory/ModelFactory';
 import { Package } from '../Services/Package';
 import { Core } from '../Services/core';
+import { HttpService } from '../Services/httpService';
 
 
 @NgModule({
@@ -65,7 +66,7 @@ import { Core } from '../Services/core';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     { provide: AProvider, useClass: SqliteLogProvider },
     AlertControllers, Logger, StorageFactory, Storage,BackGroundTransferProcess,Utils,
-    ModelFactory,Package,Core
+    ModelFactory,Package,Core,HttpService
 
   ],
   imports: [

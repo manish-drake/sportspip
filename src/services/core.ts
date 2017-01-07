@@ -255,4 +255,8 @@ export class Core {
            return data;
        })
     }
+
+    RemoveMatrixFile(path,fileName){
+       return this.storageFactory.RemoveFileAsync(path,fileName).toPromise()
+    }
 }
