@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
 import { ICommand } from '../../../Contracts/ICommand';
-import { StorageFactory } from '../../../Services/Factory/StorageFactory';
 import { Core } from '../../../Services/core';
 import { Logger } from '../../../logging/logger';
+import { Storage } from '../../../Services/Factory/Storage';
 import { ModelFactory } from '../../../Services/Factory/ModelFactory';
 
 @Injectable()
 export class SaveMatrix {
-    constructor(private storagefactory: StorageFactory, private modelFactory: ModelFactory, private _logger: Logger,private core :Core) {
-
+    storageDataDir: string;
+    constructor(private storage: Storage, private modelFactory: ModelFactory, private _logger: Logger, private core: Core) {
+        this.storageDataDir = this.storage.externalDataDirectory();
     }
     run(channel, matrixName, views): Promise<any> {
         this._logger.Debug("Matrix file saving..")
         return new Promise((resolve, reject) => {
-            return this.storagefactory.ReadMatixFileAync("Local", channel, matrixName, matrixName + ".mtx")
+            return this.core.ReadMatrixFile(this.storageDataDir + "Local/" + channel + "/Tennis/Matrices/" + matrixName, matrixName + ".mtx")
                 .then((data) => {
                     var res = JSON.parse(data.toString());
                     var matrix = res.Matrix;
@@ -27,7 +28,7 @@ export class SaveMatrix {
                         });
                     });
 
-                }).catch((err) => { return reject(err);});
+                }).catch((err) => { return reject(err); });
         })
 
     }

@@ -9,7 +9,7 @@ import { SettingsPage, UserActionsPopover } from '../pages/settings/settings';
 import { Login } from '../pages/settings/login/login';
 import { AlertControllers } from '../Services/Alerts';
 import { CollectionPage } from '../pages/collection/collection'
-import { ChannelCollectionPage, PopoverPage2 } from '../pages/channelcollection/channelcollection'
+import { ChannelCollectionPage, sortPopover } from '../pages/channelcollection/channelcollection'
 import { OrderBy } from '../Services/Pipe/OrderBy';
 import { GroupBy } from '../Services/Pipe/GroupBy';
 import { Storage } from '../Services/Factory/Storage';
@@ -32,6 +32,7 @@ import { Utils } from '../Services/common/utils';
 import { ModelFactory } from '../Services/Factory/ModelFactory';
 import { Package } from '../Services/Package';
 import { Core } from '../Services/core';
+import { HttpService } from '../Services/httpService';
 
 
 @NgModule({
@@ -47,7 +48,7 @@ import { Core } from '../Services/core';
     Login,
     CollectionPage,
     ChannelCollectionPage,
-    PopoverPage2,
+    sortPopover,
     GroupBy,
     OrderBy,
 
@@ -65,7 +66,7 @@ import { Core } from '../Services/core';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     { provide: AProvider, useClass: SqliteLogProvider },
     AlertControllers, Logger, StorageFactory, Storage,BackGroundTransferProcess,Utils,
-    ModelFactory,Package,Core
+    ModelFactory,Package,Core,HttpService
 
   ],
   imports: [
@@ -86,7 +87,7 @@ import { Core } from '../Services/core';
     Login,
     CollectionPage,
     ChannelCollectionPage,
-    PopoverPage2,
+    sortPopover,
     Compareview,
     CompareviewComponent,
     CaptureViewsPopover,

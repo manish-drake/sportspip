@@ -1,23 +1,27 @@
 import { Injectable } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { EditorPage } from '../../pages/editor/editor';
-import { StorageFactory } from '../Factory/StorageFactory';
+import { Core } from '../core';
+import { Storage } from '../Factory/Storage';
 import { Logger } from '../../logging/logger';
 import { ICommand } from '../../Contracts/ICommand';
 import { AlertControllers } from '../Alerts';
 
 @Injectable()
 export class OpenMatrix implements ICommand {
-
+    storageDataDir: string
     constructor(private alertCtrls: AlertControllers,
         private navCtrl: NavController,
-        private storagefactory: StorageFactory,
+        private storage: Storage,
+        private core: Core,
         private _logger: Logger) {
+
+        this.storageDataDir = this.storage.externalDataDirectory();
     }
 
     run(cmdArgs) {
         this._logger.Debug('open matrix..');
-        this.storagefactory.ReadMatixFileAync("Local", cmdArgs.Channel, cmdArgs.Name, cmdArgs.Name + ".mtx")
+        this.core.ReadMatrixFile(this.storageDataDir + "Local/" + cmdArgs.Channel + "/Tennis/Matrices/" + cmdArgs.Name, cmdArgs.Name + ".mtx")
             .then(data => {
                 console.log("open matrix");
                 var res = JSON.parse(data.toString());

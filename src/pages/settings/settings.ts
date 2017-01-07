@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController, PopoverController, ViewController, Platform, LoadingController } from 'ionic-angular';
+import { ModalController, PopoverController, ViewController, Platform, LoadingController } from 'ionic-angular';
 import { Login } from '../settings/login/login'
 import { Subscription } from '../../Services/Subscription';
 import { StorageFactory } from '../../Services/Factory/StorageFactory';
 import { Core } from '../../Services/core';
 import { Storage } from '../../Services/Factory/Storage';
 import { Package } from '../../Services/Package';
-import { Http } from '@angular/http';
+import { HttpService } from '../../Services/httpService';
 import { Observable } from 'rxjs/Rx';
 import { Logger } from '../../logging/logger';
 
@@ -34,10 +34,10 @@ export class SettingsPage {
 
   private storageDataDir: string;
 
-  constructor(public navCtrl: NavController,
+  constructor(
     private storage: Storage,
     private subscription: Subscription,
-    private http: Http,
+    private httpService: HttpService,
     private core: Core,
     private storagefactory: StorageFactory,
     private packages: Package,
@@ -113,13 +113,15 @@ export class SettingsPage {
 
   createSettingsasync() {
     this._logger.Debug('Creating Settings channel list..');
-    this.http.get(this.storageDataDir + "Roaming/User.json").map(response => response.json())
-      .catch(err => new Observable(observer => { this.UserID = 0; this.InvalidateChannelListAsync("0"); console.log("no user find"); }))
-      .subscribe(result => {
-        this.SetUserAcync(result)
-        this.InvalidateSubscribeListAsync(this.UserID);
-        this.InvalidateChannelListAsync(this.UserID);
-      });
+    this.core.ReadMatrixFile(this.storageDataDir + "Roaming", "User.json").then((res) => {
+      this.SetUserAcync(JSON.parse(res.toString()));
+      this.InvalidateSubscribeListAsync(this.UserID);
+      this.InvalidateChannelListAsync(this.UserID);
+    }).catch(()=>{
+      this.UserID = 0;
+       this.InvalidateChannelListAsync("0");
+        console.log("no user find");
+    })
   }
 
   SetUserAcync(data) {
@@ -157,9 +159,9 @@ export class SettingsPage {
 
   GetserverHeader(channelname) {
     console.log("saving headers list file..");
-    this.http.get("http://sportspipservice.cloudapp.net:10106/IMobile/getmtxhdrs")
-      .subscribe(res => {
-        var headerData = JSON.parse(res.text());
+    this.httpService.GetFileFromServer("http://sportspipservice.cloudapp.net:10106/IMobile/getmtxhdrs")
+      .then(res => {
+        var headerData = JSON.parse(res.toString());
         this.Save(headerData, "header.xml").then((res) => {
           this.SaveServerHeaders(channelname);
         })
@@ -175,8 +177,8 @@ export class SettingsPage {
 
   //server header
   SaveServerHeaders(channel) {
-    this.http.get(this.storageDataDir + "/header.xml").subscribe(data => {
-      var headerList = JSON.parse(data.text());
+    this.core.ReadMatrixFile(this.storageDataDir, "header.xml").then(data => {
+      var headerList = JSON.parse(data.toString());
       headerList.forEach(header => {
         var result = header;
         if (result.ChannelName == channel) {
@@ -256,7 +258,6 @@ export class SettingsPage {
 
 export class UserActionsPopover {
   constructor(public viewCtrl: ViewController,
-    private http: Http,
     private platform: Platform) {
   }
   signOut() {

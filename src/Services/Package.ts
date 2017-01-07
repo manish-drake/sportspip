@@ -3,7 +3,7 @@ import { Platform } from 'ionic-angular';
 import { StorageFactory } from './Factory/StorageFactory';
 import { Core } from './core';
 import { Storage } from './Factory/Storage';
-import { Http } from '@angular/http';
+import { HttpService } from './httpService';
 import { DirectoryEntry } from 'ionic-native';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
@@ -19,7 +19,7 @@ export class Package {
 
     private storageDataDir: string;
     private storageRootDirectory: string;
-    constructor(private http: Http,
+    constructor(private httpService: HttpService,
         private storage: Storage,
         private core: Core,
         private platform: Platform,
@@ -56,7 +56,7 @@ export class Package {
                     switch (sliced) {
                         case '.mtx':
                             let parser: any = new X2JS();
-                            this.http.get(file.nativeURL).map(data => {
+                           return this.httpService.GetFileFromServer(file.nativeURL).then(data => {
                                 console.log("mtx moving...");
                                 var matrixdata = parser.xml2js(data["_body"]);
                                 var matrix = matrixdata.Matrix;
@@ -65,7 +65,7 @@ export class Package {
                                 return this.core.SaveMatrixAsync(matrixdata, matrix._Channel, matrix._Sport, matrix._Name, "Matrices").then((res) => {
                                     console.log("mtx moved...");
                                 });
-                            }).toPromise()
+                            })
                         case '.mp4':
                             return this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", this.storageRootDirectory + "SportsPIP/Video", file.name)
                                 .subscribe((success) => { console.log("video moved"); });
@@ -114,13 +114,12 @@ export class Package {
     }
 
     AuthenticateUser(channel, userid) {
-        return this.http.get("http://sportspipservice.cloudapp.net:10106/IMobile/users/auth/" + channel + "?uid=" + userid + "")
-            .map(res => res.json())
-            .map(us => {
+        return this.httpService.GetFileFromServer("http://sportspipservice.cloudapp.net:10106/IMobile/users/auth/" + channel + "?uid=" + userid)
+            .then(us => {
                 console.log('Authenticatnig user..');
                 var data = JSON.parse(us);
                 return data.Returns;
-            }).toPromise();
+            })
     }
 
     unzipPackage() {
@@ -144,28 +143,5 @@ export class Package {
                 console.log("download error code" + error.code);
             },
             true);
-    }
-
-    FormatDate(value) {
-        var st = value;
-        var pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
-        var date = new Date(st.replace(pattern, '$1-$2-$3 $4:$5:$6'));
-        return date.toDateString().slice(4, 10)
-
-    }
-
-    FormatDuration(dur) {
-        if (dur != null) {
-            var hrs = Number(dur.slice(0, 2));
-            var h = (hrs == 0) ? "" : hrs + 'h ';
-            var mins = Number(dur.slice(3, 5));
-            var m = (mins == 0) ? "" : mins + 'm ';
-            var secs = Number(dur.slice(6, 8));
-            var s = secs + 's';
-            return h + m + s;
-        }
-        else {
-            return "";
-        }
     }
 }

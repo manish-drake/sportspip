@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, ActionSheetController, Platform } from 'ionic-angular';
 import { Package } from '../../Services/Package';
-import { Http } from '@angular/http';/*$Candidate for refactoring$*///Don't use http directly here. Delegate the task to a service (are you even using it anywhere in this class??)
 import { Duplicate } from '../../Services/Action/Duplicate';
 import { OpenMatrix } from '../../Services/Action/OpenMatrix';
 import { Observable } from 'rxjs/Rx';
@@ -10,6 +9,7 @@ import { DeleteHeader } from '../../Services/Action/DeleteHeader';
 import { Logger } from '../../logging/logger';
 import { Storage } from '../../Services/Factory/Storage';
 import { Core } from '../../Services/core';
+import { Utils } from '../../Services/common/utils';
 
 /*
   Generated class for the Collection page.
@@ -28,12 +28,13 @@ export class CollectionPage {
   constructor(public navCtrl: NavController, private actionSheetCtrl: ActionSheetController,
     private storage: Storage,
     private core: Core,
+     private utils: Utils,
     private deleteHeader: DeleteHeader,
     private duplicate: Duplicate,
     private storagefactory: StorageFactory,
     private openmatrix: OpenMatrix,
     private packages: Package,
-    private platform: Platform, private http: Http,
+    private platform: Platform,
     private _logger: Logger) {
     this.dataDir = this.storage.externalDataDirectory();
     this.LoadCollectionMatrix();
@@ -82,7 +83,7 @@ export class CollectionPage {
   }
 
   FormatDate(value) {/*$Candidate for refactoring$*///Make standard
-    return this.packages.FormatDate(value);
+    return this.utils.FormatDate(value);
   }
 
   retrunThumbnailPath(name) {

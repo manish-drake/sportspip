@@ -189,7 +189,7 @@ export class Core {
                 list.forEach((channelName) => {
                     return this.storageFactory.GetLisOfDirectory(this.storageDataDir + "Local/" + channelName.name + "/Tennis", "Matrices").then((success) => {
                         success.forEach((res) => {
-                            return this.storageFactory.ReadMatixFileAync("Local", channelName.name, res.name, "Header.xml").then((data) => {
+                            return this.ReadMatrixFile(this.storageDataDir + "Local/" + channelName.name + "/Tennis/Matrices/" + res.name, "Header.xml").then((data) => {
                                 //deserialiae server header  
                                 var result = JSON.parse(data.toString());
                                 // console.log(result);
@@ -214,7 +214,7 @@ export class Core {
                 success.forEach((channelName) => {
                     return this.storageFactory.GetLisOfDirectory(this.storageDataDir, "Server/" + channelName.name + "/Tennis/Matrices/").then((success) => {
                         success.forEach((res) => {
-                            return this.storageFactory.ReadMatixFileAync("Server", channelName.name, res.name, "Header.xml")
+                            return this.ReadMatrixFile(this.storageDataDir + "Server/" + channelName.name + "/Tennis/Matrices/" + res.name, "Header.xml")
                                 .then(data => {
                                     // deserialiae server header  
                                     var result = JSON.parse(data.toString());
@@ -234,7 +234,7 @@ export class Core {
         return new Promise((resolve, reject) => {
             return this.storageFactory.GetLisOfDirectory(this.storageDataDir, "Server/" + channel + "/Tennis/Matrices/").then((success) => {
                 success.forEach((res) => {
-                    return this.storageFactory.ReadMatixFileAync("Server", channel, res.name, "Header.xml")
+                    return this.ReadMatrixFile(this.storageDataDir + "Server/" + channel + "/Tennis/Matrices/" + res.name, "Header.xml")
                         .then(data => {
                             //deserialiae server header  
                             var result = JSON.parse(data.toString());
@@ -249,5 +249,16 @@ export class Core {
             });
         })
 
+    }
+
+
+    ReadMatrixFile(path,fileName){
+       return this.storageFactory.ReadFileAync(path,fileName).then((data)=>{
+           return data;
+       })
+    }
+
+    RemoveMatrixFile(path,fileName){
+       return this.storageFactory.RemoveFileAsync(path,fileName).toPromise()
     }
 }

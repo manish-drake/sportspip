@@ -15,25 +15,4 @@ export class AlertControllers {
         });
         alert.present();
     }
-
-    // ConfirmationAlert(title, CancelText, OkText){
-    //     var value: any;
-    //     let confirm = this.alertCtrl.create({
-    //         title: ' Download Confirmation?',
-    //         buttons: [
-    //             {
-    //                 text: CancelText,
-    //                 handler: () => { console.log('Cancel clicked'); value = "Cancel" }
-    //             },
-    //             {
-    //                 text: OkText,
-    //                 handler: () => {
-    //                     console.log('Download clicked');
-    //                     value = "Download";
-    //                 }
-    //             }
-    //         ]
-    //     });
-    //   confirm.present();
-    // }
 }
