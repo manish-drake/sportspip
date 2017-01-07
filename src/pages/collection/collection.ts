@@ -65,7 +65,7 @@ export class CollectionPage {
     this._logger.Debug('Refresh local collection content..');
     this.refreshing = true;
     this.localMatrices = [];
-    setTimeout(() => {
+    setTimeout(() => {/*$Candidate for refactoring$*///why timeout?
       refresher.complete();
       this.LoadCollectionMatrix();
       this.refreshing = false;
@@ -81,7 +81,7 @@ export class CollectionPage {
     });
   }
 
-  FormatDate(value) {
+  FormatDate(value) {/*$Candidate for refactoring$*///Make standard
     return this.packages.FormatDate(value);
   }
 
@@ -97,7 +97,7 @@ export class CollectionPage {
     // this.openmatrix.run(matrixName, Channel);
   }
 
-  DuplicateMatrix(matrixname, channelName) {
+  DuplicateMatrix(matrixname, channelName) {/*$Candidate for refactoring$*///Can go to actions
     this._logger.Debug('Creating duplicate matrix..');
     this.platform.ready().then(() => {
       this.duplicate.Run(channelName, matrixname).then((res) => {
@@ -107,7 +107,7 @@ export class CollectionPage {
     })
   }
 
-  matrixPressed(index, matrixName, channel, title) {
+  matrixPressed(index, matrixName, channel, title) {/*$Candidate for refactoring$*///can go to actions
     this._logger.Debug('Matrix pressed (local collection..)');
     try {
       let actionSheet = this.actionSheetCtrl.create({

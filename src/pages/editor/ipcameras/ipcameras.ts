@@ -176,7 +176,7 @@ export class Ipcameras {
     }
   }
 
-  presentSettingsModal() {
+  presentSettingsModal() {/*$Candidate for refactoring$*///move to actions
     let modal = this.modalCtrl.create(IpCamSettingsModal, {
       timerDelay: this.timerDelay
     });
@@ -193,7 +193,7 @@ export class Ipcameras {
     dismissOnPageChange: true
   });
 
-  startRecording() {
+  startRecording() {/*$Candidate for refactoring$*///move to actions
     this.isRecording = true;
     if (this.isTimerOn) {
       var time = Number(this.timerDelay);
@@ -216,13 +216,13 @@ export class Ipcameras {
     }
   }
 
-  record() {
+  record() {/*$Candidate for refactoring$*///move to actions, and why has this been broken from the startRecording function
     this.loader.setContent('Starting Recording..');
     var connectedServerIP = Connection.connectedServer.Data.Location;
     var fileName = Date.now();
     var uri: string = "http://" + connectedServerIP + ":10080/icamera/cams/ip/" + fileName + "/rec?duration=" + this.recordingDuration;
     console.log('Request URI: ' + uri);
-    this.http.post(uri, null)
+    this.http.post(uri, null)/*$Candidate for refactoring$*///delegate http tasks to a seaparate service
       .toPromise()
       .then(res => {
         this._logger.Debug("Recording for IP Cams on network");
@@ -292,11 +292,11 @@ export class Ipcameras {
     })
   }
 
-  saveMatrix() {
+  saveMatrix() {/*$Candidate for refactoring$*///convert saveMatrices to a command
     this.loader.setContent('Saving..');
 
     this.saveMatrices.run(this.matrix._Channel, this.matrix._Name, this.views).then((res) => {
-      Observable.interval(1000)
+      Observable.interval(1000)/*$Candidate for refactoring$*///don't do this
         .take(1).map((x) => x + 5)
         .subscribe((x) => {
           this.navCtrl.pop();
@@ -311,7 +311,7 @@ export class Ipcameras {
   }
 
 
-  createViews(fileName) {
+  createViews(fileName) {/*$Candidate for refactoring$*///needs a lot of refactoring. Please make this function static and you'll know all what you have to change. It could be a simple function creating views for a file, taking as argument all what it needs to create views. Instead, it is performing multiple tasks mixing uneven intents
     if (this.ipCams.length == 1) {
       this.createVideoView(fileName + "_1.mp4");
     }
@@ -334,7 +334,7 @@ export class Ipcameras {
     this.views[this.selectedViewIndex] = localView;
   }
 
-  addView() {
+  addView() {/*$Candidate for refactoring$*///please..consider returning a view from this function instead of modifying views array at module level
     if (this.views.length <= 7) {
       var inum: number = this.views.length + 1;
       this.views.push({

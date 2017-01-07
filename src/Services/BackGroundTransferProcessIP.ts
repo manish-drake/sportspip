@@ -24,7 +24,7 @@ export class BackGroundTransferProcessIP {
 
         let headers = new Headers({ 'Content-Type': 'application/xml' });
         let options = new RequestOptions({ headers: headers });
-        return this.http.post("http://" + server + ":10080/imatrix/matrices/", xmlMatrix, options)
+        return this.http.post("http://" + server + ":10080/imatrix/matrices/", xmlMatrix, options)/*$Candidate for refactoring$*///delegate http tasks to a service
             .catch(err => new Observable(err => { return this._logger.Error('Error,transferring IP matrix: ', err) }))
             .map(response => {
                 if (response["status"] == 200)
@@ -47,7 +47,7 @@ export class BackGroundTransferProcessIP {
     }
     GetServerIPVideo(fileName, serverAddress) {
         return new Promise(function (resolve, reject) {
-            var xhr = new XMLHttpRequest();
+            var xhr = new XMLHttpRequest();/*$Candidate for refactoring$*///delegate task to a service and try using http
             xhr.open('GET', "http://" + serverAddress + ":10080/isportspip/sports/video/" + fileName, true); // url is my google cloud storage url
             xhr.responseType = 'blob';
             xhr.onload = function (e) {

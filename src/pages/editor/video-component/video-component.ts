@@ -45,8 +45,8 @@ export class VideoComponent {
 
     ngAfterViewInit() {
         this._logger.Debug('Video-component Loaded');
-        this.loadObjects();
-        this.LoadMarkers();
+        this.loadObjects();/*$Candidate for refactoring$*///Consider removing canvas for this component
+        this.LoadMarkers();/*$Candidate for refactoring$*///Consider removing timeline from this component
 
         this.video = this.videoElement.nativeElement;
 

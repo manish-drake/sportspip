@@ -45,7 +45,7 @@ export class CanvasComponent {
     });
   }
 
-  returnImagePath(name) {
+  returnImagePath(name) {/*$Candidate for refactoring$*///Storage code lurking here!!
     if (this.platform.is('cordova')) {
       return this.rootDir + "SportsPIP/Picture" + name;
     }
@@ -54,7 +54,7 @@ export class CanvasComponent {
     }
   }
 
-  returnInkPath(name) {
+  returnInkPath(name) {/*$Candidate for refactoring$*///Storage code lurking here
     if (this.platform.is('cordova')) {
       return this.rootDir + "SportsPIP/Picture" + name + ".gif";
     }
@@ -63,7 +63,7 @@ export class CanvasComponent {
     }
   }
 
-  loadObjects() {
+  loadObjects() {/*$Candidate for refactoring$*///what is this function really doing?
     var objs = this.view["Content"]["PIP"]["PIP.Objects"];
     for (var key in objs) {
       // skip loop if the property is from prototype
@@ -89,7 +89,7 @@ export class CanvasComponent {
     this.PlayStoryBoard();
   }
 
-  returnMaxDuration(objBehaviors) {
+  returnMaxDuration(objBehaviors) {/*$Candidate for refactoring$*///The name suggests it will return MaxDuration, instead it is blatantly modifying class fields. Bad!
     if (this.platform.is('cordova')) {
       this.isTimelineAvailable = true;
     }
@@ -99,15 +99,15 @@ export class CanvasComponent {
     this.timelineDuration = this.formatTime(this.duration);
   }
 
-  clrCvt(color) {
+  clrCvt(color) {/*$Candidate for refactoring$*///Is there anything hardcoded here?
     return '#' + color.slice(3, 9);
   }
 
-  sum(a, b) {
+  sum(a, b) {/*$Candidate for refactoring$*///seriously?!?!
     return Number(a) + Number(b);
   }
 
-  formatTime(time) {
+  formatTime(time) {/*$Candidate for refactoring$*///Move to /services/common/utils please
     if (time != null) {
       var hrs = Math.floor(time / 3600);
       var hours = (hrs >= 10) ? hrs : "0" + hrs;
@@ -122,7 +122,7 @@ export class CanvasComponent {
 
 
   sliderValueChange() {
-    var factor = this.duration * (this.sliderValue / 10000);
+    var factor = this.duration * (this.sliderValue / 10000);/*$Candidate for refactoring$*///make a const out of the 10000 value
     this.timelinePosition = this.formatTime(factor);
     if (this.timelinePosition == this.timelineDuration) {
       this.objects = [];
@@ -132,21 +132,20 @@ export class CanvasComponent {
     this.RemoveObjects();
   }
 
-  formatPoistionInMiliSecond(pos) {
+  formatPoistionInMiliSecond(pos) {/*$Candidate for refactoring$*///move to utils, consider making the function static
     if (pos == "00:00:00") pos = "00:00:00.000000";
     var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
     return positionInMilliseconds;
   }
 
-  formatDurationInMiliSecond(dur) {
+  formatDurationInMiliSecond(dur) {/*$Candidate for refactoring$*///move to utils, consider making the function static
     if (dur != undefined) {
       var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-2)) * 100000;
       return durationInMilliseconds;
     }
   }
 
-  playPause() {
-
+  playPause() {/*$Candidate for refactoring$*///move to actions - I know the repeated use of 'this' will trouble you, but then that is what we have to avoid
     if (this.playPauseButtonIcon == 'play') {
       this.playPauseButtonIcon = 'pause';
 
@@ -172,7 +171,7 @@ export class CanvasComponent {
     }
   }
 
-  PlayStoryBoard() {
+  PlayStoryBoard() {/*$Candidate for refactoring$*///smelling code duplication. The load object function looks similar to this function. Why not refactor both??
     var objs = this.view["Content"]["PIP"]["PIP.Objects"];
     for (var key in objs) {
       // skip loop if the property is from prototype
@@ -218,14 +217,14 @@ export class CanvasComponent {
   }
 
   IsObjectExist(obj) {
-    return this.objDirectory.indexOf(obj)
+    return this.objDirectory.indexOf(obj)/*$Candidate for refactoring$*///please observe that you are pushing objects in this array from multiple places (shift+F12 on objDirectory) and there can be duplicate items in this array. No condition to check that. so the function can return bad value.
   }
 
-  returnTotalDuration(objBehaviors) {
+  returnTotalDuration(objBehaviors) {/*$Candidate for refactoring$*///consider making the function static
     if (objBehaviors.Span != undefined) {
       var durationInMS = this.formatDurationInMiliSecond(objBehaviors.Span._Duration);
       var positionInMS = this.formatPoistionInMiliSecond(objBehaviors.Span._Position);
-      var totalDur = (durationInMS + positionInMS) / 10000000;
+      var totalDur = (durationInMS + positionInMS) / 10000000;/*$Candidate for refactoring$*///make a const out of big numbers or a multiple of any other const
       return totalDur
     }
     return null;
