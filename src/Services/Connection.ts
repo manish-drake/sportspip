@@ -3,10 +3,10 @@ import { Injectable } from "@angular/core";
 import { Platform } from 'ionic-angular';
 
 import X2JS from 'x2js';
-
 import { Http } from '@angular/http';
 
 import { AlertControllers } from '../Services/Alerts';
+import { Logger } from '../logging/logger';
 
 declare var chrome: any;
 
@@ -14,7 +14,8 @@ declare var chrome: any;
 export class Connection {
     constructor(private http: Http,
         private platform: Platform,
-        private alertCtrls: AlertControllers) {
+        private alertCtrls: AlertControllers,
+        private _logger: Logger) {
 
     }
 
@@ -26,8 +27,10 @@ export class Connection {
 
     scanUdp() {
         if (this.platform.is('cordova')) {
+            alert("scanUDP");
+            this._logger.Debug("Starting Listening for Sports PIP servers");
             var onReceive = function (info) {
-                var binaryData = (info.data);
+                var binaryData = info.data;
                 var dataStr = '';
                 var ui8 = new Uint8Array(binaryData);
                 for (var i = 39; i < ui8.length - 5; i++) {
@@ -61,17 +64,18 @@ export class Connection {
                 }
             }
             var onReceiveError = function (errorinfo) {
-                console.log('onReceiveError: ' + errorinfo);
+                console.log("Error listening for Sports PIP servers: " + errorinfo);
                 this.alertCtrls.BasicAlert("Error listening server broadcast", errorinfo);
             }
             chrome.sockets.udp.create({}, function (createInfo) {
+                console.log("Created UDP Socket:" + JSON.stringify(createInfo));
                 Connection.socketId = createInfo.socketId;
                 chrome.sockets.udp.onReceive.addListener(onReceive);
                 chrome.sockets.udp.onReceiveError.addListener(onReceiveError);
-                chrome.sockets.udp.bind(createInfo.socketId, '0.0.0.0', 5353, function (result) {
-                    console.log('bind result: ' + result);
+                chrome.sockets.udp.bind(createInfo.socketId, '0.0.0.0', 5333, function (result) {
+                    console.log("udp scan bind result: " + result);
                     if (result < 0) {
-                        console.log("Error binding socket.");
+                        console.log("Error binding socket. " + result);
                         this.alertCtrls.BasicAlert("Error listening server broadcast", result);
                         return;
                     }

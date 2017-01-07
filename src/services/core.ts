@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { ModelFactory } from './Factory/ModelFactory';
-import { Platform,ToastController } from 'ionic-angular';
+import { Platform, ToastController } from 'ionic-angular';
 import { Logger } from '../logging/logger';
 import { StorageFactory } from './Factory/StorageFactory';
 import { Storage } from './Factory/Storage';
@@ -9,16 +9,18 @@ import { Storage } from './Factory/Storage';
 export class Core {
     storageDataDir: string;
     storageRoot: string;
-    constructor(private storageFactory: StorageFactory, private modelFactory: ModelFactory, 
-    private storage: Storage,
-    private toastCtrl:ToastController,
-    private platform:Platform,
-    private _logger:Logger) {
-        this.storageDataDir = this.storage.externalDataDirectory();
-        this.storageRoot=this.storage.externalRootDirectory();
+    constructor(private storageFactory: StorageFactory, private modelFactory: ModelFactory,
+        private storage: Storage,
+        private toastCtrl: ToastController,
+        private platform: Platform,
+        private _logger: Logger) {
+        platform.ready().then(() => {
+            this.storageDataDir = this.storage.externalDataDirectory();
+            this.storageRoot = this.storage.externalRootDirectory();
+        })
     }
 
-      SaveRoamingHeader(content, channel, sport, matrixName) {
+    SaveRoamingHeader(content, channel, sport, matrixName) {
         this.SaveServerHeader(content, channel, sport, matrixName, "Matrices");
     }
 
@@ -36,7 +38,7 @@ export class Core {
                             this.storageFactory.createFolder(contentFolder, matrixName).then((success) => {
                                 var fileLocation = contentFolder + matrixName;
                                 this.storageFactory.CreateFile(fileLocation, "Header.xml").then(() => {
-                                    this.storageFactory.WriteFile(fileLocation, "Header.xml",JSON.stringify(content))
+                                    this.storageFactory.WriteFile(fileLocation, "Header.xml", JSON.stringify(content))
                                         .then(function (success) {
                                             console.log("server header saved ..")
                                         }).catch((err) => { this._logger.Error('Error,saving server header: ', err); })
@@ -49,7 +51,7 @@ export class Core {
         })
     }
 
-    SaveMatrixAsync(content, channel, sport, matrixName, typeFolder):Promise<any> {
+    SaveMatrixAsync(content, channel, sport, matrixName, typeFolder): Promise<any> {
         if (this.platform.is('cordova')) {
             this._logger.Debug('Save matrix async..');
             //create Server Folder
@@ -91,7 +93,7 @@ export class Core {
                             return this.storageFactory.createFolder(contentFolder, matrixName).then((success) => {
                                 var fileLocation = contentFolder + matrixName;
                                 return this.storageFactory.CreateFile(fileLocation, "Header.xml").then(() => {
-                                   return this.storageFactory.WriteFile(fileLocation, "Header.xml", JSON.stringify(content))
+                                    return this.storageFactory.WriteFile(fileLocation, "Header.xml", JSON.stringify(content))
                                         .then(function (success) {
                                             return success["nativeUrl"]
                                         }).catch((err) => { this._logger.Error('Error,saving local header: ', err); })
