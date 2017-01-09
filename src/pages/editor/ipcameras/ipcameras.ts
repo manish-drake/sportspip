@@ -60,11 +60,6 @@ export class Ipcameras {
   isConnected: boolean = true;
   isLoading: boolean = true;
 
-  ionViewDidLoad() {
-    console.log('Hello Ipcamera Page');
-    this._logger.Debug('Ipcamera Page loaded');
-  }
-
   ionViewDidEnter() {
     this._logger.Debug('Ipcamera Page entered');
     this.loadIPCams();
@@ -125,13 +120,13 @@ export class Ipcameras {
     this.isConnected = true;
     this.isLoading = true;
     var connectedServerIP = Connection.connectedServer.Address;
-
+    this._logger.Debug("Getting IP Cams @ http://" + connectedServerIP + ":10080/icamera/cams/ip/");
     setTimeout(() => {
       this.http.get("http://" + connectedServerIP + ":10080/icamera/cams/ip/")
         .map(res => res.text())
         .catch((err) => new Observable(err => { this._logger.Error("Error,IPCam loading", err); }))
         .subscribe(data => {
-
+          this._logger.Debug("Getting IP Cameras data: " + JSON.stringify(data))
           let parser: any = new X2JS();
           var jsonData = parser.xml2js(data);
           if (jsonData.Cams.IPCam != undefined) {
@@ -140,10 +135,10 @@ export class Ipcameras {
           }
 
         }, err => {
-          console.error('There was an error: ' + err);
+          this._logger.Error("Error, Get IP cams subscribe: " + err);
           this.isLoading = false;
         }, () => {
-          console.log('Random Quote Complete');
+          this._logger.Debug("Get IP cams subscribe: Random Quote Complete");
           this.isLoading = false;
         });
     }, 1000);
@@ -211,27 +206,25 @@ export class Ipcameras {
       }, 1000)
     }
     else {
-      this.loader.present();
       this.record();
     }
   }
 
   record() {/*$Candidate for refactoring$*///move to actions, and why has this been broken from the startRecording function
+    this.loader.present();
     this.loader.setContent('Starting Recording..');
     var connectedServerIP = Connection.connectedServer.Data.Location;
     var fileName = Date.now();
     var uri: string = "http://" + connectedServerIP + ":10080/icamera/cams/ip/" + fileName + "/rec?duration=" + this.recordingDuration;
-    console.log('Request URI: ' + uri);
+    this._logger.Debug('Recording request uri: ' + uri);
     this.http.post(uri, null)/*$Candidate for refactoring$*///delegate http tasks to a seaparate service
       .toPromise()
       .then(res => {
-        this._logger.Debug("Recording for IP Cams on network");
-        console.log('Response: ' + res);
+        this._logger.Debug("Recording for IP Cams on network: " + JSON.stringify(res));
         var time: number = 0;
         var interval = setInterval(() => {
           time++;
           this.loader.setContent('Recording ' + time.toString() + 's');
-
           if (time >= this.recordingDuration) {
             clearInterval(interval);
             this.TransferMatrix(fileName, connectedServerIP);
@@ -273,7 +266,7 @@ export class Ipcameras {
   GetVideoFileFromServer(name, connectedServerIP): Promise<DirectoryEntry> {
     this.loader.setContent('Getting Videos..');
     name = name + "_" + this.index + ".mp4";
-    this._logger.Debug("Getting IP Cams " + name + " from network");
+    this._logger.Debug("Getting video" + name + " from network");
     return this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP).then((blob) => {
       return this.storagefactory.CreateFile(this.rootDir + "SportsPIP/Video", name)
         .then((success) => {

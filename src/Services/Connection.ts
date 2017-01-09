@@ -23,7 +23,6 @@ export class Connection {
 
     scanUdp() {
         if (this.platform.is('cordova')) {
-            alert("scanUDP");
             this._logger.Debug("Starting Listening for Sports PIP servers");
             var onReceive = function (info) {
                 var binaryData = info.data;
@@ -33,13 +32,15 @@ export class Connection {
                     dataStr = dataStr + String.fromCharCode(ui8[i]);
                 }
                 var parser = new X2JS();
+                // alert(dataStr);
                 var data = parser.xml2js(dataStr)
+                // alert(JSON.stringify(data));
 
                 if (data == null) return;
                 var server = data.Server;
                 var item = {
                     Id: server._ID,
-                    Address: info.remoteAddress,
+                    Address: server._Location,
                     Port: info.remotePort,
                     Data: { Name: server._Name, Information: server._Information, Location: server._Location },
                     status: 'Ready to Pair',
@@ -47,6 +48,7 @@ export class Connection {
                     saved: false,
                     available: true
                 };
+                // alert(JSON.stringify(item));
 
                 var isAlreadyGotserver = false;
                 Connection.servers.forEach(element => {
@@ -57,6 +59,7 @@ export class Connection {
 
                 if (!isAlreadyGotserver) {
                     Connection.servers.push(item);
+                    // alert(JSON.stringify(Connection.servers));
                 }
             }
             var onReceiveError = function (errorinfo) {
