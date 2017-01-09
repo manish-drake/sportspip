@@ -4,8 +4,9 @@ page-collection {
 	flex-wrap: wrap;
 }
 .items .item {
-	flex: 1 0 100%;
+	flex: 1 0 auto;
   box-sizing: border-box;
+  min-width: 200px;
 }
 @media (min-width: 410px) {
   .items .item {
