@@ -7,12 +7,13 @@ import { Platform } from 'ionic-angular';
 @Injectable()
 export class Duplicate {
     storageDataDir: string;
+
     constructor(private core: Core, private storage: Storage, private platform: Platform) {
         this.platform.ready().then(() => {
             this.storageDataDir = this.storage.externalDataDirectory();
         })
-
     }
+
 
     Run(channelName, matrixname) {
         var name = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);

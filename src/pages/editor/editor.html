@@ -23,7 +23,7 @@
 
 </ion-header>
 
-<ion-content style="background:#f4f4f4;" [ngSwitch]="selectedViewIndex">
+<ion-content no-bounce style="background:#f4f4f4;" [ngSwitch]="selectedViewIndex">
 <div style="height:100%;" *ngFor="let view of views; let i = index" [hidden]="hideViewSegment(selectedViewIndex,i)">
 <!--ViewCanvasTemplate-->
 <canvas-component *ngIf="view.Content.PIP" [view]="view"></canvas-component>

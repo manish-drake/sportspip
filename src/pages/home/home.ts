@@ -69,15 +69,19 @@ export class HomePage {
         this.selectedSegment = "local";
         this.channels = [];
         this.localMatrices = [];
-        this.GetServerHeader();
-        this.GetLocalMatrixHeader();
+        this.platform.ready().then(() => {
+            this.GetServerHeader();
+            this.GetLocalMatrixHeader();
+        })
     }
 
     ionViewDidLoad() {
-        this.logDeviceInfo();
-        this.core.CreateVideoFolder();
-        this.core.CreatePictureFolder();
-        this.connection.scanUdp();
+        this.platform.ready().then(() => {
+            this.logDeviceInfo();
+            this.core.CreateVideoFolder();
+            this.core.CreatePictureFolder();
+            this.connection.scanUdp();
+        });
     }
 
     logDeviceInfo() {

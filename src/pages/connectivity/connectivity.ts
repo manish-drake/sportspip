@@ -31,7 +31,7 @@ export class Connectivity implements DoCheck {
     constructor(public navCtrl: NavController,
         private connection: Connection,
         private toastCtrl: ToastController,
-        private _logger:Logger) {
+        private _logger: Logger) {
 
     }
 
@@ -66,7 +66,7 @@ export class Connectivity implements DoCheck {
 
     doRefresh(refresher) {
         this._logger.Debug('Refresh connectivity content..');
-         try {
+        try {
             this.refreshing = true;
             this.servers.length == 0
             setTimeout(() => {
@@ -76,15 +76,15 @@ export class Connectivity implements DoCheck {
                 this.connection.close();
                 this.connection.scanUdp();
             }, 500);
-         }
-         catch (err) {
+        }
+        catch (err) {
             this._logger.Error('Error,refreshing connectivity content: ', err);
-         }
+        }
     }
 
     connectivityChanged(isOn) {
-         this._logger.Debug('Connectivity changed..', isOn);
-         try {
+        this._logger.Debug('Connectivity changed..', isOn);
+        try {
             if (isOn) {
                 this.showLoader();
                 this.connection.scanUdp();
@@ -110,14 +110,14 @@ export class Connectivity implements DoCheck {
                 });
                 toast.present(toast);
             }
-         }
-         catch (err) {
-            this._logger.Error('Error,changing connectivity : ',err);
-         }
+        }
+        catch (err) {
+            this._logger.Error('Error,changing connectivity : ', err);
+        }
     }
     refreshConnection() {
-         this._logger.Debug('Refresh connection..');
-         try {
+        this._logger.Debug('Refresh connection..');
+        try {
             this.servers.length == 0
             this.connection.close();
             let toast = this.toastCtrl.create({
@@ -130,10 +130,10 @@ export class Connectivity implements DoCheck {
             toast.present(toast);
             this.showLoader();
             this.connection.scanUdp();
-         }
-         catch (err) {
-            this._logger.Error('Error,refreshing connection : ',err);
-         }
+        }
+        catch (err) {
+            this._logger.Error('Error,refreshing connection : ', err);
+        }
     }
 
     connect(server) {

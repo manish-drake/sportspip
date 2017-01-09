@@ -19,7 +19,6 @@ export class OpenMatrix implements ICommand {
         this.platform.ready().then(() => {
             this.storageDataDir = this.storage.externalDataDirectory();
         })
-
     }
 
     run(cmdArgs) {

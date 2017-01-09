@@ -1,16 +1,19 @@
 import { Injectable } from "@angular/core";
 import { Platform } from 'ionic-angular';
 import X2JS from 'x2js';
+import { Http } from '@angular/http';
+
 import { AlertControllers } from '../Services/Alerts';
+import { Logger } from '../logging/logger';
 
 declare var chrome: any;
 
 @Injectable()
 export class Connection {
-    constructor(private platform: Platform,
-        private alertCtrls: AlertControllers) {
 
-    }
+    constructor(private platform: Platform,
+        private alertCtrls: AlertControllers,
+        private _logger: Logger) {  }
 
     public static servers = [];
 
@@ -20,21 +23,24 @@ export class Connection {
 
     scanUdp() {
         if (this.platform.is('cordova')) {
+            this._logger.Debug("Starting Listening for Sports PIP servers");
             var onReceive = function (info) {
-                var binaryData = (info.data);
+                var binaryData = info.data;
                 var dataStr = '';
                 var ui8 = new Uint8Array(binaryData);
                 for (var i = 39; i < ui8.length - 5; i++) {
                     dataStr = dataStr + String.fromCharCode(ui8[i]);
                 }
                 var parser = new X2JS();
+                // alert(dataStr);
                 var data = parser.xml2js(dataStr)
+                // alert(JSON.stringify(data));
 
                 if (data == null) return;
                 var server = data.Server;
                 var item = {
                     Id: server._ID,
-                    Address: info.remoteAddress,
+                    Address: server._Location,
                     Port: info.remotePort,
                     Data: { Name: server._Name, Information: server._Information, Location: server._Location },
                     status: 'Ready to Pair',
@@ -42,6 +48,7 @@ export class Connection {
                     saved: false,
                     available: true
                 };
+                // alert(JSON.stringify(item));
 
                 var isAlreadyGotserver = false;
                 Connection.servers.forEach(element => {
@@ -52,20 +59,22 @@ export class Connection {
 
                 if (!isAlreadyGotserver) {
                     Connection.servers.push(item);
+                    // alert(JSON.stringify(Connection.servers));
                 }
             }
             var onReceiveError = function (errorinfo) {
-                console.log('onReceiveError: ' + errorinfo);
+                console.log("Error listening for Sports PIP servers: " + errorinfo);
                 this.alertCtrls.BasicAlert("Error listening server broadcast", errorinfo);
             }
             chrome.sockets.udp.create({}, function (createInfo) {
+                console.log("Created UDP Socket:" + JSON.stringify(createInfo));
                 Connection.socketId = createInfo.socketId;
                 chrome.sockets.udp.onReceive.addListener(onReceive);
                 chrome.sockets.udp.onReceiveError.addListener(onReceiveError);
-                chrome.sockets.udp.bind(createInfo.socketId, '0.0.0.0', 5353, function (result) {
-                    console.log('bind result: ' + result);
+                chrome.sockets.udp.bind(createInfo.socketId, '0.0.0.0', 5333, function (result) {
+                    console.log("udp scan bind result: " + result);
                     if (result < 0) {
-                        console.log("Error binding socket.");
+                        console.log("Error binding socket. " + result);
                         this.alertCtrls.BasicAlert("Error listening server broadcast", result);
                         return;
                     }
