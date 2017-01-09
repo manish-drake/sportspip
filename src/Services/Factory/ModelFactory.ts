@@ -19,7 +19,7 @@ export class ModelFactory {
         private storage: Storage,
         private storageFactory: StorageFactory,
         private platform: Platform) {
-        platform.ready().then(() => {
+        this.platform.ready().then(() => {
             this.storageDataDir = this.storage.externalDataDirectory();
             this.rootDir = this.storage.externalRootDirectory();
         });

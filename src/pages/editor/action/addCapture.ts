@@ -37,7 +37,7 @@ export class AddCapture implements ICommand {
                                 console.log('Successfully copied video');
                                 cmdArgs.editor.CreateVideoView(newFileName,cmdArgs.editor.selectedViewIndex,"Local");
                                 if (Connection.connectedServer != null)
-                                    this.backGroundTransferProcess.TransferVideo(fileName, cmdArgs.editor.Connection.connectedServer.Address, cmdArgs.editor.views);
+                                    this.backGroundTransferProcess.TransferVideo(newFileName, cmdArgs.editor.Connection.connectedServer.Address, cmdArgs.editor.views);
 
                             })
                             .catch(err => {

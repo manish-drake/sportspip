@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '../Factory/Storage';
 import { Core } from '../core';
+import { Platform } from 'ionic-angular';
 
 /*$Candidate for refactoring$*/
 @Injectable()
 export class Duplicate {
-    storageDataDir:string;
-    constructor(private core: Core,private storage:Storage) {
-        this.storageDataDir=this.storage.externalDataDirectory();
+    storageDataDir: string;
+    constructor(private core: Core, private storage: Storage, private platform: Platform) {
+        this.platform.ready().then(() => {
+            this.storageDataDir = this.storage.externalDataDirectory();
+        })
+
     }
 
     Run(channelName, matrixname) {

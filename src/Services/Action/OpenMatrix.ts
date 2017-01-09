@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, Platform } from 'ionic-angular';
 import { EditorPage } from '../../pages/editor/editor';
 import { Core } from '../core';
 import { Storage } from '../Factory/Storage';
@@ -14,9 +14,12 @@ export class OpenMatrix implements ICommand {
         private navCtrl: NavController,
         private storage: Storage,
         private core: Core,
+        private platform: Platform,
         private _logger: Logger) {
+        this.platform.ready().then(() => {
+            this.storageDataDir = this.storage.externalDataDirectory();
+        })
 
-        this.storageDataDir = this.storage.externalDataDirectory();
     }
 
     run(cmdArgs) {

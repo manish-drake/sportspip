@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController, ViewController, AlertController, NavParams, LoadingController, Platform } from 'ionic-angular';
+import { NavController, ModalController, AlertController, NavParams, LoadingController, Platform } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { DirectoryEntry } from 'ionic-native';
 import { Observable } from 'rxjs/Rx';
@@ -25,7 +25,7 @@ import { SaveMatrix } from '../action/saveMatrix';
 @Component({
   selector: 'page-ipcameras',
   templateUrl: 'ipcameras.html',
-  providers: [StorageFactory, ModelFactory, Connection, BackGroundTransferProcessIP, SaveMatrix]
+  providers: [Connection, BackGroundTransferProcessIP, SaveMatrix]
 })
 export class Ipcameras {
   matrix: any;
@@ -35,8 +35,7 @@ export class Ipcameras {
   isTimerOn: boolean = false;
   timerDelay: number = 3;
   timerButtonOpacity: Number = 0.5;
-  constructor(public viewCtrl: ViewController,
-    private saveMatrices: SaveMatrix,
+  constructor(private saveMatrices: SaveMatrix,
     private storage: Storage,
     public navCtrl: NavController,
     private modalCtrl: ModalController,
@@ -292,16 +291,14 @@ export class Ipcameras {
     })
   }
 
+
+
   saveMatrix() {/*$Candidate for refactoring$*///convert saveMatrices to a command
     this.loader.setContent('Saving..');
-
+    
     this.saveMatrices.run(this.matrix._Channel, this.matrix._Name, this.views).then((res) => {
-      Observable.interval(1000)/*$Candidate for refactoring$*///don't do this
-        .take(1).map((x) => x + 5)
-        .subscribe((x) => {
-          this.navCtrl.pop();
-          this.loader.dismiss();
-        });
+      this.navCtrl.pop();
+      this.loader.dismiss();
 
     }).catch((err) => {
       this.loader.dismiss();
@@ -312,21 +309,16 @@ export class Ipcameras {
 
 
   createViews(fileName) {/*$Candidate for refactoring$*///needs a lot of refactoring. Please make this function static and you'll know all what you have to change. It could be a simple function creating views for a file, taking as argument all what it needs to create views. Instead, it is performing multiple tasks mixing uneven intents
-    if (this.ipCams.length == 1) {
-      this.createVideoView(fileName + "_1.mp4");
-    }
-    else {
-      this.ipCams.forEach((element, index) => {
-        if (index == 0) {
-          this.createVideoView(fileName + "_1.mp4");
-        }
-        else {
-          this.selectedViewIndex++;
-          this.addView();
-          this.createVideoView(fileName + "_" + (index + 1) + ".mp4");
-        }
-      });
-    }
+    this.ipCams.forEach((element, index) => {
+      if (index == 0) {
+        this.createVideoView(fileName + "_1.mp4");
+      }
+      else {
+        this.selectedViewIndex++;
+        this.addView();
+        this.createVideoView(fileName + "_" + (index + 1) + ".mp4");
+      }
+    })
   }
 
   createVideoView(fileName) {
