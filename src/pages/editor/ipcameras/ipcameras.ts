@@ -14,6 +14,9 @@ import X2JS from 'x2js';
 import { Logger } from '../../../logging/logger';
 import { ModelFactory } from '../../../Services/Factory/ModelFactory';
 import { SaveMatrix } from '../action/saveMatrix';
+import { IPCamRecording } from '../ipcameras/action/ipCamRecording';
+import { OpenSettingModal } from '../ipcameras/action/openSettingModal';
+
 
 /*
   Generated class for the Ipcamera page.
@@ -25,7 +28,7 @@ import { SaveMatrix } from '../action/saveMatrix';
 @Component({
   selector: 'page-ipcameras',
   templateUrl: 'ipcameras.html',
-  providers: [Connection, BackGroundTransferProcessIP, SaveMatrix]
+  providers: [Connection, BackGroundTransferProcessIP, SaveMatrix, IPCamRecording, OpenSettingModal]
 })
 export class Ipcameras {
   matrix: any;
@@ -36,6 +39,8 @@ export class Ipcameras {
   timerDelay: number = 3;
   timerButtonOpacity: Number = 0.5;
   constructor(private saveMatrices: SaveMatrix,
+    private openSettingM: OpenSettingModal,
+    private ipCamRecording: IPCamRecording,
     private storage: Storage,
     public navCtrl: NavController,
     private modalCtrl: ModalController,
@@ -170,15 +175,27 @@ export class Ipcameras {
     }
   }
 
-  presentSettingsModal() {/*$Candidate for refactoring$*///move to actions
-    let modal = this.modalCtrl.create(IpCamSettingsModal, {
-      timerDelay: this.timerDelay
-    });
-    modal.present();
 
-    modal.onDidDismiss(TimerDelay => {
-      this.timerDelay = TimerDelay;
-    });
+  private _openSettingModal: OpenSettingModal;
+  public get openSettingModal(): OpenSettingModal {
+    return this.openSettingM;
+  }
+
+  openSettingModalSource() {
+    return {
+      "timer": this.timerDelay
+    }
+  }
+
+  private _record: IPCamRecording;
+  public get record(): IPCamRecording {
+    return this.ipCamRecording;
+  }
+
+  recordSource() {
+    return {
+      "ipCam": this
+    }
   }
 
   loader = this.loadingCtrl.create({
@@ -186,58 +203,6 @@ export class Ipcameras {
     duration: (this.timerDelay * 1000) + (this.recordingDuration * 1000) + 180000,
     dismissOnPageChange: true
   });
-
-  startRecording() {/*$Candidate for refactoring$*///move to actions
-    this.isRecording = true;
-    if (this.isTimerOn) {
-      var time = Number(this.timerDelay);
-      this.loader.present();
-      this.loader.setContent('Wait ' + time.toString() + 's');
-
-      var interval = setInterval(() => {
-        time--;
-        this.loader.setContent('Wait ' + time.toString() + 's');
-        if (time <= 0) {
-          clearInterval(interval);
-          // this.loader.dismiss();
-          this.record();
-        }
-      }, 1000)
-    }
-    else {
-      this.record();
-    }
-  }
-
-  record() {/*$Candidate for refactoring$*///move to actions, and why has this been broken from the startRecording function
-    this.loader.present();
-    this.loader.setContent('Starting Recording..');
-    var connectedServerIP = Connection.connectedServer.Data.Location;
-    var fileName = Date.now();
-    var uri: string = "http://" + connectedServerIP + ":10080/icamera/cams/ip/" + fileName + "/rec?duration=" + this.recordingDuration;
-    this._logger.Debug('Recording request uri: ' + uri);
-    this.http.post(uri, null)/*$Candidate for refactoring$*///delegate http tasks to a seaparate service
-      .toPromise()
-      .then(res => {
-        this._logger.Debug("Recording for IP Cams on network: " + JSON.stringify(res));
-        var time: number = 0;
-        var interval = setInterval(() => {
-          time++;
-          this.loader.setContent('Recording ' + time.toString() + 's');
-          if (time >= this.recordingDuration) {
-            clearInterval(interval);
-            this.TransferMatrix(fileName, connectedServerIP);
-            this.createViews(fileName);
-          }
-        }, 1000);
-      })
-      .catch(err => {
-        this.loader.dismiss();
-        this.isRecording = false;
-        this._logger.Error("Error,Recording IPCam Videos", err);
-        this.alertCtrls.BasicAlert('Error,Recording IPCam Videos', err);
-      });
-  }
 
   index = 1;
   TransferMatrix(fileName, connectedServerIP) {
@@ -271,7 +236,7 @@ export class Ipcameras {
         .then((success) => {
           return this.storagefactory.WriteFile(this.rootDir + "SportsPIP/Video", name, blob["response"].slice(8))
             .then((success) => {
-              this._logger.Debug(name + " video received successfully from network");
+              this._logger.Debug(name + " video received successfully from network and length ="+blob["response"].length);
               this.index++;
               if (this.index > this.ipCams.length) { return success["nativeUrl"] }
               else { return this.GetVideoFileFromServer(name.slice(0, -6), connectedServerIP); }
@@ -284,11 +249,9 @@ export class Ipcameras {
     })
   }
 
-
-
   saveMatrix() {/*$Candidate for refactoring$*///convert saveMatrices to a command
     this.loader.setContent('Saving..');
-    
+
     this.saveMatrices.run(this.matrix._Channel, this.matrix._Name, this.views).then((res) => {
       this.navCtrl.pop();
       this.loader.dismiss();
@@ -303,14 +266,8 @@ export class Ipcameras {
 
   createViews(fileName) {/*$Candidate for refactoring$*///needs a lot of refactoring. Please make this function static and you'll know all what you have to change. It could be a simple function creating views for a file, taking as argument all what it needs to create views. Instead, it is performing multiple tasks mixing uneven intents
     this.ipCams.forEach((element, index) => {
-      if (index == 0) {
-        this.createVideoView(fileName + "_1.mp4");
-      }
-      else {
-        this.selectedViewIndex++;
-        this.addView();
-        this.createVideoView(fileName + "_" + (index + 1) + ".mp4");
-      }
+      if (index > 0){this.selectedViewIndex++;}
+       this.createVideoView(fileName + "_" + (index + 1) + ".mp4");
     })
   }
 
@@ -319,18 +276,4 @@ export class Ipcameras {
     this.views[this.selectedViewIndex] = localView;
   }
 
-  addView() {/*$Candidate for refactoring$*///please..consider returning a view from this function instead of modifying views array at module level
-    if (this.views.length <= 7) {
-      var inum: number = this.views.length + 1;
-      this.views.push({
-        "Content": {},
-        "_name": "View " + inum,
-        "_Title": "View " + inum,
-        "_Source": "(Blank)"
-      });
-    }
-    else {
-      this.alertCtrls.BasicAlert('Maximum 8 views!', 'No more views could be added.');
-    }
-  }
 }

@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
 import { Platform } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
-
 import { StorageFactory } from '../Factory/StorageFactory';
 import { Storage } from '../Factory/Storage';
 import { Logger } from '../../logging/logger';
+import { View } from '../../Matrix/view';
 
 declare var navigator: any;
 import 'rxjs/Rx';
@@ -92,7 +92,17 @@ export class ModelFactory {
         }
         return localView;
     }
-    
+
+    ComposeNewView(value) {
+        var view = new View();
+        view._name = "View " + value;
+        view._Title = "View " + value;
+        view._Source = "(Blank)";
+        view.Content=null;
+        return view;
+
+    }
+
 
     ComposeNewMatrix() {
         this._logger.Debug('Composing new matrix..');
