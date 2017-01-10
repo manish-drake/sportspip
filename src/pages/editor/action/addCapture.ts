@@ -28,39 +28,35 @@ export class AddCapture implements ICommand {
                 FilePath.resolveNativePath(uri)
                     .then(filePath => {
                         console.log(filePath);
-                        var path = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+                        var filePath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
                         var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
                         var newFileName = Date.now() + ".mp4";
 
-                        this.storagefactory.CopyFile(path, fileName, this.rootDirectory + "SportsPIP/Video", newFileName)
+                        this.storagefactory.CopyFile(filePath, fileName, this.rootDirectory + "SportsPIP/Video", newFileName)
                             .then(success => {
                                 console.log('Successfully copied video');
-                                cmdArgs.editor.CreateVideoView(newFileName,cmdArgs.editor.selectedViewIndex,"Local");
+                                cmdArgs.editor.CreateVideoView(newFileName, cmdArgs.editor.selectedViewIndex, "Local");
                                 if (Connection.connectedServer != null)
                                     this.backGroundTransferProcess.TransferVideo(newFileName, cmdArgs.editor.Connection.connectedServer.Address, cmdArgs.editor.views);
 
                             })
                             .catch(err => {
-                                console.log('Failed copying video:' + JSON.stringify(err))
                                 this.chooseVideoErrorMsg('Failed copying video:' + JSON.stringify(err));
                             });
 
                     })
                     .catch(err => {
-                        console.log(err);
                         this.chooseVideoErrorMsg('Failed Resolving nativepath:' + JSON.stringify(err));
                     });
 
             }).catch(err => {
-                console.log(err);
                 this.chooseVideoErrorMsg('Error opening file chooser:' + JSON.stringify(err));
             });
         }
     }
 
     chooseVideoErrorMsg(err) {
-        this._logger.Error("Error in chooseVideo", err);
+        this._logger.Error(err);
         this.alertCtrls.BasicAlert('Failed saving video!', err);
-
     }
 }
