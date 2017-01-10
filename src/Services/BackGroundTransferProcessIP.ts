@@ -1,15 +1,24 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http, Headers, RequestOptions, ResponseContentType, Response } from '@angular/http';
 import { Platform } from 'ionic-angular';
 import X2JS from 'x2js';
 import { Logger } from '../logging/logger';
+import { StorageFactory } from './Factory/StorageFactory';
+import { Storage } from './Factory/Storage';
 import { Observable } from 'rxjs/Rx';
 declare var FileTransfer: any;
 @Injectable()
 export class BackGroundTransferProcessIP {
     private data: any;
-
-    constructor(private platform: Platform, private http: Http, private _logger: Logger) {
+    private rootDir: string;
+    constructor(private platform: Platform,
+        private http: Http,
+        private _logger: Logger,
+        private storageFactory: StorageFactory,
+        private storage: Storage) {
+        this.platform.ready().then(() => {
+            this.rootDir = this.storage.externalRootDirectory();
+        })
 
     }
 
@@ -46,20 +55,18 @@ export class BackGroundTransferProcessIP {
         }
     }
     GetServerIPVideo(fileName, serverAddress) {
-        return new Promise(function (resolve, reject) {
-            var xhr = new XMLHttpRequest();/*$Candidate for refactoring$*///delegate task to a service and try using http
-            xhr.open('GET', "http://" + serverAddress + ":10080/isportspip/sports/video/" + fileName, true); // url is my google cloud storage url
-            xhr.responseType = 'blob';
-            xhr.onload = function (e) {
-                if (xhr.status == 200) {
-                    resolve(xhr);
-                } else { return reject('This request has failed ' + xhr.status); }
-            };
-            xhr.onerror = function (err) {
-                return reject(err + xhr.statusText);
-            };
-            xhr.send()
-        })
+        console.log("downloading..");
+        let headers = new Headers({ 'Content-Type': 'application/pdf' });
+        let options = new RequestOptions({ headers: headers, responseType: ResponseContentType.Blob });
+        var url = "http://" + serverAddress + ":10080/isportspip/sports/video/" + fileName;
+        return this.http.get(url, options)
+            .map(this.extractContent);
+    }
+
+    private extractContent(res: Response) {
+        console.log("extracting..");
+        let blob: Blob = res.blob();
+        return blob;
     }
 
     private createNewIPMatrix(fileName, duration) {

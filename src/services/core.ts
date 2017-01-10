@@ -202,7 +202,7 @@ export class Core {
                     })
                 })
 
-            })
+            }).catch((err)=>{this._logger.Error('Error,getting local header: ', err);});
         })
 
     }
@@ -225,7 +225,7 @@ export class Core {
                         });
                     });
                 })
-            })
+            }).catch((err)=>{this._logger.Error('Error,getting server header: ', err);});
         })
     }
 
@@ -246,7 +246,7 @@ export class Core {
                         });
                 });
 
-            });
+             }).catch((err)=>{this._logger.Error('Error,getting server header: ', err);});
         })
 
     }

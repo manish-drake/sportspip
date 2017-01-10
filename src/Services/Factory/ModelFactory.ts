@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Rx';
 import { StorageFactory } from '../Factory/StorageFactory';
 import { Storage } from '../Factory/Storage';
 import { Logger } from '../../logging/logger';
-import { View } from '../../Matrix/view';
 
 import 'rxjs/Rx';
 
@@ -70,13 +69,13 @@ export class ModelFactory {
     }
 
     ComposeNewView(value) {
-        var view = new View();
-        view._name = "View " + value;
-        view._Title = "View " + value;
-        view._Source = "(Blank)";
-        view.Content = null;
+        var view = {
+            "Content": {},
+            "_name": "View " + value,
+            "_Title": "View " + value,
+            "_Source": "(Blank)"
+        }
         return view;
-
     }
 
     ComposeNewMatrix() {
