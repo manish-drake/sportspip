@@ -16,7 +16,7 @@
 <ion-row>
 	<ion-col text-center center *ngFor="let view of views; let i = index" (click)="showViewSegment(i)" [command]="deleteView"
 		[cmdArgs]="deleteViewSource(i)" [usePress]="true" [class.selectedview]="i == selectedViewIndex" [class.view]="i != selectedViewIndex">
-		<span ion-text [hidden]="views.length > 5" color="primary">View </span><span color="primary">{{i+1}}</span>
+		<span ion-text color="primary" [hidden]="views.length > 5">View </span><span ion-text color="primary">{{i+1}}</span>
 	</ion-col>
 	<button ion-button icon-only clear [command]="addView" [usePress]="false" [cmdArgs]="addViewSource()"><ion-icon name="add-circle"></ion-icon></button>
 </ion-row>
@@ -42,7 +42,7 @@
 			</ion-item>
 		</ion-card>
 	</div>-->
-	<div class="itemm">
+	<div class="itemm" *ngIf="isAndroid">
 		<ion-card [command]="chooseVideo" [usePress]="false" [cmdArgs]="addCaptureSource()">
 			<ion-item>
 				<ion-icon name="ios-film" item-left></ion-icon>

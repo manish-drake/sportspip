@@ -7,7 +7,6 @@ import { Storage } from '../Factory/Storage';
 import { Logger } from '../../logging/logger';
 import { View } from '../../Matrix/view';
 
-declare var navigator: any;
 import 'rxjs/Rx';
 
 @Injectable()
@@ -27,77 +26,25 @@ export class ModelFactory {
     }
 
     CreateThumbnail(name, thumbname) {
-        this._logger.Debug('Create thumbnail..');
-
-        var blob: any;
         var sourcePath = this.rootDir + "SportsPIP/Video/" + name;
-
-        // var _createThumbnailOptions: CreateThumbnailOptions = { fileUri: sourcePath, outputFileName: thumbname };
-        // VideoEditor.createThumbnail(_createThumbnailOptions)
-        //     .then(res => {
-        //         alert("Created: " + JSON.stringify(res));
-
-        //         var path = res.substr(0, res.lastIndexOf('/') + 1);
-        //         var fileName = res.substr(res.lastIndexOf('/') + 1);
-        //         var slicedName = fileName.substr(-4);
-
-        //         alert(path + "  " + fileName + " " + slicedName + " " + thumbname);
-
-        //         this.storageFactory.MoveFile(path, this.storageDataDir, slicedName + ".jpg")
-        //             .catch((err) => new Observable(err => { alert("Move error: " + JSON.stringify(err)) }))
-        //             .subscribe(res => { alert("Moved: " + JSON.stringify(res)) })
-
-
-
-        //         this.storageFactory.GetLisOfDirectory(this.rootDir + "SportsPIP/", "Video")
-        //             .then(res => { alert(JSON.stringify(res)) })
-        //             .catch(err => { alert("Error3: " + err) })
-        //     })
-        //     .catch(err => {
-        //         alert("Error: " + JSON.stringify(err))
-        //     })
-
-
-
-        navigator.createThumbnail(sourcePath, function (err, imageData) {
-            if (err != null) { this._logger.Error('Error,creating thumbnail: ', err); }
-            else { blob = imageData; }
-        });
-        Observable.interval(1000)
-            .take(1).map((x) => x + 5)
-            .subscribe((x) => {
-                var data = this.b64toBlob(blob, 'image/jpeg', 1024);
-                this.storageFactory.CreateFile(this.storageDataDir, thumbname + ".jpg")
-                    .then(() => {
-                        this.storageFactory.WriteFile(this.storageDataDir, thumbname + ".jpg", data)
-                            .then(() => {
-                                this._logger.Debug("thumbanil created successfully..");
-                            })
+        var _createThumbnailOptions: CreateThumbnailOptions = { fileUri: sourcePath, outputFileName: thumbname };
+        VideoEditor.createThumbnail(_createThumbnailOptions)
+            .then(res => {
+                this._logger.Debug("Thumbnail created in:" + res);
+                var path = res.substr(0, res.lastIndexOf('/') + 1);
+                var fileName = res.substr(res.lastIndexOf('/') + 1);
+                this.storageFactory.MoveFile("file:///" + path, fileName, this.storageDataDir, thumbname + ".jpg")
+                    .catch((err) => new Observable(err => {
+                        this._logger.Error("Error getting Thumbnail from cache: " + JSON.stringify(err));
+                    }))
+                    .subscribe(res => {
+                        this._logger.Debug("Got thumbnail")
                     })
             })
-
+            .catch(err => {
+                this._logger.Error("Error creating thumbnail: " + JSON.stringify(err))
+            })
     }
-
-    b64toBlob(b64Data, contentType, sliceSize) {
-        contentType = contentType || '';
-        sliceSize = sliceSize || 512;
-
-        var byteCharacters = atob(b64Data);
-        var byteArrays = [];
-
-        for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-            var slice = byteCharacters.slice(offset, offset + sliceSize);
-            var byteNumbers = new Array(slice.length);
-            for (var i = 0; i < slice.length; i++) {
-                byteNumbers[i] = slice.charCodeAt(i);
-            }
-            var byteArray = new Uint8Array(byteNumbers);
-            byteArrays.push(byteArray);
-        }
-        var blob = new Blob(byteArrays, { type: contentType });
-        return blob;
-    }
-
 
     CreateVideoView(fileName, selectedViewIndex, source) {
         var localView = {
@@ -127,7 +74,7 @@ export class ModelFactory {
         view._name = "View " + value;
         view._Title = "View " + value;
         view._Source = "(Blank)";
-        view.Content=null;
+        view.Content = null;
         return view;
 
     }

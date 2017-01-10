@@ -67,14 +67,14 @@ export class Package {
                                 });
                             })
                         case '.mp4':
-                            return this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", this.storageRootDirectory + "SportsPIP/Video", file.name)
+                            return this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1",  file.name, this.storageRootDirectory + "SportsPIP/Video", file.name)
                                 .subscribe((success) => { console.log("video moved"); });
                         case ".gif":
                         case ".rtf":
-                            return this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", this.storageRootDirectory + "SportsPIP/Picture", file.name)
+                            return this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", file.name, this.storageRootDirectory + "SportsPIP/Picture", file.name)
                                 .subscribe((success) => { console.log("ink moved..."); });
                         case ".jpg":
-                            return this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", this.storageRootDirectory + "SportsPIP/Picture", file.name)
+                            return this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", file.name, this.storageRootDirectory + "SportsPIP/Picture", file.name)
                                 .subscribe(() => { console.log("image moved"); });
                         default:
                     }
