@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Platform } from 'ionic-angular';
+import { VideoEditor, CreateThumbnailOptions } from 'ionic-native';
 import { Observable } from 'rxjs/Rx';
 
 import { StorageFactory } from '../Factory/StorageFactory';
@@ -30,6 +31,34 @@ export class ModelFactory {
 
         var blob: any;
         var sourcePath = this.rootDir + "SportsPIP/Video/" + name;
+
+        // var _createThumbnailOptions: CreateThumbnailOptions = { fileUri: sourcePath, outputFileName: thumbname };
+        // VideoEditor.createThumbnail(_createThumbnailOptions)
+        //     .then(res => {
+        //         alert("Created: " + JSON.stringify(res));
+
+        //         var path = res.substr(0, res.lastIndexOf('/') + 1);
+        //         var fileName = res.substr(res.lastIndexOf('/') + 1);
+        //         var slicedName = fileName.substr(-4);
+
+        //         alert(path + "  " + fileName + " " + slicedName + " " + thumbname);
+
+        //         this.storageFactory.MoveFile(path, this.storageDataDir, slicedName + ".jpg")
+        //             .catch((err) => new Observable(err => { alert("Move error: " + JSON.stringify(err)) }))
+        //             .subscribe(res => { alert("Moved: " + JSON.stringify(res)) })
+
+
+
+        //         this.storageFactory.GetLisOfDirectory(this.rootDir + "SportsPIP/", "Video")
+        //             .then(res => { alert(JSON.stringify(res)) })
+        //             .catch(err => { alert("Error3: " + err) })
+        //     })
+        //     .catch(err => {
+        //         alert("Error: " + JSON.stringify(err))
+        //     })
+
+
+
         navigator.createThumbnail(sourcePath, function (err, imageData) {
             if (err != null) { this._logger.Error('Error,creating thumbnail: ', err); }
             else { blob = imageData; }
@@ -92,7 +121,7 @@ export class ModelFactory {
         }
         return localView;
     }
-    
+
 
     ComposeNewMatrix() {
         this._logger.Debug('Composing new matrix..');

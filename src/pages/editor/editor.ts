@@ -71,6 +71,10 @@ export class EditorPage {
     else {
       this.views.push(this.matrix["Matrix.Children"]["View"]);
     }
+  }
+
+  ionViewWillEnter(){
+    this._logger.Debug('Editor page Enter');
     this.evaluateCaptureViews();
   }
 
