@@ -14,7 +14,7 @@ export class AddView implements ICommand {
             var inum: number = cmdArgs.editor.views.length + 1;
             var view = this.modelFactory.ComposeNewView(inum);
             cmdArgs.editor.views.push(view);
-            cmdArgs.editor.showViewSegment(inum - 1, cmdArgs);
+            cmdArgs.editor.setSelectedView(view, inum - 1);
         }
         else {
             this.alertCtrls.BasicAlert('Maximum 8 views!', 'No more views could be added.');

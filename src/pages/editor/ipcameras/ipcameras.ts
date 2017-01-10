@@ -195,13 +195,7 @@ export class Ipcameras {
       .then((res) => {
         if (res) {
           this._logger.Debug("transferring IP Cams matrix on network");
-
-          this.GetVideoFileFromServer(fileName, connectedServerIP).then((success) => {
-            // var value = success;
-            this._logger.Info("Video transfered successfully  " + JSON.stringify(this.rootDir) + "SportsPIP/Video");
-            this.saveMatrix();
-
-          })
+          this.GetVideoFileFromServer(fileName, connectedServerIP);
         }
       })
       .catch((err) => {
@@ -211,26 +205,26 @@ export class Ipcameras {
       })
   }
 
-  GetVideoFileFromServer(name, connectedServerIP): Promise<DirectoryEntry> {
+  GetVideoFileFromServer(name, connectedServerIP) {
     this.loader.setContent('Getting Videos..');
     name = name + "_" + this.index + ".mp4";
     this._logger.Debug("Getting video" + name + " from network");
-    return this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP).then((blob) => {
-
-      return this.storagefactory.CreateFile(this.rootDir + "SportsPIP/Video", name)
+    this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP).subscribe((blob) => {
+      this.storagefactory.CreateFile(this.rootDir + "SportsPIP/Video", name)
         .then((success) => {
-          return this.storagefactory.WriteFile(this.rootDir + "SportsPIP/Video", name, blob["response"].slice(8))
+          this.storagefactory.WriteFile(this.rootDir + "SportsPIP/Video", name, blob.slice(8))
             .then((success) => {
-              this._logger.Debug(name + " video received successfully from network and length =" + blob["response"].length);
+              this._logger.Debug(name + " video received successfully from network");
               this.index++;
-              if (this.index > this.ipCams.length) { return success["nativeUrl"] }
-              else { return this.GetVideoFileFromServer(name.slice(0, -6), connectedServerIP); }
+              if (this.index > this.ipCams.length) {
+                this._logger.Info("Video transfered successfully  " + JSON.stringify(this.rootDir) + "SportsPIP/Video");
+                 this.saveMatrix();
+              }
+              else {
+                return this.GetVideoFileFromServer(name.slice(0, -6), connectedServerIP);
+              }
             })
         })
-
-    }).catch((err) => {
-      this._logger.Error("Error,Getting IP Cams Video from network.", err);
-      this.loader.dismiss();
     })
   }
 

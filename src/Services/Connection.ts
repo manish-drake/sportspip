@@ -43,7 +43,7 @@ export class Connection {
                     Address: server._Location,
                     Port: info.remotePort,
                     Data: { Name: server._Name, Information: server._Information, Location: server._Location },
-                    status: 'Ready to Pair',
+                    status: 'Ready to pair',
                     connected: false,
                     saved: false,
                     available: true

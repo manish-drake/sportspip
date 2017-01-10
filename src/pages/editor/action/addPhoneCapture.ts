@@ -36,15 +36,17 @@ export class AddPhoneCapture implements ICommand {
         MediaFiles.forEach(mediaFile => {
             var fileUrl = mediaFile.localURL;
 
-            var path = fileUrl.substr(0, fileUrl.lastIndexOf('/') + 1);
+            var filePath = fileUrl.substr(0, fileUrl.lastIndexOf('/') + 1);
             var fileName = fileUrl.substr(fileUrl.lastIndexOf('/') + 1);
+            var ext = fileName.substr(-4);
+            var newFileName = Date.now() + ext;
 
-            this.storagefactory.MoveFile(path, this.rootDirectory + "SportsPIP/Video", fileName)
+            this.storagefactory.MoveFile(filePath, fileName, this.rootDirectory + "SportsPIP/Video", newFileName)
                 .subscribe(success => {
-                    Model.editor.CreateVideoView(fileName,Model.editor.selectedViewIndex,"Phone");
+                    Model.editor.CreateVideoView(newFileName,Model.editor.selectedViewIndex,"Phone");
                     console.log('Successfully saved video')
                     if (Connection.connectedServer != null)
-                        this.backGroundTransferProcess.TransferVideo(fileName, Connection.connectedServer.Address, Model.editor.views);
+                        this.backGroundTransferProcess.TransferVideo(newFileName, Connection.connectedServer.Address, Model.editor.views);
                 })
         });
     }
