@@ -28,11 +28,13 @@ export class AddCapture implements ICommand {
                 FilePath.resolveNativePath(uri)
                     .then(filePath => {
                         console.log(filePath);
-                        var filePath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+                        var fileDir = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+                        console.log(fileDir);
                         var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
+                        console.log(fileName);
                         var newFileName = Date.now() + ".mp4";
 
-                        this.storagefactory.CopyFile(filePath, fileName, this.rootDirectory + "SportsPIP/Video", newFileName)
+                        this.storagefactory.CopyFile(fileDir, fileName, this.rootDirectory + "SportsPIP/Video", newFileName)
                             .then(success => {
                                 console.log('Successfully copied video');
                                 cmdArgs.editor.CreateVideoView(newFileName, cmdArgs.editor.selectedViewIndex, "Local");
