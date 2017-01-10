@@ -210,6 +210,7 @@ export class Ipcameras {
     name = name + "_" + this.index + ".mp4";
     this._logger.Debug("Getting video" + name + " from network");
     this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP).subscribe((blob) => {
+      
       this.storagefactory.CreateFile(this.rootDir + "SportsPIP/Video", name)
         .then((success) => {
           this.storagefactory.WriteFile(this.rootDir + "SportsPIP/Video", name, blob.slice(8))
@@ -218,7 +219,7 @@ export class Ipcameras {
               this.index++;
               if (this.index > this.ipCams.length) {
                 this._logger.Info("Video transfered successfully  " + JSON.stringify(this.rootDir) + "SportsPIP/Video");
-                 this.saveMatrix();
+                this.saveMatrix();
               }
               else {
                 return this.GetVideoFileFromServer(name.slice(0, -6), connectedServerIP);

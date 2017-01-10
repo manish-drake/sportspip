@@ -1,5 +1,5 @@
 import { Component, Injectable } from '@angular/core';
-import {NavController, NavParams, ModalController, Platform, LoadingController, Events, PopoverController, ViewController} from 'ionic-angular';
+import { NavController, NavParams, ModalController, Platform, LoadingController, Events, PopoverController, ViewController } from 'ionic-angular';
 import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 import { Compareview } from '../editor/compareview/compareview'
 import { Swipeview } from '../editor/swipeview/swipeview';
@@ -28,7 +28,7 @@ declare var navigator: any;
 
 export class EditorPage {
 
-  selectedView:any;
+  selectedView: any;
   selectedViewIndex: number;
   rootDirectory: any;
   matrix: any;
@@ -82,6 +82,7 @@ export class EditorPage {
 
   ionViewWillEnter() {
     this._logger.Debug('Editor page Enter');
+    this.setSelectedView(this.views[0], this.selectedViewIndex);
     this.evaluateCaptureViews();
   }
 
@@ -116,8 +117,8 @@ export class EditorPage {
       this.events.publish('viewoutoffocus');
     }
   }
-  
-  setSelectedView(selectedView:any, viewindex: number) {
+
+  setSelectedView(selectedView: any, viewindex: number) {
     if ((viewindex != this.selectedViewIndex) || (this.selectedView != selectedView)) {
       this.selectedView = selectedView;
       this.selectedViewIndex = viewindex;
