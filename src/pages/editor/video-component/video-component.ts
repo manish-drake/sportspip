@@ -62,16 +62,17 @@ export class VideoComponent {
             this.OnVideoError(error);
         });
 
-        var interval = setInterval(() => {
-            if (this.timelineDuration == undefined || this.timelineDuration == "00:00:00.00" || this.viewBoxSize == "0 0 0 0") {
-                this.timelineDuration = this.formatTime(this.video.duration);
-                this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
-            }
-            else {
-                clearInterval(interval);
-                this.evaluateMarkerPosition();
-            }
-        }, 1 / 60);
+        //Moved to the event listener for loadedmetadata
+        // var interval = setInterval(() => {
+        //     if (this.timelineDuration == undefined || this.timelineDuration == "00:00:00.00" || this.viewBoxSize == "0 0 0 0") {
+        //         this.timelineDuration = this.formatTime(this.video.duration);
+        //         this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
+        //     }
+        //     else {
+        //         clearInterval(interval);
+        //         this.evaluateMarkerPosition();
+        //     }
+        // }, 1 / 60);
 
         this.events.subscribe('viewoutoffocus', () => {
             if (!this.video.paused) {
@@ -90,6 +91,14 @@ export class VideoComponent {
             ", Source: " + this.video.currentSrc +
             ", Resolution: " + this.video.videoWidth + "*" + this.video.videoHeight
         );
+
+        if (this.timelineDuration == undefined || this.timelineDuration == "00:00:00.00" || this.viewBoxSize == "0 0 0 0") {
+            this.timelineDuration = this.formatTime(this.video.duration);
+            this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
+        }
+        else {
+            this.evaluateMarkerPosition();
+        }
     }
 
     OnVideoEnded() {

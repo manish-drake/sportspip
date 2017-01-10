@@ -30,10 +30,12 @@ declare var navigator: any;
 
 export class EditorPage {
 
+  selectedView:any;
   selectedViewIndex: number;
   rootDirectory: any;
   matrix: any;
   views = [];
+
 
   constructor(public navCtrl: NavController,
     private storage: Storage,
@@ -105,7 +107,14 @@ export class EditorPage {
       this.events.publish('viewoutoffocus');
     }
   }
-
+  
+  setSelectedView(selectedView:any, viewindex: number) {
+    if ((viewindex != this.selectedViewIndex) || (this.selectedView != selectedView)) {
+      this.selectedView = selectedView;
+      this.selectedViewIndex = viewindex;
+      this.events.publish('viewoutoffocus');
+    }
+  }
   hideViewSegment(a, b) {
     if (a != b)
       return true;
@@ -211,6 +220,7 @@ export class EditorPage {
   CreateVideoView(fileName,selectedViewIndex,source) {
    var localView =this.modelFactory.CreateVideoView(fileName,selectedViewIndex,source)
     this.views[this.selectedViewIndex] = localView;
+    this.setSelectedView(localView, this.selectedViewIndex);
     this.evaluateCaptureViews();
   }
   //Code for ViewOptions end

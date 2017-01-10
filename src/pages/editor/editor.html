@@ -1,74 +1,64 @@
 <ion-header no-border>
-
 	<ion-toolbar color="primary" no-border-bottom>
 		<ion-buttons>
 			<button (click)="saveMatrix()" icon-only ion-button><ion-icon name="arrow-back"></ion-icon></button>
 			<button (click)="saveMatrix()" ion-button><span style="text-transform: capitalize; font-size:20px">{{matrix._Title}}</span>
-</button>
-</ion-buttons>
-<!--<ion-title>{{matrix._Title}}</ion-title>-->
-<ion-buttons end>
-	<button ion-button icon-only clear (click)="presentInfoModal()" style="text-transform: initial;">
-<ion-icon name="list-box"></ion-icon>Info</button>
-<button ion-button icon-only (click)="presentMoreActions($event)"><ion-icon name="more"></ion-icon></button>
-</ion-buttons>
-</ion-toolbar>
-<ion-row>
-	<ion-col text-center center *ngFor="let view of views; let i = index" (click)="showViewSegment(i)" [command]="deleteView"
+			</button>
+		</ion-buttons>
+		<!--<ion-title>{{matrix._Title}}</ion-title>-->
+		<ion-buttons end>
+			<button ion-button icon-only clear (click)="presentInfoModal()" style="text-transform: initial;">
+				<ion-icon name="list-box"></ion-icon>Info</button>
+			<button ion-button icon-only (click)="presentMoreActions($event)"><ion-icon name="more"></ion-icon></button>
+		</ion-buttons>
+	</ion-toolbar>
+	<ion-row>
+		<ion-col text-center center *ngFor="let view of views; let i = index" (click)="setSelectedView(view, i)" [command]="deleteView"
 		[cmdArgs]="deleteViewSource(i)" [usePress]="true" [class.selectedview]="i == selectedViewIndex" [class.view]="i != selectedViewIndex">
-		<span ion-text [hidden]="views.length > 5" color="primary">View </span><span color="primary">{{i+1}}</span>
-	</ion-col>
-	<button ion-button icon-only clear [command]="addView" [usePress]="false" [cmdArgs]="addViewSource()"><ion-icon name="add-circle"></ion-icon></button>
-</ion-row>
-
+			<span ion-text [hidden]="views.length > 5" color="primary">View </span><span color="primary">{{i+1}}</span>
+		</ion-col>
+		<button ion-button icon-only clear [command]="addView" [usePress]="false" [cmdArgs]="addViewSource()"><ion-icon name="add-circle"></ion-icon></button>
+	</ion-row>
 </ion-header>
 
 <ion-content no-bounce style="background:#f4f4f4;" [ngSwitch]="selectedViewIndex">
-<div style="height:100%;" *ngFor="let view of views; let i = index" [hidden]="hideViewSegment(selectedViewIndex,i)">
-<!--ViewCanvasTemplate-->
-<canvas-component *ngIf="view.Content.PIP" [view]="view"></canvas-component>
-<!--ViewVideoTemplate-->
-<video-component *ngIf="view.Content.Capture" [view]="view" [viewindex]="i"></video-component>
-<!--viewOptions-->
-<ion-row *ngIf="(!view.Content.Capture)&&(!view.Content.PIP)" style="height:100%;">
-<ion-col no-padding center text-center>
-	<ion-grid no-padding style="max-width:460px ;margin-left: auto;margin-right: auto;">
-<div class="items">
-	<!--<div class="itemm">
-		<ion-card [command]="addBlankCanvas" [usePress]="false" [cmdArgs]="addCanvasSource()">
-			<ion-item>
-				<ion-icon name="easel" item-left></ion-icon>
-				Blank Canvas
-			</ion-item>
-		</ion-card>
-	</div>-->
-	<div class="itemm">
-		<ion-card [command]="chooseVideo" [usePress]="false" [cmdArgs]="addCaptureSource()">
-			<ion-item>
-				<ion-icon name="ios-film" item-left></ion-icon>
-				<h2 class="textTrim">Add Video</h2>
-			</ion-item>
-		</ion-card>
+	<div style="height:100%;" >
+		<!--ViewCanvasTemplate-->
+		<canvas-component *ngIf="selectedView?.Content?.PIP" [view]="selectedView"></canvas-component>
+		<!--ViewVideoTemplate-->
+		<video-component *ngIf="selectedView?.Content?.Capture" [view]="selectedView" [viewindex]="selectedViewIndex"></video-component>
+		<!--viewOptions-->
+		<ion-row *ngIf="(!selectedView?.Content?.Capture)&&(!selectedView?.Content?.PIP)" style="height:100%;">
+			<ion-col no-padding center text-center>
+				<ion-grid no-padding style="max-width:460px ;margin-left: auto;margin-right: auto;">
+					<div class="items">
+						<div class="itemm">
+							<ion-card [command]="chooseVideo" [usePress]="false" [cmdArgs]="addCaptureSource()">
+								<ion-item>
+									<ion-icon name="ios-film" item-left></ion-icon>
+									<h2 class="textTrim">Add Video</h2>
+								</ion-item>
+							</ion-card>
+						</div>
+						<div class="itemm">
+							<ion-card [command]="recordVideo" [usePress]="false" [cmdArgs]="addPhoneCaptureSource()">
+								<ion-item>
+									<ion-icon name="videocam" item-left></ion-icon>
+									<h2 class="textTrim">Record Video</h2>
+								</ion-item>
+							</ion-card>
+						</div>
+						<div class="itemm" *ngIf="views.length == 1">
+							<ion-card [command]="ipCamCapture" [usePress]="false" [cmdArgs]="ipCamCaptureSource()">
+								<ion-item style="background-color:white;">
+									<ion-icon name="wifi" item-left></ion-icon>
+									<h2 class="textTrim">IP Cams Record</h2>
+								</ion-item>
+							</ion-card>
+						</div>
+					</div>
+				</ion-grid>
+			</ion-col>
+		</ion-row>
 	</div>
-	<div class="itemm">
-		<ion-card [command]="recordVideo" [usePress]="false" [cmdArgs]="addPhoneCaptureSource()">
-			<ion-item>
-				<ion-icon name="videocam" item-left></ion-icon>
-				<h2 class="textTrim">Record Video</h2>
-			</ion-item>
-		</ion-card>
-	</div>
-	<div class="itemm" *ngIf="views.length == 1">
-		<ion-card [command]="ipCamCapture" [usePress]="false" [cmdArgs]="ipCamCaptureSource()">
-			<ion-item style="background-color:white;">
-<ion-icon name="wifi" item-left></ion-icon>
-<h2 class="textTrim">IP Cams Record</h2>
-</ion-item>
-</ion-card>
-</div>
-</div>
-</ion-grid>
-</ion-col>
-</ion-row>
-</div>
 </ion-content>
