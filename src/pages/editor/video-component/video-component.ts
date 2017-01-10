@@ -1,4 +1,6 @@
 import { Component, ViewChild, Input, ElementRef } from '@angular/core';
+import { VideoEditor } from 'ionic-native';
+
 import { Storage } from '../../../Services/Factory/Storage';
 import { StorageFactory } from '../../../Services/Factory/StorageFactory';
 import { AlertControllers } from '../../../Services/Alerts';
@@ -87,10 +89,17 @@ export class VideoComponent {
         this.video.setAttribute('preload', "auto");
         this.video.play();
         this.video.pause();
-        this._logger.Debug("View " + (this.viewindex + 1) + ': Video Info: ' + "Duration: " + this.formatTime(this.video.duration) +
-            ", Source: " + this.video.currentSrc +
-            ", Resolution: " + this.video.videoWidth + "*" + this.video.videoHeight
-        );
+        VideoEditor.getVideoInfo({ fileUri: this.video.currentSrc })
+            .then(res => {
+                this._logger.Debug("View " + (this.viewindex + 1) + '; Video Info:: '
+                    + "Duration: " + this.formatTime(res.duration) +
+                    ", Source: " + this.video.currentSrc +
+                    ", Resolution: " + res.width + "*" + res.height +
+                    ", Bitrate: " + res.bitrate +
+                    ", Size: " + res.size 
+                );
+            })
+            .catch(err => this._logger.Error("Error getting video info: ", err));
 
         if (this.timelineDuration == undefined || this.timelineDuration == "00:00:00.00" || this.viewBoxSize == "0 0 0 0") {
             this.timelineDuration = this.formatTime(this.video.duration);

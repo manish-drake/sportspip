@@ -25,7 +25,7 @@ declare var navigator: any;
   selector: 'page-editor',
   templateUrl: 'editor.html',
   providers: [Connection, ModelFactory,
-    AddView, SaveMatrix, DeleteView, AddCapture, AddPhoneCapture, AddCanvas,AddIpCamCapture],
+    AddView, SaveMatrix, DeleteView, AddCapture, AddPhoneCapture, AddCanvas, AddIpCamCapture],
 })
 
 export class EditorPage {
@@ -36,6 +36,7 @@ export class EditorPage {
   matrix: any;
   views = [];
 
+  isAndroid: boolean = false;
 
   constructor(public navCtrl: NavController,
     private storage: Storage,
@@ -73,6 +74,16 @@ export class EditorPage {
     else {
       this.views.push(this.matrix["Matrix.Children"]["View"]);
     }
+
+    if (this.platform.is('cordova')) {
+      if (this.platform.is('android')) {
+        this.isAndroid = true;
+      }
+    }
+  }
+
+  ionViewWillEnter() {
+    this._logger.Debug('Editor page Enter');
     this.evaluateCaptureViews();
   }
 
@@ -136,7 +147,7 @@ export class EditorPage {
         this._logger.Error("Error,Matrix file saving..", err);
         this.navCtrl.pop();
       });
-      
+
     } else this.navCtrl.pop();
   }
 
@@ -217,8 +228,8 @@ export class EditorPage {
   }
 
 
-  CreateVideoView(fileName,selectedViewIndex,source) {
-   var localView =this.modelFactory.CreateVideoView(fileName,selectedViewIndex,source)
+  CreateVideoView(fileName, selectedViewIndex, source) {
+    var localView = this.modelFactory.CreateVideoView(fileName, selectedViewIndex, source)
     this.views[this.selectedViewIndex] = localView;
     this.setSelectedView(localView, this.selectedViewIndex);
     this.evaluateCaptureViews();
