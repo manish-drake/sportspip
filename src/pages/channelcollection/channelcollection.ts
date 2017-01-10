@@ -1,16 +1,15 @@
 import { Component } from '@angular/core';
-
 import { Storage } from '../../Services/Factory/Storage';
 import { Package } from '../../Services/Package';
 import { Utils } from '../../Services/common/utils';
 import { Observable } from 'rxjs/Rx';
 import { AlertControllers } from '../../Services/Alerts';
 import { Core } from '../../Services/core';
+import { Download } from '../../Services/Action/Download';
 import {
   NavController, PopoverController, NavParams,
-  ActionSheetController, AlertController, ViewController, Platform, LoadingController
+  ActionSheetController, ViewController, Platform, LoadingController
 } from 'ionic-angular';
-
 import { Logger } from '../../logging/logger';
 
 
@@ -23,6 +22,7 @@ import { Logger } from '../../logging/logger';
 @Component({
   selector: 'page-channelcollection',
   templateUrl: 'channelcollection.html',
+  providers: [Download]
 })
 export class ChannelCollectionPage {
 
@@ -31,17 +31,14 @@ export class ChannelCollectionPage {
   TempMatrix = [];
   dataDir: any;
 
-  constructor(public navCtrl: NavController, params: NavParams,
+  constructor(params: NavParams,
+    private download: Download,
     private storage: Storage,
     private core: Core,
     private utils: Utils,
     private actionSheetCtrl: ActionSheetController,
     private platform: Platform,
-    private alertCtrl: AlertController,
-    private alertCtrls: AlertControllers,
     private popoverController: PopoverController,
-    private packages: Package,
-    private loadingCtrl: LoadingController,
     private _logger: Logger) {
     this.dataDir = this.storage.externalDataDirectory();
     this.channel = params.get("firstPassed");
@@ -105,107 +102,44 @@ export class ChannelCollectionPage {
     popover.present({ ev: event });
   }
 
-  DeleteChannelMatrix(DirName, Channel, index) {/*$Candidate for refactoring$*///can go to actions
+  DeleteChannelMatrix(DirName, Channel, index) {
     this.core.DeleteServerHeader(DirName, Channel);
     this.channelMatrices.splice(index, 1);
   }
 
-  DownloadServerHeaderAsync(fileName, channelName, index) {/*$Candidate for refactoring$*///This function really needs SOME refactoring..also, can go to actions
-    this._logger.Debug('Download server header async..');
-    try {
-      let loader = this.loadingCtrl.create({
-        content: 'Downloading..',
-        duration: 300000
-      });
-      loader.present();
+  private _downloadMatrix: Download;
+  public get downloadMatrix(): Download {
+    return this.download;
+  }
 
-      var authenticate = this.AuthenticateUser();
-      if (authenticate) {
-
-        this.packages.DownloadServerHeader(fileName, channelName).then((serverHeader) => {
-          Observable.interval(2000)/*$Candidate for refactoring$*///BAD!!
-            .take(3).map((x) => x + 5)
-            .subscribe((x) => {
-              this.packages.unzipPackage();
-              console.log("unzip");
-            })
-          Observable.interval(4000)/*$Candidate for refactoring$*///BAD!!
-            .take(1).map((x) => x + 5)
-            .subscribe((x) => {
-              this.packages.MoveToLocalCollection(channelName);
-              console.log("matrix moved");
-            })
-          Observable.interval(6000)/*$Candidate for refactoring$*///BAD!!
-            .take(1).map((x) => x + 5)
-            .subscribe((x) => {
-              this.core.ReadMatrixFile("file:/storage/emulated/0/DCIM", "Temp").then(() => {
-                this.DeleteChannelMatrix(fileName, channelName, index);
-                console.log("delete server header");
-                loader.dismiss();
-              });
-            })
-        })
-
-      }
-    }
-    catch (err) {
-      this._logger.Error('Error,downloading server header async: ', err);
+  downloadMatrixSource(index, matrix) {
+    return {
+      "index": index,
+      "matrix": matrix,
+      "channelCollection":this
     }
   }
 
-  AuthenticateUser() {
-    console.log("Authenticatnig user..");
-    return true;/*$Candidate for refactoring$*///WOW! We'll have to write the code some day!
-  }
-
-
-  
-  private _download : string;
-  public get download() : string {
-    return this._download;
-  }
-
-  channelMatrixClicked(index,matrix) {/*$Candidate for refactoring$*///can go to actions
-    this._logger.Debug('Channel matrix clicked..');
-      let confirm = this.alertCtrl.create({/*$Candidate for refactoring$*///I see this code snippet used at many places elesewhere to create alert. Can't you create one function in /services/common/alerts.ts that can help create alerts from all the places?  
-        title: ' Download Confirmation?',
-        buttons: [
-          {
-            text: 'Cancel',
-            handler: () => { console.log('Cancel clicked'); }
-          },
-          {
-            text: 'Download',
-            handler: () => {
-              console.log('Download clicked');
-              this.DownloadServerHeaderAsync(matrix.Name, matrix.Channel, index);
-            }
-          }
-        ]
-      });
-      confirm.present();
-  }
-
-  channelMatrixPressed(index,matrix) {/*$Candidate for refactoring$*///can go to actions
+  channelMatrixPressed(index, matrix) {/*$Candidate for refactoring$*///can go to actions
     this._logger.Debug('Channel matrix pressed..');
-      let actionSheet = this.actionSheetCtrl.create({/*$Candidate for refactoring$*///same as the comment for alerts..
-        title: matrix.Title,
-        buttons: [{
-          icon: 'trash',
-          text: 'Delete',
-          role: 'destructive',
-          handler: () => {
-            this.DeleteChannelMatrix(matrix.Name, matrix.Channel, index);
-          }
-        }, {
-          icon: 'close',
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => { }
+    let actionSheet = this.actionSheetCtrl.create({/*$Candidate for refactoring$*///same as the comment for alerts..
+      title: matrix.Title,
+      buttons: [{
+        icon: 'trash',
+        text: 'Delete',
+        role: 'destructive',
+        handler: () => {
+          this.DeleteChannelMatrix(matrix.Name, matrix.Channel, index);
         }
-        ]
-      });
-      actionSheet.present();
+      }, {
+        icon: 'close',
+        text: 'Cancel',
+        role: 'cancel',
+        handler: () => { }
+      }
+      ]
+    });
+    actionSheet.present();
   }
 }
 @Component({/*$Candidate for refactoring$*///Rename this class and take it to a separate file or justify why this class is hding here?

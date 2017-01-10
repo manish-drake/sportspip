@@ -56,7 +56,7 @@ export class Package {
                     switch (sliced) {
                         case '.mtx':
                             let parser: any = new X2JS();
-                           return this.httpService.GetFileFromServer(file.nativeURL).then(data => {
+                            return this.httpService.GetFileFromServer(file.nativeURL).then(data => {
                                 console.log("mtx moving...");
                                 var matrixdata = parser.xml2js(data["_body"]);
                                 var matrix = matrixdata.Matrix;
@@ -94,10 +94,10 @@ export class Package {
                     const ft = new FileTransfer();
                     var url = encodeURI("https://sportspipstorage.blob.core.windows.net/matrices/" + channelName + "/" + fileName + ".sar");
                     // var url = encodeURI("https://drake.blob.core.windows.net/matrices/Harvest/636049183928404138.sar");
-                    ft.download(url, NewPath + "m1.zip",
+                    return ft.download(url, NewPath + "m1.zip",
                         function (entry) {
                             console.log("download complete: " + entry.toURL());
-                            return;
+                            return true;
                         },
                         function (error) {
                             console.log("download error source " + error.source);
@@ -106,7 +106,6 @@ export class Package {
                             return;
                         },
                         true);
-                    return success["nativeURL"];
                 })
             })
         })

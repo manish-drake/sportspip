@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController, AlertController, NavParams, LoadingController, Platform } from 'ionic-angular';
+import { NavController, NavParams, LoadingController, Platform } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { DirectoryEntry } from 'ionic-native';
 import { Observable } from 'rxjs/Rx';
@@ -43,10 +43,8 @@ export class Ipcameras {
     private ipCamRecording: IPCamRecording,
     private storage: Storage,
     public navCtrl: NavController,
-    private modalCtrl: ModalController,
     private http: Http,
     private backGroundTransferProcessIP: BackGroundTransferProcessIP,
-    private alertCtrl: AlertController,
     private alertCtrls: AlertControllers,
     private loadingCtrl: LoadingController,
     private platform: Platform,
@@ -98,25 +96,11 @@ export class Ipcameras {
   connectionAlert() {
     this.isLoading = false;
     this.isConnected = false;
-    let alert = this.alertCtrl.create({
-      title: 'Not connected!',
-      message: 'Please connect to an available server.',
-      buttons: [
-        {
-          text: 'Connect',
-          handler: () => {
-            this.openConnectivity();
-          }
-        },
-        {
-          text: 'Cancel',
-          handler: () => {
-            alert.dismiss();
-          }
-        }
-      ]
+    this.alertCtrls.ConfirmationAlert("Not connected!", "Please connect to an available server.", "Connect").then((res) => {
+      if (res.toString() == "Connect") {
+        this.openConnectivity();
+      }
     });
-    alert.present();
   }
 
   getIPCam() {
@@ -232,11 +216,12 @@ export class Ipcameras {
     name = name + "_" + this.index + ".mp4";
     this._logger.Debug("Getting video" + name + " from network");
     return this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP).then((blob) => {
+
       return this.storagefactory.CreateFile(this.rootDir + "SportsPIP/Video", name)
         .then((success) => {
           return this.storagefactory.WriteFile(this.rootDir + "SportsPIP/Video", name, blob["response"].slice(8))
             .then((success) => {
-              this._logger.Debug(name + " video received successfully from network and length ="+blob["response"].length);
+              this._logger.Debug(name + " video received successfully from network and length =" + blob["response"].length);
               this.index++;
               if (this.index > this.ipCams.length) { return success["nativeUrl"] }
               else { return this.GetVideoFileFromServer(name.slice(0, -6), connectedServerIP); }
@@ -266,8 +251,8 @@ export class Ipcameras {
 
   createViews(fileName) {/*$Candidate for refactoring$*///needs a lot of refactoring. Please make this function static and you'll know all what you have to change. It could be a simple function creating views for a file, taking as argument all what it needs to create views. Instead, it is performing multiple tasks mixing uneven intents
     this.ipCams.forEach((element, index) => {
-      if (index > 0){this.selectedViewIndex++;}
-       this.createVideoView(fileName + "_" + (index + 1) + ".mp4");
+      if (index > 0) { this.selectedViewIndex++; }
+      this.createVideoView(fileName + "_" + (index + 1) + ".mp4");
     })
   }
 

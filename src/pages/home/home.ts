@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ActionSheetController, AlertController, PopoverController, Platform, LoadingController } from 'ionic-angular';
+import { NavController, ActionSheetController, PopoverController, Platform, LoadingController } from 'ionic-angular';
 import { File, AppVersion, Device } from 'ionic-native';
 import { HomeMorePopover } from '../../pages/homemore-popover/homemore-popover';
 import { AlertControllers } from '../../Services/Alerts';
@@ -51,7 +51,6 @@ export class HomePage {
         private openmatrix: OpenMatrix,
         private popoverCtrl: PopoverController,
         private actionSheetCtrl: ActionSheetController,
-        private alertCtrl: AlertController,
         private alertCtrls: AlertControllers,
         private packages: Package,
         private loadingCtrl: LoadingController,
@@ -201,23 +200,10 @@ export class HomePage {
     }
 
     channelMatrixClicked(index, matrix, value) {
-        let confirm = this.alertCtrl.create({
-            title: ' Download Confirmation?',
-            buttons: [
-                {
-                    text: 'Cancel',
-                    handler: () => { console.log('Cancel clicked'); }
-                },
-                {
-                    text: 'Download',
-                    handler: () => {
-                        console.log('Download clicked');
-                        this.DownloadServerHeaderAsync(matrix.Name, matrix.Channel, index, value);
-                    }
-                }
-            ]
-        });
-        confirm.present();
+        this.alertCtrls.ConfirmationAlert("Download Confirmation?", null, "Download").then((res) => {
+            if (res.toString() == "Download")
+                this.DownloadServerHeaderAsync(matrix.Name, matrix.Channel, index, value);
+        })
     }
 
     channelMatrixPressed(index, matrix, value) {
@@ -343,7 +329,7 @@ export class HomePage {
 
     // For testing only --starts
     testOpenMatrix() {
-        this.core.ReadMatrixFile("assets","matrix1.mtx")
+        this.core.ReadMatrixFile("assets", "matrix1.mtx")
             .then(data => {
                 var res = JSON.parse(data.toString());
 

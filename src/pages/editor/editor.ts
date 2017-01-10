@@ -1,7 +1,5 @@
 import { Component, Injectable } from '@angular/core';
-import {
-  NavController, NavParams, ModalController, Platform, LoadingController, Events, PopoverController, ViewController
-} from 'ionic-angular';
+import {NavController, NavParams, ModalController, Platform, LoadingController, Events, PopoverController, ViewController} from 'ionic-angular';
 import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 import { Compareview } from '../editor/compareview/compareview'
 import { Swipeview } from '../editor/swipeview/swipeview';

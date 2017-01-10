@@ -34,16 +34,15 @@ export class SaveMatrix {
     }
 
     private GetThumbName(matrix) {
-        var name: "thumbnail";
+        var name = "thumbnail";
         matrix['Matrix.Children'].View.forEach(view => {
-            if (name == undefined) {
-                if (view.Content !== undefined) {
-                    if (view.Content.Capture != undefined) {
-                        console.log("enter........")
-                        var kernel = view.Content.Capture._Kernel;
-                        name = kernel.slice(0, -4).split(" ");
-                        this.modelFactory.CreateThumbnail(kernel, name);
-                    }
+            if (view.Content !== undefined) {
+                if (view.Content.Capture != undefined) {
+                    console.log("enter........")
+                    var kernel = view.Content.Capture._Kernel;
+                    name = kernel.slice(0, -4).split(" ");
+                    this.modelFactory.CreateThumbnail(kernel, name);
+                     return name;
                 }
             }
         });
