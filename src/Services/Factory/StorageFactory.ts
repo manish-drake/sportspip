@@ -34,12 +34,12 @@ export class StorageFactory {
         return File.writeFile(path, fileName, content, this.writeOptions);
     }
 
-    CopyFile(filepath, fileName, newFilePath, newFileName): Promise<any> {
-        return File.copyFile(filepath, fileName, newFilePath, fileName);
+    CopyFile(filePath, fileName, newFilePath, newFileName): Promise<any> {
+        return File.copyFile(filePath, fileName, newFilePath, newFileName);
     }
 
-    MoveFile(filepath, fileName, newFilePath, newFileName): Observable<string> {
-        return Observable.fromPromise(File.moveFile(filepath, fileName, newFilePath, newFileName))
+    MoveFile(filePath, fileName, newFilePath, newFileName): Observable<string> {
+        return Observable.fromPromise(File.moveFile(filePath, fileName, newFilePath, newFileName))
             .map(x => x["nativeUrl"]);
     }
 
