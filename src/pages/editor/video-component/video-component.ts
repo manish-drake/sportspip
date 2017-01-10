@@ -18,7 +18,9 @@ export class VideoComponent {
     @Input() viewindex: any;
 
     @ViewChild('video') videoElement: ElementRef;
+
     rootDir: String;
+
     constructor(private alertCtrls: AlertControllers,
         private storage: Storage,
         private storageFactory: StorageFactory,
@@ -85,29 +87,14 @@ export class VideoComponent {
 
     OnVideoMatadataLoad() {
         this._logger.Debug('OnVideoMatadataLoad');
+        this.timelineDuration = this.formatTime(this.video.duration);
+        this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
+        this.evaluateMarkerPosition();
         this.video.currentTime = .1;
         this.video.setAttribute('preload', "auto");
         this.video.play();
         this.video.pause();
-        VideoEditor.getVideoInfo({ fileUri: this.video.currentSrc })
-            .then(res => {
-                this._logger.Debug("View " + (this.viewindex + 1) + '; Video Info:: '
-                    + "Duration: " + this.formatTime(res.duration) +
-                    ", Source: " + this.video.currentSrc +
-                    ", Resolution: " + res.width + "*" + res.height +
-                    ", Bitrate: " + res.bitrate +
-                    ", Size: " + res.size 
-                );
-            })
-            .catch(err => this._logger.Error("Error getting video info: ", err));
-
-        if (this.timelineDuration == undefined || this.timelineDuration == "00:00:00.00" || this.viewBoxSize == "0 0 0 0") {
-            this.timelineDuration = this.formatTime(this.video.duration);
-            this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
-        }
-        else {
-            this.evaluateMarkerPosition();
-        }
+        this.logVideoInfo();
     }
 
     OnVideoEnded() {
@@ -159,6 +146,20 @@ export class VideoComponent {
                 error = "An unknown error occured"
         }
         return error;
+    }
+
+    logVideoInfo() {
+        VideoEditor.getVideoInfo({ fileUri: this.video.currentSrc })
+            .then(res => {
+                this._logger.Debug("View " + (this.viewindex + 1) + '; Video Info:: '
+                    + "Duration: " + this.formatTime(res.duration) +
+                    ", Source: " + this.video.currentSrc +
+                    ", Resolution: " + res.width + "*" + res.height +
+                    ", Bitrate: " + res.bitrate +
+                    ", Size: " + res.size
+                );
+            })
+            .catch(err => this._logger.Error("Error getting video info: ", err));
     }
 
     LoadMarkers() {
