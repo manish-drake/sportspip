@@ -51,7 +51,6 @@ export class VideoComponent {
         this._logger.Debug('Video-component Loaded');
         this.loadObjects();/*$Candidate for refactoring$*///Consider removing canvas for this component
         this.LoadMarkers();/*$Candidate for refactoring$*///Consider removing timeline from this component
-
         this.video = this.videoElement.nativeElement;
 
         this.video.addEventListener('loadedmetadata', () => {
@@ -65,18 +64,6 @@ export class VideoComponent {
         this.video.addEventListener('error', (error) => {
             this.OnVideoError(error);
         });
-
-        //Moved to the event listener for loadedmetadata
-        // var interval = setInterval(() => {
-        //     if (this.timelineDuration == undefined || this.timelineDuration == "00:00:00.00" || this.viewBoxSize == "0 0 0 0") {
-        //         this.timelineDuration = this.formatTime(this.video.duration);
-        //         this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
-        //     }
-        //     else {
-        //         clearInterval(interval);
-        //         this.evaluateMarkerPosition();
-        //     }
-        // }, 1 / 60);
 
         this.events.subscribe('viewoutoffocus', () => {
             if (!this.video.paused) {

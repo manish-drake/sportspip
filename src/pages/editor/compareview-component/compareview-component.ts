@@ -1,4 +1,6 @@
 import { Component, ViewChild, Input, ElementRef } from '@angular/core';
+
+import { Logger } from '../../../logging/logger';
 import { Storage } from '../../../Services/Factory/Storage';
 import {
     ModalController, Platform,
@@ -26,14 +28,15 @@ export class CompareviewComponent {
     video: HTMLVideoElement;
     rootDir: string;
     constructor(
+        private _logger: Logger,
         private storage: Storage,
         private modalCtrl: ModalController,
         private platform: Platform,
         private popoverCtrl: PopoverController,
         private events: Events) {
-            this.playPauseButtonIcon = "play";
-            this.rootDir = this.storage.externalRootDirectory();
-            this.timelinePosition = this.formatTime(0);
+        this.playPauseButtonIcon = "play";
+        this.rootDir = this.storage.externalRootDirectory();
+        this.timelinePosition = this.formatTime(0);
     }
 
     sliderValue: any = 0;
@@ -48,26 +51,22 @@ export class CompareviewComponent {
     viewBoxSize: any;
 
     ngAfterViewInit() {/*$Candidate for refactoring$*///Function too big, multiple intents targeted. try separating different intents into independent functions
+        this._logger.Debug('Compareview Component loaded');
         this.loadObjects();
         this.LoadMarkers();
         this.video = this.videoElement.nativeElement;/*$Candidate for refactoring$*///
 
-        this.video.addEventListener('loadedmetadata', () => { this.OnVideoMatadataLoad(); });
+        this.video.addEventListener('loadedmetadata', () => { 
+            this.OnVideoMatadataLoad(); 
+        });
 
-        this.video.addEventListener('ended', () => { this.OnVideoEnded(); });
+        this.video.addEventListener('ended', () => { 
+            this.OnVideoEnded(); 
+        });
 
-        this.video.addEventListener('error', (error) => { this.OnVideoError(error) });
-
-        var interval = setInterval(() => {
-            if (this.timelineDuration == undefined || this.timelineDuration == "00:00:00.00" || this.viewBoxSize == "0 0 0 0") {
-                this.timelineDuration = this.formatTime(this.video.duration);
-                this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
-            }
-            else {
-                clearInterval(interval);
-                this.evaluateMarkerPosition();
-            }
-        }, 1 / 60);
+        this.video.addEventListener('error', (error) => { 
+            this.OnVideoError(error) 
+        });
 
         this.events.subscribe('playviews', (mode) => {
             if (this.isLinked) {
@@ -123,7 +122,11 @@ export class CompareviewComponent {
     }
 
     OnVideoMatadataLoad() {
-        this.video.currentTime = 1;
+        this._logger.Debug('OnVideoMatadataLoad');
+        this.timelineDuration = this.formatTime(this.video.duration);
+        this.viewBoxSize = '0 0 ' + this.video.videoWidth + ' ' + this.video.videoHeight;
+        this.evaluateMarkerPosition();
+        this.video.currentTime = .1;
         this.oldCurrentTime = this.video.currentTime;
         this.video.setAttribute('preload', "auto");
         this.video.play();
@@ -138,7 +141,7 @@ export class CompareviewComponent {
         }
     }
 
-    OnVideoError(error) {        
+    OnVideoError(error) {
         console.log('Error in video Elmnt:' + JSON.stringify(error));
         // this.videoSrcAvailable = false;
     }

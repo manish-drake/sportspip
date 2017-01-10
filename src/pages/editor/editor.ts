@@ -30,8 +30,8 @@ declare var navigator: any;
 
 export class EditorPage {
 
-  selectedView:any;
-  selectedViewIndex: number;
+  selectedView: any;
+  selectedViewIndex: number = 0;
   rootDirectory: any;
   matrix: any;
   views = [];
@@ -66,8 +66,6 @@ export class EditorPage {
       this.matrix = this.params.data.matrixData;
       // console.log("editor page: " + this.matrix));
     }
-
-    this.selectedViewIndex = 0;
     if (this.matrix["Matrix.Children"]["View"] instanceof Array) {
       this.views = this.matrix["Matrix.Children"]["View"];
     }
@@ -75,6 +73,8 @@ export class EditorPage {
       this.views.push(this.matrix["Matrix.Children"]["View"]);
     }
 
+    this.setSelectedView(this.views[0], this.selectedViewIndex);
+    
     if (this.platform.is('cordova')) {
       if (this.platform.is('android')) {
         this.isAndroid = true;
@@ -118,8 +118,8 @@ export class EditorPage {
       this.events.publish('viewoutoffocus');
     }
   }
-  
-  setSelectedView(selectedView:any, viewindex: number) {
+
+  setSelectedView(selectedView: any, viewindex: number) {
     if ((viewindex != this.selectedViewIndex) || (this.selectedView != selectedView)) {
       this.selectedView = selectedView;
       this.selectedViewIndex = viewindex;
