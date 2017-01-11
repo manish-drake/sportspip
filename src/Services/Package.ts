@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
 import { Platform } from 'ionic-angular';
+import { DirectoryEntry } from 'ionic-native';
+
 import { StorageFactory } from './Factory/StorageFactory';
 import { Core } from './core';
 import { Storage } from './Factory/Storage';
 import { HttpService } from './httpService';
-import { DirectoryEntry } from 'ionic-native';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import X2JS from 'x2js';

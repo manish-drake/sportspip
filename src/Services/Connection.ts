@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Platform } from 'ionic-angular';
 import X2JS from 'x2js';
-import { Http } from '@angular/http';
 
 import { AlertControllers } from '../Services/Alerts';
 import { Logger } from '../logging/logger';
@@ -84,12 +83,12 @@ export class Connection {
     }
 
     close() {
-        this.platform.ready().then(() => {
+        if (this.platform.is('cordova')) {
             chrome.sockets.udp.close(Connection.socketId, function (info) {
                 Connection.servers.length = 0;
                 console.log('connection closed: ' + info);
             })
-        });
+        }
     }
 
     connect(server) {

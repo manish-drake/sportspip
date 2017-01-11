@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, ActionSheetController, PopoverController, Platform, LoadingController } from 'ionic-angular';
-import { File, AppVersion, Device } from 'ionic-native';
+import { AppVersion, Device } from 'ionic-native';
 import { HomeMorePopover } from '../../pages/homemore-popover/homemore-popover';
 import { AlertControllers } from '../../Services/Alerts';
 import 'rxjs/add/operator/map';
@@ -15,6 +15,7 @@ import { Storage } from '../../Services/Factory/Storage';
 import { Connection } from '../../Services/Connection';
 import { Logger } from '../../logging/logger';
 import { Connectivity } from '../connectivity/connectivity';
+import { StorageFactory } from '../../Services/Factory/StorageFactory';
 import { ModelFactory } from '../../Services/Factory/ModelFactory';
 import { Package } from '../../Services/Package';
 import { Core } from '../../Services/core';
@@ -46,6 +47,7 @@ export class HomePage {
         private core: Core,
         private duplicate: Duplicate,
         private storage: Storage,
+        private storageFactory: StorageFactory,
         private modelfactory: ModelFactory,
         private deleteHeader: DeleteHeader,
         private openmatrix: OpenMatrix,
@@ -333,14 +335,14 @@ export class HomePage {
                 var res = JSON.parse(data.toString());
 
                 if (this.platform.is('cordova')) {
-                    File.checkFile(this.dataDirectory + "SportsPIP/Video", 'sample.mp4').then(_ => {
+                    this.storageFactory.CheckFile(this.dataDirectory + "SportsPIP/Video", 'sample.mp4').then(_ => {
                         console.log('Sample video already exists');
                         this.testNavToEditor(res);
                     }).catch(err => {
 
-                        File.checkFile(this.applicationDirectory + '/www/assets/', 'sample.mp4').then(_ => {
+                        this.storageFactory.CheckFile(this.applicationDirectory + '/www/assets/', 'sample.mp4').then(_ => {
 
-                            File.copyFile(this.applicationDirectory + '/www/assets/', 'sample.mp4', this.dataDirectory + "SportsPIP/Video", 'sample.mp4').then(_ => {
+                            this.storageFactory.CopyFile(this.applicationDirectory + '/www/assets/', 'sample.mp4', this.dataDirectory + "SportsPIP/Video", 'sample.mp4').then(_ => {
                                 console.log('Sample video saved to application directory');
                                 this.testNavToEditor(res);
                             }).catch(err => {

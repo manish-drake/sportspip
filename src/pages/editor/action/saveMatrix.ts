@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ICommand } from '../../../Contracts/ICommand';
 import { Core } from '../../../Services/core';
 import { Logger } from '../../../logging/logger';
 import { Storage } from '../../../Services/Factory/Storage';

@@ -99,4 +99,5 @@
         <variable name="CAMERA_USAGE_DESCRIPTION" value="not using camera, just photolibrary" />
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="to get video" />
     </plugin>
+    <plugin name="cordova.plugins.diagnostic" spec="~3.3.2" />
 </widget>

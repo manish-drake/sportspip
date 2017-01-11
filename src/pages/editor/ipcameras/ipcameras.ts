@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, Platform } from 'ionic-angular';
 import { Http } from '@angular/http';
-import { DirectoryEntry } from 'ionic-native';
+
 import { Observable } from 'rxjs/Rx';
-import { IpCamSettingsModal } from '../../../pages/editor/ipcamsettings-modal/ipcamsettings-modal'
 import { Connection } from '../../../Services/Connection';
 import { Connectivity } from '../../connectivity/connectivity';
 import { StorageFactory } from '../../../Services/Factory/StorageFactory';
@@ -39,7 +38,7 @@ export class Ipcameras {
   timerDelay: number = 3;
   timerButtonOpacity: Number = 0.5;
   constructor(private saveMatrices: SaveMatrix,
-    private openSettingM: OpenSettingModal,
+  private openSettingM: OpenSettingModal,
     private ipCamRecording: IPCamRecording,
     private storage: Storage,
     public navCtrl: NavController,
