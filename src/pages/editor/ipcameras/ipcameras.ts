@@ -16,14 +16,6 @@ import { SaveMatrix } from '../action/saveMatrix';
 import { IPCamRecording } from '../ipcameras/action/ipCamRecording';
 import { OpenSettingModal } from '../ipcameras/action/openSettingModal';
 
-
-/*
-  Generated class for the Ipcamera page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
-
 @Component({
   selector: 'page-ipcameras',
   templateUrl: 'ipcameras.html',

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.ionicframework.sportspip439155" version="0.1.15" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.ionicframework.sportspip439155" version="0.1.16" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Sports PIP</name>
     <description>Sports PIP APP</description>
     <author email="manish@drake.in" href="http://sportspip.com/">cougar</author>
@@ -99,5 +99,4 @@
         <variable name="CAMERA_USAGE_DESCRIPTION" value="not using camera, just photolibrary" />
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="to get video" />
     </plugin>
-    <plugin name="cordova.plugins.diagnostic" spec="~3.3.2" />
 </widget>

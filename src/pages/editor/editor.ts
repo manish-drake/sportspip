@@ -34,8 +34,6 @@ export class EditorPage {
   matrix: any;
   views = [];
 
-  isAndroid: boolean = false;
-
   constructor(public navCtrl: NavController,
     private storage: Storage,
     private addCanvas: AddCanvas,
@@ -72,12 +70,6 @@ export class EditorPage {
     }
 
     this.setSelectedView(this.views[0], this.selectedViewIndex);
-    
-    if (this.platform.is('cordova')) {
-      if (this.platform.is('android')) {
-        this.isAndroid = true;
-      }
-    }
   }
 
   ionViewWillEnter() {
