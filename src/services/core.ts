@@ -151,34 +151,38 @@ export class Core {
         })
     }
 
-    CreateVideoFolder() {
+    CreateResourceDirectories() {
         this.platform.ready().then(() => {
             if (this.platform.is("cordova")) {
                 this.storageFactory.createFolder(this.storageRoot, "SportsPIP")
                     .then((success) => {
-                        var videoPath = this.storageRoot + "SportsPIP"
-                        this.storageFactory.createFolder(videoPath, "Video").then((success) => {
-                            this._logger.Debug("video folder created");
-                        }).catch((err) => { this._logger.Error('Error,creating video folder: ', err); })
+                        this._logger.Debug("SportsPIP folder created");
+                        this.CreateVideoFolder();
+                        this.CreatePictureFolder();
                     })
                     .catch((err) => { this._logger.Error('Error,creating video folder: ', err); });
             }
         })
     }
 
+    CreateVideoFolder() {
+        var Path = this.storageRoot + "SportsPIP"
+        this.storageFactory.createFolder(Path, "Video")
+            .then((success) => {
+                this._logger.Debug("video folder created");
+            }).catch((err) => {
+                this._logger.Error('Error,creating video folder: ', err);
+            })
+    }
+
     CreatePictureFolder() {
-        this.platform.ready().then(() => {
-            if (this.platform.is("cordova")) {
-                this.storageFactory.createFolder(this.storageRoot, "SportsPIP")
-                    .then((success) => {
-                        var picturePath = this.storageRoot + "SportsPIP"
-                        this.storageFactory.createFolder(picturePath, "Picture").then((success) => {
-                            this._logger.Debug("Picture folder created");
-                        }).catch((err) => { this._logger.Error('Error,creating Picture folder: ', err); })
-                    })
-                    .catch((err) => { this._logger.Error('Error,creating Picture folder: ', err); });
-            }
-        })
+        var Path = this.storageRoot + "SportsPIP"
+        this.storageFactory.createFolder(Path, "Picture")
+            .then((success) => {
+                this._logger.Debug("Picture folder created");
+            }).catch((err) => {
+                this._logger.Error('Error,creating Picture folder: ', err);
+            })
     }
 
 
@@ -202,7 +206,7 @@ export class Core {
                     })
                 })
 
-            }).catch((err)=>{this._logger.Error('Error,getting local header: ', err);});
+            }).catch((err) => { this._logger.Error('Error,getting local header: ', err); });
         })
 
     }
@@ -225,7 +229,7 @@ export class Core {
                         });
                     });
                 })
-            }).catch((err)=>{this._logger.Error('Error,getting server header: ', err);});
+            }).catch((err) => { this._logger.Error('Error,getting server header: ', err); });
         })
     }
 
@@ -246,19 +250,19 @@ export class Core {
                         });
                 });
 
-             }).catch((err)=>{this._logger.Error('Error,getting server header: ', err);});
+            }).catch((err) => { this._logger.Error('Error,getting server header: ', err); });
         })
 
     }
 
 
-    ReadMatrixFile(path,fileName){
-       return this.storageFactory.ReadFileAync(path,fileName).then((data)=>{
-           return data;
-       })
+    ReadMatrixFile(path, fileName) {
+        return this.storageFactory.ReadFileAync(path, fileName).then((data) => {
+            return data;
+        })
     }
 
-    RemoveMatrixFile(path,fileName){
-       return this.storageFactory.RemoveFileAsync(path,fileName).toPromise()
+    RemoveMatrixFile(path, fileName) {
+        return this.storageFactory.RemoveFileAsync(path, fileName).toPromise()
     }
 }

@@ -77,8 +77,7 @@ export class HomePage {
     ionViewDidLoad() {
         this.platform.ready().then(() => {
             this.logDeviceInfo();
-            this.core.CreateVideoFolder();
-            this.core.CreatePictureFolder();
+            this.core.CreateResourceDirectories();
             this.connection.scanUdp();
         });
     }
