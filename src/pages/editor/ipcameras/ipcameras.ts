@@ -188,9 +188,11 @@ export class Ipcameras {
     dismissOnPageChange: true
   });
 
+  private videoFilePrefix: string;
   index = 1;
   TransferMatrix(fileName, connectedServerIP) {
     this.loader.setContent('Transferring Matrix..');
+    this.videoFilePrefix = fileName;
     this.backGroundTransferProcessIP.transferMatrix(fileName, this.recordingDuration, this.ipCams.length, connectedServerIP)
       .then((res) => {
         if (res) {
@@ -210,7 +212,7 @@ export class Ipcameras {
     name = name + "_" + this.index + ".mp4";
     this._logger.Debug("Getting video" + name + " from network");
     this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP).subscribe((blob) => {
-      
+
       this.storagefactory.CreateFile(this.rootDir + "SportsPIP/Video", name)
         .then((success) => {
           this.storagefactory.WriteFile(this.rootDir + "SportsPIP/Video", name, blob.slice(8))
@@ -233,9 +235,13 @@ export class Ipcameras {
     this.loader.setContent('Saving..');
 
     this.saveMatrices.run(this.matrix._Channel, this.matrix._Name, this.views).then((res) => {
-      this.navCtrl.pop();
-      this.loader.dismiss();
 
+      this.experimentalIPCamVideoCopy(this.videoFilePrefix)
+        .subscribe(() => {
+          this.navCtrl.pop();
+          this.loader.dismiss();
+
+        });
     }).catch((err) => {
       this.loader.dismiss();
       this._logger.Error("Error,Matrix file saving..", err);
@@ -243,11 +249,21 @@ export class Ipcameras {
     });
   }
 
+  experimentalIPCamVideoCopy(fileName: string): Observable<any> {
+    var path = this.rootDir + "SportsPIP/Video";
+    var allFilesCopied = new Observable<any>();
+    this.ipCams.forEach((element, index) => {
+      var originalFileName = fileName + "_" + (index + 1) + ".mp4";
+      var copyFileName = fileName + "_" + (index + 1) + "_copy.mp4";
+      allFilesCopied.concat(this.storagefactory.CopyFile(path, originalFileName, path, copyFileName));
+    })
+    return allFilesCopied;
+  }
 
   createViews(fileName) {/*$Candidate for refactoring$*///needs a lot of refactoring. Please make this function static and you'll know all what you have to change. It could be a simple function creating views for a file, taking as argument all what it needs to create views. Instead, it is performing multiple tasks mixing uneven intents
     this.ipCams.forEach((element, index) => {
       if (index > 0) { this.selectedViewIndex++; }
-      this.createVideoView(fileName + "_" + (index + 1) + ".mp4");
+      this.createVideoView(fileName + "_" + (index + 1) + "_copy.mp4");
     })
   }
 
