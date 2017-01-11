@@ -49,8 +49,6 @@ export class VideoComponent {
 
     ngAfterViewInit() {
         this._logger.Debug('Video-component Loaded');
-        this.loadObjects();/*$Candidate for refactoring$*///Consider removing canvas for this component
-        this.LoadMarkers();/*$Candidate for refactoring$*///Consider removing timeline from this component
         this.video = this.videoElement.nativeElement;
 
         this.video.addEventListener('loadedmetadata', () => {
@@ -74,7 +72,20 @@ export class VideoComponent {
 
     OnVideoMatadataLoad() {
         this._logger.Debug('OnVideoMatadataLoad');
-        // this.timelineDuration = this.formatTime(this.video.duration);
+        this.sliderValue = 0;
+        this.timelinePosition = this.formatTime(0);
+        this.timelineDuration = this.formatTime(0);
+        this.repeatColor = "inactive";
+        this.playPauseButtonIcon = "play";
+        this.isVideoComponentVisible = true;
+        this.isErrorVisible = false;
+        this.markersDirectory = [];
+        this.viewBoxSize = "0 0 0 0";
+        this.markersobjects = [];
+        this.markers = [];
+
+        this.loadObjects();/*$Candidate for refactoring$*///Consider removing canvas for this component
+        this.LoadMarkers();/*$Candidate for refactoring$*///Consider removing timeline from this component
 
         this.video.currentTime = .1;
         this.video.setAttribute('preload', "auto");
