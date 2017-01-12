@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, ActionSheetController, PopoverController, Platform, LoadingController } from 'ionic-angular';
-import { File, AppVersion, Device } from 'ionic-native';
+import { AppVersion, Device } from 'ionic-native';
 import { HomeMorePopover } from '../../pages/homemore-popover/homemore-popover';
 import { AlertControllers } from '../../Services/Alerts';
 import 'rxjs/add/operator/map';
@@ -15,6 +15,7 @@ import { Storage } from '../../Services/Factory/Storage';
 import { Connection } from '../../Services/Connection';
 import { Logger } from '../../logging/logger';
 import { Connectivity } from '../connectivity/connectivity';
+import { StorageFactory } from '../../Services/Factory/StorageFactory';
 import { ModelFactory } from '../../Services/Factory/ModelFactory';
 import { Package } from '../../Services/Package';
 import { Core } from '../../Services/core';
@@ -31,7 +32,7 @@ declare var navigator: any;
 @Component({
     selector: 'page-home',
     templateUrl: 'home.html',
-    providers: [ModelFactory, DeleteHeader, Package, OpenMatrix, Connection, Duplicate,Download]
+    providers: [ModelFactory, DeleteHeader, Package, OpenMatrix, Connection, Duplicate, Download]
 })
 
 export class HomePage {
@@ -47,6 +48,7 @@ export class HomePage {
         private core: Core,
         private duplicate: Duplicate,
         private storage: Storage,
+        private storageFactory: StorageFactory,
         private download: Download,
         private modelfactory: ModelFactory,
         private deleteHeader: DeleteHeader,
@@ -79,8 +81,7 @@ export class HomePage {
     ionViewDidLoad() {
         this.platform.ready().then(() => {
             this.logDeviceInfo();
-            this.core.CreateVideoFolder();
-            this.core.CreatePictureFolder();
+            this.core.CreateResourceDirectories();
             this.connection.scanUdp();
         });
     }
@@ -140,7 +141,6 @@ export class HomePage {
     doRefreshLocal(refresher) {
         this.refreshing = true;
         this.localMatrices = [];
-
         setTimeout(() => {
             refresher.complete();
             this.GetLocalMatrixHeader();
@@ -237,11 +237,13 @@ export class HomePage {
         this.platform.ready().then(() => {
             if (this.platform.is('cordova')) {
                 this._logger.Debug('Getting local matrix header..');
-                this.core.GetLocalHeader().then((res) => {
-                    this.localMatrices = res;
-                }).catch((err) => {
-                    this._logger.Error('Error,Getting local matrix header..', err);
-                });
+                this.core.GetLocalHeader()
+                    .then((res) => {
+                        this.localMatrices = res;
+                    })
+                    .catch((err) => {
+                        this._logger.Error('Error,Getting local matrix header..', err);
+                    });
             }
         });
     }
@@ -255,11 +257,13 @@ export class HomePage {
         this.platform.ready().then(() => {
             if (this.platform.is('cordova')) {
                 this._logger.Debug('Getting server matrix header..');
-                this.core.GetServerHeader().then((res) => {
-                    this.channels = res;
-                }).catch((err) => {
-                    this._logger.Error('Error,Getting server matrix header..', err);
-                });
+                this.core.GetServerHeader()
+                    .then((res) => {
+                        this.channels = res;
+                    })
+                    .catch((err) => {
+                        this._logger.Error('Error,Getting server matrix header..', err);
+                    });
             }
         });
     }
@@ -341,27 +345,24 @@ export class HomePage {
                 var res = JSON.parse(data.toString());
 
                 if (this.platform.is('cordova')) {
-                    File.checkFile(this.dataDirectory + "SportsPIP/Video", 'sample.mp4').then(_ => {
-                        console.log('Sample video already exists');
-                        this.testNavToEditor(res);
-                    }).catch(err => {
-
-                        File.checkFile(this.applicationDirectory + '/www/assets/', 'sample.mp4').then(_ => {
-
-                            File.copyFile(this.applicationDirectory + '/www/assets/', 'sample.mp4', this.dataDirectory + "SportsPIP/Video", 'sample.mp4').then(_ => {
-                                console.log('Sample video saved to application directory');
+                    this.storageFactory.CheckFile(this.dataDirectory + "SportsPIP/Video", 'sample.mp4')
+                        .catch(err =>
+                            new Observable(err => {
+                                this.storageFactory.CheckFile(this.applicationDirectory + '/www/assets/', 'sample.mp4')
+                                    .catch(err => new Observable(err => {
+                                        console.log('Sample video not found in assets');
+                                        this.testNavToEditor(res);
+                                    })).subscribe(_ => {
+                                        this.storageFactory.CopyFile(this.applicationDirectory + '/www/assets/', 'sample.mp4', this.dataDirectory + "SportsPIP/Video", 'sample.mp4')
+                                            .subscribe(_ => {
+                                                console.log('Sample video saved to application directory');
+                                                this.testNavToEditor(res);
+                                            })
+                                    })
+                            })).subscribe(_ => {
+                                console.log('Sample video already exists');
                                 this.testNavToEditor(res);
-                            }).catch(err => {
-                                console.log('Failed saving video' + err);
-                                this.testNavToEditor(res);
-                            });
-
-                        }).catch(err => {
-                            console.log('Sample video not found in assets');
-                            this.testNavToEditor(res);
-                        });
-
-                    });
+                            })
                 }
                 else {
                     this.testNavToEditor(res);

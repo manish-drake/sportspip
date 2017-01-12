@@ -122,15 +122,13 @@ export class Core {
                 });
                 toast.present();
             })
-        }).catch((err) => {
-            this._logger.Error('Error,deleting server header: ', err);
         })
     }
 
     DeleteLocalHeader(DirName, channel) {
         this._logger.Debug('Delete local header..');
         this.platform.ready().then(() => {
-            var headerPath = this.storageDataDir + "Local/" + channel + "/Tennis/Matrices/"
+            var headerPath = this.storageDataDir + "Local/" + channel + "/Tennis/Matrices";
             this.RemoveMatrixFile(headerPath, DirName).subscribe((res) => {
                 let toast = this.toastCtrl.create({
                     message: 'Deleted Successfully..',
@@ -158,39 +156,40 @@ export class Core {
         })
     }
 
-    CreateVideoFolder() {
+    CreateResourceDirectories() {
         this.platform.ready().then(() => {
             if (this.platform.is("cordova")) {
                 this.storageFactory.createFolder(this.storageRoot, "SportsPIP")
-                    .catch(err => new Observable(err => { return this._logger.Error('Error,creating video folder: ', err); }))
                     .subscribe((success) => {
-                        var videoPath = this.storageRoot + "SportsPIP"
-                        this.storageFactory.createFolder(videoPath, "Video")
-                            .subscribe((success) => {
-                                this._logger.Debug("video folder created");
-                            })
+                        this._logger.Debug("SportsPIP folder created");
+                        this.CreateVideoFolder();
+                        this.CreatePictureFolder();
                     })
             }
         })
     }
 
+    CreateVideoFolder() {
+        var Path = this.storageRoot + "SportsPIP"
+        this.storageFactory.createFolder(Path, "Video")
+            .catch((err) => new Observable(err => { this._logger.Error('Error,creating video folder: ', err) }))
+            .subscribe((success) => {
+                this._logger.Debug("video folder created");
+            })
+    }
+
     CreatePictureFolder() {
-        this.platform.ready().then(() => {
-            if (this.platform.is("cordova")) {
-                this.storageFactory.createFolder(this.storageRoot, "SportsPIP")
-                    .catch(err => new Observable(err => { this._logger.Error('Error,creating Picture folder: ', err); }))
-                    .subscribe((success) => {
-                        var picturePath = this.storageRoot + "SportsPIP"
-                        this.storageFactory.createFolder(picturePath, "Picture").subscribe((success) => {
-                            this._logger.Debug("Picture folder created");
-                        })
-                    })
-            }
-        })
+        var Path = this.storageRoot + "SportsPIP"
+        this.storageFactory.createFolder(Path, "Picture")
+            .catch((err) => new Observable(err => { this._logger.Error('Error,creating Picture folder: ', err) }))
+            .subscribe((success) => {
+                this._logger.Debug("Picture folder created");
+            })
     }
 
 
     GetLocalHeader(): Promise<any> {
+        this._logger.Debug("Getting local header");
         var localMatrices = [];
         return new Promise((resolve, reject) => {
             return this.storageFactory.GetLisOfDirectory(this.storageDataDir, "Local").then((list) => {
@@ -210,11 +209,10 @@ export class Core {
 
                     })
                 })
-
             }).catch((err) => { this._logger.Error('Error,getting local header: ', err); });
         })
-
     }
+
 
     GetServerHeader(): Promise<any> {
         var channels = [];
@@ -232,7 +230,7 @@ export class Core {
                                     resolve(channels);
                                 });
                         });
-                    });
+                    })
                 })
             }).catch((err) => { this._logger.Error('Error,getting server header: ', err); });
         })
@@ -250,14 +248,11 @@ export class Core {
                             // var result = header.Header;
                             var item = this.modelFactory.ComposeHeader(result);
                             channels.unshift(item);
-
                             return resolve(channels);
                         });
                 });
-
-            }).catch((err) => { this._logger.Error('Error,getting server header: ', err); });
+            }).catch((err) => { this._logger.Error('Error,getting server header in channel collection page: ', err); });
         })
-
     }
 
 
@@ -276,4 +271,6 @@ export class Core {
             return err;
         })
     }
+
+
 }

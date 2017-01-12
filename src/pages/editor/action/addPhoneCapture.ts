@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ICommand } from '../../../Contracts/ICommand';
 import { CaptureVideoOptions, MediaFile, CaptureError, MediaCapture } from 'ionic-native';
+
 import { Logger } from '../../../logging/logger';
 import { AlertControllers } from '../../../Services/Alerts';
 import { BackGroundTransferProcess } from '../../../Services/BackGroundTransferProcess';

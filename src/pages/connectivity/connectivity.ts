@@ -13,14 +13,11 @@ import { Logger } from '../../logging/logger';
 
 declare var chrome: any;
 
-
-
 @Component({
     selector: 'page-connectivity',
     templateUrl: 'connectivity.html',
     providers: [Connection]
 })
-
 
 export class Connectivity implements DoCheck {
 

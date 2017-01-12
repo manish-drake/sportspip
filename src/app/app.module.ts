@@ -1,4 +1,4 @@
-import { NgModule, Directive, ErrorHandler } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { sportspip } from './app.component';
 
