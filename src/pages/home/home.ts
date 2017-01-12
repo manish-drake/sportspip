@@ -20,6 +20,7 @@ import { ModelFactory } from '../../Services/Factory/ModelFactory';
 import { Package } from '../../Services/Package';
 import { Core } from '../../Services/core';
 import { Utils } from '../../Services/common/utils';
+import { HttpService } from '../../Services/httpService';
 //Action
 import { Duplicate } from '../../Services/Action/Duplicate';
 import { DeleteHeader } from '../../Services/Action/DeleteHeader';
@@ -58,6 +59,7 @@ export class HomePage {
         private loadingCtrl: LoadingController,
         private connection: Connection,
         private utils: Utils,
+        private httpService: HttpService,
         private _logger: Logger) {
         platform.ready().then(() => {
             this.dataDirectory = this.storage.externalDataDirectory();
@@ -229,11 +231,11 @@ export class HomePage {
         this._logger.Debug('Duplicate  matrix..', );
         this.platform.ready().then(() => {
             this.duplicate.Run(channelName, matrixname)
-            .then((res) => {
-                this.localMatrices = [];
-                this.GetLocalMatrixHeader();
-            })
-            .catch((err) => { this._logger.Error('Error,Duplicate  matrix..', err); })
+                .then((res) => {
+                    this.localMatrices = [];
+                    this.GetLocalMatrixHeader();
+                })
+                .catch((err) => { this._logger.Error('Error,Duplicate  matrix..', err); })
         })
 
     }
@@ -247,12 +249,12 @@ export class HomePage {
             if (this.platform.is('cordova')) {
                 this._logger.Debug('Getting local matrix header..');
                 this.core.GetLocalHeader()
-                .then((res) => {
-                    this.localMatrices = res;
-                })
-                .catch((err) => {
-                    this._logger.Error('Error,Getting local matrix header..', err);
-                });
+                    .then((res) => {
+                        this.localMatrices = res;
+                    })
+                    .catch((err) => {
+                        this._logger.Error('Error,Getting local matrix header..', err);
+                    });
             }
         });
     }
@@ -267,12 +269,12 @@ export class HomePage {
             if (this.platform.is('cordova')) {
                 this._logger.Debug('Getting server matrix header..');
                 this.core.GetServerHeader()
-                .then((res) => {
-                    this.channels = res;
-                })
-                .catch((err) => {
-                    this._logger.Error('Error,Getting server matrix header..', err);
-                });
+                    .then((res) => {
+                        this.channels = res;
+                    })
+                    .catch((err) => {
+                        this._logger.Error('Error,Getting server matrix header..', err);
+                    });
             }
         });
     }
@@ -335,32 +337,36 @@ export class HomePage {
 
     // For testing only --starts
     testOpenMatrix() {
-        this.core.ReadMatrixFile("assets", "matrix1.mtx")
-            .then(data => {
-                var res = JSON.parse(data.toString());
+
+        this.httpService.GetFileFromServer("assets/matrix1.mtx")
+            .then(res => {
 
                 if (this.platform.is('cordova')) {
-                    this.storageFactory.CheckFile(this.dataDirectory + "SportsPIP/Video", 'sample.mp4').then(_ => {
-                        console.log('Sample video already exists');
-                        this.testNavToEditor(res);
-                    }).catch(err => {
-
-                        this.storageFactory.CheckFile(this.applicationDirectory + '/www/assets/', 'sample.mp4').then(_ => {
-
-                            this.storageFactory.CopyFile(this.applicationDirectory + '/www/assets/', 'sample.mp4', this.dataDirectory + "SportsPIP/Video", 'sample.mp4').then(_ => {
-                                console.log('Sample video saved to application directory');
-                                this.testNavToEditor(res);
-                            }).catch(err => {
-                                console.log('Failed saving video' + err);
-                                this.testNavToEditor(res);
-                            });
-
-                        }).catch(err => {
-                            console.log('Sample video not found in assets');
+                    this.storageFactory.CheckFile(this.dataDirectory + "SportsPIP/Video/", 'sample.mp4')
+                        .then(_ => {
+                            console.log('Sample video already exists');
                             this.testNavToEditor(res);
-                        });
+                        })
+                        .catch(err => {
+                            this.storageFactory.CheckFile(this.applicationDirectory + 'www/assets/', 'sample.mp4')
+                                .then(_ => {
+                                    this.storageFactory.CopyFile(this.applicationDirectory + 'www/assets/', 'sample.mp4', this.dataDirectory + "SportsPIP/Video/", 'sample.mp4')
+                                        .then(_ => {
+                                            console.log('Sample video saved to application directory');
+                                            this.testNavToEditor(res);
+                                        })
+                                        .catch(err => {
+                                            console.log('Failed saving video' + JSON.stringify(err));
+                                            this.testNavToEditor(res);
+                                        });
 
-                    });
+                                })
+                                .catch(err => {
+                                    console.log('Sample video not found in assets');
+                                    this.testNavToEditor(res);
+                                });
+
+                        });
                 }
                 else {
                     this.testNavToEditor(res);

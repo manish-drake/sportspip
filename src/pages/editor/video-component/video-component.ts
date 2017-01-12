@@ -75,7 +75,6 @@ export class VideoComponent {
         this.sliderValue = 0;
         this.timelinePosition = this.formatTime(0);
         this.timelineDuration = this.formatTime(0);
-        this.repeatColor = "inactive";
         this.playPauseButtonIcon = "play";
         this.isVideoComponentVisible = true;
         this.isErrorVisible = false;
