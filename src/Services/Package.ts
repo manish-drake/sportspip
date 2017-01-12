@@ -39,7 +39,7 @@ export class Package {
     MoveToLocalCollection(channelName) {
         this.fileName = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
         this.platform.ready().then(() => {
-            this.storagefactory.ReadFileAync(this.storageDataDir + "Temp/matrix1", "Header.xml").then((result => {
+            this.storagefactory.ReadFileAync(this.storageDataDir + "Temp/matrix1", "Header.xml").subscribe((result => {
                 console.log("header moving..");
                 var header = JSON.parse(result.toString());
                 header.Name = this.fileName;
@@ -57,9 +57,9 @@ export class Package {
                     switch (sliced) {
                         case '.mtx':
                             let parser: any = new X2JS();
-                            return this.httpService.GetFileFromServer(file.nativeURL).then(data => {
+                            return this.storagefactory.ReadFileAync(this.storageDataDir + "Temp/matrix1",file.name).subscribe(data => {
                                 console.log("mtx moving...");
-                                var matrixdata = parser.xml2js(data["_body"]);
+                                var matrixdata = parser.xml2js(data.toString());
                                 var matrix = matrixdata.Matrix;
                                 matrix._Name = this.fileName;
                                 matrix._Channel = this.channelName;
@@ -68,7 +68,7 @@ export class Package {
                                 });
                             })
                         case '.mp4':
-                            return this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1",  file.name, this.storageRootDirectory + "SportsPIP/Video", file.name)
+                            return this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", file.name, this.storageRootDirectory + "SportsPIP/Video", file.name)
                                 .subscribe((success) => { console.log("video moved"); });
                         case ".gif":
                         case ".rtf":
@@ -85,32 +85,33 @@ export class Package {
         })
     }
 
-    DownloadServerHeader(fileName, channelName): Promise<DirectoryEntry> {
-        return this.storagefactory.createFolder(this.storageDataDir, "Temp").then(() => {
-            var NewPath = this.storageDataDir + "Temp/";
-            return this.storagefactory.createFolder(NewPath, "matrix1").then(() => {
-                var matrixPath = NewPath + "matrix1/";
-                var oldPath = this.storageDataDir + "Server/" + channelName + "/Tennis/Matrices/" + fileName + "/";
-                return this.storagefactory.CopyFile(oldPath, "Header.xml", matrixPath, "Header.xml").then((success) => {
-                    const ft = new FileTransfer();
-                    var url = encodeURI("https://sportspipstorage.blob.core.windows.net/matrices/" + channelName + "/" + fileName + ".sar");
-                    // var url = encodeURI("https://drake.blob.core.windows.net/matrices/Harvest/636049183928404138.sar");
-                    return ft.download(url, NewPath + "m1.zip",
-                        function (entry) {
-                            console.log("download complete: " + entry.toURL());
-                            return true;
-                        },
-                        function (error) {
-                            console.log("download error source " + error.source);
-                            console.log("download error target " + error.target);
-                            console.log("download error code" + error.code);
-                            return;
-                        },
-                        true);
+    DownloadServerHeader(fileName, channelName): Promise<any> {
+        return new Promise((resolve, reject) => {
+            return this.storagefactory.createFolder(this.storageDataDir, "Temp").subscribe(() => {
+                var NewPath = this.storageDataDir + "Temp/";
+                return this.storagefactory.createFolder(NewPath, "matrix1").subscribe(() => {
+                    var matrixPath = NewPath + "matrix1/";
+                    var oldPath = this.storageDataDir + "Server/" + channelName + "/Tennis/Matrices/" + fileName + "/";
+                    return this.storagefactory.CopyFile(oldPath, "Header.xml", matrixPath, "Header.xml").subscribe((success) => {
+                        const ft = new FileTransfer();
+                        var url = encodeURI("https://sportspipstorage.blob.core.windows.net/matrices/" + channelName + "/" + fileName + ".sar");
+                        // var url = encodeURI("https://drake.blob.core.windows.net/matrices/Harvest/636049183928404138.sar");
+                         ft.download(url, NewPath + "m1.zip",
+                            function (entry) {
+                                console.log("download complete: " + entry.toURL());
+                                 resolve(true);
+                            },
+                            function (error) {
+                                console.log("download error source " + error.source);
+                                console.log("download error target " + error.target);
+                                console.log("download error code" + error.code);
+                                 reject(error);
+                            },
+                            true);
+                    })
                 })
             })
         })
-
     }
 
     AuthenticateUser(channel, userid) {

@@ -25,6 +25,7 @@ import { HttpService } from '../../Services/httpService';
 import { Duplicate } from '../../Services/Action/Duplicate';
 import { DeleteHeader } from '../../Services/Action/DeleteHeader';
 import { OpenMatrix } from '../../Services/Action/OpenMatrix';
+import { Download } from '../../Services/Action/Download';
 
 declare var FileTransfer: any;
 declare var navigator: any;
@@ -32,7 +33,7 @@ declare var navigator: any;
 @Component({
     selector: 'page-home',
     templateUrl: 'home.html',
-    providers: [ModelFactory, DeleteHeader, Package, OpenMatrix, Connection, Duplicate]
+    providers: [ModelFactory, DeleteHeader, Package, OpenMatrix, Connection, Duplicate, Download]
 })
 
 export class HomePage {
@@ -49,6 +50,7 @@ export class HomePage {
         private duplicate: Duplicate,
         private storage: Storage,
         private storageFactory: StorageFactory,
+        private download: Download,
         private modelfactory: ModelFactory,
         private deleteHeader: DeleteHeader,
         private openmatrix: OpenMatrix,
@@ -136,10 +138,6 @@ export class HomePage {
     }
 
 
-    // openMatrix(matrixName, Channel) {
-    //     this.openmatrix.run(matrixName, Channel);
-    // }
-
     refreshing: boolean = false;
 
     doRefreshLocal(refresher) {
@@ -201,13 +199,6 @@ export class HomePage {
         this.channels.splice(index, 1);
     }
 
-    channelMatrixClicked(index, matrix, value) {
-        this.alertCtrls.ConfirmationAlert("Download Confirmation?", null, "Download").then((res) => {
-            if (res.toString() == "Download")
-                this.DownloadServerHeaderAsync(matrix.Name, matrix.Channel, index, value);
-        })
-    }
-
     channelMatrixPressed(index, matrix, value) {
         let actionSheet = this.actionSheetCtrl.create({
             title: matrix.Title,
@@ -231,11 +222,11 @@ export class HomePage {
         this._logger.Debug('Duplicate  matrix..', );
         this.platform.ready().then(() => {
             this.duplicate.Run(channelName, matrixname)
+                .catch(err => new Observable(err => { this._logger.Error('Error,Duplicate  matrix..', err); }))
                 .then((res) => {
                     this.localMatrices = [];
                     this.GetLocalMatrixHeader();
                 })
-                .catch((err) => { this._logger.Error('Error,Duplicate  matrix..', err); })
         })
 
     }
@@ -279,41 +270,54 @@ export class HomePage {
         });
     }
 
-    DownloadServerHeaderAsync(fileName, channelName, index, value) {
-        let loader = this.loadingCtrl.create({
-            content: 'Downloading..',
-            duration: 30000
-        });
-        loader.present();
-        var authenticate = this.AuthenticateUser();
-        if (authenticate) {
-            this.packages.DownloadServerHeader(fileName, channelName).then((serverHeader) => {
-                Observable.interval(2000)
-                    .take(3).map((x) => x + 5)
-                    .subscribe((x) => {
-                        this.packages.unzipPackage();
-                        console.log("unzip");
-                    })
-                Observable.interval(4000)
-                    .take(1).map((x) => x + 5)
-                    .subscribe((x) => {
-                        this.packages.MoveToLocalCollection(channelName);
-                    })
-                Observable.interval(6000)
-                    .take(1).map((x) => x + 5)
-                    .subscribe((x) => {
-                        this.platform.ready().then(() => {
-                            this.core.RemoveMatrixFile(this.dataDirectory, "Temp").then(() => {
-                                this.localMatrices = [];
-                                this.GetLocalMatrixHeader();
-                                this.deleteServerHeader(fileName, index, value, channelName);
-                                loader.dismiss();
-                            });
-                        })
-                    })
-            });
-        }
+    channelMatrixClicked(index, matrix, value) {
+        this.alertCtrls.ConfirmationAlert("Download Confirmation?", null, "Download").then((res) => {
+            if (res.toString() == "Download") {
+                let loader = this.loadingCtrl.create({
+                    content: 'Downloading..',
+                    duration: 30000
+                });
+                loader.present();
+                this.download.DownloadServerHeaderAsync(matrix.Name, matrix.Channel).then((res) => {
+                    this.localMatrices = [];
+                    this.GetLocalMatrixHeader();
+                    this.deleteServerHeader(matrix.Name, index, value, matrix.Channel);
+                    loader.dismiss();
+                });
+            }
+        })
     }
+
+    // DownloadServerHeaderAsync(fileName, channelName, index, value) {
+    //     var authenticate = this.AuthenticateUser();
+    //     if (authenticate) {
+    //         this.packages.DownloadServerHeader(fileName, channelName).then((serverHeader) => {
+    //             Observable.interval(2000)
+    //                 .take(3).map((x) => x + 5)
+    //                 .subscribe((x) => {
+    //                     this.packages.unzipPackage();
+    //                     console.log("unzip");
+    //                 })
+    //             Observable.interval(4000)
+    //                 .take(1).map((x) => x + 5)
+    //                 .subscribe((x) => {
+    //                     this.packages.MoveToLocalCollection(channelName);
+    //                 })
+    //             Observable.interval(6000)
+    //                 .take(1).map((x) => x + 5)
+    //                 .subscribe((x) => {
+    //                     this.platform.ready().then(() => {
+    //                         this.core.RemoveMatrixFile(this.dataDirectory, "Temp").subscribe((res) => {
+    //                             this.localMatrices = [];
+    //                             this.GetLocalMatrixHeader();
+    //                             this.deleteServerHeader(fileName, index, value, channelName);
+    //                             loader.dismiss();
+    //                         });
+    //                     })
+    //                 })
+    //         });
+    //     }
+    // }
 
     AuthenticateUser() {
         console.log('Authenticatnig user..');
@@ -325,48 +329,41 @@ export class HomePage {
         this._logger.Debug('Creating new matrix..');
         var data = this.modelfactory.ComposeNewMatrix();
         var result = data.Matrix;
-
-        this.core.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices");
-        var headerContent = this.modelfactory.ComposeNewMatrixHeader(result);
-        this.core.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
-
-        this.navCtrl.push(EditorPage, {
-            matrixData: result
-        });
+        this.core.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices").then((success) => {
+            var headerContent = this.modelfactory.ComposeNewMatrixHeader(result);
+            this.core.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
+                .then((success) => {
+                    this.navCtrl.push(EditorPage, {
+                        matrixData: result
+                    });
+                });
+        })
     }
 
     // For testing only --starts
     testOpenMatrix() {
-
-        this.httpService.GetFileFromServer("assets/matrix1.mtx")
-            .then(res => {
-
+        this.core.ReadMatrixFile("assets", "matrix1.mtx")
+            .subscribe(data => {
+                var res = JSON.parse(data.toString());
                 if (this.platform.is('cordova')) {
-                    this.storageFactory.CheckFile(this.dataDirectory + "SportsPIP/Video/", 'sample.mp4')
-                        .then(_ => {
-                            console.log('Sample video already exists');
-                            this.testNavToEditor(res);
-                        })
-                        .catch(err => {
-                            this.storageFactory.CheckFile(this.applicationDirectory + 'www/assets/', 'sample.mp4')
-                                .then(_ => {
-                                    this.storageFactory.CopyFile(this.applicationDirectory + 'www/assets/', 'sample.mp4', this.dataDirectory + "SportsPIP/Video/", 'sample.mp4')
-                                        .then(_ => {
-                                            console.log('Sample video saved to application directory');
-                                            this.testNavToEditor(res);
-                                        })
-                                        .catch(err => {
-                                            console.log('Failed saving video' + JSON.stringify(err));
-                                            this.testNavToEditor(res);
-                                        });
-
-                                })
-                                .catch(err => {
-                                    console.log('Sample video not found in assets');
-                                    this.testNavToEditor(res);
-                                });
-
-                        });
+                    this.storageFactory.CheckFile(this.dataDirectory + "SportsPIP/Video", 'sample.mp4')
+                        .catch(err =>
+                            new Observable(err => {
+                                this.storageFactory.CheckFile(this.applicationDirectory + '/www/assets/', 'sample.mp4')
+                                    .catch(err => new Observable(err => {
+                                        console.log('Sample video not found in assets');
+                                        this.testNavToEditor(res);
+                                    })).subscribe(_ => {
+                                        this.storageFactory.CopyFile(this.applicationDirectory + '/www/assets/', 'sample.mp4', this.dataDirectory + "SportsPIP/Video", 'sample.mp4')
+                                            .subscribe(_ => {
+                                                console.log('Sample video saved to application directory');
+                                                this.testNavToEditor(res);
+                                            })
+                                    })
+                            })).subscribe(_ => {
+                                console.log('Sample video already exists');
+                                this.testNavToEditor(res);
+                            })
                 }
                 else {
                     this.testNavToEditor(res);

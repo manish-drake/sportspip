@@ -30,7 +30,7 @@ export class Ipcameras {
   timerDelay: number = 3;
   timerButtonOpacity: Number = 0.5;
   constructor(private saveMatrices: SaveMatrix,
-  private openSettingM: OpenSettingModal,
+    private openSettingM: OpenSettingModal,
     private ipCamRecording: IPCamRecording,
     private storage: Storage,
     public navCtrl: NavController,
@@ -202,12 +202,11 @@ export class Ipcameras {
     this.loader.setContent('Getting Videos..');
     name = name + "_" + this.index + ".mp4";
     this._logger.Debug("Getting video" + name + " from network");
-    this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP).subscribe((blob) => {
-
+    this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP).subscribe((blob) => {    
       this.storagefactory.CreateFile(this.rootDir + "SportsPIP/Video", name)
-        .then((success) => {
+        .subscribe((success) => {
           this.storagefactory.WriteFile(this.rootDir + "SportsPIP/Video", name, blob.slice(8))
-            .then((success) => {
+            .subscribe((success) => {
               this._logger.Debug(name + " video received successfully from network");
               this.index++;
               if (this.index > this.ipCams.length) {
@@ -224,30 +223,35 @@ export class Ipcameras {
 
   saveMatrix() {/*$Candidate for refactoring$*///convert saveMatrices to a command
     this.loader.setContent('Saving..');
+    this._logger.Debug("Saving matrix..");
 
-    this.saveMatrices.run(this.matrix._Channel, this.matrix._Name, this.views).then((res) => {
-
+    this.saveMatrices.run(this.matrix._Channel, this.matrix._Name, this.views)
+    .then((res) => {
       this.experimentalIPCamVideoCopy(this.videoFilePrefix)
         .subscribe(() => {
-          this.navCtrl.pop();
+          this._logger.Info("navigating to root..");
+          this.navCtrl.popToRoot();
           this.loader.dismiss();
-
         });
     }).catch((err) => {
       this.loader.dismiss();
-      this._logger.Error("Error,Matrix file saving..", err);
-      this.navCtrl.pop();
+      this._logger.Error("Error, Matrix file saving..", err);
+      this.navCtrl.popToRoot();
     });
   }
 
+  //also remove code from saveMatrix.GetThumbName and from this.saveMatrix
   experimentalIPCamVideoCopy(fileName: string): Observable<any> {
+    this._logger.Debug("Experimental viseo copy..")
     var path = this.rootDir + "SportsPIP/Video";
     var allFilesCopied = new Observable<any>();
     this.ipCams.forEach((element, index) => {
       var originalFileName = fileName + "_" + (index + 1) + ".mp4";
       var copyFileName = fileName + "_" + (index + 1) + "_copy.mp4";
       allFilesCopied.concat(this.storagefactory.CopyFile(path, originalFileName, path, copyFileName));
-    })
+    });
+    this._logger.Debug("returning from experimental video file copy..");
+    
     return allFilesCopied;
   }
 

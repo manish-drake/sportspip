@@ -11,6 +11,7 @@ import { Storage } from '../../Services/Factory/Storage';
 import { Core } from '../../Services/core';
 import { Utils } from '../../Services/common/utils';
 
+
 /*
   Generated class for the Collection page.
 
@@ -28,7 +29,7 @@ export class CollectionPage {
   constructor(public navCtrl: NavController, private actionSheetCtrl: ActionSheetController,
     private storage: Storage,
     private core: Core,
-     private utils: Utils,
+    private utils: Utils,
     private deleteHeader: DeleteHeader,
     private duplicate: Duplicate,
     private storagefactory: StorageFactory,
@@ -101,10 +102,12 @@ export class CollectionPage {
   DuplicateMatrix(matrixname, channelName) {/*$Candidate for refactoring$*///Can go to actions
     this._logger.Debug('Creating duplicate matrix..');
     this.platform.ready().then(() => {
-      this.duplicate.Run(channelName, matrixname).then((res) => {
-        this.localMatrices = [];
-        this.LoadCollectionMatrix();
-      }).catch((err) => { this._logger.Error('Erro,Creating duplicate matrix..', err); });
+      this.duplicate.Run(channelName, matrixname)
+        .catch(err => new Observable(err => { this._logger.Error('Erro,Creating duplicate matrix..', err); }))
+        .then((res) => {
+          this.localMatrices = [];
+          this.LoadCollectionMatrix();
+        })
     })
   }
 

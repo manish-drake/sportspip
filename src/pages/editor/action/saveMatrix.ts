@@ -14,7 +14,7 @@ export class SaveMatrix {
         this._logger.Debug("Matrix file saving..")
         return new Promise((resolve, reject) => {
             return this.core.ReadMatrixFile(this.storageDataDir + "Local/" + channel + "/Tennis/Matrices/" + matrixName, matrixName + ".mtx")
-                .then((data) => {
+                .subscribe((data) => {
                     var res = JSON.parse(data.toString());
                     var matrix = res.Matrix;
                     matrix['Matrix.Children'].View = views;
@@ -27,7 +27,7 @@ export class SaveMatrix {
                         });
                     });
 
-                }).catch((err) => { return reject(err); });
+                })
         })
 
     }
@@ -38,7 +38,7 @@ export class SaveMatrix {
             if (view.Content !== undefined) {
                 if (view.Content.Capture != undefined) {
                     console.log("enter........")
-                    var kernel = view.Content.Capture._Kernel;
+                    var kernel = (view.Content.Capture._Kernel as string).replace("_copy","") as any;
                     name = kernel.slice(0, -4).split(" ");
                     this.modelFactory.CreateThumbnail(kernel, name);
                      return name;
