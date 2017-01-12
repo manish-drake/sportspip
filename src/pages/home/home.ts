@@ -63,10 +63,10 @@ export class HomePage {
         private utils: Utils,
         private httpService: HttpService,
         private _logger: Logger) {
-        platform.ready().then(() => {
-            this.dataDirectory = this.storage.externalDataDirectory();
-            this.applicationDirectory = this.storage.applicationDirectory();
+        this.storage.externalDataDirectory().then((res) => {
+            this.dataDirectory = res;
         });
+        this.applicationDirectory = this.storage.applicationDirectory();
     }
 
     ionViewDidEnter() {

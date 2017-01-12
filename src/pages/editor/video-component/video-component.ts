@@ -29,7 +29,9 @@ export class VideoComponent {
         private platform: Platform,
         private events: Events,
         private _logger: Logger) {
-        this.rootDir = this.storage.externalRootDirectory();
+         this.storage.externalRootDirectory().then((res)=>{
+             this.rootDir =res;
+         });
         this.timelinePosition = this.formatTime(0);
     }
 

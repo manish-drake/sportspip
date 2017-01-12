@@ -15,10 +15,13 @@ export class Core {
         private toastCtrl: ToastController,
         private platform: Platform,
         private _logger: Logger) {
-        platform.ready().then(() => {
-            this.storageDataDir = this.storage.externalDataDirectory();
-            this.storageRoot = this.storage.externalRootDirectory();
-        })
+        this.storage.externalDataDirectory().then((res) => {
+            this.storageDataDir = res;
+            this.storage.externalRootDirectory().then((res1) => {
+                this.storageRoot = res1;
+            })
+        });
+
     }
 
     SaveRoamingHeader(content, channel, sport, matrixName) {

@@ -24,7 +24,10 @@ export class CanvasComponent {
     this.playPauseButtonIcon = "play";
     this.repeatColor = "inactive";
     this.volumeButtonIcon = "volume-up";
-    this.rootDir = this.storage.externalRootDirectory();
+
+    this.storage.externalRootDirectory().then((res) => {
+      this.rootDir = res;
+    })
   }
 
   objects = [];

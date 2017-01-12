@@ -47,7 +47,9 @@ export class Ipcameras {
     this.matrix = this.navParams.data.matrix;
     this.views = this.navParams.data.views;
     this.selectedViewIndex = this.navParams.data.selectedViewIndex;
-    this.rootDir = this.storage.externalRootDirectory();
+    this.storage.externalRootDirectory().then((res) => {
+      this.rootDir = res;
+    });
   }
 
   isConnected: boolean = true;
@@ -202,7 +204,7 @@ export class Ipcameras {
     this.loader.setContent('Getting Videos..');
     name = name + "_" + this.index + ".mp4";
     this._logger.Debug("Getting video" + name + " from network");
-    this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP).subscribe((blob) => {    
+    this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP).subscribe((blob) => {
       this.storagefactory.CreateFile(this.rootDir + "SportsPIP/Video", name)
         .subscribe((success) => {
           this.storagefactory.WriteFile(this.rootDir + "SportsPIP/Video", name, blob.slice(8))
@@ -226,18 +228,18 @@ export class Ipcameras {
     this._logger.Debug("Saving matrix..");
 
     this.saveMatrices.run(this.matrix._Channel, this.matrix._Name, this.views)
-    .then((res) => {
-      this.experimentalIPCamVideoCopy(this.videoFilePrefix)
-        .subscribe(() => {
-          this._logger.Info("navigating to root..");
-          this.navCtrl.popToRoot();
-          this.loader.dismiss();
-        });
-    }).catch((err) => {
-      this.loader.dismiss();
-      this._logger.Error("Error, Matrix file saving..", err);
-      this.navCtrl.popToRoot();
-    });
+      .then((res) => {
+        this.experimentalIPCamVideoCopy(this.videoFilePrefix)
+          .subscribe(() => {
+            this._logger.Info("navigating to root..");
+            this.navCtrl.popToRoot();
+            this.loader.dismiss();
+          });
+      }).catch((err) => {
+        this.loader.dismiss();
+        this._logger.Error("Error, Matrix file saving..", err);
+        this.navCtrl.popToRoot();
+      });
   }
 
   //also remove code from saveMatrix.GetThumbName and from this.saveMatrix
@@ -251,7 +253,7 @@ export class Ipcameras {
       allFilesCopied.concat(this.storagefactory.CopyFile(path, originalFileName, path, copyFileName));
     });
     this._logger.Debug("returning from experimental video file copy..");
-    
+
     return allFilesCopied;
   }
 

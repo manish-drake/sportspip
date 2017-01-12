@@ -19,7 +19,9 @@ export class AddCapture implements ICommand {
         private platform: Platform,
         private storage: Storage,
         private storagefactory: StorageFactory) {
-        this.rootDirectory = this.storage.externalRootDirectory();
+        this.storage.externalRootDirectory().then((res) => {
+            this.rootDirectory = res;
+        })
     }
     run(cmdArgs) {
         if (this.platform.is('cordova')) {
