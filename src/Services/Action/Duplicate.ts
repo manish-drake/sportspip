@@ -10,9 +10,9 @@ export class Duplicate {
     storageDataDir: string;
 
     constructor(private core: Core, private storage: Storage, private platform: Platform) {
-        this.platform.ready().then(() => {
-            this.storageDataDir = this.storage.externalDataDirectory();
-        })
+        this.storage.externalDataDirectory().then((res) => {
+            this.storageDataDir = res;
+        });
     }
 
 

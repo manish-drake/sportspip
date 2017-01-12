@@ -8,7 +8,9 @@ import { ModelFactory } from '../../../Services/Factory/ModelFactory';
 export class SaveMatrix {
     storageDataDir: string;
     constructor(private storage: Storage, private modelFactory: ModelFactory, private _logger: Logger, private core: Core) {
-        this.storageDataDir = this.storage.externalDataDirectory();
+        this.storage.externalDataDirectory().then((res) => {
+            this.storageDataDir = res;
+        });
     }
     run(channel, matrixName, views): Promise<any> {
         this._logger.Debug("Matrix file saving..")

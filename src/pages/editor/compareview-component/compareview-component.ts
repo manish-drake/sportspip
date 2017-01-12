@@ -35,10 +35,12 @@ export class CompareviewComponent {
         private popoverCtrl: PopoverController,
         private events: Events) {
         this.playPauseButtonIcon = "play";
-        this.rootDir = this.storage.externalRootDirectory();
         this.timelinePosition = this.formatTime(0);
-    }
+        this.storage.externalRootDirectory().then((res) => {
+            this.rootDir = res;
+        })
 
+    }
     sliderValue: any = 0;
     timelinePosition: any;
     timelineDuration: any;
@@ -56,16 +58,16 @@ export class CompareviewComponent {
         this.LoadMarkers();
         this.video = this.videoElement.nativeElement;/*$Candidate for refactoring$*///
 
-        this.video.addEventListener('loadedmetadata', () => { 
-            this.OnVideoMatadataLoad(); 
+        this.video.addEventListener('loadedmetadata', () => {
+            this.OnVideoMatadataLoad();
         });
 
-        this.video.addEventListener('ended', () => { 
-            this.OnVideoEnded(); 
+        this.video.addEventListener('ended', () => {
+            this.OnVideoEnded();
         });
 
-        this.video.addEventListener('error', (error) => { 
-            this.OnVideoError(error) 
+        this.video.addEventListener('error', (error) => {
+            this.OnVideoError(error)
         });
 
         this.events.subscribe('playviews', (mode) => {

@@ -21,14 +21,18 @@ export class AddPhoneCapture implements ICommand {
         private platform: Platform,
         private storage: Storage,
         private storagefactory: StorageFactory) {
-        this.rootDirectory = this.storage.externalRootDirectory();
+        this.storage.externalRootDirectory().then((res) => {
+            this.rootDirectory = res;
+        })
+
+
 
     }
     run(cmdArgs) {
         let options: CaptureVideoOptions = {};
         MediaCapture.captureVideo(options)
             .then(
-            (data: MediaFile[]) => { this.captureSuccess(data,cmdArgs) },
+            (data: MediaFile[]) => { this.captureSuccess(data, cmdArgs) },
             (err: CaptureError) => { this.captureError(err) }
             );
     }
@@ -44,7 +48,7 @@ export class AddPhoneCapture implements ICommand {
 
             this.storagefactory.MoveFile(filePath, fileName, this.rootDirectory + "SportsPIP/Video", newFileName)
                 .subscribe(success => {
-                    Model.editor.CreateVideoView(newFileName,Model.editor.selectedViewIndex,"Phone");
+                    Model.editor.CreateVideoView(newFileName, Model.editor.selectedViewIndex, "Phone");
                     console.log('Successfully saved video')
                     if (Connection.connectedServer != null)
                         this.backGroundTransferProcess.TransferVideo(newFileName, Connection.connectedServer.Address, Model.editor.views);

@@ -25,11 +25,11 @@ export class Package {
         private core: Core,
         private platform: Platform,
         private storagefactory: StorageFactory) {
-        platform.ready().then(() => {
-            if (this.platform.is('cordova')) {
-                this.storageDataDir = this.storage.externalDataDirectory();
-                this.storageRootDirectory = this.storage.externalRootDirectory();
-            }
+        this.storage.externalDataDirectory().then((res) => {
+            this.storageDataDir = res;
+            this.storage.externalRootDirectory().then((res1) => {
+                this.storageRootDirectory = res1;
+            })
         });
     }
 
@@ -57,7 +57,7 @@ export class Package {
                     switch (sliced) {
                         case '.mtx':
                             let parser: any = new X2JS();
-                            return this.storagefactory.ReadFileAync(this.storageDataDir + "Temp/matrix1",file.name).subscribe(data => {
+                            return this.storagefactory.ReadFileAync(this.storageDataDir + "Temp/matrix1", file.name).subscribe(data => {
                                 console.log("mtx moving...");
                                 var matrixdata = parser.xml2js(data.toString());
                                 var matrix = matrixdata.Matrix;
@@ -96,16 +96,16 @@ export class Package {
                         const ft = new FileTransfer();
                         var url = encodeURI("https://sportspipstorage.blob.core.windows.net/matrices/" + channelName + "/" + fileName + ".sar");
                         // var url = encodeURI("https://drake.blob.core.windows.net/matrices/Harvest/636049183928404138.sar");
-                         ft.download(url, NewPath + "m1.zip",
+                        ft.download(url, NewPath + "m1.zip",
                             function (entry) {
                                 console.log("download complete: " + entry.toURL());
-                                 resolve(true);
+                                resolve(true);
                             },
                             function (error) {
                                 console.log("download error source " + error.source);
                                 console.log("download error target " + error.target);
                                 console.log("download error code" + error.code);
-                                 reject(error);
+                                reject(error);
                             },
                             true);
                     })

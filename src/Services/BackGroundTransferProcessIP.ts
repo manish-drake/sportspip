@@ -16,9 +16,11 @@ export class BackGroundTransferProcessIP {
         private _logger: Logger,
         private storageFactory: StorageFactory,
         private storage: Storage) {
-        this.platform.ready().then(() => {
-            this.rootDir = this.storage.externalRootDirectory();
+
+        this.storage.externalRootDirectory().then((res) => {
+            this.rootDir = res;
         })
+
 
     }
 

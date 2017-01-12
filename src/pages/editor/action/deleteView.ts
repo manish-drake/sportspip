@@ -8,12 +8,6 @@ export class DeleteView implements ICommand {
     constructor(private alertCtrl: AlertController, private alertCtrls: AlertControllers) {
 
     }
-    //  "views": this.views,
-    //   "showViewSegment": this.showViewSegment,
-    //   "evaluateCaptureViews": this.evaluateCaptureViews,
-    //   "selectedViewIndex": this.selectedViewIndex,
-    //   "index": i
-
 
     run(cmdArgs) {
         if (cmdArgs.editor.views.length > 1) {

@@ -46,7 +46,9 @@ export class SettingsPage {
     private platform: Platform,
     private loadingCtrl: LoadingController,
     private _logger: Logger) {
-    this.storageDataDir = this.storage.externalDataDirectory();
+    this.storage.externalDataDirectory().then((res) => {
+      this.storageDataDir = res;
+    });
   }
 
   ionViewDidLoad() {

@@ -37,7 +37,9 @@ export class CollectionPage {
     private packages: Package,
     private platform: Platform,
     private _logger: Logger) {
-    this.dataDir = this.storage.externalDataDirectory();
+    this.storage.externalDataDirectory().then((res) => {
+      this.dataDir = res;
+    })
     this.LoadCollectionMatrix();
   }
 

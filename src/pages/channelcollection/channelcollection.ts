@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Rx';
 import { Core } from '../../Services/core';
 import { Download } from '../../Services/Action/Download';
 import { AlertControllers } from '../../Services/Alerts';
-import { PopoverController, NavParams, ActionSheetController, ViewController, Platform,LoadingController } from 'ionic-angular';
+import { PopoverController, NavParams, ActionSheetController, ViewController, Platform, LoadingController } from 'ionic-angular';
 import { Logger } from '../../logging/logger';
 
 
@@ -38,7 +38,11 @@ export class ChannelCollectionPage {
     private platform: Platform,
     private popoverController: PopoverController,
     private _logger: Logger) {
-    this.dataDir = this.storage.externalDataDirectory();
+
+    this.storage.externalDataDirectory().then((res) => {
+      this.dataDir = res;
+    });
+
     this.channel = params.get("firstPassed");
     this.GetChannelMatrix(this.channel);
   }

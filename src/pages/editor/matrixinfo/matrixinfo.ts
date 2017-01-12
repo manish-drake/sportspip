@@ -32,7 +32,9 @@ export class MatrixInfoPage {
         private core: Core,
         private utils: Utils,
         private _logger: Logger) {
-        this.storageDataDir = this.storage.externalDataDirectory();
+        this.storage.externalDataDirectory().then((res) => {
+            this.storageDataDir = res;
+        });
         this.matrixData = navParams.get("matrixData");
         this.viewsCount = navParams.get("viewsCount");
         this.errorMessege = "";
