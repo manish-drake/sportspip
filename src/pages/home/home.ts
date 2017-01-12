@@ -143,7 +143,6 @@ export class HomePage {
     doRefreshLocal(refresher) {
         this.refreshing = true;
         this.localMatrices = [];
-
         setTimeout(() => {
             refresher.complete();
             this.GetLocalMatrixHeader();
@@ -229,10 +228,12 @@ export class HomePage {
     DuplicateMatrix(channelName, matrixname) {
         this._logger.Debug('Duplicate  matrix..', );
         this.platform.ready().then(() => {
-            this.duplicate.Run(channelName, matrixname).then((res) => {
+            this.duplicate.Run(channelName, matrixname)
+            .then((res) => {
                 this.localMatrices = [];
                 this.GetLocalMatrixHeader();
-            }).catch((err) => { this._logger.Error('Error,Duplicate  matrix..', err); })
+            })
+            .catch((err) => { this._logger.Error('Error,Duplicate  matrix..', err); })
         })
 
     }
@@ -245,9 +246,11 @@ export class HomePage {
         this.platform.ready().then(() => {
             if (this.platform.is('cordova')) {
                 this._logger.Debug('Getting local matrix header..');
-                this.core.GetLocalHeader().then((res) => {
+                this.core.GetLocalHeader()
+                .then((res) => {
                     this.localMatrices = res;
-                }).catch((err) => {
+                })
+                .catch((err) => {
                     this._logger.Error('Error,Getting local matrix header..', err);
                 });
             }
@@ -263,9 +266,11 @@ export class HomePage {
         this.platform.ready().then(() => {
             if (this.platform.is('cordova')) {
                 this._logger.Debug('Getting server matrix header..');
-                this.core.GetServerHeader().then((res) => {
+                this.core.GetServerHeader()
+                .then((res) => {
                     this.channels = res;
-                }).catch((err) => {
+                })
+                .catch((err) => {
                     this._logger.Error('Error,Getting server matrix header..', err);
                 });
             }
