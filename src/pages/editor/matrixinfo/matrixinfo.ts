@@ -5,6 +5,7 @@ import { Core } from '../../../Services/core';
 import { Package } from '../../../Services/Package';
 import { Logger } from '../../../logging/logger';
 import { Utils } from '../../../Services/common/utils';
+import { Observable } from 'rxjs/Rx';
 /*
   Generated class for the Matrixinfo page.
 
@@ -51,7 +52,7 @@ export class MatrixInfoPage {
         if (this.validatematrixInfo()) {
             this.platform.ready().then(() => {/*$Candidate for refactoring$*///what is the need of checking if the platform is ready now
                 this.core.ReadMatrixFile(this.storageDataDir + "Local/" + this.matrixData._Channel + "/Tennis/Matrices/" + this.matrixData._Name, this.matrixData._Name + ".mtx")
-                    .then(data => {
+                    .subscribe(data => {
                         var res = JSON.parse(data.toString());
                         var matrix = res.Matrix;
                         matrix._Title = this.matrixData._Title;

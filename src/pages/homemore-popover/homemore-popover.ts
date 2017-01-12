@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ViewController, Platform } from 'ionic-angular';
 import { AppVersion, EmailComposer, Device } from 'ionic-native';
-
+import { Observable } from 'rxjs/Rx';
 import { AlertControllers } from '../../Services/Alerts';
 import { Storage } from '../../Services/Factory/Storage';
 import { StorageFactory } from '../../Services/Factory/StorageFactory';
@@ -43,45 +43,43 @@ export class HomeMorePopover {
         this.alertCtrls.BasicAlert('Sports PIP', 'version ' + this.versionNumber);
     }
 
-/*$Candidate for refactoring$*/
-//why storage still lurking outside the storage file
+    /*$Candidate for refactoring$*/
+    //why storage still lurking outside the storage file
     sendLogs() {
         this.viewCtrl.dismiss();
 
         this.platform.ready().then(() => {
             this.storageFactory.CheckFile(this.sqliteLogDirectory, "data.db")
-                .then(promise => {
-                    console.log("Success: " + JSON.stringify(promise));
-                    this.storageFactory.CheckFile(this.rootDirectory + "SportsPIP/", "data.db")
-                        .then(promise => {
-                            this.storageFactory.RemoveFile(this.rootDirectory + "SportsPIP/", "data.db")
-                            .then(promise => {
-                                this.getLogsFile();
-                            })
-                        })
-                        .catch(err => {
-                            this.getLogsFile();
-                        });
-                })
-                .catch(err => {
+                .catch(err => new Observable(err => {
                     this._Logger.Error("Error: no log file exists", JSON.stringify(err));
                     this.alertCtrls.BasicAlert("No log file found", JSON.stringify(err));
-                });
-
+                }))
+                .subscribe(promise => {
+                    console.log("Success: " + JSON.stringify(promise));
+                    this.storageFactory.CheckFile(this.rootDirectory + "SportsPIP/", "data.db")
+                        .catch(err => new Observable(err => { this.getLogsFile(); }))
+                        .subscribe(promise => {
+                            this.storageFactory.RemoveFile(this.rootDirectory + "SportsPIP/", "data.db")
+                                .then(promise => {
+                                    this.getLogsFile();
+                                })
+                        })
+                })
         });
 
     }
 
     getLogsFile() {
         this.storageFactory.CopyFile(this.sqliteLogDirectory, "data.db", this.rootDirectory + "SportsPIP/", "data.db")
-            .then(promise => {
+            .catch(err => new Observable(err => {
+                this._Logger.Error("Error copying log file: ", JSON.stringify(err));
+                this.alertCtrls.BasicAlert("Error getting logs file", JSON.stringify(err));
+            }))
+            .subscribe(promise => {
                 this._Logger.Debug("Composing email");
                 this.composeEmail();
             })
-            .catch(err => {
-                this._Logger.Error("Error copying log file: ", JSON.stringify(err));
-                this.alertCtrls.BasicAlert("Error getting logs file", JSON.stringify(err));
-            });
+
     }
 
     composeEmail() {

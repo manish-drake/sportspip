@@ -113,15 +113,17 @@ export class SettingsPage {
 
   createSettingsasync() {
     this._logger.Debug('Creating Settings channel list..');
-    this.core.ReadMatrixFile(this.storageDataDir + "Roaming", "User.json").then((res) => {
-      this.SetUserAcync(JSON.parse(res.toString()));
-      this.InvalidateSubscribeListAsync(this.UserID);
-      this.InvalidateChannelListAsync(this.UserID);
-    }).catch(()=>{
-      this.UserID = 0;
-       this.InvalidateChannelListAsync("0");
+    this.core.ReadMatrixFile(this.storageDataDir + "Roaming", "User.json")
+      .catch(err => new Observable(err => {
+        this.UserID = 0;
+        this.InvalidateChannelListAsync("0");
         console.log("no user find");
-    })
+      }))
+      .subscribe((res) => {
+        this.SetUserAcync(JSON.parse(res.toString()));
+        this.InvalidateSubscribeListAsync(this.UserID);
+        this.InvalidateChannelListAsync(this.UserID);
+      })
   }
 
   SetUserAcync(data) {
@@ -168,16 +170,18 @@ export class SettingsPage {
       });
   }
   Save(blob, filename): Promise<any> {
-    return this.storagefactory.CreateFile(this.storageDataDir, filename).then((res) => {
-      return this.storagefactory.WriteFile(this.storageDataDir, filename, blob).then((res) => {
-        return res
+    return new Promise((resolve, reject) => {
+      return this.storagefactory.CreateFile(this.storageDataDir, filename).subscribe((res) => {
+        return this.storagefactory.WriteFile(this.storageDataDir, filename, blob).subscribe((res) => {
+          return resolve(res);
+        })
       })
     })
   }
 
   //server header
   SaveServerHeaders(channel) {
-    this.core.ReadMatrixFile(this.storageDataDir, "header.xml").then(data => {
+    this.core.ReadMatrixFile(this.storageDataDir, "header.xml").subscribe(data => {
       var headerList = JSON.parse(data.toString());
       headerList.forEach(header => {
         var result = header;

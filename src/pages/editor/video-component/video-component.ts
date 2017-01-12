@@ -1,6 +1,6 @@
 import { Component, ViewChild, Input, ElementRef } from '@angular/core';
 import { VideoEditor } from 'ionic-native';
-
+import { Observable } from 'rxjs/Rx';
 import { Storage } from '../../../Services/Factory/Storage';
 import { StorageFactory } from '../../../Services/Factory/StorageFactory';
 import { AlertControllers } from '../../../Services/Alerts';
@@ -114,17 +114,17 @@ export class VideoComponent {
         var dirpath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
         var fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
         this.storageFactory.CheckFile(dirpath, fileName)
-            .then(success => {
-                this.isErrorVisible = true;
-                this._logger.Error("View " + (this.viewindex + 1) + ': Error loading video: ', this.videoErrorHandling(this.video.error.code));
-                this.errormessage = this.videoErrorHandling(this.video.error.code);
-            })
-            .catch(err => {
+            .catch(err => new Observable(err => {
                 this.isVideoComponentVisible = false;
                 this.isErrorVisible = true;
                 this._logger.Error("View " + (this.viewindex + 1) + ': Video file not exists in the desired directory: ', error);
                 this.errormessage = "Video file not found";
-            });
+            }))
+            .subscribe(success => {
+                this.isErrorVisible = true;
+                this._logger.Error("View " + (this.viewindex + 1) + ': Error loading video: ', this.videoErrorHandling(this.video.error.code));
+                this.errormessage = this.videoErrorHandling(this.video.error.code);
+            })
     }
 
     videoErrorHandling(errornumber) {

@@ -10,37 +10,40 @@ import 'rxjs/Rx';
 export class StorageFactory {
 
 
-    constructor( private platform: Platform,private _logger: Logger) {
+    constructor(private platform: Platform, private _logger: Logger) {
     }
 
-    CheckFile(dirpath, fileName): Promise<any> {
-        return File.checkFile(dirpath, fileName);
+    CheckFile(dirpath, fileName): Observable<any> {
+        return Observable.fromPromise(File.checkFile(dirpath, fileName))
+            .map(x => x);
     }
 
-    createFolder(path: string, dirName: string): Promise<any> {
-        return File.createDir(path, dirName, true).then((success) => {
-            return success
-        });
+    createFolder(path: string, dirName: string): Observable<string> {
+        return Observable.fromPromise(File.createDir(path, dirName, true))
+            .map(value => value["nativeURL"]);
     }
 
 
-    CreateFile(path, fileName): Promise<any> {
-        return File.createFile(path, fileName, true);
+    CreateFile(path, fileName): Observable<string> {
+        return Observable.fromPromise(File.createFile(path, fileName, true))
+            .map(x => x["nativeURL"]);
     }
 
     writeOptions: WriteOptions = { replace: true }
 
-    WriteFile(path, fileName, content): Promise<any> {
-        return File.writeFile(path, fileName, content, this.writeOptions);
+    WriteFile(path, fileName, content): Observable<string> {
+        return Observable.fromPromise(File.writeFile(path, fileName, content, this.writeOptions))
+            .map(x => x["nativeURL"]);
     }
 
-    CopyFile(filePath, fileName, newFilePath, newFileName): Promise<any> {
-        return File.copyFile(filePath, fileName, newFilePath, newFileName);
+    CopyFile(filePath, fileName, newFilePath, newFileName): Observable<any> {
+        return Observable.fromPromise(File.copyFile(filePath, fileName, newFilePath, newFileName))
+            .map(x => x)
     }
 
     MoveFile(filePath, fileName, newFilePath, newFileName): Observable<string> {
         return Observable.fromPromise(File.moveFile(filePath, fileName, newFilePath, newFileName))
-            .map(x => x["nativeUrl"]);
+            .map(x => x["nativeURL"]);
     }
 
     RemoveFile(path, fileName): Promise<any> {
@@ -58,9 +61,10 @@ export class StorageFactory {
         })
     }
 
-    ReadFileAync(path, dirName): Promise<any> {
+    ReadFileAync(path, dirName): Observable<any> {
         this._logger.Debug("reading local file async.. ")
-        return File.readAsText(path, dirName);
+        return Observable.fromPromise(File.readAsText(path, dirName))
+            .map(x => x.toString());
     }
 
 

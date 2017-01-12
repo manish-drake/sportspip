@@ -35,7 +35,9 @@ export class ChannelCollectionPage {
     private download: Download,
     private storage: Storage,
     private core: Core,
+    private loadingCtrl: LoadingController,
     private utils: Utils,
+    private alertCtrls: AlertControllers,
     private actionSheetCtrl: ActionSheetController,
     private platform: Platform,
     private popoverController: PopoverController,
@@ -102,22 +104,28 @@ export class ChannelCollectionPage {
     popover.present({ ev: event });
   }
 
-  DeleteChannelMatrix(DirName, Channel, index) {
+  deleteServerHeader(DirName, Channel, index) {
     this.core.DeleteServerHeader(DirName, Channel);
     this.channelMatrices.splice(index, 1);
   }
 
-  private _downloadMatrix: Download;
-  public get downloadMatrix(): Download {
-    return this.download;
-  }
 
-  downloadMatrixSource(index, matrix) {
-    return {
-      "index": index,
-      "matrix": matrix,
-      "channelCollection":this
-    }
+  downloadMatrix(index, matrix) {
+    this._logger.Debug('Channel matrix clicked..');
+    this.alertCtrls.ConfirmationAlert(" Download Confirmation?", null, "Download").then((res) => {
+      if (res.toString() == "Download") {
+        let loader = this.loadingCtrl.create({
+          content: 'Downloading..',
+          duration: 30000
+        });
+        loader.present();
+        this.download.DownloadServerHeaderAsync(matrix.Name, matrix.Channel).then(() => {
+          this.deleteServerHeader(matrix.Name, matrix.Channel, index);
+          loader.dismiss();
+        });
+      }
+
+    })
   }
 
   channelMatrixPressed(index, matrix) {/*$Candidate for refactoring$*///can go to actions
@@ -129,7 +137,7 @@ export class ChannelCollectionPage {
         text: 'Delete',
         role: 'destructive',
         handler: () => {
-          this.DeleteChannelMatrix(matrix.Name, matrix.Channel, index);
+          this.deleteServerHeader(matrix.Name, matrix.Channel, index);
         }
       }, {
         icon: 'close',

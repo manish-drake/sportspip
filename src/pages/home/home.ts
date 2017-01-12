@@ -23,6 +23,7 @@ import { Utils } from '../../Services/common/utils';
 import { Duplicate } from '../../Services/Action/Duplicate';
 import { DeleteHeader } from '../../Services/Action/DeleteHeader';
 import { OpenMatrix } from '../../Services/Action/OpenMatrix';
+import { Download } from '../../Services/Action/Download';
 
 declare var FileTransfer: any;
 declare var navigator: any;
@@ -30,7 +31,7 @@ declare var navigator: any;
 @Component({
     selector: 'page-home',
     templateUrl: 'home.html',
-    providers: [ModelFactory, DeleteHeader, Package, OpenMatrix, Connection, Duplicate]
+    providers: [ModelFactory, DeleteHeader, Package, OpenMatrix, Connection, Duplicate,Download]
 })
 
 export class HomePage {
@@ -46,6 +47,7 @@ export class HomePage {
         private core: Core,
         private duplicate: Duplicate,
         private storage: Storage,
+        private download: Download,
         private modelfactory: ModelFactory,
         private deleteHeader: DeleteHeader,
         private openmatrix: OpenMatrix,
@@ -133,10 +135,6 @@ export class HomePage {
     }
 
 
-    // openMatrix(matrixName, Channel) {
-    //     this.openmatrix.run(matrixName, Channel);
-    // }
-
     refreshing: boolean = false;
 
     doRefreshLocal(refresher) {
@@ -199,13 +197,6 @@ export class HomePage {
         this.channels.splice(index, 1);
     }
 
-    channelMatrixClicked(index, matrix, value) {
-        this.alertCtrls.ConfirmationAlert("Download Confirmation?", null, "Download").then((res) => {
-            if (res.toString() == "Download")
-                this.DownloadServerHeaderAsync(matrix.Name, matrix.Channel, index, value);
-        })
-    }
-
     channelMatrixPressed(index, matrix, value) {
         let actionSheet = this.actionSheetCtrl.create({
             title: matrix.Title,
@@ -228,10 +219,12 @@ export class HomePage {
     DuplicateMatrix(channelName, matrixname) {
         this._logger.Debug('Duplicate  matrix..', );
         this.platform.ready().then(() => {
-            this.duplicate.Run(channelName, matrixname).then((res) => {
-                this.localMatrices = [];
-                this.GetLocalMatrixHeader();
-            }).catch((err) => { this._logger.Error('Error,Duplicate  matrix..', err); })
+            this.duplicate.Run(channelName, matrixname)
+                .catch(err => new Observable(err => { this._logger.Error('Error,Duplicate  matrix..', err); }))
+                .then((res) => {
+                    this.localMatrices = [];
+                    this.GetLocalMatrixHeader();
+                })
         })
 
     }
@@ -271,41 +264,54 @@ export class HomePage {
         });
     }
 
-    DownloadServerHeaderAsync(fileName, channelName, index, value) {
-        let loader = this.loadingCtrl.create({
-            content: 'Downloading..',
-            duration: 30000
-        });
-        loader.present();
-        var authenticate = this.AuthenticateUser();
-        if (authenticate) {
-            this.packages.DownloadServerHeader(fileName, channelName).then((serverHeader) => {
-                Observable.interval(2000)
-                    .take(3).map((x) => x + 5)
-                    .subscribe((x) => {
-                        this.packages.unzipPackage();
-                        console.log("unzip");
-                    })
-                Observable.interval(4000)
-                    .take(1).map((x) => x + 5)
-                    .subscribe((x) => {
-                        this.packages.MoveToLocalCollection(channelName);
-                    })
-                Observable.interval(6000)
-                    .take(1).map((x) => x + 5)
-                    .subscribe((x) => {
-                        this.platform.ready().then(() => {
-                            this.core.RemoveMatrixFile(this.dataDirectory, "Temp").then(() => {
-                                this.localMatrices = [];
-                                this.GetLocalMatrixHeader();
-                                this.deleteServerHeader(fileName, index, value, channelName);
-                                loader.dismiss();
-                            });
-                        })
-                    })
-            });
-        }
+    channelMatrixClicked(index, matrix, value) {
+        this.alertCtrls.ConfirmationAlert("Download Confirmation?", null, "Download").then((res) => {
+            if (res.toString() == "Download") {
+                let loader = this.loadingCtrl.create({
+                    content: 'Downloading..',
+                    duration: 30000
+                });
+                loader.present();
+                this.download.DownloadServerHeaderAsync(matrix.Name, matrix.Channel).then((res) => {
+                    this.localMatrices = [];
+                    this.GetLocalMatrixHeader();
+                    this.deleteServerHeader(matrix.Name, index, value, matrix.Channel);
+                    loader.dismiss();
+                });
+            }
+        })
     }
+
+    // DownloadServerHeaderAsync(fileName, channelName, index, value) {
+    //     var authenticate = this.AuthenticateUser();
+    //     if (authenticate) {
+    //         this.packages.DownloadServerHeader(fileName, channelName).then((serverHeader) => {
+    //             Observable.interval(2000)
+    //                 .take(3).map((x) => x + 5)
+    //                 .subscribe((x) => {
+    //                     this.packages.unzipPackage();
+    //                     console.log("unzip");
+    //                 })
+    //             Observable.interval(4000)
+    //                 .take(1).map((x) => x + 5)
+    //                 .subscribe((x) => {
+    //                     this.packages.MoveToLocalCollection(channelName);
+    //                 })
+    //             Observable.interval(6000)
+    //                 .take(1).map((x) => x + 5)
+    //                 .subscribe((x) => {
+    //                     this.platform.ready().then(() => {
+    //                         this.core.RemoveMatrixFile(this.dataDirectory, "Temp").subscribe((res) => {
+    //                             this.localMatrices = [];
+    //                             this.GetLocalMatrixHeader();
+    //                             this.deleteServerHeader(fileName, index, value, channelName);
+    //                             loader.dismiss();
+    //                         });
+    //                     })
+    //                 })
+    //         });
+    //     }
+    // }
 
     AuthenticateUser() {
         console.log('Authenticatnig user..');
@@ -317,20 +323,21 @@ export class HomePage {
         this._logger.Debug('Creating new matrix..');
         var data = this.modelfactory.ComposeNewMatrix();
         var result = data.Matrix;
-
-        this.core.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices");
-        var headerContent = this.modelfactory.ComposeNewMatrixHeader(result);
-        this.core.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
-
-        this.navCtrl.push(EditorPage, {
-            matrixData: result
-        });
+        this.core.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices").then((success) => {
+            var headerContent = this.modelfactory.ComposeNewMatrixHeader(result);
+            this.core.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
+                .then((success) => {
+                    this.navCtrl.push(EditorPage, {
+                        matrixData: result
+                    });
+                });
+        })
     }
 
     // For testing only --starts
     testOpenMatrix() {
         this.core.ReadMatrixFile("assets", "matrix1.mtx")
-            .then(data => {
+            .subscribe(data => {
                 var res = JSON.parse(data.toString());
 
                 if (this.platform.is('cordova')) {

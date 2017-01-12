@@ -3,6 +3,7 @@ import { NavController, NavParams, ModalController, Platform, LoadingController,
 import { MatrixInfoPage } from '../editor/matrixinfo/matrixinfo'
 import { Compareview } from '../editor/compareview/compareview'
 import { Swipeview } from '../editor/swipeview/swipeview';
+import { Observable } from 'rxjs/Rx';
 //Service
 import { Logger } from '../../logging/logger';
 import { Connection } from '../../Services/Connection'
@@ -72,7 +73,7 @@ export class EditorPage {
     }
 
     this.setSelectedView(this.views[0], this.selectedViewIndex);
-    
+
     if (this.platform.is('cordova')) {
       if (this.platform.is('android')) {
         this.isAndroid = true;
@@ -138,14 +139,16 @@ export class EditorPage {
       });
       loader.present();
 
-      this.saveMatrices.run(this.matrix._Channel, this.matrix._Name, this.views).then((res) => {
-        this.navCtrl.pop();
-        loader.dismiss();
-      }).catch((err) => {
-        loader.dismiss();
-        this._logger.Error("Error,Matrix file saving..", err);
-        this.navCtrl.pop();
-      });
+      this.saveMatrices.run(this.matrix._Channel, this.matrix._Name, this.views)
+        .catch(err => new Observable(err => {
+          loader.dismiss();
+          this._logger.Error("Error,Matrix file saving..", err);
+          this.navCtrl.pop();
+        }))
+        .then((res) => {
+          this.navCtrl.pop();
+          loader.dismiss();
+        })
 
     } else this.navCtrl.pop();
   }

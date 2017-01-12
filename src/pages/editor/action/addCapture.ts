@@ -8,6 +8,7 @@ import { StorageFactory } from '../../../Services/Factory/StorageFactory';
 import { Platform } from 'ionic-angular';
 import { Connection } from '../../../Services/Connection';
 import { Storage } from '../../../Services/Factory/Storage';
+import { Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class AddCapture implements ICommand {
@@ -35,25 +36,16 @@ export class AddCapture implements ICommand {
                         var newFileName = Date.now() + ".mp4";
 
                         this.storagefactory.CopyFile(fileDir, fileName, this.rootDirectory + "SportsPIP/Video", newFileName)
-                            .then(success => {
+                            .catch(err => new Observable(err => { this.chooseVideoErrorMsg('Failed copying video:' + JSON.stringify(err)); }))
+                            .subscribe(success => {
                                 console.log('Successfully copied video');
                                 cmdArgs.editor.CreateVideoView(newFileName, cmdArgs.editor.selectedViewIndex, "Local");
                                 if (Connection.connectedServer != null)
                                     this.backGroundTransferProcess.TransferVideo(newFileName, cmdArgs.editor.Connection.connectedServer.Address, cmdArgs.editor.views);
-
                             })
-                            .catch(err => {
-                                this.chooseVideoErrorMsg('Failed copying video:' + JSON.stringify(err));
-                            });
+                    }).catch(err => {this.chooseVideoErrorMsg('Failed Resolving nativepath:' + JSON.stringify(err));});
 
-                    })
-                    .catch(err => {
-                        this.chooseVideoErrorMsg('Failed Resolving nativepath:' + JSON.stringify(err));
-                    });
-
-            }).catch(err => {
-                this.chooseVideoErrorMsg('Error opening file chooser:' + JSON.stringify(err));
-            });
+            }).catch(err => {this.chooseVideoErrorMsg('Error opening file chooser:' + JSON.stringify(err));});
         }
     }
 

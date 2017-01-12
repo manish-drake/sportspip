@@ -15,7 +15,7 @@ export class SaveMatrix {
         this._logger.Debug("Matrix file saving..")
         return new Promise((resolve, reject) => {
             return this.core.ReadMatrixFile(this.storageDataDir + "Local/" + channel + "/Tennis/Matrices/" + matrixName, matrixName + ".mtx")
-                .then((data) => {
+                .subscribe((data) => {
                     var res = JSON.parse(data.toString());
                     var matrix = res.Matrix;
                     matrix['Matrix.Children'].View = views;
@@ -28,7 +28,7 @@ export class SaveMatrix {
                         });
                     });
 
-                }).catch((err) => { return reject(err); });
+                })
         })
 
     }

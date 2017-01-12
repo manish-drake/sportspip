@@ -209,12 +209,11 @@ export class Ipcameras {
     this.loader.setContent('Getting Videos..');
     name = name + "_" + this.index + ".mp4";
     this._logger.Debug("Getting video" + name + " from network");
-    this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP).subscribe((blob) => {
-      
+    this.backGroundTransferProcessIP.GetServerIPVideo(name, connectedServerIP).subscribe((blob) => {    
       this.storagefactory.CreateFile(this.rootDir + "SportsPIP/Video", name)
-        .then((success) => {
+        .subscribe((success) => {
           this.storagefactory.WriteFile(this.rootDir + "SportsPIP/Video", name, blob.slice(8))
-            .then((success) => {
+            .subscribe((success) => {
               this._logger.Debug(name + " video received successfully from network");
               this.index++;
               if (this.index > this.ipCams.length) {

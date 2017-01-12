@@ -4,6 +4,7 @@ import { Platform, ToastController } from 'ionic-angular';
 import { Logger } from '../logging/logger';
 import { StorageFactory } from './Factory/StorageFactory';
 import { Storage } from './Factory/Storage';
+import { Observable, Subscription } from 'rxjs/Rx';
 
 @Injectable()
 export class Core {
@@ -27,21 +28,21 @@ export class Core {
     SaveServerHeader(content, channel, sport, matrixName, typeFolder) {
         this._logger.Debug('Save server header..');
         this.platform.ready().then(() => {
-            this.storageFactory.createFolder(this.storageDataDir, "Server").then((success) => {
+            this.storageFactory.createFolder(this.storageDataDir, "Server").subscribe((success) => {
                 var serverFolder = this.storageDataDir + "Server/";
-                this.storageFactory.createFolder(serverFolder, channel).then(() => {
+                this.storageFactory.createFolder(serverFolder, channel).subscribe(() => {
                     var channelFolder = serverFolder + channel + "/";
-                    this.storageFactory.createFolder(channelFolder, sport).then(() => {
+                    this.storageFactory.createFolder(channelFolder, sport).subscribe(() => {
                         var sportFolder = channelFolder + sport + "/";
-                        this.storageFactory.createFolder(sportFolder, typeFolder).then(() => {
+                        this.storageFactory.createFolder(sportFolder, typeFolder).subscribe(() => {
                             var contentFolder = sportFolder + typeFolder + "/";
-                            this.storageFactory.createFolder(contentFolder, matrixName).then((success) => {
+                            this.storageFactory.createFolder(contentFolder, matrixName).subscribe((success) => {
                                 var fileLocation = contentFolder + matrixName;
-                                this.storageFactory.CreateFile(fileLocation, "Header.xml").then(() => {
+                                this.storageFactory.CreateFile(fileLocation, "Header.xml").subscribe(() => {
                                     this.storageFactory.WriteFile(fileLocation, "Header.xml", JSON.stringify(content))
-                                        .then(function (success) {
+                                        .subscribe(function (success) {
                                             console.log("server header saved ..")
-                                        }).catch((err) => { this._logger.Error('Error,saving server header: ', err); })
+                                        })
                                 })
                             })
                         })
@@ -52,65 +53,69 @@ export class Core {
     }
 
     SaveMatrixAsync(content, channel, sport, matrixName, typeFolder): Promise<any> {
-        if (this.platform.is('cordova')) {
-            this._logger.Debug('Save matrix async..');
-            //create Server Folder
-            return this.storageFactory.createFolder(this.storageDataDir, "Local").then((success) => {
-                var localFolder = this.storageDataDir + "Local/";
-                return this.storageFactory.createFolder(localFolder, channel).then(() => {
-                    var channelFolder = localFolder + channel + "/";
-                    return this.storageFactory.createFolder(channelFolder, sport).then(() => {
-                        var sportFolder = channelFolder + sport + "/";
-                        return this.storageFactory.createFolder(sportFolder, typeFolder).then(() => {
-                            var contentFolder = sportFolder + typeFolder + "/";
-                            return this.storageFactory.createFolder(contentFolder, matrixName).then((success) => {
-                                var fileLocation = contentFolder + matrixName;
-                                return this.storageFactory.CreateFile(fileLocation, matrixName + ".mtx").then(() => {
-                                    return this.storageFactory.WriteFile(fileLocation, matrixName + ".mtx", JSON.stringify(content))
-                                        .then(function (success) {
-                                            return success["nativeUrl"]
-                                        }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
-                                }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
-                            }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
-                        }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
-                    }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
-                }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); })
-            }).catch((err) => { this._logger.Error('Error,saving matrix async: ', err); });
-        }
+        return new Promise((resolve, reject) => {
+            if (this.platform.is('cordova')) {
+                this._logger.Debug('Save matrix async..');
+                //create Server Folder
+                return this.storageFactory.createFolder(this.storageDataDir, "Local").subscribe((success) => {
+                    var localFolder = this.storageDataDir + "Local";
+                    return this.storageFactory.createFolder(localFolder, channel).subscribe((success) => {
+                        var channelFolder = localFolder + "/" + channel;
+                        return this.storageFactory.createFolder(channelFolder, sport).subscribe((success) => {
+                            var sportFolder = channelFolder + "/" + sport;
+                            return this.storageFactory.createFolder(sportFolder, typeFolder).subscribe((success) => {
+                                var contentFolder = sportFolder + "/" + typeFolder;
+                                return this.storageFactory.createFolder(contentFolder, matrixName).subscribe((success) => {
+                                    var fileLocation = contentFolder + "/" + matrixName;
+                                    return this.storageFactory.CreateFile(fileLocation, matrixName + ".mtx").subscribe(() => {
+                                        return this.storageFactory.WriteFile(fileLocation, matrixName + ".mtx", JSON.stringify(content)).subscribe((success) => {
+                                            return resolve(success);
+                                        });
+                                    })
+                                })
+                            })
+                        })
+                    })
+                })
+            }
+        })
+
     }
 
-    SaveLocalHeader(content, channel, sport, matrixName, typeFolder): Promise<string> {
-        this._logger.Debug('Save local header..');
-        return this.platform.ready().then(() => {
-            return this.storageFactory.createFolder(this.storageDataDir, "Local").then((success) => {
-                var localFolder = this.storageDataDir + "Local/";
-                return this.storageFactory.createFolder(localFolder, channel).then(() => {
-                    var channelFolder = localFolder + channel + "/";
-                    return this.storageFactory.createFolder(channelFolder, sport).then(() => {
-                        var sportFolder = channelFolder + sport + "/";
-                        return this.storageFactory.createFolder(sportFolder, typeFolder).then(() => {
-                            var contentFolder = sportFolder + typeFolder + "/";
-                            return this.storageFactory.createFolder(contentFolder, matrixName).then((success) => {
-                                var fileLocation = contentFolder + matrixName;
-                                return this.storageFactory.CreateFile(fileLocation, "Header.xml").then(() => {
-                                    return this.storageFactory.WriteFile(fileLocation, "Header.xml", JSON.stringify(content))
-                                        .then(function (success) {
-                                            return success["nativeUrl"]
-                                        }).catch((err) => { this._logger.Error('Error,saving local header: ', err); })
-                                }).catch((err) => { this._logger.Error('Error,saving local header: ', err); })
-                            }).catch((err) => { this._logger.Error('Error,saving local header: ', err); })
-                        }).catch((err) => { this._logger.Error('Error,saving local header: ', err); })
-                    }).catch((err) => { this._logger.Error('Error,saving local header: ', err); })
-                }).catch((err) => { this._logger.Error('Error,saving local header: ', err); })
-            }).catch((err) => { this._logger.Error('Error,saving local header: ', err); })
-        }).catch((err) => { this._logger.Error('Error,saving local header: ', err); })
+    SaveLocalHeader(content, channel, sport, matrixName, typeFolder): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this._logger.Debug('Save local header..');
+            return this.storageFactory.createFolder(this.storageDataDir, "Local")
+                .subscribe((success) => {
+                    var localFolder = this.storageDataDir + "Local/";
+                    return this.storageFactory.createFolder(localFolder, channel).subscribe((success) => {
+                        var channelFolder = localFolder + channel + "/";
+                        return this.storageFactory.createFolder(channelFolder, sport).subscribe((success) => {
+                            var sportFolder = channelFolder + sport + "/";
+                            return this.storageFactory.createFolder(sportFolder, typeFolder).subscribe((success) => {
+                                var contentFolder = sportFolder + typeFolder + "/";
+                                return this.storageFactory.createFolder(contentFolder, matrixName).subscribe((success) => {
+                                    var fileLocation = contentFolder + matrixName;
+                                    return this.storageFactory.CreateFile(fileLocation, "Header.xml").subscribe((success) => {
+                                        return this.storageFactory.WriteFile(fileLocation, "Header.xml", JSON.stringify(content))
+                                            .subscribe((success) => {
+                                                return resolve(success);
+                                            })
+                                    })
+                                })
+                            })
+                        })
+                    })
+                })
+        })
+
     }
 
     DeleteServerHeader(DirName, channel) {
         this._logger.Debug('Deleteing server header..');
         this.platform.ready().then(() => {
-            var headerFolder = this.storageDataDir + "Server/" + channel + "/Tennis/Matrices/"
-            this.storageFactory.RemoveFileAsync(headerFolder, DirName).subscribe((res) => {
+            var headerPath = this.storageDataDir + "Server/" + channel + "/Tennis/Matrices/"
+            this.RemoveMatrixFile(headerPath, DirName).subscribe((res) => {
                 let toast = this.toastCtrl.create({
                     message: 'Deleted Successfully..',
                     duration: 2000,
@@ -125,8 +130,8 @@ export class Core {
     DeleteLocalHeader(DirName, channel) {
         this._logger.Debug('Delete local header..');
         this.platform.ready().then(() => {
-            var headerFolder = this.storageDataDir + "Local/" + channel + "/Tennis/Matrices/"
-            this.storageFactory.RemoveFileAsync(headerFolder, DirName).subscribe((res) => {
+            var headerPath = this.storageDataDir + "Local/" + channel + "/Tennis/Matrices/"
+            this.RemoveMatrixFile(headerPath, DirName).subscribe((res) => {
                 let toast = this.toastCtrl.create({
                     message: 'Deleted Successfully..',
                     duration: 2000,
@@ -139,15 +144,17 @@ export class Core {
 
     SaveUserAsync(content) {
         this.platform.ready().then(() => {
-            this.storageFactory.createFolder(this.storageDataDir, "Roaming").then((success) => {
-                var serverFolder = this.storageDataDir + "Roaming/";
-                this.storageFactory.CreateFile(serverFolder, "User.json").then(() => {
-                    this.storageFactory.WriteFile(serverFolder, "User.json", JSON.stringify(content))
-                        .then(function (success) {
-                            this._logger.Debug("registraion complited..");
-                        }).catch((err) => { this._logger.Error('Error,saving user async: ', err); })
-                }).catch((err) => { this._logger.Error('Error,saving user async: ', err); })
-            }).catch((err) => { this._logger.Error('Error,saving user async: ', err); })
+            this.storageFactory.createFolder(this.storageDataDir, "Roaming")
+                .catch(err => new Observable(err => { return this._logger.Error('Error,saving user async: ', err); }))
+                .subscribe((success) => {
+                    var serverFolder = this.storageDataDir + "Roaming/";
+                    this.storageFactory.CreateFile(serverFolder, "User.json").subscribe(() => {
+                        this.storageFactory.WriteFile(serverFolder, "User.json", JSON.stringify(content))
+                            .subscribe(function (success) {
+                                this._logger.Debug("registraion complited..");
+                            })
+                    })
+                })
         })
     }
 
@@ -155,13 +162,14 @@ export class Core {
         this.platform.ready().then(() => {
             if (this.platform.is("cordova")) {
                 this.storageFactory.createFolder(this.storageRoot, "SportsPIP")
-                    .then((success) => {
+                    .catch(err => new Observable(err => { return this._logger.Error('Error,creating video folder: ', err); }))
+                    .subscribe((success) => {
                         var videoPath = this.storageRoot + "SportsPIP"
-                        this.storageFactory.createFolder(videoPath, "Video").then((success) => {
-                            this._logger.Debug("video folder created");
-                        }).catch((err) => { this._logger.Error('Error,creating video folder: ', err); })
+                        this.storageFactory.createFolder(videoPath, "Video")
+                            .subscribe((success) => {
+                                this._logger.Debug("video folder created");
+                            })
                     })
-                    .catch((err) => { this._logger.Error('Error,creating video folder: ', err); });
             }
         })
     }
@@ -170,13 +178,13 @@ export class Core {
         this.platform.ready().then(() => {
             if (this.platform.is("cordova")) {
                 this.storageFactory.createFolder(this.storageRoot, "SportsPIP")
-                    .then((success) => {
+                    .catch(err => new Observable(err => { this._logger.Error('Error,creating Picture folder: ', err); }))
+                    .subscribe((success) => {
                         var picturePath = this.storageRoot + "SportsPIP"
-                        this.storageFactory.createFolder(picturePath, "Picture").then((success) => {
+                        this.storageFactory.createFolder(picturePath, "Picture").subscribe((success) => {
                             this._logger.Debug("Picture folder created");
-                        }).catch((err) => { this._logger.Error('Error,creating Picture folder: ', err); })
+                        })
                     })
-                    .catch((err) => { this._logger.Error('Error,creating Picture folder: ', err); });
             }
         })
     }
@@ -189,20 +197,21 @@ export class Core {
                 list.forEach((channelName) => {
                     return this.storageFactory.GetLisOfDirectory(this.storageDataDir + "Local/" + channelName.name + "/Tennis", "Matrices").then((success) => {
                         success.forEach((res) => {
-                            return this.ReadMatrixFile(this.storageDataDir + "Local/" + channelName.name + "/Tennis/Matrices/" + res.name, "Header.xml").then((data) => {
-                                //deserialiae server header  
-                                var result = JSON.parse(data.toString());
-                                // console.log(result);
-                                var item = this.modelFactory.ComposeHeader(result);
-                                localMatrices.unshift(item);
-                                return resolve(localMatrices);
-                            })
+                            return this.ReadMatrixFile(this.storageDataDir + "Local/" + channelName.name + "/Tennis/Matrices/" + res.name, "Header.xml")
+                                .subscribe((data) => {
+                                    //deserialiae server header  
+                                    var result = JSON.parse(data.toString());
+                                    // console.log(result);
+                                    var item = this.modelFactory.ComposeHeader(result);
+                                    localMatrices.unshift(item);
+                                    return resolve(localMatrices);
+                                })
                         })
 
                     })
                 })
 
-            }).catch((err)=>{this._logger.Error('Error,getting local header: ', err);});
+            }).catch((err) => { this._logger.Error('Error,getting local header: ', err); });
         })
 
     }
@@ -215,7 +224,7 @@ export class Core {
                     return this.storageFactory.GetLisOfDirectory(this.storageDataDir, "Server/" + channelName.name + "/Tennis/Matrices/").then((success) => {
                         success.forEach((res) => {
                             return this.ReadMatrixFile(this.storageDataDir + "Server/" + channelName.name + "/Tennis/Matrices/" + res.name, "Header.xml")
-                                .then(data => {
+                                .subscribe(data => {
                                     // deserialiae server header  
                                     var result = JSON.parse(data.toString());
                                     var item = this.modelFactory.ComposeHeader(result);
@@ -225,7 +234,7 @@ export class Core {
                         });
                     });
                 })
-            }).catch((err)=>{this._logger.Error('Error,getting server header: ', err);});
+            }).catch((err) => { this._logger.Error('Error,getting server header: ', err); });
         })
     }
 
@@ -235,7 +244,7 @@ export class Core {
             return this.storageFactory.GetLisOfDirectory(this.storageDataDir, "Server/" + channel + "/Tennis/Matrices/").then((success) => {
                 success.forEach((res) => {
                     return this.ReadMatrixFile(this.storageDataDir + "Server/" + channel + "/Tennis/Matrices/" + res.name, "Header.xml")
-                        .then(data => {
+                        .subscribe(data => {
                             //deserialiae server header  
                             var result = JSON.parse(data.toString());
                             // var result = header.Header;
@@ -246,19 +255,25 @@ export class Core {
                         });
                 });
 
-             }).catch((err)=>{this._logger.Error('Error,getting server header: ', err);});
+            }).catch((err) => { this._logger.Error('Error,getting server header: ', err); });
         })
 
     }
 
 
-    ReadMatrixFile(path,fileName){
-       return this.storageFactory.ReadFileAync(path,fileName).then((data)=>{
-           return data;
-       })
+    ReadMatrixFile(path, fileName): Observable<any> {
+        return this.storageFactory.ReadFileAync(path, fileName).map((data) => {
+            return data;
+        }).catch((err) => {
+            return err;
+        })
     }
 
-    RemoveMatrixFile(path,fileName){
-       return this.storageFactory.RemoveFileAsync(path,fileName).toPromise()
+    RemoveMatrixFile(path, fileName): Observable<any> {
+        return this.storageFactory.RemoveFileAsync(path, fileName).map((data) => {
+            return data;
+        }).catch((err) => {
+            return err;
+        })
     }
 }
