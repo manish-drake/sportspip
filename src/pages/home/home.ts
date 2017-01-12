@@ -344,30 +344,7 @@ export class HomePage {
     testOpenMatrix() {
         this.httpService.GetFileFromServer("assets/matrix1.mtx")
             .then(res => {
-                if (this.platform.is('cordova')) {
-                    this.storageFactory.CheckFile(this.dataDirectory + "SportsPIP/Video", 'sample.mp4')
-                        .catch(err =>
-                            new Observable(err => {
-                                this.storageFactory.CheckFile(this.applicationDirectory + '/www/assets/', 'sample.mp4')
-                                    .catch(err => new Observable(err => {
-                                        console.log('Sample video not found in assets');
-                                        this.testNavToEditor(res);
-                                    })).subscribe(_ => {
-                                        this.storageFactory.CopyFile(this.applicationDirectory + '/www/assets/', 'sample.mp4', this.dataDirectory + "SportsPIP/Video", 'sample.mp4')
-                                            .subscribe(_ => {
-                                                console.log('Sample video saved to application directory');
-                                                this.testNavToEditor(res);
-                                            })
-                                    })
-                            })).subscribe(_ => {
-                                console.log('Sample video already exists');
-                                this.testNavToEditor(res);
-                            })
-                }
-                else {
                     this.testNavToEditor(res);
-                }
-
             });
 
     }
