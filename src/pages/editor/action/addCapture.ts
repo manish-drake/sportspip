@@ -53,7 +53,7 @@ export class AddCapture implements ICommand {
                         })
                         .catch(err => {
                             this._logger.Error('Failed copying video', JSON.stringify(err));
-                            this.alertCtrls.BasicAlert('Failed getting video', JSON.stringify(err));
+                            // this.alertCtrls.BasicAlert('Failed getting video', JSON.stringify(err));
                         });
                 }))
                 .catch(err => {
