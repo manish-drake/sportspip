@@ -38,7 +38,7 @@ export class SaveMatrix {
             if (view.Content !== undefined) {
                 if (view.Content.Capture != undefined) {
                     console.log("enter........")
-                    var kernel = view.Content.Capture._Kernel;
+                    var kernel = (view.Content.Capture._Kernel as string).replace("_copy","") as any;
                     name = kernel.slice(0, -4).split(" ");
                     this.modelFactory.CreateThumbnail(kernel, name);
                      return name;

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Camera, CameraOptions, CameraPopoverOptions } from 'ionic-native';
-
 import { ICommand } from '../../../Contracts/ICommand';
 import { Logger } from '../../../logging/logger';
 import { AlertControllers } from '../../../Services/Alerts';
@@ -53,7 +52,6 @@ export class AddCapture implements ICommand {
                             cmdArgs.editor.CreateVideoView(newFileName, cmdArgs.editor.selectedViewIndex, "Local");
                             if (Connection.connectedServer != null)
                                 this.backGroundTransferProcess.TransferVideo(newFileName, cmdArgs.editor.Connection.connectedServer.Address, cmdArgs.editor.views);
-
                         })
                 }))
                 .catch(err => {

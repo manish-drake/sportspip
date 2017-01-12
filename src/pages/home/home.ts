@@ -20,6 +20,7 @@ import { ModelFactory } from '../../Services/Factory/ModelFactory';
 import { Package } from '../../Services/Package';
 import { Core } from '../../Services/core';
 import { Utils } from '../../Services/common/utils';
+import { HttpService } from '../../Services/httpService';
 //Action
 import { Duplicate } from '../../Services/Action/Duplicate';
 import { DeleteHeader } from '../../Services/Action/DeleteHeader';
@@ -60,6 +61,7 @@ export class HomePage {
         private loadingCtrl: LoadingController,
         private connection: Connection,
         private utils: Utils,
+        private httpService: HttpService,
         private _logger: Logger) {
         platform.ready().then(() => {
             this.dataDirectory = this.storage.externalDataDirectory();
@@ -343,7 +345,6 @@ export class HomePage {
         this.core.ReadMatrixFile("assets", "matrix1.mtx")
             .subscribe(data => {
                 var res = JSON.parse(data.toString());
-
                 if (this.platform.is('cordova')) {
                     this.storageFactory.CheckFile(this.dataDirectory + "SportsPIP/Video", 'sample.mp4')
                         .catch(err =>
