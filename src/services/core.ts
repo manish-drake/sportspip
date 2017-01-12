@@ -108,46 +108,54 @@ export class Core {
 
     DeleteServerHeader(DirName, channel) {
         this._logger.Debug('Deleteing server header..');
-        this.platform.ready().then(() => {
-            var headerFolder = this.storageDataDir + "Server/" + channel + "/Tennis/Matrices/"
-            this.storageFactory.RemoveFileAsync(headerFolder, DirName).subscribe((res) => {
-                let toast = this.toastCtrl.create({
-                    message: 'Deleted Successfully..',
-                    duration: 2000,
-                });
-                toast.present();
+        this.platform.ready()
+            .then(() => {
+                var headerFolder = this.storageDataDir + "Server/" + channel + "/Tennis/Matrices/"
+                this.storageFactory.RemoveFileAsync(headerFolder, DirName).subscribe((res) => {
+                    let toast = this.toastCtrl.create({
+                        message: 'Deleted Successfully..',
+                        duration: 2000,
+                    });
+                    toast.present();
+                })
             })
-        }).catch((err) => {
-            this._logger.Error('Error,deleting server header: ', err);
-        })
+            .catch((err) => {
+                this._logger.Error('Error,deleting server header: ', err);
+            })
     }
 
     DeleteLocalHeader(DirName, channel) {
         this._logger.Debug('Delete local header..');
         this.platform.ready().then(() => {
             var headerFolder = this.storageDataDir + "Local/" + channel + "/Tennis/Matrices/"
-            this.storageFactory.RemoveFileAsync(headerFolder, DirName).subscribe((res) => {
-                let toast = this.toastCtrl.create({
-                    message: 'Deleted Successfully..',
-                    duration: 2000,
-                });
-                toast.present();
-            })
+            this.storageFactory.RemoveFileAsync(headerFolder, DirName)
+                .subscribe((res) => {
+                    let toast = this.toastCtrl.create({
+                        message: 'Deleted Successfully..',
+                        duration: 2000,
+                    });
+                    toast.present();
+                })
         })
 
     }
 
     SaveUserAsync(content) {
         this.platform.ready().then(() => {
-            this.storageFactory.createFolder(this.storageDataDir, "Roaming").then((success) => {
-                var serverFolder = this.storageDataDir + "Roaming/";
-                this.storageFactory.CreateFile(serverFolder, "User.json").then(() => {
-                    this.storageFactory.WriteFile(serverFolder, "User.json", JSON.stringify(content))
-                        .then(function (success) {
-                            this._logger.Debug("registraion complited..");
-                        }).catch((err) => { this._logger.Error('Error,saving user async: ', err); })
-                }).catch((err) => { this._logger.Error('Error,saving user async: ', err); })
-            }).catch((err) => { this._logger.Error('Error,saving user async: ', err); })
+            this.storageFactory.createFolder(this.storageDataDir, "Roaming")
+                .then((success) => {
+                    var serverFolder = this.storageDataDir + "Roaming/";
+                    this.storageFactory.CreateFile(serverFolder, "User.json")
+                        .then(() => {
+                            this.storageFactory.WriteFile(serverFolder, "User.json", JSON.stringify(content))
+                                .then(function (success) {
+                                    this._logger.Debug("registraion complited..");
+                                })
+                                .catch((err) => { this._logger.Error('Error,saving user async: ', err); })
+                        })
+                        .catch((err) => { this._logger.Error('Error,saving user async: ', err); })
+                })
+                .catch((err) => { this._logger.Error('Error,saving user async: ', err); })
         })
     }
 
@@ -170,7 +178,8 @@ export class Core {
         this.storageFactory.createFolder(Path, "Video")
             .then((success) => {
                 this._logger.Debug("video folder created");
-            }).catch((err) => {
+            })
+            .catch((err) => {
                 this._logger.Error('Error,creating video folder: ', err);
             })
     }
@@ -180,7 +189,8 @@ export class Core {
         this.storageFactory.createFolder(Path, "Picture")
             .then((success) => {
                 this._logger.Debug("Picture folder created");
-            }).catch((err) => {
+            })
+            .catch((err) => {
                 this._logger.Error('Error,creating Picture folder: ', err);
             })
     }
@@ -189,24 +199,28 @@ export class Core {
     GetLocalHeader(): Promise<any> {
         var localMatrices = [];
         return new Promise((resolve, reject) => {
-            return this.storageFactory.GetLisOfDirectory(this.storageDataDir, "Local").then((list) => {
-                list.forEach((channelName) => {
-                    return this.storageFactory.GetLisOfDirectory(this.storageDataDir + "Local/" + channelName.name + "/Tennis", "Matrices").then((success) => {
-                        success.forEach((res) => {
-                            return this.ReadMatrixFile(this.storageDataDir + "Local/" + channelName.name + "/Tennis/Matrices/" + res.name, "Header.xml").then((data) => {
-                                //deserialiae server header  
-                                var result = JSON.parse(data.toString());
-                                // console.log(result);
-                                var item = this.modelFactory.ComposeHeader(result);
-                                localMatrices.unshift(item);
-                                return resolve(localMatrices);
+            return this.storageFactory.GetLisOfDirectory(this.storageDataDir, "Local")
+                .then((list) => {
+                    list.forEach((channelName) => {
+                        return this.storageFactory.GetLisOfDirectory(this.storageDataDir + "Local/" + channelName.name + "/Tennis", "Matrices").then((success) => {
+                            success.forEach((res) => {
+                                return this.ReadMatrixFile(this.storageDataDir + "Local/" + channelName.name + "/Tennis/Matrices/" + res.name, "Header.xml").then((data) => {
+                                    //deserialiae server header  
+                                    var result = JSON.parse(data.toString());
+                                    // console.log(result);
+                                    var item = this.modelFactory.ComposeHeader(result);
+                                    localMatrices.unshift(item);
+                                    return resolve(localMatrices);
+                                })
                             })
+
                         })
-
                     })
-                })
 
-            }).catch((err) => { this._logger.Error('Error,getting local header: ', err); });
+                })
+                .catch((err) => {
+                    this._logger.Error('Error,getting local header: ', err);
+                });
         })
 
     }
@@ -214,55 +228,65 @@ export class Core {
     GetServerHeader(): Promise<any> {
         var channels = [];
         return new Promise((resolve, reject) => {
-            return this.storageFactory.GetLisOfDirectory(this.storageDataDir, "Server/").then((success) => {
-                success.forEach((channelName) => {
-                    return this.storageFactory.GetLisOfDirectory(this.storageDataDir, "Server/" + channelName.name + "/Tennis/Matrices/").then((success) => {
-                        success.forEach((res) => {
-                            return this.ReadMatrixFile(this.storageDataDir + "Server/" + channelName.name + "/Tennis/Matrices/" + res.name, "Header.xml")
-                                .then(data => {
-                                    // deserialiae server header  
-                                    var result = JSON.parse(data.toString());
-                                    var item = this.modelFactory.ComposeHeader(result);
-                                    channels.unshift(item);
-                                    resolve(channels);
-                                });
+            return this.storageFactory.GetLisOfDirectory(this.storageDataDir, "Server/")
+                .then((success) => {
+                    success.forEach((channelName) => {
+                        return this.storageFactory.GetLisOfDirectory(this.storageDataDir, "Server/" + channelName.name + "/Tennis/Matrices/").then((success) => {
+                            success.forEach((res) => {
+                                return this.ReadMatrixFile(this.storageDataDir + "Server/" + channelName.name + "/Tennis/Matrices/" + res.name, "Header.xml")
+                                    .then(data => {
+                                        // deserialiae server header  
+                                        var result = JSON.parse(data.toString());
+                                        var item = this.modelFactory.ComposeHeader(result);
+                                        channels.unshift(item);
+                                        resolve(channels);
+                                    });
+                            });
                         });
-                    });
+                    })
                 })
-            }).catch((err) => { this._logger.Error('Error,getting server header: ', err); });
+                .catch((err) => {
+                    this._logger.Error('Error,getting server header: ', err);
+                });
         })
     }
 
     GetMatrixListByChannel(channel): Promise<any> {
         var channels = [];
         return new Promise((resolve, reject) => {
-            return this.storageFactory.GetLisOfDirectory(this.storageDataDir, "Server/" + channel + "/Tennis/Matrices/").then((success) => {
-                success.forEach((res) => {
-                    return this.ReadMatrixFile(this.storageDataDir + "Server/" + channel + "/Tennis/Matrices/" + res.name, "Header.xml")
-                        .then(data => {
-                            //deserialiae server header  
-                            var result = JSON.parse(data.toString());
-                            // var result = header.Header;
-                            var item = this.modelFactory.ComposeHeader(result);
-                            channels.unshift(item);
+            return this.storageFactory.GetLisOfDirectory(this.storageDataDir, "Server/" + channel + "/Tennis/Matrices/")
+                .then((success) => {
+                    success.forEach((res) => {
+                        return this.ReadMatrixFile(this.storageDataDir + "Server/" + channel + "/Tennis/Matrices/" + res.name, "Header.xml")
+                            .then(data => {
+                                //deserialiae server header  
+                                var result = JSON.parse(data.toString());
+                                // var result = header.Header;
+                                var item = this.modelFactory.ComposeHeader(result);
+                                channels.unshift(item);
 
-                            return resolve(channels);
-                        });
+                                return resolve(channels);
+                            });
+                    });
+
+                })
+                .catch((err) => {
+                    this._logger.Error('Error,getting server header: ', err);
                 });
-
-            }).catch((err) => { this._logger.Error('Error,getting server header: ', err); });
         })
 
     }
 
 
     ReadMatrixFile(path, fileName) {
-        return this.storageFactory.ReadFileAync(path, fileName).then((data) => {
+        return this.storageFactory.ReadFileAync(path, fileName)
+        .then((data) => {
             return data;
         })
     }
 
     RemoveMatrixFile(path, fileName) {
-        return this.storageFactory.RemoveFileAsync(path, fileName).toPromise()
+        return this.storageFactory.RemoveFileAsync(path, fileName)
+        .toPromise()
     }
 }

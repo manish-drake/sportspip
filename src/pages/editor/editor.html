@@ -21,7 +21,7 @@
 	</ion-row>
 </ion-header>
 
-<ion-content no-bounce style="background:#f4f4f4;" [ngSwitch]="selectedViewIndex">
+<ion-content no-bounce style="background:#f4f4f4;">
 	<div style="height:100%;" >
 		<!--ViewCanvasTemplate-->
 		<canvas-component *ngIf="selectedView?.Content?.PIP" [view]="selectedView"></canvas-component>
