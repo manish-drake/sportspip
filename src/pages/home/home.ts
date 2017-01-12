@@ -342,9 +342,8 @@ export class HomePage {
 
     // For testing only --starts
     testOpenMatrix() {
-        this.core.ReadMatrixFile("assets", "matrix1.mtx")
-            .subscribe(data => {
-                var res = JSON.parse(data.toString());
+        this.httpService.GetFileFromServer("assets/matrix1.mtx")
+            .then(res => {
                 if (this.platform.is('cordova')) {
                     this.storageFactory.CheckFile(this.dataDirectory + "SportsPIP/Video", 'sample.mp4')
                         .catch(err =>
