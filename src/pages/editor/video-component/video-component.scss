@@ -14,10 +14,4 @@ video-component {
             width: 100%;
      }
 
-     /* hide video element controls */
-     *::-webkit-media-controls-start-playback-button {
-         display: none!important;
-         -webkit-appearance: none;
-     }
-
 }
