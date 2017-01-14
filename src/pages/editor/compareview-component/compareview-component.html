@@ -1,8 +1,15 @@
 <!--compareViewTemplate-->
 <ion-grid style="height: 100%;">
 	<ion-row style="height: 100%;position: relative;">
-		<video #video loop style="position: absolute; background-color:black;" [attr.src]="returnVidPath(view.Content.Capture._Kernel)"
-			width="100%" height="100%"></video>
+		<video #video playsinline webkit-playsinline
+		        preload="auto" loop 
+				style="position: absolute; background-color: black; " 
+				width="100%" 
+				height="100%"
+				poster="assets/poster.png"
+				type="video/mp4" 
+				src="{{returnVidPath(view.Content.Capture._Kernel)}}">
+		</video>
 		<svg *ngFor="let obj of objects;" [ngSwitch]="obj.key" [attr.viewBox]="viewBoxSize" height="100%" width="100%" style="position:absolute">
 			<rect *ngSwitchCase="'Rectangle'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
 				[attr.fill]="clrCvt(obj.val._Fill)" [attr.stroke]="clrCvt(obj.val._Stroke)" [attr.stroke-width]="obj.val._StrokeThickness"
