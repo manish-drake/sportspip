@@ -23,7 +23,7 @@
 
 <!-- Real floating action button, fixed. It will not scroll with the content -->
 <ion-fab bottom right>
-	<button ion-fab (click)="newMatrix()"><ion-icon name="add"></ion-icon></button>
+	<button ion-fab [command]="newMatrix" [cmdArgs]="'addNew'" [usePress]="false"><ion-icon name="add"></ion-icon></button>
 </ion-fab>
 <!--(For testing only) - Open matrix file placed in assets-->
 <!--<ion-fab bottom center>

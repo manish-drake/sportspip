@@ -7,18 +7,21 @@ import { Storage } from './Factory/Storage';
 import X2JS from 'x2js';
 import { Logger } from '../logging/logger';
 import { Observable } from 'rxjs/Rx';
-import {} from '';
+import { } from '';
 
 
 @Injectable()
 export class BackGroundTransferProcess {
     private data: any;
-
-    constructor(private platform: Platform, private http: Http, private _logger: Logger,private storage:Storage) {
+    rootDir: string;
+    constructor(private platform: Platform, private http: Http, private _logger: Logger, private storage: Storage) {
+        this.storage.externalRootDirectory().then((res) => {
+            this.rootDir = res;
+        })
     }
     TransferVideo(fileName, serverIP, views) {
         this._logger.Debug('Transfer video');
-        File.readAsArrayBuffer(this.storage.externalRootDirectory()+"SportsPIP/Video", fileName).then(success => {
+        File.readAsArrayBuffer(this.rootDir + "SportsPIP/Video", fileName).then(success => {
             let headers = new Headers({ 'Content-Type': 'video/mp4' }); // ... Set content type to JSON
             let options = new RequestOptions({ headers: headers });
             this.http.post("http://" + serverIP + ":10080/imatrix/matrices/" + fileName.slice(0, -4) + "/videos", success, options)

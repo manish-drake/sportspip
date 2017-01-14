@@ -24,7 +24,6 @@ export class ChannelCollectionPage {
 
   public channel: any;
   channelMatrices = [];
-  TempMatrix = [];
   dataDir: any;
 
   constructor(params: NavParams,
@@ -62,9 +61,10 @@ export class ChannelCollectionPage {
 
   GetChannelMatrix(channel) {
     this._logger.Debug('Get channel matrix..');
-    this.platform.ready().then(() => {
-      this.core.GetMatrixListByChannel(channel).then((res) => {
+    return this.platform.ready().then(() => {
+      return this.core.GetMatrixListByChannel(channel).then((res) => {
         this.channelMatrices = res;
+        return true;
       }).catch((err) => { this._logger.Error('Error,getting channel matrix: ', err); })
     });
 
@@ -74,26 +74,21 @@ export class ChannelCollectionPage {
     this._logger.Debug('Get search items (channel collection)..');
     // Reset items back to all of the items
     this.channelMatrices = [];
-    this.channelMatrices = this.TempMatrix;
-
-    Observable.interval(1000)/*$Candidate for refactoring$*///Please don't do this!!!
-      .take(1).map((x) => x + 5)
-      .subscribe((x) => {
-        // set val to the value of the searchbar
-        let val = ev.target.value;
-        // if the value is an empty string don't filter the items
-        if (val && val.trim() != '') {
-          this.channelMatrices = this.channelMatrices.filter((item) => {
-            return (item.Title.toLowerCase().indexOf(val.toLowerCase()) > -1);
-          })
-        }
-      })
+    this.GetChannelMatrix(this.channel).then((res) => {
+      // set val to the value of the searchbar
+      let val = ev.target.value;
+      // if the value is an empty string don't filter the items
+      if (val && val.trim() != '') {
+        this.channelMatrices = this.channelMatrices.filter((item) => {
+          return (item.Title.toLowerCase().indexOf(val.toLowerCase()) > -1);
+        })
+      }
+    });
   }
 
   FormatDate(value) {
     return this.utils.FormatDate(value);
   }
-
 
   retrunThumbnailPath(name) {
     return "url(" + this.dataDir + name + ".jpg" + ")";
@@ -149,6 +144,7 @@ export class ChannelCollectionPage {
     });
     actionSheet.present();
   }
+
 }
 @Component({/*$Candidate for refactoring$*///Rename this class and take it to a separate file or justify why this class is hding here?
   template: `

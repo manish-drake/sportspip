@@ -15,11 +15,9 @@ export class Core {
         private toastCtrl: ToastController,
         private platform: Platform,
         private _logger: Logger) {
+            
         this.storage.externalDataDirectory().then((res) => {
             this.storageDataDir = res;
-            this.storage.externalRootDirectory().then((res1) => {
-                this.storageRoot = res1;
-            })
         });
 
     }
@@ -160,16 +158,15 @@ export class Core {
     }
 
     CreateResourceDirectories() {
-        this.platform.ready().then(() => {
-            if (this.platform.is("cordova")) {
-                this.storageFactory.createFolder(this.storageRoot, "SportsPIP")
-                    .subscribe((success) => {
-                        this._logger.Debug("SportsPIP folder created");
-                        this.CreateVideoFolder();
-                        this.CreatePictureFolder();
-                    })
-            }
-        })
+        this.storage.externalRootDirectory().then((res1) => {
+            this.storageRoot = res1;
+            this.storageFactory.createFolder(this.storageRoot, "SportsPIP")
+                .subscribe((success) => {
+                    this._logger.Debug("SportsPIP folder created");
+                    this.CreateVideoFolder();
+                    this.CreatePictureFolder();
+                });
+        });
     }
 
     CreateVideoFolder() {
