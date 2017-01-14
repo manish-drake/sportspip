@@ -15,17 +15,14 @@
   <ion-toolbar color="primary" no-border-top>
     <ion-searchbar (ionInput)="getSearchItems($event)"></ion-searchbar>
   </ion-toolbar>
-
 </ion-header>
-
-
 <ion-content style="background: #f1f1f1;position: relative;">
 <ion-refresher (ionRefresh)="doRefreshContent($event)">
   <ion-refresher-content></ion-refresher-content>
 </ion-refresher>
 <div class="items">
   <div class="item" *ngFor='let matrix of localMatrices; let i = index'>
-    <ion-card (click)="openMatrix(matrix.Name,matrix.Channel)" (press)="matrixPressed(i,matrix.Name,matrix.Channel,matrix.Title)">
+    <ion-card [command]="OpenMatrix" [cmdArgs]="matrix" [usePress]="false" (press)="matrixPressed(i,matrix.Name,matrix.Channel,matrix.Title)">
       <ion-row>
         <ion-col no-padding [style.background-image]="retrunThumbnailPath(matrix.ThumbnailSource)" style="height: 120px;background-size: cover;background-color:lightgray;background-position: center;">
 </ion-col>

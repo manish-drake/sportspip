@@ -25,13 +25,19 @@ export class HomeMorePopover {
         private _Logger: Logger) {
         if (this.platform.is('cordova')) {/*$Candidate for refactoring$*///must go inside storage
             if (this.platform.is('android')) {
-                this.sqliteLogDirectory = this.storage.applicationStorageDirectory() + 'databases/';
+                this.storage.applicationStorageDirectory().then((res) => {
+                    this.sqliteLogDirectory = res + 'databases/';
+                })
+
             }
             else if (this.platform.is('ios')) {
-                this.sqliteLogDirectory = this.storage.externalRootDirectory();
+                this.storage.externalRootDirectory().then((res) => {
+                    this.sqliteLogDirectory = res;
+                })
             }
-
-            this.rootDirectory = this.storage.externalRootDirectory();
+            this.storage.externalRootDirectory().then((res) => {
+                this.rootDirectory = res;
+            });
             AppVersion.getVersionNumber().then((s) => {
                 this.versionNumber = s;
             })

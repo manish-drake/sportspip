@@ -26,6 +26,7 @@ import { Duplicate } from '../../Services/Action/Duplicate';
 import { DeleteHeader } from '../../Services/Action/DeleteHeader';
 import { OpenMatrix } from '../../Services/Action/OpenMatrix';
 import { Download } from '../../Services/Action/Download';
+import { AddNewMatrix } from '../home/action/addNewMatrix';
 
 declare var FileTransfer: any;
 declare var navigator: any;
@@ -33,7 +34,7 @@ declare var navigator: any;
 @Component({
     selector: 'page-home',
     templateUrl: 'home.html',
-    providers: [ModelFactory, DeleteHeader, Package, OpenMatrix, Connection, Duplicate, Download]
+    providers: [ModelFactory, DeleteHeader, Package, OpenMatrix, Connection, Duplicate, Download, AddNewMatrix]
 })
 
 export class HomePage {
@@ -47,6 +48,7 @@ export class HomePage {
 
     constructor(private platform: Platform, public navCtrl: NavController,
         private core: Core,
+        private addNewMatrix: AddNewMatrix,
         private duplicate: Duplicate,
         private storage: Storage,
         private storageFactory: StorageFactory,
@@ -63,10 +65,13 @@ export class HomePage {
         private utils: Utils,
         private httpService: HttpService,
         private _logger: Logger) {
+                                
         this.storage.externalDataDirectory().then((res) => {
             this.dataDirectory = res;
+            this.storage.applicationDirectory().then((res1) => {
+                this.applicationDirectory = res1;
+            });
         });
-        this.applicationDirectory = this.storage.applicationDirectory();
     }
 
     ionViewDidEnter() {
@@ -139,7 +144,6 @@ export class HomePage {
 
 
     refreshing: boolean = false;
-
     doRefreshLocal(refresher) {
         this.refreshing = true;
         this.localMatrices = [];
@@ -228,7 +232,6 @@ export class HomePage {
                     this.GetLocalMatrixHeader();
                 })
         })
-
     }
 
     retrunThumbnailPath(name) {
@@ -319,27 +322,15 @@ export class HomePage {
     //     }
     // }
 
-    AuthenticateUser() {
-        console.log('Authenticatnig user..');
-        return true;
+    // AuthenticateUser() {
+    //     console.log('Authenticatnig user..');
+    //     return true;
+    // }
+
+    private _newMatrix: AddNewMatrix;
+    public get newMatrix(): AddNewMatrix {
+        return this.addNewMatrix;
     }
-
-
-    newMatrix() {
-        this._logger.Debug('Creating new matrix..');
-        var data = this.modelfactory.ComposeNewMatrix();
-        var result = data.Matrix;
-        this.core.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices").then((success) => {
-            var headerContent = this.modelfactory.ComposeNewMatrixHeader(result);
-            this.core.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
-                .then((success) => {
-                    this.navCtrl.push(EditorPage, {
-                        matrixData: result
-                    });
-                });
-        })
-    }
-
     // For testing only --starts
     testOpenMatrix() {
         this.httpService.GetFileFromServer("assets/matrix1.mtx")

@@ -37,6 +37,7 @@ export class CollectionPage {
     private packages: Package,
     private platform: Platform,
     private _logger: Logger) {
+
     this.storage.externalDataDirectory().then((res) => {
       this.dataDir = res;
     })
@@ -44,25 +45,20 @@ export class CollectionPage {
   }
 
   refreshing: boolean = false;
-
   getSearchItems(ev: any) {
     this._logger.Debug('Get search items..');
     // Reset items back to all of the items
     this.localMatrices = [];
-    this.LoadCollectionMatrix();
-
-    Observable.interval(1000)/*$Candidate for refactoring$*///BAD!! Please remove this until unless it is part of the core logic
-      .take(1).map((x) => x + 5)
-      .subscribe((x) => {
-        // set val to the value of the searchbar
-        let val = ev.target.value;
-        // if the value is an empty string don't filter the items
-        if (val && val.trim() != '') {
-          this.localMatrices = this.localMatrices.filter((item) => {
-            return (item.Title.toLowerCase().indexOf(val.toLowerCase()) > -1);
-          })
-        }
-      })
+    this.LoadCollectionMatrix().then((res) => {
+      // set val to the value of the searchbar
+      let val = ev.target.value;
+      // if the value is an empty string don't filter the items
+      if (val && val.trim() != '') {
+        this.localMatrices = this.localMatrices.filter((item) => {
+          return (item.Title.toLowerCase().indexOf(val.toLowerCase()) > -1);
+        })
+      }
+    });
   }
 
   doRefreshContent(refresher) {
@@ -78,9 +74,10 @@ export class CollectionPage {
 
   LoadCollectionMatrix() {
     this._logger.Debug('Getting local matrix collection..');
-    this.platform.ready().then(() => {
-      this.core.GetLocalHeader().then((res) => {
+    return this.platform.ready().then(() => {
+      return this.core.GetLocalHeader().then((res) => {
         this.localMatrices = res;
+        return true;
       })
     });
   }
@@ -97,11 +94,12 @@ export class CollectionPage {
     console.log('Hello Collection Page');
   }
 
-  openMatrix(matrixName, Channel) {
-    // this.openmatrix.run(matrixName, Channel);
+  private _OpenMatrix : OpenMatrix;
+  public get OpenMatrix() : OpenMatrix {
+    return this.openmatrix;
   }
 
-  DuplicateMatrix(matrixname, channelName) {/*$Candidate for refactoring$*///Can go to actions
+  DuplicateMatrix(matrixname, channelName) {/*$Candidate for refactoring$*///Can go to actions=> "no"
     this._logger.Debug('Creating duplicate matrix..');
     this.platform.ready().then(() => {
       this.duplicate.Run(channelName, matrixname)
@@ -113,41 +111,36 @@ export class CollectionPage {
     })
   }
 
-  matrixPressed(index, matrixName, channel, title) {/*$Candidate for refactoring$*///can go to actions
+  matrixPressed(index, matrixName, channel, title) {/*$Candidate for refactoring$*///can go to actions="yes before that we have to make two different command and pressed action"
     this._logger.Debug('Matrix pressed (local collection..)');
-    try {
-      let actionSheet = this.actionSheetCtrl.create({
-        title: title,
-        buttons: [
-          {
-            icon: 'trash',
-            text: 'Delete',
-            role: 'destructive',
-            handler: () => {
-              this.deleteHeader.DeleteLocalHeader(matrixName, channel);
-              this.localMatrices.splice(index, 1);
-            }
-          }, {
-            icon: 'copy',
-            text: 'Save Copy',
-            handler: () => {
-              this.DuplicateMatrix(matrixName, channel);
-            }
-          }, {
-            icon: 'close',
-            text: 'Cancel',
-            role: 'cancel',
-            handler: () => {
-              console.log('Cancel clicked');
-            }
+    let actionSheet = this.actionSheetCtrl.create({
+      title: title,
+      buttons: [
+        {
+          icon: 'trash',
+          text: 'Delete',
+          role: 'destructive',
+          handler: () => {
+            this.deleteHeader.DeleteLocalHeader(matrixName, channel);
+            this.localMatrices.splice(index, 1);
           }
-        ]
-      });
-      actionSheet.present();
-    }
-    catch (err) {
-      this._logger.Error('Error,matrix pressed (local collection): ', err);
-    }
+        }, {
+          icon: 'copy',
+          text: 'Save Copy',
+          handler: () => {
+            this.DuplicateMatrix(matrixName, channel);
+          }
+        }, {
+          icon: 'close',
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    actionSheet.present();
   }
 
 }
