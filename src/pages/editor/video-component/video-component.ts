@@ -1,10 +1,11 @@
 import { Component, ViewChild, Input, ElementRef } from '@angular/core';
+import { ActionSheetController, ModalController, Platform, Events } from 'ionic-angular';
 import { VideoEditor } from 'ionic-native';
+
 import { Observable } from 'rxjs/Rx';
 import { Storage } from '../../../Services/Factory/Storage';
 import { StorageFactory } from '../../../Services/Factory/StorageFactory';
 import { AlertControllers } from '../../../Services/Alerts';
-import { AlertController, ModalController, Platform, Events } from 'ionic-angular';
 import { Logger } from '../../../logging/logger';
 
 @Component({
@@ -24,14 +25,14 @@ export class VideoComponent {
     constructor(private alertCtrls: AlertControllers,
         private storage: Storage,
         private storageFactory: StorageFactory,
-        private alertCtrl: AlertController,
+        private actionSheetCtrl: ActionSheetController,
         private modalCtrl: ModalController,
         private platform: Platform,
         private events: Events,
         private _logger: Logger) {
-         this.storage.externalRootDirectory().then((res)=>{
-             this.rootDir =res;
-         });
+        this.storage.externalRootDirectory().then((res) => {
+            this.rootDir = res;
+        });
         this.timelinePosition = this.formatTime(0);
     }
 
@@ -444,36 +445,6 @@ export class VideoComponent {
         }, 1 / 60)
     }
 
-    updateSelection(i, isSelect) {
-        this.markers.forEach((marker, index) => {
-            if (i != index) {
-                marker.checked = false;
-                // this.playPauseButtonIcon = 'play';
-                // this.video.pause();
-                // clearInterval(this.timelineInterval);
-            }
-            else {
-                if (isSelect) {
-                    marker.checked = false;
-                }
-                else {
-                    // this.video.pause();
-                    // this.playPauseButtonIcon = 'play';
-                    marker.checked = true;
-                    this.index = 0;
-                    this.timelinePosition = marker._Position;
-                    var positionMS = this.formatPoistionInMiliSecond(marker._Position);
-                    var formatPosition = positionMS / 10000000;
-
-                    this.video.currentTime = formatPosition;
-                    var factor = (100000 / this.video.duration) * this.video.currentTime;
-                    this.sliderValue = factor;
-                    this.timelinePosition = this.formatTime(formatPosition);
-                }
-            }
-        });
-    }
-
     addMarker() {
         console.log("Add Marker..");
         var currentPosition = this.timelinePosition + '00000';
@@ -525,17 +496,44 @@ export class VideoComponent {
         }
     }
 
-    deleteMarker(i) {
-        let confirm = this.alertCtrl.create({
-            title: 'Delete Marker!',
-            message: 'Do you realy want to delete marker?',
+    selectMarker(i, isSelected) {
+        this.markers.forEach((marker, index) => {
+            if (i != index) {
+                marker.checked = false;
+                // this.playPauseButtonIcon = 'play';
+                // this.video.pause();
+                // clearInterval(this.timelineInterval);
+            }
+            else {
+                if (isSelected) {
+                    marker.checked = false;
+                }
+                else {
+                    // this.video.pause();
+                    // this.playPauseButtonIcon = 'play';
+                    marker.checked = true;
+                    this.index = 0;
+                    this.timelinePosition = marker._Position;
+                    var positionMS = this.formatPoistionInMiliSecond(marker._Position);
+                    var formatPosition = positionMS / 10000000;
+
+                    this.video.currentTime = formatPosition;
+                    var factor = (100000 / this.video.duration) * this.video.currentTime;
+                    this.sliderValue = factor;
+                    this.timelinePosition = this.formatTime(formatPosition);
+                }
+            }
+        });
+    }
+
+    deleteMarker(i, isSelected) {
+        this.selectMarker(i, isSelected);
+        let actionSheet = this.actionSheetCtrl.create({
             buttons: [
                 {
-                    text: 'Cancel',
-                    handler: () => { }
-                },
-                {
-                    text: 'Delete',
+                    icon: 'trash',
+                    text: 'Delete Marker',
+                    role: 'destructive',
                     handler: () => {
                         this.markers.forEach((marker, index) => {
                             if (i == index) {
@@ -543,10 +541,17 @@ export class VideoComponent {
                             }
                         });
                     }
+                }, {
+                    icon: 'close',
+                    text: 'Cancel',
+                    role: 'cancel',
+                    handler: () => {
+                        console.log('Cancel clicked');
+                    }
                 }
             ]
         });
-        confirm.present();
+        actionSheet.present();
     }
     // Code for Markers ends
 

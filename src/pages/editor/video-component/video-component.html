@@ -73,8 +73,8 @@
 					<ion-row>
 						<ion-col no-padding #markersContainer (window:resize)="onResize($event)">
 							<button ion-button icon-only no-margin clear color="inactive" *ngFor="let marker of markers;let i = index" [class.markerselected]="marker.checked"
-								[style.left]="marker.Left" style="width:18px;height:26px;margin:0 -9px;" (click)="updateSelection(i,marker.checked)"
-								(press)="deleteMarker(i)">
+								[style.left]="marker.Left" style="width:18px;height:26px;margin:0 -9px;" (tap)="selectMarker(i,marker.checked)"
+								(press)="deleteMarker(i,marker.checked)">
 										<ion-icon name="pin" style="padding:0"></ion-icon>
 										</button>
 						</ion-col>
@@ -96,7 +96,7 @@
 						<ion-col no-padding center style="width: 100%;"></ion-col>
 						<ion-col no-padding center style="width: auto; flex: 0 0 auto;">
 							<button no-margin ion-button icon-only clear (click)="playbackRateVideo()" style="width:40px;" text-lowercase text-nowrap><b>{{video.playbackRate}}x</b></button>
-							<button no-margin ion-button icon-only clear (click)="previousVideoFrame()" (press)="previousVideoFrame()"><ion-icon name="rewind"></ion-icon></button>
+							<button no-margin ion-button icon-only clear (tap)="previousVideoFrame()" (press)="previousVideoFrame()"><ion-icon name="rewind"></ion-icon></button>
 						</ion-col>
 					</ion-row>
 				</ion-col>
@@ -106,7 +106,7 @@
 				<ion-col no-padding center style="width: 100%;">
 					<ion-row>
 						<ion-col no-padding center text-center style="width:auto;flex:0 0 auto;">
-							<button no-margin ion-button icon-only clear (click)="nextVideoFrame()" (press)="nextVideoFrame()"><ion-icon name="fastforward"></ion-icon></button>
+							<button no-margin ion-button icon-only clear (tap)="nextVideoFrame()" (press)="nextVideoFrame()"><ion-icon name="fastforward"></ion-icon></button>
 							<button no-margin ion-button icon-only clear color="{{repeatColor}}" (click)="repeatVideo()"><ion-icon name="repeat"></ion-icon></button>
 						</ion-col>
 						<ion-col no-padding center style="width: 100%;color: gray;">
