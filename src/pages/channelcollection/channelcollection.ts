@@ -114,7 +114,8 @@ export class ChannelCollectionPage {
           duration: 30000
         });
         loader.present();
-        this.download.DownloadServerHeaderAsync(matrix.Name, matrix.Channel).then(() => {
+        
+        this.download.DownloadServerHeaderAsync(matrix.Name, matrix.Channel).then((res) => {
           this.deleteServerHeader(matrix.Name, matrix.Channel, index);
           loader.dismiss();
         });

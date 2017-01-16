@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Platform } from 'ionic-angular';
 import { Logger } from '../../logging/logger';
-import { LoadingController } from 'ionic-angular';
 import { Core } from '../../Services/core';
 import { Observable } from 'rxjs/Rx';
 import { Package } from '../../Services/Package';
@@ -11,41 +9,38 @@ import { Package } from '../../Services/Package';
 export class Download {
     constructor(
         private core: Core,
-        private platform: Platform,
         private _logger: Logger,
-        private packages: Package,
-        private loadingCtrl: LoadingController) {
+        private packages: Package) {
 
     }
 
-    DownloadServerHeaderAsync(fileName, channelName):Promise<any> {
-        var authenticate = this.AuthenticateUser();
-        if (authenticate) {
-           return this.packages.DownloadServerHeader(fileName, channelName)
-                .then((serverHeader) => {
-                    Observable.interval(2000)/*$Candidate for refactoring$*///BAD!!
-                        .take(2).map((x) => x + 5)
-                        .subscribe((x) => {
-                         return   this.packages.unzipPackage();
-                        })
-                    Observable.interval(4000)/*$Candidate for refactoring$*///BAD!!
-                        .take(1).map((x) => x + 5)
-                        .subscribe((x) => {
-                           return this.packages.MoveToLocalCollection(channelName);
-                        })
-                    Observable.interval(6000)/*$Candidate for refactoring$*///BAD!!
-                        .take(1).map((x) => x + 5)
-                        .subscribe((x) => {
-                           return this.core.ReadMatrixFile("file:/storage/emulated/0/DCIM", "Temp").subscribe((res) => {
-                                return res;
+    DownloadServerHeaderAsync(fileName, channelName): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this._logger.Debug("Authenticatnig user..");
+            return this.AuthenticateUser(channelName, 125).then((res) => {
+                if (res) {
+                    this._logger.Debug("downloading matrix from server..");
+                    return this.packages.DownloadServerHeader(fileName, channelName).then((serverHeader) => {
+                        this._logger.Debug("unzip file in folder..");
+                        return this.packages.unzipPackage().then((res) => {
+                            this._logger.Debug("moving file in local..");
+                            return this.packages.MoveToLocalCollection(channelName).add((res) => {
+                                this._logger.Debug("loading downloading matrix from local..");
+                                return this.core.RemoveMatrixFile("file:/storage/emulated/0/DCIM", "Temp").subscribe((res) => {
+                                    return resolve(res);
+                                });
                             });
-                        })
-                }).catch(err => { this._logger.Error('Error,downloading server header async: ', err) });
-        }
+                        });
+                    }).catch(err => { return reject(err) });
+                }
+            });
+        })
     }
 
-    AuthenticateUser() {
+    AuthenticateUser(channel, userId) {
         console.log("Authenticatnig user..");
-        return true;/*$Candidate for refactoring$*///WOW! We'll have to write the code some day!
+        return this.packages.AuthenticateUser(channel, userId).then((res) => {
+            return res;
+        });
     }
 }

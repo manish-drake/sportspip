@@ -46,9 +46,6 @@ export class SettingsPage {
     private platform: Platform,
     private loadingCtrl: LoadingController,
     private _logger: Logger) {
-    this.storage.externalDataDirectory().then((res) => {
-      this.storageDataDir = res;
-    });
   }
 
   ionViewDidLoad() {
@@ -95,10 +92,6 @@ export class SettingsPage {
         loader.present();
         this.GetserverHeader(channelName);
       }).catch((err) => { this._logger.Error('Error,Subscribing channel list..', err); });
-      // var channel = this.subscription.RequestSubscriptionAsync(channelName, this.UserID);
-      // this.subscribeList.push(channel);
-      // this.chanelList.splice(index, 1);
-      // this.GetserverHeader(channelName);
     }
   }
 
@@ -114,18 +107,22 @@ export class SettingsPage {
   }
 
   createSettingsasync() {
-    this._logger.Debug('Creating Settings channel list..');
-    this.core.ReadMatrixFile(this.storageDataDir + "Roaming", "User.json")
-      .catch(err => new Observable(err => {
-        this.UserID = 0;
-        this.InvalidateChannelListAsync("0");
-        console.log("no user find");
-      }))
-      .subscribe((res) => {
-        this.SetUserAcync(JSON.parse(res.toString()));
-        this.InvalidateSubscribeListAsync(this.UserID);
-        this.InvalidateChannelListAsync(this.UserID);
-      })
+    this.storage.externalDataDirectory().then((res) => {
+      this.storageDataDir = res;
+      this._logger.Debug('Creating Settings channel list..');
+      this.core.ReadMatrixFile(this.storageDataDir + "Roaming", "User.json")
+        .catch(err => new Observable(err => {
+          this.UserID = 0;
+          this.InvalidateChannelListAsync("0");
+          console.log("no user find");
+        }))
+        .subscribe((res) => {
+          this.SetUserAcync(JSON.parse(res.toString()));
+          this.InvalidateSubscribeListAsync(this.UserID);
+          this.InvalidateChannelListAsync(this.UserID);
+        })
+    });
+
   }
 
   SetUserAcync(data) {

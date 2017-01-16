@@ -44,7 +44,6 @@ export class HomePage {
     channels = [];
     Header = [];
     dataDirectory: any;
-    applicationDirectory: any;
 
     constructor(private platform: Platform, public navCtrl: NavController,
         private core: Core,
@@ -65,12 +64,9 @@ export class HomePage {
         private utils: Utils,
         private httpService: HttpService,
         private _logger: Logger) {
-                                
+
         this.storage.externalDataDirectory().then((res) => {
             this.dataDirectory = res;
-            this.storage.applicationDirectory().then((res1) => {
-                this.applicationDirectory = res1;
-            });
         });
     }
 
@@ -281,11 +277,14 @@ export class HomePage {
                     duration: 30000
                 });
                 loader.present();
+
                 this.download.DownloadServerHeaderAsync(matrix.Name, matrix.Channel).then((res) => {
                     this.localMatrices = [];
                     this.GetLocalMatrixHeader();
                     this.deleteServerHeader(matrix.Name, index, value, matrix.Channel);
                     loader.dismiss();
+                }).catch((err) => {
+                    this._logger.Error('Error,downloading server header async: ', err);
                 });
             }
         })
@@ -335,7 +334,7 @@ export class HomePage {
     testOpenMatrix() {
         this.httpService.GetFileFromServer("assets/matrix1.mtx")
             .then(res => {
-                    this.testNavToEditor(res);
+                this.testNavToEditor(res);
             });
 
     }

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Platform } from 'ionic-angular';
-import { DirectoryEntry } from 'ionic-native';
+import { DirectoryEntry, Zip } from 'ionic-native';
 
 import { StorageFactory } from './Factory/StorageFactory';
 import { Core } from './core';
@@ -10,7 +10,6 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import X2JS from 'x2js';
 
-declare var zip: any;
 declare var FileTransfer: any;
 declare var navigator: any;
 
@@ -38,51 +37,47 @@ export class Package {
 
     MoveToLocalCollection(channelName) {
         this.fileName = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
-        this.platform.ready().then(() => {
-            this.storagefactory.ReadFileAync(this.storageDataDir + "Temp/matrix1", "Header.xml").subscribe((result => {
-                console.log("header moving..");
-                var header = JSON.parse(result.toString());
-                header.Name = this.fileName;
-                header.DateCreated = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
-                header.ThumbnailSource = header.UploadID;
-                this.channelName = header.Channel;
-                this.core.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices").then((res) => {
-                    console.log("header moved");
-                });
+        return this.storagefactory.ReadFileAync(this.storageDataDir + "Temp/matrix1", "Header.xml").subscribe((result => {
+            console.log("header moving..");
+            var header = JSON.parse(result.toString());
+            header.Name = this.fileName;
+            header.DateCreated = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
+            header.ThumbnailSource = header.UploadID;
+            this.channelName = header.Channel;
+            return this.core.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices").then((res) => {
+                console.log("header moved");
+                return this.storagefactory.GetLisOfDirectory(this.storageDataDir + "Temp/", "matrix1").then((success) => {
+                    return success.forEach(file => {
+                        var sliced = file.name.substr(-4);
+                        switch (sliced) {
+                            case '.mtx':
+                                let parser: any = new X2JS();
+                                return this.storagefactory.ReadFileAync(this.storageDataDir + "Temp/matrix1", file.name).subscribe(data => {
+                                    console.log("mtx moving...");
+                                    var matrixdata = parser.xml2js(data.toString());
+                                    var matrix = matrixdata.Matrix;
+                                    matrix._Name = this.fileName;
+                                    matrix._Channel = this.channelName;
+                                    return this.core.SaveMatrixAsync(matrixdata, matrix._Channel, matrix._Sport, matrix._Name, "Matrices").then((res) => {
+                                        console.log("mtx moved...");
+                                        return res;
+                                    });
+                                })
+                            case '.mp4':
+                                return this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", file.name, this.storageRootDirectory + "SportsPIP/Video", file.name)
+                                    .subscribe((success) => { console.log("video moved"); return success; });
+                            case ".gif":
+                            case ".rtf":
+                            case ".jpg":
+                                return this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", file.name, this.storageRootDirectory + "SportsPIP/Picture", file.name)
+                                    .subscribe((success) => { console.log("images or ink or gif moved..."); return success; });
+                            default:
+                        }
+                    });
+                })
+            });
 
-            }));
-            return this.storagefactory.GetLisOfDirectory(this.storageDataDir + "Temp/", "matrix1").then((success) => {
-                success.forEach(file => {
-                    var sliced = file.name.substr(-4);
-                    switch (sliced) {
-                        case '.mtx':
-                            let parser: any = new X2JS();
-                            return this.storagefactory.ReadFileAync(this.storageDataDir + "Temp/matrix1", file.name).subscribe(data => {
-                                console.log("mtx moving...");
-                                var matrixdata = parser.xml2js(data.toString());
-                                var matrix = matrixdata.Matrix;
-                                matrix._Name = this.fileName;
-                                matrix._Channel = this.channelName;
-                                return this.core.SaveMatrixAsync(matrixdata, matrix._Channel, matrix._Sport, matrix._Name, "Matrices").then((res) => {
-                                    console.log("mtx moved...");
-                                });
-                            })
-                        case '.mp4':
-                            return this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", file.name, this.storageRootDirectory + "SportsPIP/Video", file.name)
-                                .subscribe((success) => { console.log("video moved"); });
-                        case ".gif":
-                        case ".rtf":
-                            return this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", file.name, this.storageRootDirectory + "SportsPIP/Picture", file.name)
-                                .subscribe((success) => { console.log("ink moved..."); });
-                        case ".jpg":
-                            return this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", file.name, this.storageRootDirectory + "SportsPIP/Picture", file.name)
-                                .subscribe(() => { console.log("image moved"); });
-                        default:
-                    }
-                });
-            })
-
-        })
+        }));
     }
 
     DownloadServerHeader(fileName, channelName): Promise<any> {
@@ -126,7 +121,11 @@ export class Package {
     unzipPackage() {
         var PathToFileInString = this.storageDataDir + "Temp/m1.zip";
         var PathToResultZip = this.storageDataDir + "Temp/matrix1";
-        zip.unzip(PathToFileInString, PathToResultZip)
+        return Zip.unzip(PathToFileInString, PathToResultZip, (progress) => console.log('Unzipping, ' + Math.round((progress.loaded / progress.total) * 100) + '%'))
+            .then((res) => {
+                console.log("Unzipping....")
+                return res;
+            })
     }
 
     DownloadThumbnailfromServer(channelName, matrixName) {
