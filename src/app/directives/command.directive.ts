@@ -12,7 +12,7 @@ export class CommandDirective {
 
     }
 
-    @HostListener('click') onClick() {
+    @HostListener('tap') onClick() {
         if (!this.usePress)
             this.command.run(this.cmdArgs);
     }

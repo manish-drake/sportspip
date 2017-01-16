@@ -1,26 +1,23 @@
 import { Injectable } from '@angular/core';
+import { ActionSheetController } from 'ionic-angular';
+
 import { ICommand } from '../../../Contracts/ICommand';
-import { AlertController } from 'ionic-angular';
 import { AlertControllers } from '../../../Services/Alerts';
 
 @Injectable()
 export class DeleteView implements ICommand {
-    constructor(private alertCtrl: AlertController, private alertCtrls: AlertControllers) {
 
-    }
+    constructor(private actionSheetCtrl: ActionSheetController, private alertCtrls: AlertControllers) { }
 
     run(cmdArgs) {
         if (cmdArgs.editor.views.length > 1) {
-            let confirm = this.alertCtrl.create({
-                title: 'Are you sure?',
-                message: 'Do you want to delete the view pressed?',
+            let actionSheet = this.actionSheetCtrl.create({
+                title: "View "+ (cmdArgs.index + 1),
                 buttons: [
                     {
-                        text: 'Cancel',
-                        handler: () => { }
-                    },
-                    {
-                        text: 'Delete',
+                        icon: 'trash',
+                        text: 'Delete View',
+                        role: 'destructive',
                         handler: () => {
                             cmdArgs.editor.views.splice(cmdArgs.index, 1);
                             if (cmdArgs.editor.selectedViewIndex == 0) {
@@ -31,10 +28,17 @@ export class DeleteView implements ICommand {
                             }
                             cmdArgs.editor.evaluateCaptureViews();
                         }
+                    }, {
+                        icon: 'close',
+                        text: 'Cancel',
+                        role: 'cancel',
+                        handler: () => {
+                            console.log('Cancel clicked');
+                        }
                     }
                 ]
             });
-            confirm.present();
+            actionSheet.present();
         }
         else {
             this.alertCtrls.BasicAlert('Can not be deleted!', 'Atleast 1 view is required.');
