@@ -12,28 +12,34 @@ export class Download {
         private _logger: Logger,
         private packages: Package) {
 
+
+
     }
 
-    DownloadServerHeaderAsync(fileName, channelName): Promise<any> {
+    DownloadServerHeaderAsync(fileName, channelName, path): Promise<any> {
         return new Promise((resolve, reject) => {
             this._logger.Debug("Authenticatnig user..");
-            return this.AuthenticateUser(channelName, 125).then((res) => {
-                if (res) {
-                    this._logger.Debug("downloading matrix from server..");
-                    return this.packages.DownloadServerHeader(fileName, channelName).then((serverHeader) => {
-                        this._logger.Debug("unzip file in folder..");
-                        return this.packages.unzipPackage().then((res) => {
-                            this._logger.Debug("moving file in local..");
-                            return this.packages.MoveToLocalCollection(channelName).add((res) => {
-                                this._logger.Debug("loading downloading matrix from local..");
-                                return this.core.RemoveMatrixFile("file:/storage/emulated/0/DCIM", "Temp").subscribe((res) => {
-                                    return resolve(res);
+            return this.core.ReadMatrixFile(path + "Roaming", "User.json").subscribe((res) => {
+                var result = JSON.parse(res.toString());
+                return this.AuthenticateUser(channelName, result.UserId).then((res) => {
+                    if (res) {
+                        this._logger.Debug("downloading matrix from server..");
+                        return this.packages.DownloadServerHeader(fileName, channelName).then((serverHeader) => {
+                            this._logger.Debug("unzip file in folder..");
+                            return this.packages.unzipPackage().then((res) => {
+                                this._logger.Debug("moving file in local..");
+                                return this.packages.MoveToLocalCollection(channelName).subscribe((res) => {
+                                    this._logger.Debug("loading downloading matrix from local..");
+                                    return this.core.RemoveMatrixFile(path, "Temp").subscribe((res) => {
+                                        return resolve(res);
+                                    });
                                 });
                             });
-                        });
-                    }).catch(err => { return reject(err) });
-                }
-            });
+                        }).catch(err => { return reject(err) });
+                    }
+                });
+            })
+
         })
     }
 

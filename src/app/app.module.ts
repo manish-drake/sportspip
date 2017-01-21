@@ -1,11 +1,11 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { sportspip } from './app.component';
-
+import { UserActionsPopover } from '../pages/settings/action/signOut'
 import { HomePage } from '../pages/home/home';
 import { HomeMorePopover } from '../pages/homemore-popover/homemore-popover';
 import { Connectivity } from '../pages/connectivity/connectivity';
-import { SettingsPage, UserActionsPopover } from '../pages/settings/settings';
+import { SettingsPage } from '../pages/settings/settings';
 import { Login } from '../pages/settings/login/login';
 import { AlertControllers } from '../Services/Alerts';
 import { CollectionPage } from '../pages/collection/collection'

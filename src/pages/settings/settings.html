@@ -17,48 +17,49 @@
 	</ion-navbar>
 </ion-header>
 <ion-content style="background:#f4f4f4;">
-	<ion-grid *ngIf="subscribeList.length > 0">
-		<ion-row>
-			<ion-col text-left>
-				<h5>Subscribed Channels</h5>
-			</ion-col>
-		</ion-row>
-		<div class="items">
-			<div class="item1" *ngFor="let subList of subscribeList;let i = index">
-				<ion-card>
-					<ion-item>
-						<h2>{{subList.ChannelName}}</h2>
-						<p>{{subList.Description}}</p>
-						<button ion-button icon-only large item-right clear color="inactive" (click)="UnSubscribeList(i,subList.ChannelName)" style=" margin:0 -5px 0 0;">
-							<ion-icon name="close"></ion-icon>
-							</button>
-					</ion-item>
-				</ion-card>
-			</div>
-		</div>
-	</ion-grid>
-	<ion-grid>
-		<ion-row>
-			<ion-col text-left>
-				<h5>Available Channels</h5>
-			</ion-col>
-		</ion-row>
-		<div class="items">
-			<div class="item1" *ngFor='let chanList of chanelList;let i = index'>
-				<ion-card>
-					<ion-item>
-						<h2>{{chanList.ChannelName}}</h2>
-						<button ion-button icon-only large item-right clear (click)="SubscribeList(i,chanList.ChannelName)" style=" margin:-10px -5px -10px 0;">
-							<ion-icon name="add-circle"></ion-icon>
-							</button>
-					</ion-item>
-				</ion-card>
-			</div>
-		</div>
-		<ion-row>
-			<ion-col center text-center clear *ngIf='chanelList.length == 0' style="color:gray;">
-				no channel available
-			</ion-col>
-		</ion-row>
-	</ion-grid>
+<ion-grid *ngIf="subscribeList.length > 0">
+	<ion-row>
+		<ion-col text-left>
+			<h5>Subscribed Channels</h5>
+		</ion-col>
+	</ion-row>
+	<div class="items">
+		<div class="item1" *ngFor="let subList of subscribeList;let i = index">
+			<ion-card>
+				<ion-item>
+					<h2>{{subList.ChannelName}}</h2>
+					<p>{{subList.Description}}</p>
+					<button ion-button icon-only large item-right clear color="inactive" [command]="unSubscribeCmd" [cmdArgs]=" UnsubscribeSource(i,subList.ChannelName)"
+						[usePress]="false" style=" margin:0 -5px 0 0;">
+<ion-icon name="close"></ion-icon>
+</button>
+</ion-item>
+</ion-card>
+</div>
+</div>
+</ion-grid>
+<ion-grid>
+	<ion-row>
+		<ion-col text-left>
+			<h5>Available Channels</h5>
+		</ion-col>
+	</ion-row>
+	<div class="items">
+		<div class="item1" *ngFor='let chanList of chanelList;let i = index'>
+			<ion-card>
+				<ion-item>
+					<h2>{{chanList.ChannelName}}</h2>
+					<button ion-button icon-only large item-right clear [command]="subscribeCmd" [cmdArgs]=" SubscribeSource(i,chanList.ChannelName)"
+						[usePress]="false" style=" margin:-10px -5px -10px 0;">
+<ion-icon name="add-circle"></ion-icon>
+</button>
+</ion-item>
+</ion-card>
+</div>
+</div>
+<ion-row>
+	<ion-col center text-center clear *ngIf='chanelList.length == 0' style="color:gray;"> no channel available
+</ion-col>
+</ion-row>
+</ion-grid>
 </ion-content>

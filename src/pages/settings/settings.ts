@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { ModalController, PopoverController, ViewController, Platform, LoadingController } from 'ionic-angular';
 import { Login } from '../settings/login/login'
+import { Subscribe } from '../settings/action/subscribe'
+import { Unsubscribe } from '../settings/action/unsubscribe'
+import { Signin } from '../settings/action/login'
+import { SignOut } from '../settings/action/signOut'
 import { Subscription } from '../../Services/Subscription';
 import { StorageFactory } from '../../Services/Factory/StorageFactory';
 import { Core } from '../../Services/core';
@@ -20,7 +24,7 @@ import { Logger } from '../../logging/logger';
 @Component({
   selector: 'page-settings',
   templateUrl: 'settings.html',
-  providers: [Subscription, Package]
+  providers: [Subscription, Package, Subscribe, Unsubscribe, Signin, SignOut]
 })
 
 export class SettingsPage {
@@ -35,17 +39,13 @@ export class SettingsPage {
   private storageDataDir: string;
 
   constructor(
-    private storage: Storage,
-    private subscription: Subscription,
-    private httpService: HttpService,
-    private core: Core,
-    private storagefactory: StorageFactory,
-    private packages: Package,
-    private modalCtrl: ModalController,
-    private popoverCtrl: PopoverController,
-    private platform: Platform,
-    private loadingCtrl: LoadingController,
-    private _logger: Logger) {
+    private storage: Storage, private subscription: Subscription,
+    private httpService: HttpService, private core: Core,
+    private signOut: SignOut, private _logger: Logger,
+    private subscribe: Subscribe, private signin: Signin, private unSubscribe: Unsubscribe,
+    private storagefactory: StorageFactory, private packages: Package,
+    private modalCtrl: ModalController, private popoverCtrl: PopoverController,
+    private platform: Platform, private loadingCtrl: LoadingController) {
   }
 
   ionViewDidLoad() {
@@ -53,11 +53,34 @@ export class SettingsPage {
     this.createSettingsasync();
   }
 
+  createSettingsasync() {
+    this.storage.externalDataDirectory().then((res) => {
+      this.storageDataDir = res;
+      this._logger.Debug('Creating Settings channel list..');
+      this.core.ReadMatrixFile(this.storageDataDir + "Roaming", "User.json")
+        .catch(err => new Observable(err => {
+          this.UserID = 0;
+          this.InvalidateChannelListAsync("0");
+          console.log("no user find");
+        }))
+        .subscribe((res) => {
+          this.SetUserAcync(JSON.parse(res.toString()));
+          this.InvalidateSubscribeListAsync(this.UserID).then((res) => {
+            if (res) {
+              this.InvalidateChannelListAsync(this.UserID);
+            }
+          });
+
+        })
+    });
+  }
+
   InvalidateSubscribeListAsync(userId) {
     this._logger.Debug('Invalidating subscribe channel list..');
     this.subscribeList = [];
-    this.subscription.GetSubscriptionList(userId).then((data) => {
+    return this.subscription.GetSubscriptionList(userId).then((data) => {
       this.subscribeList = data;
+      return true;
     });
   }
 
@@ -74,56 +97,67 @@ export class SettingsPage {
     }).catch((err) => { });
 
   }
+  
+  private _subscribeCmd: Subscribe;
+  public get subscribeCmd(): Subscribe {
+    return this.subscribe;
+  }
 
-  SubscribeList(index, channelName) {
-    this._logger.Debug('Subscribing channel list..');
-    if (this.FirstName == null) {
-      this.presentLoginModal();
-    }
-    else {
-      this.subscription.RequestSubscriptionAsync(channelName, this.UserID).then((data) => {
-        this.chanelList = [];
-        this.subscribeList = [];
-        this.createSettingsasync()
-        let loader = this.loadingCtrl.create({
-          content: "Subscribing..",
-          duration: 6000
-        });
-        loader.present();
-        this.GetserverHeader(channelName);
-      }).catch((err) => { this._logger.Error('Error,Subscribing channel list..', err); });
+  SubscribeSource(index, channelName) {
+    return {
+      "index": index,
+      "channelName": channelName,
+      "model": this
     }
   }
 
-  UnSubscribeList(index, channelName) {
-    this._logger.Debug('unSubscribing channel list..');
-    this.subscription.RemoveSubscriptionAsync(channelName, this.UserID).then((data) => {
-      this.chanelList = [];
-      this.subscribeList = [];
-      this.createSettingsasync()
-      this.storagefactory.RemoveFileAsync(this.storageDataDir + "Server", channelName).subscribe(() => {
-      })
-    }).catch((err) => { this._logger.Error('Error,unSubscribing channel list..', err); });
+
+  // SubscribeList(index, channelName) {
+  //   this._logger.Debug('Subscribing channel list..');
+  //   if (this.FirstName == null) {
+  //     this.presentLoginModal();
+  //   }
+  //   else {
+  //     this.subscription.RequestSubscriptionAsync(channelName, this.UserID).then((data) => {
+  //       this.chanelList = [];
+  //       this.subscribeList = [];
+  //       this.createSettingsasync()
+  //       let loader = this.loadingCtrl.create({
+  //         content: "Subscribing..",
+  //         duration: 6000
+  //       });
+  //       loader.present();
+  //       this.GetserverHeader(channelName);
+  //     }).catch((err) => { this._logger.Error('Error,Subscribing channel list..', err); });
+  //   }
+  // }
+
+
+  private _unSubscribeCmd: Unsubscribe;
+  public get unSubscribeCmd(): Unsubscribe {
+    return this.unSubscribe;
   }
 
-  createSettingsasync() {
-    this.storage.externalDataDirectory().then((res) => {
-      this.storageDataDir = res;
-      this._logger.Debug('Creating Settings channel list..');
-      this.core.ReadMatrixFile(this.storageDataDir + "Roaming", "User.json")
-        .catch(err => new Observable(err => {
-          this.UserID = 0;
-          this.InvalidateChannelListAsync("0");
-          console.log("no user find");
-        }))
-        .subscribe((res) => {
-          this.SetUserAcync(JSON.parse(res.toString()));
-          this.InvalidateSubscribeListAsync(this.UserID);
-          this.InvalidateChannelListAsync(this.UserID);
-        })
-    });
-
+  UnsubscribeSource(index, channelName) {
+    return {
+      "index": index,
+      "channelName": channelName,
+      "model": this
+    }
   }
+
+  // UnSubscribeList(index, channelName) {
+  //   this._logger.Debug('unSubscribing channel list..');
+  //   this.subscription.RemoveSubscriptionAsync(channelName, this.UserID).then((data) => {
+  //     this.chanelList = [];
+  //     this.subscribeList = [];
+  //     this.createSettingsasync()
+  //     this.storagefactory.RemoveFileAsync(this.storageDataDir + "Server", channelName).subscribe(() => {
+  //     })
+  //   }).catch((err) => { this._logger.Error('Error,unSubscribing channel list..', err); });
+  // }
+
+
 
   SetUserAcync(data) {
     this.FirstName = data.FirstName;
@@ -138,21 +172,17 @@ export class SettingsPage {
       console.log(data);
       if (data != null) {
         this.SetUserAcync(data);
-        this.InvalidateSubscribeListAsync(this.UserID);
-        this.InvalidateChannelListAsync(this.UserID);
-        let loader = this.loadingCtrl.create({
-          content: "Fetching Channel Headers..",
-          duration: 10000
-        });
-        loader.present();
-        Observable.interval(2000)
-          .take(1).map((x) => x + 5)
-          .subscribe((x) => {
-            this.subscribeList.forEach(sub => {
-              this.GetserverHeader(sub.ChannelName)
-            });
+        this.InvalidateSubscribeListAsync(this.UserID).then((res) => {
+          this.InvalidateChannelListAsync(this.UserID);
+          let loader = this.loadingCtrl.create({
+            content: "Fetching Channel Headers..",
+            duration: 10000
           });
-
+          loader.present();
+          this.subscribeList.forEach(sub => {
+            this.GetserverHeader(sub.ChannelName)
+          });
+        });
       }
     });
     modal.present();
@@ -216,54 +246,36 @@ export class SettingsPage {
   //Save Downloaded Header
   SaveDownloadedHeaders(HeaderList) {
     HeaderList.forEach((res) => {
-      Observable.interval(2000)
-        .take(1).map((x) => x + 5)
-        .subscribe((x) => {
-          this.core.SaveRoamingHeader(res, res.Channel, res.Sport, res.Name);
-          this.DownloadThumbnailAsync(res.Channel, res.Name);
-        })
+      this.core.SaveServerHeader(res, res.Channel, res.Sport, res.Name, "Matrices").then(() => {
+        this.DownloadThumbnailAsync(res.Channel, res.Name);
+      });
     })
   }
 
   DownloadThumbnailAsync(channelName, matrixName) {
     this.packages.DownloadThumbnailfromServer(channelName, matrixName);
   }
-
-
   //signOut 
   presentPopover(event) {
-    let popover = this.popoverCtrl.create(UserActionsPopover);
-    popover.present({ ev: event });
-    popover.onDidDismiss(data => {
-      if (data != null) {
-        this.platform.ready().then(() => {
-          this.storagefactory.RemoveFileAsync(this.storageDataDir + "Roaming", "User.json").subscribe((res) => {
-            this.FirstName = null;
-            this.UserID = 0;
-            this.subscribeList = [];
-            this.InvalidateChannelListAsync(this.UserID);
-          })
-        })
-      }
-    })
+    this.signOut.run(event,this);
   }
 }
 
-@Component({
-  template: `
-    <ion-list no-lines  style="margin:0;">
-    <ion-item (click)="signOut()">
-      <ion-icon item-left name="log-out"></ion-icon>Log out
-      </ion-item>
-    </ion-list>
-  `
-})
+// @Component({
+//   template: `
+//     <ion-list no-lines  style="margin:0;">
+//     <ion-item (click)="signOut()">
+//       <ion-icon item-left name="log-out"></ion-icon>Log out
+//       </ion-item>
+//     </ion-list>
+//   `
+// })
 
-export class UserActionsPopover {
-  constructor(public viewCtrl: ViewController,
-    private platform: Platform) {
-  }
-  signOut() {
-    this.viewCtrl.dismiss("signOut");
-  }
-}
+// export class UserActionsPopover {
+//   constructor(public viewCtrl: ViewController,
+//     private platform: Platform) {
+//   }
+//   signOut() {
+//     this.viewCtrl.dismiss("signOut");
+//   }
+// }

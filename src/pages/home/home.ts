@@ -278,7 +278,7 @@ export class HomePage {
                 });
                 loader.present();
 
-                this.download.DownloadServerHeaderAsync(matrix.Name, matrix.Channel).then((res) => {
+                this.download.DownloadServerHeaderAsync(matrix.Name, matrix.Channel, this.dataDirectory).then((res) => {
                     this.localMatrices = [];
                     this.GetLocalMatrixHeader();
                     this.deleteServerHeader(matrix.Name, index, value, matrix.Channel);

@@ -15,7 +15,7 @@ export class Core {
         private toastCtrl: ToastController,
         private platform: Platform,
         private _logger: Logger) {
-            
+
         this.storage.externalDataDirectory().then((res) => {
             this.storageDataDir = res;
         });
@@ -23,26 +23,27 @@ export class Core {
     }
 
     SaveRoamingHeader(content, channel, sport, matrixName) {
-        this.SaveServerHeader(content, channel, sport, matrixName, "Matrices");
+        return this.SaveServerHeader(content, channel, sport, matrixName, "Matrices");
     }
 
-    SaveServerHeader(content, channel, sport, matrixName, typeFolder) {
+    SaveServerHeader(content, channel, sport, matrixName, typeFolder): Promise<any> {
         this._logger.Debug('Save server header..');
-        this.platform.ready().then(() => {
-            this.storageFactory.createFolder(this.storageDataDir, "Server").subscribe((success) => {
+        return new Promise((resolve, reject) => {
+            return this.storageFactory.createFolder(this.storageDataDir, "Server").subscribe((success) => {
                 var serverFolder = this.storageDataDir + "Server/";
-                this.storageFactory.createFolder(serverFolder, channel).subscribe(() => {
+                return this.storageFactory.createFolder(serverFolder, channel).subscribe(() => {
                     var channelFolder = serverFolder + channel + "/";
-                    this.storageFactory.createFolder(channelFolder, sport).subscribe(() => {
+                    return this.storageFactory.createFolder(channelFolder, sport).subscribe(() => {
                         var sportFolder = channelFolder + sport + "/";
-                        this.storageFactory.createFolder(sportFolder, typeFolder).subscribe(() => {
+                        return this.storageFactory.createFolder(sportFolder, typeFolder).subscribe(() => {
                             var contentFolder = sportFolder + typeFolder + "/";
-                            this.storageFactory.createFolder(contentFolder, matrixName).subscribe((success) => {
+                            return this.storageFactory.createFolder(contentFolder, matrixName).subscribe((success) => {
                                 var fileLocation = contentFolder + matrixName;
-                                this.storageFactory.CreateFile(fileLocation, "Header.xml").subscribe(() => {
-                                    this.storageFactory.WriteFile(fileLocation, "Header.xml", JSON.stringify(content))
+                                return this.storageFactory.CreateFile(fileLocation, "Header.xml").subscribe(() => {
+                                    return this.storageFactory.WriteFile(fileLocation, "Header.xml", JSON.stringify(content))
                                         .subscribe(function (success) {
                                             console.log("server header saved ..")
+                                            return resolve(success);
                                         })
                                 })
                             })
@@ -264,10 +265,11 @@ export class Core {
         })
     }
 
-    RemoveMatrixFile(path, fileName): Observable<any> {
+    RemoveMatrixFile(path: string, fileName: string): Observable<any> {
         return this.storageFactory.RemoveFileAsync(path, fileName).map((data) => {
             return data;
         }).catch((err) => {
+            console.log(err);
             return err;
         })
     }

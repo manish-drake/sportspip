@@ -24,6 +24,7 @@ export class Package {
         private core: Core,
         private platform: Platform,
         private storagefactory: StorageFactory) {
+            
         this.storage.externalDataDirectory().then((res) => {
             this.storageDataDir = res;
             this.storage.externalRootDirectory().then((res1) => {
@@ -37,7 +38,7 @@ export class Package {
 
     MoveToLocalCollection(channelName) {
         this.fileName = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
-        return this.storagefactory.ReadFileAync(this.storageDataDir + "Temp/matrix1", "Header.xml").subscribe((result => {
+        return this.storagefactory.ReadFileAync(this.storageDataDir + "Temp/matrix1", "Header.xml").map((result => {
             console.log("header moving..");
             var header = JSON.parse(result.toString());
             header.Name = this.fileName;
