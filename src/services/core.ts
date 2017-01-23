@@ -269,7 +269,6 @@ export class Core {
         return this.storageFactory.RemoveFileAsync(path, fileName).map((data) => {
             return data;
         }).catch((err) => {
-            console.log(err);
             return err;
         })
     }

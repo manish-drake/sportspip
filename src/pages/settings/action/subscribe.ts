@@ -3,10 +3,11 @@ import { ICommand } from '../../../Contracts/ICommand';
 import { Subscription } from '../../../Services/Subscription';
 import { Logger } from '../../../logging/logger';
 import { LoadingController } from 'ionic-angular';
+import { Utils } from '../../../Services/common/utils';
 
 @Injectable()
 export class Subscribe implements ICommand {
-    constructor(private subscription: Subscription, private _logger: Logger, private loadingCtrl: LoadingController) {
+    constructor(private subscription: Subscription, private _logger: Logger, private loadingCtrl: LoadingController, private utils: Utils) {
 
     }
 
@@ -25,7 +26,7 @@ export class Subscribe implements ICommand {
                     duration: 6000
                 });
                 loader.present();
-                cmdArgs.model.GetserverHeader(cmdArgs.channelName);
+                this.utils.GetserverHeader(cmdArgs.channelName);
             }).catch((err) => { this._logger.Error('Error,Subscribing channel list..', err); });
         }
 

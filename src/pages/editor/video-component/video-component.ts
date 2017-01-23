@@ -1,7 +1,7 @@
 import { Component, ViewChild, Input, ElementRef } from '@angular/core';
 import { ActionSheetController, ModalController, Platform, Events } from 'ionic-angular';
 import { VideoEditor } from 'ionic-native';
-
+import { Utils } from '../../../Services/common/utils';
 import { Observable } from 'rxjs/Rx';
 import { Storage } from '../../../Services/Factory/Storage';
 import { StorageFactory } from '../../../Services/Factory/StorageFactory';
@@ -29,6 +29,7 @@ export class VideoComponent {
         private modalCtrl: ModalController,
         private platform: Platform,
         private events: Events,
+        private utils: Utils,
         private _logger: Logger) {
         this.storage.externalRootDirectory().then((res) => {
             this.rootDir = res;
@@ -44,7 +45,6 @@ export class VideoComponent {
     isVideoComponentVisible: boolean = true;
     isErrorVisible: boolean = false;
     markersDirectory = [];
-
     viewBoxSize: any;
     markersobjects = [];
     video: HTMLVideoElement;
@@ -93,6 +93,7 @@ export class VideoComponent {
         this.video.setAttribute('preload', "auto");
         this.video.play();
         this.video.pause();
+
         VideoEditor.getVideoInfo({ fileUri: this.video.currentSrc })
             .then(res => {
                 this.timelineDuration = this.formatTime(res.duration);
@@ -207,64 +208,6 @@ export class VideoComponent {
         this.video.currentTime = factor;
         this.timelinePosition = this.formatTime(factor);
         this.PlayStoryBoard();
-    }
-
-    returnVidPath(filename) {
-        if (this.platform.is('cordova')) {
-            return this.rootDir + "SportsPIP/Video/" + filename;
-        }
-        else {
-            return 'assets/' + filename;
-        }
-    }
-
-    returnImagePath(name) {
-        if (this.platform.is('cordova')) {
-            return this.rootDir + "SportsPIP/Picture/" + name;
-        }
-        else {
-            return 'assets/sample.jpg';
-        }
-    }
-
-    returnInkPath(name) {
-        if (this.platform.is('cordova')) {
-            return this.rootDir + "SportsPIP/Picture/" + name + ".gif";
-        }
-        else {
-            return 'assets/inksample.gif';
-        }
-    }
-
-    formatPoistionInMiliSecond(pos) {
-        if (pos == "00:00:00") pos = "00:00:00.000000";
-        var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
-        return positionInMilliseconds;
-
-    }
-
-    formatDurationInMiliSecond(dur) {
-        if (dur != undefined) {
-            if (dur.length == 16) {
-                var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-7));
-                return durationInMilliseconds;
-            }
-            else {
-                var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-2)) * 100000;
-                return durationInMilliseconds;
-            }
-        }
-    }
-
-    formatTime(time) {
-        var hrs = Math.floor(time / 3600);
-        var hours = (hrs >= 10) ? hrs : "0" + hrs;
-        var min = Math.floor(time / 60);
-        var minutes = (min >= 10) ? min : "0" + min;
-        var sec = Math.floor(time % 60);
-        var seconds = (sec >= 10) ? sec : "0" + sec;
-        var milliseconds = time.toFixed(2).substr(-2);
-        return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
     }
 
     repeatVideo() {
@@ -586,5 +529,44 @@ export class VideoComponent {
 
         }
     }
-    //Code for objects end
+    //Code for return values start
+    returnVidPath(filename) {
+        if (this.platform.is('cordova')) {
+            return this.rootDir + "SportsPIP/Video/" + filename;
+        }
+        else {
+            return 'assets/' + filename;
+        }
+    }
+
+    returnImagePath(name) {
+        if (this.platform.is('cordova')) {
+            return this.rootDir + "SportsPIP/Picture/" + name;
+        }
+        else {
+            return 'assets/sample.jpg';
+        }
+    }
+
+    returnInkPath(name) {
+        if (this.platform.is('cordova')) {
+            return this.rootDir + "SportsPIP/Picture/" + name + ".gif";
+        }
+        else {
+            return 'assets/inksample.gif';
+        }
+    }
+
+    formatPoistionInMiliSecond(pos) {
+        return this.utils.formatPoistionInMiliSecond(pos);
+    }
+
+    formatDurationInMiliSecond(dur) {
+        return this.utils.formatDurationInMiliSecond(dur);
+    }
+
+    formatTime(time) {
+        return this.utils.formatTime(time);
+    }
+      //Code for return values end
 }

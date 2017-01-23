@@ -47,7 +47,7 @@ export class Package {
             this.channelName = header.Channel;
             return this.core.SaveLocalHeader(header, header.Channel, header.Sport, header.Name, "Matrices").then((res) => {
                 console.log("header moved");
-                return this.storagefactory.GetLisOfDirectory(this.storageDataDir + "Temp/", "matrix1").then((success) => {
+                return this.storagefactory.GetLisOfDirectory(this.storageDataDir + "Temp", "matrix1").then((success) => {
                     return success.forEach(file => {
                         var sliced = file.name.substr(-4);
                         switch (sliced) {

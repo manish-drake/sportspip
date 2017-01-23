@@ -95,8 +95,8 @@ export class ChannelCollectionPage {
   }
 
   presentPopover(event) {
-    let popover = this.popoverController.create(sortPopover);
-    popover.present({ ev: event });
+    // let popover = this.popoverController.create(sortPopover);
+    // popover.present({ ev: event });
   }
 
   deleteServerHeader(DirName, Channel, index) {
@@ -146,36 +146,36 @@ export class ChannelCollectionPage {
   }
 
 }
-@Component({/*$Candidate for refactoring$*///Rename this class and take it to a separate file or justify why this class is hding here?
-  template: `
-    <ion-list radio-group (ionChange)="changeSortBy($event)">
-      <ion-list-header>
-        Sort By
-      </ion-list-header>
-      <ion-item>
-        <ion-label>Date</ion-label>
-        <ion-radio value="date" checked="true"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Title</ion-label>
-        <ion-radio value="title"></ion-radio>
-      </ion-item>
-    </ion-list>
-  `,
-  selector: 'page-popover'
-})
+// @Component({
+//   template: `
+//     <ion-list radio-group (ionChange)="changeSortBy($event)">
+//       <ion-list-header>
+//         Sort By
+//       </ion-list-header>
+//       <ion-item>
+//         <ion-label>Date</ion-label>
+//         <ion-radio value="date" checked="true"></ion-radio>
+//       </ion-item>
+//       <ion-item>
+//         <ion-label>Title</ion-label>
+//         <ion-radio value="title"></ion-radio>
+//       </ion-item>
+//     </ion-list>
+//   `,
+//   selector: 'page-popover'
+// })
 
-export class sortPopover {
+// export class sortPopover {
 
-  constructor(public viewCtrl: ViewController) {
+//   constructor(public viewCtrl: ViewController) {
 
-  }
+//   }
 
-  changeSortBy(event) {
-    this.dismiss();
-  }
+//   changeSortBy(event) {
+//     this.dismiss();
+//   }
 
-  dismiss() {
-    this.viewCtrl.dismiss();
-  }
-}
+//   dismiss() {
+//     this.viewCtrl.dismiss();
+//   }
+// }

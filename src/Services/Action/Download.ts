@@ -29,10 +29,11 @@ export class Download {
                             return this.packages.unzipPackage().then((res) => {
                                 this._logger.Debug("moving file in local..");
                                 return this.packages.MoveToLocalCollection(channelName).subscribe((res) => {
-                                    this._logger.Debug("loading downloading matrix from local..");
-                                    return this.core.RemoveMatrixFile(path, "Temp").subscribe((res) => {
-                                        return resolve(res);
-                                    });
+                                     return resolve(res);
+                                    // this._logger.Debug("loading downloading matrix from local..");
+                                    // return this.core.RemoveMatrixFile(path, "Temp").subscribe((res) => {
+                                    //     return resolve(res);
+                                    // });
                                 });
                             });
                         }).catch(err => { return reject(err) });

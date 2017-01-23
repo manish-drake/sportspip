@@ -140,8 +140,7 @@ export class EditorPage {
           loader.dismiss();
           this._logger.Error("Error,Matrix file saving..", err);
           this.navCtrl.pop();
-        }))
-        .then((res) => {
+        })).then((res) => {
           this.navCtrl.pop();
           loader.dismiss();
         })

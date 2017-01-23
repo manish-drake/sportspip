@@ -9,7 +9,7 @@ import { SettingsPage } from '../pages/settings/settings';
 import { Login } from '../pages/settings/login/login';
 import { AlertControllers } from '../Services/Alerts';
 import { CollectionPage } from '../pages/collection/collection'
-import { ChannelCollectionPage, sortPopover } from '../pages/channelcollection/channelcollection'
+import { ChannelCollectionPage } from '../pages/channelcollection/channelcollection'
 import { OrderBy } from '../Services/Pipe/OrderBy';
 import { GroupBy } from '../Services/Pipe/GroupBy';
 import { Storage } from '../Services/Factory/Storage';
@@ -48,7 +48,6 @@ import { HttpService } from '../Services/httpService';
     Login,
     CollectionPage,
     ChannelCollectionPage,
-    sortPopover,
     GroupBy,
     OrderBy,
 
@@ -87,7 +86,6 @@ import { HttpService } from '../Services/httpService';
     Login,
     CollectionPage,
     ChannelCollectionPage,
-    sortPopover,
     Compareview,
     CompareviewComponent,
     CaptureViewsPopover,
