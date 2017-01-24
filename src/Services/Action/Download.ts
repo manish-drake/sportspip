@@ -29,7 +29,10 @@ export class Download {
                             return this.packages.unzipPackage().then((res) => {
                                 this._logger.Debug("moving file in local..");
                                 return this.packages.MoveToLocalCollection(channelName).subscribe((res) => {
-                                     return resolve(res);
+                                    return resolve(res);
+                                    // this.core.RemoveMatrixFile(this.dataDirectory, "Temp").subscribe((res) => {
+                                    //     return resolve(res);
+                                    // });
                                 });
                             });
                         }).catch(err => { return reject(err) });

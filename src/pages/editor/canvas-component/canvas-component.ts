@@ -90,11 +90,11 @@ export class CanvasComponent {
     return this.utils.formatTime(time);
   }
 
- static formatPoistionInMiliSecond(pos) {
+  static formatPoistionInMiliSecond(pos) {
     return Utils.formatPoistionInMiliSecond(pos);
   }
 
- static formatDurationInMiliSecond(dur) {
+  static formatDurationInMiliSecond(dur) {
     return Utils.formatDurationInMiliSecond(dur);
   }
 
@@ -182,9 +182,11 @@ export class CanvasComponent {
     if (objBehaviors.Span._Duration >= this.timelineDuration) { this.timelineDuration = objBehaviors.Span._Duration; }
     var durationInMS = (CanvasComponent.formatDurationInMiliSecond(this.timelineDuration)) / 10000000;
     this.duration = durationInMS;
+    this.timelineDuration = this.formatTime(this.duration);
+
   }
 
- static returnTotalDuration(objBehaviors) {/*$Candidate for refactoring$*///consider making the function static
+  static returnTotalDuration(objBehaviors) {/*$Candidate for refactoring$*///consider making the function static
     if (objBehaviors.Span != undefined) {
       var durationInMS = this.formatDurationInMiliSecond(objBehaviors.Span._Duration);
       var positionInMS = this.formatPoistionInMiliSecond(objBehaviors.Span._Position);

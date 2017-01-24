@@ -24,7 +24,7 @@ export class Package {
         private core: Core,
         private platform: Platform,
         private storagefactory: StorageFactory) {
-            
+
         this.storage.externalDataDirectory().then((res) => {
             this.storageDataDir = res;
             this.storage.externalRootDirectory().then((res1) => {
@@ -61,17 +61,30 @@ export class Package {
                                     matrix._Channel = this.channelName;
                                     return this.core.SaveMatrixAsync(matrixdata, matrix._Channel, matrix._Sport, matrix._Name, "Matrices").then((res) => {
                                         console.log("mtx moved...");
-                                        return res;
+                                        file.remove(() => {
+                                            return res;
+                                        })
+
                                     });
                                 })
                             case '.mp4':
                                 return this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", file.name, this.storageRootDirectory + "SportsPIP/Video", file.name)
-                                    .subscribe((success) => { console.log("video moved"); return success; });
+                                    .subscribe((success) => {
+                                        console.log("video moved");
+                                        file.remove(() => {
+                                            return success;
+                                        })
+                                    });
                             case ".gif":
                             case ".rtf":
                             case ".jpg":
                                 return this.storagefactory.MoveFile(this.storageDataDir + "Temp/matrix1", file.name, this.storageRootDirectory + "SportsPIP/Picture", file.name)
-                                    .subscribe((success) => { console.log("images or ink or gif moved..."); return success; });
+                                    .subscribe((success) => {
+                                        console.log("images or ink or gif moved...");
+                                        file.remove(() => {
+                                            return success;
+                                        })
+                                    });
                             default:
                         }
                     });

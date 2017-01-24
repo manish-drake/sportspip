@@ -279,12 +279,10 @@ export class HomePage {
                 loader.present();
 
                 this.download.DownloadServerHeaderAsync(matrix.Name, matrix.Channel, this.dataDirectory).then((res) => {
-                    this.core.RemoveMatrixFile(this.dataDirectory, "Temp").subscribe((res) => {
-                        this.localMatrices = [];
-                        this.GetLocalMatrixHeader();
-                        this.deleteServerHeader(matrix.Name, index, value, matrix.Channel);
-                        loader.dismiss();
-                    });
+                    this.localMatrices = [];
+                    this.GetLocalMatrixHeader();
+                    this.deleteServerHeader(matrix.Name, index, value, matrix.Channel);
+                    loader.dismiss();
 
                 }).catch((err) => {
                     this._logger.Error('Error,downloading server header async: ', err);
