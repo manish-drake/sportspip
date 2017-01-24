@@ -17,7 +17,6 @@ export class VideoComponent {
 
     @Input() view: any;
     @Input() viewindex: any;
-
     @ViewChild('video') videoElement: ElementRef;
 
     rootDir: String;
@@ -558,11 +557,11 @@ export class VideoComponent {
     }
 
     formatPoistionInMiliSecond(pos) {
-        return this.utils.formatPoistionInMiliSecond(pos);
+        return Utils.formatPoistionInMiliSecond(pos);
     }
 
     formatDurationInMiliSecond(dur) {
-        return this.utils.formatDurationInMiliSecond(dur);
+        return Utils.formatDurationInMiliSecond(dur);
     }
 
     formatTime(time) {

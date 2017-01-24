@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Storage } from '../../../Services/Factory/Storage';
 import { Platform, Events } from 'ionic-angular'
+import { Utils } from '../../../Services/common/utils';
 
 @Component({
   selector: 'canvas-component',
@@ -19,7 +20,7 @@ export class CanvasComponent {
   duration: any;
   isTimelineAvailable: boolean = false;
   rootDir: any;
-  constructor(private platform: Platform, private events: Events, private storage: Storage) {
+  constructor(private platform: Platform, private events: Events, private storage: Storage, private utils: Utils) {
     this.timelinePosition = "00:00:00:00";
     this.playPauseButtonIcon = "play";
     this.repeatColor = "inactive";
@@ -37,9 +38,9 @@ export class CanvasComponent {
   unlinkObjList = [];
   objDirectory = [];
 
-  ngAfterViewInit() {
+  ngOnInit() {
     this.timelineDuration = "00:00:00.00";
-    this.loadObjects();
+    this.PlayStoryBoard();
 
     this.events.subscribe('viewoutoffocus', () => {
       if (this.playPauseButtonIcon == 'pause') {
@@ -66,64 +67,6 @@ export class CanvasComponent {
     }
   }
 
-  loadObjects() {/*$Candidate for refactoring$*///what is this function really doing?
-    var objs = this.view["Content"]["PIP"]["PIP.Objects"];
-    for (var key in objs) {
-      // skip loop if the property is from prototype
-      if (!objs.hasOwnProperty(key)) continue;
-      var keyVal = objs[key];
-      if (keyVal instanceof Array) {
-        keyVal.forEach(val => {
-          var objBehaviors = val.Behaviors;
-          if (objBehaviors.Span != undefined) {
-            // console.log("array: " +JSON.stringify(val));
-            this.returnMaxDuration(objBehaviors);
-          }
-        });
-      }
-      else {
-        // console.log("objects: " + JSON.stringify(keyVal));
-        var objBehaviors = keyVal.Behaviors;
-        if (objBehaviors.Span != undefined) {
-          this.returnMaxDuration(objBehaviors);
-        }
-      }
-    }
-    this.PlayStoryBoard();
-  }
-
-  returnMaxDuration(objBehaviors) {/*$Candidate for refactoring$*///The name suggests it will return MaxDuration, instead it is blatantly modifying class fields. Bad!
-    if (this.platform.is('cordova')) {
-      this.isTimelineAvailable = true;
-    }
-    if (objBehaviors.Span._Duration >= this.timelineDuration) { this.timelineDuration = objBehaviors.Span._Duration; }
-    var durationInMS = (this.formatDurationInMiliSecond(this.timelineDuration)) / 10000000;
-    this.duration = durationInMS;
-    this.timelineDuration = this.formatTime(this.duration);
-  }
-
-  clrCvt(color) {/*$Candidate for refactoring$*///Is there anything hardcoded here?
-    return '#' + color.slice(3, 9);
-  }
-
-  sum(a, b) {/*$Candidate for refactoring$*///seriously?!?!
-    return Number(a) + Number(b);
-  }
-
-  formatTime(time) {/*$Candidate for refactoring$*///Move to /services/common/utils please
-    if (time != null) {
-      var hrs = Math.floor(time / 3600);
-      var hours = (hrs >= 10) ? hrs : "0" + hrs;
-      var min = Math.floor(time / 60);
-      var minutes = (min >= 10) ? min : "0" + min;
-      var sec = Math.floor(time % 60);
-      var seconds = (sec >= 10) ? sec : "0" + sec;
-      var milliseconds = time.toFixed(2).substr(-2);
-      return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
-    }
-  }
-
-
   sliderValueChange() {
     var factor = this.duration * (this.sliderValue / 10000);/*$Candidate for refactoring$*///make a const out of the 10000 value
     this.timelinePosition = this.formatTime(factor);
@@ -135,17 +78,24 @@ export class CanvasComponent {
     this.RemoveObjects();
   }
 
-  formatPoistionInMiliSecond(pos) {/*$Candidate for refactoring$*///move to utils, consider making the function static
-    if (pos == "00:00:00") pos = "00:00:00.000000";
-    var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
-    return positionInMilliseconds;
+  clrCvt(color) {/*$Candidate for refactoring$*///Is there anything hardcoded here?
+    return '#' + color.slice(3, 9);
   }
 
-  formatDurationInMiliSecond(dur) {/*$Candidate for refactoring$*///move to utils, consider making the function static
-    if (dur != undefined) {
-      var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-2)) * 100000;
-      return durationInMilliseconds;
-    }
+  sum(a, b) {/*$Candidate for refactoring$*///seriously?!?!
+    return Number(a) + Number(b);
+  }
+
+  formatTime(time) {/*$Candidate for refactoring$*///Move to /services/common/utils please
+    return this.utils.formatTime(time);
+  }
+
+ static formatPoistionInMiliSecond(pos) {
+    return Utils.formatPoistionInMiliSecond(pos);
+  }
+
+ static formatDurationInMiliSecond(dur) {
+    return Utils.formatDurationInMiliSecond(dur);
   }
 
   playPause() {/*$Candidate for refactoring$*///move to actions - I know the repeated use of 'this' will trouble you, but then that is what we have to avoid
@@ -184,16 +134,16 @@ export class CanvasComponent {
       if (val instanceof Array) {
         val.forEach(val => {
           if (val.Behaviors.Span != undefined) {
+            this.setMaxDuration(val.Behaviors);
             var objbeh = val.Behaviors.Span;
+
             if (this.IsObjectExist(val) == -1) {
               if (objbeh._Position == "00:00:00") {
-                this.objDirectory.push(val);
-                this.objects.push({ key, val });
+                this.addObject(val, key);
               } else {
-                var positionInMS = (this.formatPoistionInMiliSecond(objbeh._Position)) / 10000000;
+                var positionInMS = (CanvasComponent.formatPoistionInMiliSecond(objbeh._Position)) / 10000000;
                 if (this.timelinePosition >= this.formatTime(positionInMS)) {
-                  this.objDirectory.push(val);
-                  this.objects.push({ key, val });
+                  this.addObject(val, key);
                 }
               }
 
@@ -203,44 +153,54 @@ export class CanvasComponent {
       }
       else
         if (val.Behaviors.Span != undefined) {
+          this.setMaxDuration(val.Behaviors);
           if (this.IsObjectExist(val) == -1) {
             if (val.Behaviors.Span._Position == "00:00:00") {
-              this.objDirectory.push(val);
-              this.objects.push({ key, val });
+              this.addObject(val, key);
             }
           }
         }
         else if (val.Behaviors.Span == undefined) {
           if (this.IsObjectExist(val) == -1) {
-            this.objDirectory.push(val);
-            this.objects.push({ key, val });
+            this.addObject(val, key);
           }
         }
     }
   }
 
-  IsObjectExist(obj) {
-    return this.objDirectory.indexOf(obj)/*$Candidate for refactoring$*///please observe that you are pushing objects in this array from multiple places (shift+F12 on objDirectory) and there can be duplicate items in this array. No condition to check that. so the function can return bad value.
+  addObject(val, key) {
+    this.objDirectory.push(val);
+    this.objects.push({ key, val });
   }
 
-  returnTotalDuration(objBehaviors) {/*$Candidate for refactoring$*///consider making the function static
+  IsObjectExist(obj) {
+    return this.objDirectory.indexOf(obj);/*$Candidate for refactoring$*///please observe that you are pushing objects in this array from multiple places (shift+F12 on objDirectory) and there can be duplicate items in this array. No condition to check that. so the function can return bad value.
+  }
+
+  setMaxDuration(objBehaviors) {/*$Candidate for refactoring$*///The name suggests it will return MaxDuration, instead it is blatantly modifying class fields. Bad!
+    if (!this.isTimelineAvailable) this.isTimelineAvailable = true;
+    if (objBehaviors.Span._Duration >= this.timelineDuration) { this.timelineDuration = objBehaviors.Span._Duration; }
+    var durationInMS = (CanvasComponent.formatDurationInMiliSecond(this.timelineDuration)) / 10000000;
+    this.duration = durationInMS;
+  }
+
+ static returnTotalDuration(objBehaviors) {/*$Candidate for refactoring$*///consider making the function static
     if (objBehaviors.Span != undefined) {
       var durationInMS = this.formatDurationInMiliSecond(objBehaviors.Span._Duration);
       var positionInMS = this.formatPoistionInMiliSecond(objBehaviors.Span._Position);
       var totalDur = (durationInMS + positionInMS) / 10000000;/*$Candidate for refactoring$*///make a const out of big numbers or a multiple of any other const
-      return totalDur
+      return totalDur;
     }
     return null;
   }
 
   RemoveObjects() {
-    var object = this.objects.find(x => this.timelinePosition >= this.formatTime(this.returnTotalDuration(x.val.Behaviors)))
+    var object = this.objects.find(x => this.timelinePosition >= this.formatTime(CanvasComponent.returnTotalDuration(x.val.Behaviors)))
     if (object != undefined) {
       console.log(object);
       var obj = this.objects.indexOf(object);
       this.objects.splice(obj, 1);
     }
-
   }
 
   ClearInterval() {

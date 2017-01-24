@@ -22,7 +22,7 @@
 <ion-content style="background:#f4f4f4;" [ngSwitch]="selectedSegment">
 
 <!-- Real floating action button, fixed. It will not scroll with the content -->
-<ion-fab bottom right>
+<ion-fab bottom right *ngSwitchCase="'local'">
 	<button ion-fab [command]="newMatrix" [cmdArgs]="'addNew'" [usePress]="false"><ion-icon name="add"></ion-icon></button>
 </ion-fab>
 <!--(For testing only) - Open matrix file placed in assets-->

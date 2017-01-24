@@ -49,6 +49,7 @@
 			<ion-card>
 				<ion-item>
 					<h2>{{chanList.ChannelName}}</h2>
+					<h2>{{chanList.Description}}</h2>
 					<button ion-button icon-only large item-right clear [command]="subscribeCmd" [cmdArgs]=" SubscribeSource(i,chanList.ChannelName)"
 						[usePress]="false" style=" margin:-10px -5px -10px 0;">
 <ion-icon name="add-circle"></ion-icon>

@@ -30,10 +30,6 @@ export class Download {
                                 this._logger.Debug("moving file in local..");
                                 return this.packages.MoveToLocalCollection(channelName).subscribe((res) => {
                                      return resolve(res);
-                                    // this._logger.Debug("loading downloading matrix from local..");
-                                    // return this.core.RemoveMatrixFile(path, "Temp").subscribe((res) => {
-                                    //     return resolve(res);
-                                    // });
                                 });
                             });
                         }).catch(err => { return reject(err) });

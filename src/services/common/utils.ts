@@ -18,14 +18,16 @@ export class Utils {
     }
 
     formatTime(time) {
-        var hrs = Math.floor(time / 3600);
-        var hours = (hrs >= 10) ? hrs : "0" + hrs;
-        var min = Math.floor(time / 60);
-        var minutes = (min >= 10) ? min : "0" + min;
-        var sec = Math.floor(time % 60);
-        var seconds = (sec >= 10) ? sec : "0" + sec;
-        var milliseconds = time.toFixed(2).substr(-2);
-        return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+        if (time != null) {
+            var hrs = Math.floor(time / 3600);
+            var hours = (hrs >= 10) ? hrs : "0" + hrs;
+            var min = Math.floor(time / 60);
+            var minutes = (min >= 10) ? min : "0" + min;
+            var sec = Math.floor(time % 60);
+            var seconds = (sec >= 10) ? sec : "0" + sec;
+            var milliseconds = time.toFixed(2).substr(-2);
+            return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+        }
     }
 
     FormatDuration(dur) {
@@ -43,14 +45,14 @@ export class Utils {
         }
     }
 
-    formatPoistionInMiliSecond(pos) {
+    static formatPoistionInMiliSecond(pos) {
         if (pos == "00:00:00") pos = "00:00:00.000000";
         var positionInMilliseconds = Number(pos.slice(1, 2)) * 36000000000 + Number(pos.slice(4, 5)) * 60000000 + Number(pos.slice(7, 8)) * 10000000 + Number(pos.substr(-7));
         return positionInMilliseconds;
 
     }
 
-    formatDurationInMiliSecond(dur) {
+   static formatDurationInMiliSecond(dur) {
         if (dur != undefined) {
             if (dur.length == 16) {
                 var durationInMilliseconds = Number(dur.slice(1, 2)) * 36000000000 + Number(dur.slice(4, 5)) * 60000000 + Number(dur.slice(7, 8)) * 10000000 + Number(dur.substr(-7));
@@ -94,7 +96,7 @@ export class Utils {
         HeaderList.forEach((header) => {
             console.log(header);
             this.core.SaveServerHeader(header, header.Channel, header.Sport, header.Name, "Matrices").then((res) => {
-                this.DownloadThumbnailAsync(res.Channel, res.Name);
+                this.DownloadThumbnailAsync(header.Channel, header.Name);
             });
         })
     }
