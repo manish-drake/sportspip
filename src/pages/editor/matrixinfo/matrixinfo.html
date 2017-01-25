@@ -20,7 +20,7 @@
     </ion-item>
     <ion-item>
       <ion-label fixed>Skill</ion-label>
-      <ion-input [(ngModel)]="matrixData._Skill" value="{{matrixData._Skill}}" placeholder="Skill"></ion-input>
+      <ion-input [(ngModel)]="matrixData._Skill" (keyup)="validatematrixInfo()" value="{{matrixData._Skill}}" placeholder="Skill"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label fixed>Location</ion-label>
