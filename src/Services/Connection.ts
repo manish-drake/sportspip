@@ -1,8 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Platform } from 'ionic-angular';
 import X2JS from 'x2js';
-
-import { AlertControllers } from '../Services/Alerts';
+import { Alert } from '../Services/common/alerts';
 import { Logger } from '../logging/logger';
 
 declare var chrome: any;
@@ -11,8 +10,8 @@ declare var chrome: any;
 export class Connection {
 
     constructor(private platform: Platform,
-        private alertCtrls: AlertControllers,
-        private _logger: Logger) {  }
+        private alertCtrls: Alert,
+        private _logger: Logger) { }
 
     public static servers = [];
 

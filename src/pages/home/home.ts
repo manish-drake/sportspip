@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, ActionSheetController, PopoverController, Platform, LoadingController } from 'ionic-angular';
 import { AppVersion, Device } from 'ionic-native';
 import { HomeMorePopover } from '../../pages/homemore-popover/homemore-popover';
-import { AlertControllers } from '../../Services/Alerts';
+import { Alert } from '../../Services/common/alerts';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
@@ -57,7 +57,7 @@ export class HomePage {
         private openmatrix: OpenMatrix,
         private popoverCtrl: PopoverController,
         private actionSheetCtrl: ActionSheetController,
-        private alertCtrls: AlertControllers,
+        private alertCtrls: Alert,
         private packages: Package,
         private loadingCtrl: LoadingController,
         private connection: Connection,

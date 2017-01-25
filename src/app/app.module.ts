@@ -7,7 +7,7 @@ import { HomeMorePopover } from '../pages/homemore-popover/homemore-popover';
 import { Connectivity } from '../pages/connectivity/connectivity';
 import { SettingsPage } from '../pages/settings/settings';
 import { Login } from '../pages/settings/login/login';
-import { AlertControllers } from '../Services/Alerts';
+import { Alert } from '../Services/common/alerts';
 import { CollectionPage } from '../pages/collection/collection'
 import { ChannelCollectionPage } from '../pages/channelcollection/channelcollection'
 import { OrderBy } from '../Services/Pipe/OrderBy';
@@ -64,7 +64,7 @@ import { HttpService } from '../Services/httpService';
   providers: [
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     { provide: AProvider, useClass: SqliteLogProvider },
-    AlertControllers, Logger, StorageFactory, Storage,BackGroundTransferProcess,Utils,
+    Alert, Logger, StorageFactory, Storage,BackGroundTransferProcess,Utils,
     ModelFactory,Package,Core,HttpService
 
   ],

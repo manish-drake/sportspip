@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ViewController, Platform } from 'ionic-angular';
 import { AppVersion, EmailComposer, Device } from 'ionic-native';
 import { Observable } from 'rxjs/Rx';
-import { AlertControllers } from '../../Services/Alerts';
+import { Alert } from '../../Services/common/alerts';
 import { Storage } from '../../Services/Factory/Storage';
 import { StorageFactory } from '../../Services/Factory/StorageFactory';
 import { Logger } from '../../logging/logger';
@@ -20,7 +20,7 @@ export class HomeMorePopover {
     constructor(public viewCtrl: ViewController,
         private storage: Storage,
         private storageFactory: StorageFactory,
-        private alertCtrls: AlertControllers,
+        private alertCtrls: Alert,
         private platform: Platform,
         private _Logger: Logger) {
         if (this.platform.is('cordova')) {/*$Candidate for refactoring$*///must go inside storage

@@ -7,7 +7,7 @@ import { Connectivity } from '../../connectivity/connectivity';
 import { StorageFactory } from '../../../Services/Factory/StorageFactory';
 import { Storage } from '../../../Services/Factory/Storage';
 import { BackGroundTransferProcessIP } from '../../../Services/BackGroundTransferProcessIP';
-import { AlertControllers } from '../../../Services/Alerts';
+import { Alert } from '../../../Services/common/alerts';
 import X2JS from 'x2js';
 import { Logger } from '../../../logging/logger';
 import { ModelFactory } from '../../../Services/Factory/ModelFactory';
@@ -35,7 +35,7 @@ export class Ipcameras {
     public navCtrl: NavController,
     private httpService: HttpService,
     private backGroundTransferProcessIP: BackGroundTransferProcessIP,
-    private alertCtrls: AlertControllers,
+    private alertCtrls: Alert,
     private loadingCtrl: LoadingController,
     private platform: Platform,
     private navParams: NavParams,

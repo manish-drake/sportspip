@@ -3,7 +3,7 @@ import { ICommand } from '../../../Contracts/ICommand';
 import { CaptureVideoOptions, MediaFile, CaptureError, MediaCapture } from 'ionic-native';
 
 import { Logger } from '../../../logging/logger';
-import { AlertControllers } from '../../../Services/Alerts';
+import { Alert } from '../../../Services/common/alerts';
 import { BackGroundTransferProcess } from '../../../Services/BackGroundTransferProcess';
 import { StorageFactory } from '../../../Services/Factory/StorageFactory';
 import { Platform } from 'ionic-angular';
@@ -15,7 +15,7 @@ import { Storage } from '../../../Services/Factory/Storage';
 export class AddPhoneCapture implements ICommand {
 
     rootDirectory: string;
-    constructor(private alertCtrls: AlertControllers,
+    constructor(private alertCtrls: Alert,
         private _logger: Logger,
         private backGroundTransferProcess: BackGroundTransferProcess,
         private platform: Platform,

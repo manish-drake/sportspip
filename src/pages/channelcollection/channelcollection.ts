@@ -4,7 +4,7 @@ import { Utils } from '../../Services/common/utils';
 import { Observable } from 'rxjs/Rx';
 import { Core } from '../../Services/core';
 import { Download } from '../../Services/Action/Download';
-import { AlertControllers } from '../../Services/Alerts';
+import { Alert } from '../../Services/common/alerts';
 import { PopoverController, NavParams, ActionSheetController, ViewController, Platform, LoadingController } from 'ionic-angular';
 import { Logger } from '../../logging/logger';
 
@@ -32,7 +32,7 @@ export class ChannelCollectionPage {
     private core: Core,
     private loadingCtrl: LoadingController,
     private utils: Utils,
-    private alertCtrls: AlertControllers,
+    private alertCtrls: Alert,
     private actionSheetCtrl: ActionSheetController,
     private platform: Platform,
     private popoverController: PopoverController,

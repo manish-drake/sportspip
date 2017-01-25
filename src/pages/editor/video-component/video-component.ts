@@ -5,7 +5,7 @@ import { Utils } from '../../../Services/common/utils';
 import { Observable } from 'rxjs/Rx';
 import { Storage } from '../../../Services/Factory/Storage';
 import { StorageFactory } from '../../../Services/Factory/StorageFactory';
-import { AlertControllers } from '../../../Services/Alerts';
+import { Alert } from '../../../Services/common/alerts';
 import { Logger } from '../../../logging/logger';
 
 @Component({
@@ -21,7 +21,7 @@ export class VideoComponent {
 
     rootDir: String;
 
-    constructor(private alertCtrls: AlertControllers,
+    constructor(private alertCtrls: Alert,
         private storage: Storage,
         private storageFactory: StorageFactory,
         private actionSheetCtrl: ActionSheetController,

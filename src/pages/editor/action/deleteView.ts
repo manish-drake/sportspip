@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ActionSheetController } from 'ionic-angular';
-
 import { ICommand } from '../../../Contracts/ICommand';
-import { AlertControllers } from '../../../Services/Alerts';
+import { Alert } from '../../../Services/common/alerts';
 
 @Injectable()
 export class DeleteView implements ICommand {
 
-    constructor(private actionSheetCtrl: ActionSheetController, private alertCtrls: AlertControllers) { }
+    constructor(private actionSheetCtrl: ActionSheetController, private alertCtrls: Alert) { }
 
     run(cmdArgs) {
         if (cmdArgs.editor.views.length > 1) {

@@ -5,13 +5,13 @@ import { Core } from '../core';
 import { Storage } from '../Factory/Storage';
 import { Logger } from '../../logging/logger';
 import { ICommand } from '../../Contracts/ICommand';
-import { AlertControllers } from '../Alerts';
+import { Alert } from '../common/alerts';
 import { Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class OpenMatrix implements ICommand {
     storageDataDir: string
-    constructor(private alertCtrls: AlertControllers,
+    constructor(private alertCtrls: Alert,
         private navCtrl: NavController,
         private storage: Storage,
         private core: Core,

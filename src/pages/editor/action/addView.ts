@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ICommand } from '../../../Contracts/ICommand';
-import { AlertControllers } from '../../../Services/Alerts';
+import { Alert } from '../../../Services/common/alerts';
 import { ModelFactory } from '../../../Services/Factory/ModelFactory';
 
 @Injectable()
 export class AddView implements ICommand {
-    constructor(private alertCtrls: AlertControllers, private modelFactory: ModelFactory) {
+    constructor(private alertCtrls: Alert, private modelFactory: ModelFactory) {
 
     }
 

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Camera, CameraOptions, CameraPopoverOptions } from 'ionic-native';
 import { ICommand } from '../../../Contracts/ICommand';
 import { Logger } from '../../../logging/logger';
-import { AlertControllers } from '../../../Services/Alerts';
+import { Alert } from '../../../Services/common/alerts';
 import { BackGroundTransferProcess } from '../../../Services/BackGroundTransferProcess';
 import { StorageFactory } from '../../../Services/Factory/StorageFactory';
 import { Platform } from 'ionic-angular';
@@ -14,7 +14,7 @@ import { Observable } from 'rxjs/Rx';
 export class AddCapture implements ICommand {
     rootDirectory: string;
     constructor(private _logger: Logger,
-        private alertCtrls: AlertControllers,
+        private alertCtrls: Alert,
         private backGroundTransferProcess: BackGroundTransferProcess,
         private platform: Platform,
         private storage: Storage,

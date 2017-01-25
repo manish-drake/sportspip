@@ -3,12 +3,12 @@ import { ICommand } from '../../../../Contracts/ICommand';
 import { Connection } from '../../../../Services/Connection';
 import { Logger } from '../../../../logging/logger';
 import { HttpService } from '../../../../Services/httpService';
-import { AlertControllers } from '../../../../Services/Alerts';
+import { Alert } from '../../../../Services/common/alerts';
 
 
 @Injectable()
 export class IPCamRecording implements ICommand {
-    constructor(private _logger: Logger, private httpService: HttpService, private alertCtrls: AlertControllers) {
+    constructor(private _logger: Logger, private httpService: HttpService, private alertCtrls: Alert) {
 
     }
 
@@ -40,7 +40,7 @@ export class IPCamRecording implements ICommand {
         var fileName = Date.now();
         var uri: string = "http://" + connectedServerIP + ":10080/icamera/cams/ip/" + fileName + "/rec?duration=" + cmdArgs.ipCam.recordingDuration;
         this._logger.Debug('Recording request uri: ' + uri);
-        this.httpService.PostFileToServer(uri, null,null)/*$Candidate for refactoring$*///delegate http tasks to a seaparate service
+        this.httpService.PostFileToServer(uri, null, null)/*$Candidate for refactoring$*///delegate http tasks to a seaparate service
             .then(res => {
                 this._logger.Debug("Recording for IP Cams on network: " + JSON.stringify(res));
                 var time: number = 0;
