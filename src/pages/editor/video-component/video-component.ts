@@ -20,6 +20,7 @@ export class VideoComponent {
     @ViewChild('video') videoElement: ElementRef;
 
     rootDir: String;
+    objects = [];
 
     constructor(private alertCtrls: Alert,
         private storage: Storage,
@@ -28,7 +29,6 @@ export class VideoComponent {
         private modalCtrl: ModalController,
         private platform: Platform,
         private events: Events,
-        private utils: Utils,
         private _logger: Logger) {
         this.storage.externalRootDirectory().then((res) => {
             this.rootDir = res;
@@ -85,7 +85,7 @@ export class VideoComponent {
         this.markersobjects = [];
         this.markers = [];
 
-        this.loadObjects();/*$Candidate for refactoring$*///Consider removing canvas for this component
+        this.loadDefaultMarkerObjects();/*$Candidate for refactoring$*///Consider removing canvas for this component
         this.LoadMarkers();/*$Candidate for refactoring$*///Consider removing timeline from this component
 
         this.video.currentTime = .1;
@@ -495,27 +495,14 @@ export class VideoComponent {
         });
         actionSheet.present();
     }
-    // Code for Markers ends
 
-    //Code for objects starts
-    clrCvt(color) {
-        return '#' + color.slice(3, 9);
-    }
-
-    sum(a, b) {
-        return Number(a) + Number(b);
-    }
-
-    objects = [];
-
-    loadObjects() {
+    loadDefaultMarkerObjects() {
         var objs = this.view["Content"]["Capture"]["Marker"]["Marker.Objects"];
         if (objs != undefined) {
             for (var key in objs) {
                 // skip loop if the property is from prototype
                 if (!objs.hasOwnProperty(key)) continue;
                 var val = objs[key];
-
                 if (val instanceof Array) {
                     val.forEach(val => {
                         this.objects.push({ key, val });
@@ -529,6 +516,13 @@ export class VideoComponent {
         }
     }
     //Code for return values start
+    clrCvt(color) {
+        return '#' + color.slice(3, 9);
+    }
+
+    sum(a, b) {
+        return Number(a) + Number(b);
+    }
     returnVidPath(filename) {
         if (this.platform.is('cordova')) {
             return this.rootDir + "SportsPIP/Video/" + filename;
@@ -565,7 +559,7 @@ export class VideoComponent {
     }
 
     formatTime(time) {
-        return this.utils.formatTime(time);
+        return Utils.formatTime(time);
     }
-      //Code for return values end
+    //Code for return values end
 }

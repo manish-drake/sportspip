@@ -29,7 +29,6 @@ export class CollectionPage {
   constructor(public navCtrl: NavController, private actionSheetCtrl: ActionSheetController,
     private storage: Storage,
     private core: Core,
-    private utils: Utils,
     private deleteHeader: DeleteHeader,
     private duplicate: Duplicate,
     private storagefactory: StorageFactory,
@@ -83,7 +82,7 @@ export class CollectionPage {
   }
 
   FormatDate(value) {/*$Candidate for refactoring$*///Make standard
-    return this.utils.FormatDate(value);
+    return Utils.FormatDate(value);
   }
 
   retrunThumbnailPath(name) {

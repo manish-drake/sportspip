@@ -61,7 +61,6 @@ export class HomePage {
         private packages: Package,
         private loadingCtrl: LoadingController,
         private connection: Connection,
-        private utils: Utils,
         private httpService: HttpService,
         private _logger: Logger) {
 
@@ -250,7 +249,7 @@ export class HomePage {
     }
 
     FormatDate(value) {
-        return this.utils.FormatDate(value);
+        return Utils.FormatDate(value);
     }
 
     //Display Server Header

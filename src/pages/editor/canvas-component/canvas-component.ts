@@ -20,7 +20,7 @@ export class CanvasComponent {
   duration: any;
   isTimelineAvailable: boolean = false;
   rootDir: any;
-  constructor(private platform: Platform, private events: Events, private storage: Storage, private utils: Utils) {
+  constructor(private platform: Platform, private events: Events, private storage: Storage) {
     this.timelinePosition = "00:00:00:00";
     this.playPauseButtonIcon = "play";
     this.repeatColor = "inactive";
@@ -87,7 +87,7 @@ export class CanvasComponent {
   }
 
   formatTime(time) {/*$Candidate for refactoring$*///Move to /services/common/utils please
-    return this.utils.formatTime(time);
+    return Utils.formatTime(time);
   }
 
   static formatPoistionInMiliSecond(pos) {

@@ -30,7 +30,6 @@ export class MatrixInfoPage {
         private packages: Package,
         private platform: Platform,
         private core: Core,
-        private utils: Utils,
         private _logger: Logger) {
         this.storage.externalDataDirectory().then((res) => {
             this.storageDataDir = res;
@@ -41,7 +40,7 @@ export class MatrixInfoPage {
     }
 
     FormateDate(value) {
-        return this.utils.FormatDate(value);
+        return Utils.FormatDate(value);
     }
 
     ionViewDidLoad() {

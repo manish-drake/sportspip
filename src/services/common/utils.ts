@@ -9,7 +9,7 @@ import 'rxjs/Rx';
 export class Utils {
     constructor(private httpService: HttpService, private packages: Package, private core: Core) { }
 
-    FormatDate(value) {
+   static FormatDate(value) {
         var st = value;
         var pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
         var date = new Date(st.replace(pattern, '$1-$2-$3 $4:$5:$6'));
@@ -17,7 +17,7 @@ export class Utils {
 
     }
 
-    formatTime(time) {
+   static formatTime(time) {
         if (time != null) {
             var hrs = Math.floor(time / 3600);
             var hours = (hrs >= 10) ? hrs : "0" + hrs;
@@ -30,7 +30,7 @@ export class Utils {
         }
     }
 
-    FormatDuration(dur) {
+   static FormatDuration(dur) {
         if (dur != null) {
             var hrs = Number(dur.slice(0, 2));
             var h = (hrs == 0) ? "" : hrs + 'h ';
