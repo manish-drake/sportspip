@@ -4,15 +4,18 @@ import { Platform } from 'ionic-angular';
 import X2JS from 'x2js';
 import { Logger } from '../logging/logger';
 import { StorageFactory } from './Factory/StorageFactory';
+import { HttpService } from './httpService';
 import { Storage } from './Factory/Storage';
 import { Observable } from 'rxjs/Rx';
 declare var FileTransfer: any;
+
 @Injectable()
 export class BackGroundTransferProcessIP {
     private data: any;
     private rootDir: string;
     constructor(private platform: Platform,
         private http: Http,
+        private httpService: HttpService,
         private _logger: Logger,
         private storageFactory: StorageFactory,
         private storage: Storage) {
@@ -35,13 +38,13 @@ export class BackGroundTransferProcessIP {
 
         let headers = new Headers({ 'Content-Type': 'application/xml' });
         let options = new RequestOptions({ headers: headers });
-        return this.http.post("http://" + server + ":10080/imatrix/matrices/", xmlMatrix, options)/*$Candidate for refactoring$*///delegate http tasks to a service
+        return this.httpService.PostFileToServer("http://" + server + ":10080/imatrix/matrices/", xmlMatrix, options)/*$Candidate for refactoring$*///delegate http tasks to a service
             .catch(err => new Observable(err => { return this._logger.Error('Error,transferring IP matrix: ', err) }))
-            .map(response => {
+            .then(response => {
                 if (response["status"] == 200)
                     return true;
                 else return this._logger.Error('Error,transferring IP matrix,Staus code: ', response["status"])
-            }).toPromise()
+            })
 
 
     }

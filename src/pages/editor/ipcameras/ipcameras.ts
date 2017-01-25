@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, Platform } from 'ionic-angular';
-import { Http } from '@angular/http';
-
+import { HttpService } from '../../../Services/httpService';
 import { Observable } from 'rxjs/Rx';
 import { Connection } from '../../../Services/Connection';
 import { Connectivity } from '../../connectivity/connectivity';
@@ -34,7 +33,7 @@ export class Ipcameras {
     private ipCamRecording: IPCamRecording,
     private storage: Storage,
     public navCtrl: NavController,
-    private http: Http,
+    private httpService: HttpService,
     private backGroundTransferProcessIP: BackGroundTransferProcessIP,
     private alertCtrls: AlertControllers,
     private loadingCtrl: LoadingController,
@@ -103,10 +102,9 @@ export class Ipcameras {
     var connectedServerIP = Connection.connectedServer.Address;
     this._logger.Debug("Getting IP Cams @ http://" + connectedServerIP + ":10080/icamera/cams/ip/");
     setTimeout(() => {
-      this.http.get("http://" + connectedServerIP + ":10080/icamera/cams/ip/")
-        .map(res => res.text())
+      this.httpService.GetCamFromServer("http://" + connectedServerIP + ":10080/icamera/cams/ip/")
         .catch((err) => new Observable(err => { this._logger.Error("Error,IPCam loading", err); }))
-        .subscribe(data => {
+        .then(data => {
           this._logger.Debug("Getting IP Cameras data: " + JSON.stringify(data))
           let parser: any = new X2JS();
           var jsonData = parser.xml2js(data);
@@ -114,13 +112,6 @@ export class Ipcameras {
             if (jsonData.Cams.IPCam instanceof Array) { this.ipCams = jsonData.Cams.IPCam; }
             else { this.ipCams.push(jsonData.Cams.IPCam); }
           }
-
-        }, err => {
-          this._logger.Error("Error, Get IP cams subscribe: " + err);
-          this.isLoading = false;
-        }, () => {
-          this._logger.Debug("Get IP cams subscribe: Random Quote Complete");
-          this.isLoading = false;
         });
     }, 1000);
   }
