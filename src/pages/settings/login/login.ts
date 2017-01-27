@@ -47,6 +47,7 @@ export class Login {
         this.IsLoginAvailable = "Sign Up";
         this.errorMessege = "";
     }
+    
     presentLogin() {
         console.log('Hello Login Page');
         this.LoginAvailable = true;

@@ -108,8 +108,8 @@ export class Connectivity implements DoCheck {
                 toast.present(toast);
             }
         }
-        catch (err) {
-            this._logger.Error('Error,changing connectivity : ', err);
+        catch (error) {
+            this._logger.Error('Error,changing connectivity : ', error);
         }
     }
     refreshConnection() {
