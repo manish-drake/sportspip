@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { Platform } from 'ionic-angular';
 
 
 export interface IUser {
@@ -15,7 +14,7 @@ export class user implements IUser {
     LastName: string;
     Email: string;
     Password: string;
-    constructor(private platform: Platform) {
+    constructor() {
 
     }
 

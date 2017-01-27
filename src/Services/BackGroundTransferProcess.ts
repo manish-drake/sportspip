@@ -4,6 +4,7 @@ import { Platform } from 'ionic-angular';
 import { Connection } from '../Services/Connection';
 import { File } from 'ionic-native';
 import { Storage } from './Factory/Storage';
+import { ModelFactory } from './Factory/ModelFactory';
 import X2JS from 'x2js';
 import { Logger } from '../logging/logger';
 import { HttpService } from './httpService';
@@ -15,18 +16,25 @@ import { } from '';
 export class BackGroundTransferProcess {
     private data: any;
     rootDir: string;
-    constructor(private platform: Platform, private _logger: Logger, private storage: Storage, private httpService: HttpService) {
+    constructor(private platform: Platform,
+        private _logger: Logger,
+        private storage: Storage,
+        private httpService: HttpService,
+        private modelFactory: ModelFactory) {
         this.storage.externalRootDirectory().then((res) => {
             this.rootDir = res;
         })
     }
+
     TransferVideo(fileName, serverIP, views) {
         this._logger.Debug('Transfer video');
         File.readAsArrayBuffer(this.rootDir + "SportsPIP/Video", fileName).then(success => {
+
             let headers = new Headers({ 'Content-Type': 'video/mp4' }); // ... Set content type to JSON
             let options = new RequestOptions({ headers: headers });
+
             this.httpService.PostFileToServer("http://" + serverIP + ":10080/imatrix/matrices/" + fileName.slice(0, -4) + "/videos", success, options)
-                .catch(err => new Observable(err => { return this._logger.Error('Error,transferring phone video: ', err) }))
+                .catch(err => new Observable(err => { return this._logger.Error('Error,transfering phone video: ', err) }))
                 .then(res => {
                     console.log(res);
                     this.data = this.createNewPhoneMatrix(0);
@@ -54,7 +62,7 @@ export class BackGroundTransferProcess {
             let options = new RequestOptions({ headers: headers });
 
             this.httpService.PostFileToServer("http://" + serverAddress + ":10080/imatrix/matrices/", xmlMatrix, options)
-                .catch(err => new Observable(err => { return this._logger.Error('Error,transferring matrix: ', err); }))
+                .catch(err => new Observable(err => { return this._logger.Error('Error,transfering phone matrix: ', err); }))
                 .then(response => {
                     console.log("matrix successfully sent");
                 })
@@ -94,25 +102,7 @@ export class BackGroundTransferProcess {
         this._logger.Debug('Create phone matrix');
         try {
             var name = Date.now().toString();
-            let data =
-                {
-                    "Matrix": {
-                        "_Name": name,
-                        "_Title": "Title1",
-                        "_Sport": "Tennis",
-                        "_Skill": "Serve",
-                        "_PIN": " ",
-                        "_DateModified": name,
-                        "_Duration": duration,
-                        "_Location": "Field",
-                        "_HasTransferred": false,
-                        "_Source": "Phone",
-                        "Clips": {
-                            "Clip": []
-                        }
-                    }
-                };
-            return data;
+            this.modelFactory.createMatrixforServer(name, duration, "Phone");
         }
         catch (err) {
             this._logger.Error('Error,creating phone matrix: ', err);

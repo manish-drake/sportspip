@@ -159,5 +159,28 @@ export class ModelFactory {
         return hea;
     }
 
+    createMatrixforServer(fileName, duration, source) {
+        var name = Date.now().toString();
+        let data =
+            {
+                "Matrix": {
+                    "_Name": fileName,
+                    "_Title": "Title1",
+                    "_Sport": "Tennis",
+                    "_Skill": "Serve",
+                    "_PIN": " ",
+                    "_DateModified": name,
+                    "_Duration": duration,
+                    "_Location": "Field",
+                    "_HasTransferred": false,
+                    "_Source": source,
+                    "Clips": {
+                        "Clip": []
+                    }
+                }
+            };
+        return data;
+
+    }
 
 }

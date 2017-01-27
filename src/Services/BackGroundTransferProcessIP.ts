@@ -4,6 +4,7 @@ import { Platform } from 'ionic-angular';
 import X2JS from 'x2js';
 import { Logger } from '../logging/logger';
 import { StorageFactory } from './Factory/StorageFactory';
+import { ModelFactory } from './Factory/ModelFactory';
 import { HttpService } from './httpService';
 import { Storage } from './Factory/Storage';
 import { Observable } from 'rxjs/Rx';
@@ -14,6 +15,7 @@ export class BackGroundTransferProcessIP {
     private data: any;
     private rootDir: string;
     constructor(private platform: Platform,
+        private modelFactory: ModelFactory,
         private http: Http,
         private httpService: HttpService,
         private _logger: Logger,
@@ -75,26 +77,7 @@ export class BackGroundTransferProcessIP {
     }
 
     private createNewIPMatrix(fileName, duration) {
-        var name = Date.now().toString();
-        let data =
-            {
-                "Matrix": {
-                    "_Name": fileName,
-                    "_Title": "Title1",
-                    "_Sport": "Tennis",
-                    "_Skill": "Serve",
-                    "_PIN": " ",
-                    "_DateModified": name,
-                    "_Duration": duration,
-                    "_Location": "Field",
-                    "_HasTransferred": false,
-                    "_Source": "IP",
-                    "Clips": {
-                        "Clip": []
-                    }
-                }
-            };
-        return data;
+        this.modelFactory.createMatrixforServer(fileName, duration, "IP");
     }
 
 
