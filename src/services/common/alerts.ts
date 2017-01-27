@@ -44,7 +44,7 @@ export class Alert {
         })
     }
 
-    PromptAlert(title, message, inputName, inputPlaceholder, inputValue) {
+    PromptAlert(title, message, inputName, inputPlaceholder, inputValue, inputType) {
         return new Promise((resolve, reject) => {
             let prompt = this.alertCtrl.create({
                 title: title,
@@ -53,7 +53,8 @@ export class Alert {
                     {
                         name: inputName,
                         placeholder: inputPlaceholder,
-                        value: inputValue
+                        value: inputValue,
+                        type: inputType
                     },
                 ],
                 buttons: [

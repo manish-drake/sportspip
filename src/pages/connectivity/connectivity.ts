@@ -112,7 +112,7 @@ export class Connectivity implements DoCheck {
 
     openConfig() {
         this._logger.Debug('Connection config alert prompt opened');
-        this.alertCtrls.PromptAlert("Listens on port", "", "port", "Port eg. 5333", Connection.port)
+        this.alertCtrls.PromptAlert("Listens on port", "", "port", "Port eg. 5333", Connection.port,"number")
             .then(data => {
                 Connection.port = (<any>data).port;
                 this.connection.setPort((<any>data).port);
