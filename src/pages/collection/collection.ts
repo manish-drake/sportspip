@@ -97,6 +97,7 @@ export class CollectionPage {
   public get OpenMatrix() : OpenMatrix {
     return this.openmatrix;
   }
+  
 
   DuplicateMatrix(matrixname, channelName) {/*$Candidate for refactoring$*///Can go to actions=> "no"
     this._logger.Debug('Creating duplicate matrix..');

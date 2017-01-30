@@ -18,7 +18,6 @@ export class Download {
 
     DownloadServerHeaderAsync(fileName, channelName, path): Promise<any> {
         return new Promise((resolve, reject) => {
-            this._logger.Debug("Authenticatnig user..");
             return this.core.ReadMatrixFile(path + "Roaming", "User.json").subscribe((res) => {
                 var result = JSON.parse(res.toString());
                 return this.AuthenticateUser(channelName, result.UserId).then((res) => {

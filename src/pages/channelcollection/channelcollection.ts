@@ -115,10 +115,8 @@ export class ChannelCollectionPage {
         });
         loader.present();
         this.download.DownloadServerHeaderAsync(matrix.Name, matrix.Channel, this.dataDir).then((res) => {
-          this.core.RemoveMatrixFile(this.dataDir, "Temp").subscribe((res) => {
-            this.deleteServerHeader(matrix.Name, matrix.Channel, index);
-            loader.dismiss();
-          })
+          this.deleteServerHeader(matrix.Name, matrix.Channel, index);
+          loader.dismiss();
         });
       }
 
