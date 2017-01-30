@@ -24,6 +24,7 @@ import { Compareview } from '../pages/editor/compareview/compareview'
 import { CompareviewComponent, CaptureViewsPopover } from '../pages/editor/Compareview-Component/Compareview-Component'
 import { Swipeview } from '../pages/editor/swipeview/swipeview'
 import { StorageFactory } from '../Services/Factory/StorageFactory';
+import { NativeStorageFactory } from '../Services/Factory/NativeStorageFactory';
 import { Logger } from '../logging/logger';
 import { AProvider } from '../logging/aProvider';
 import { SqliteLogProvider } from '../logging/providers/sqliteLogProvider';
@@ -64,7 +65,8 @@ import { HttpService } from '../Services/httpService';
   providers: [
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     { provide: AProvider, useClass: SqliteLogProvider },
-    Alert, Logger, StorageFactory, Storage,BackGroundTransferProcess,Utils,
+    Alert, Logger, StorageFactory, Storage, NativeStorageFactory,
+    BackGroundTransferProcess,Utils,
     ModelFactory,Package,Core,HttpService
 
   ],

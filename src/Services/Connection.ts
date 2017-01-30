@@ -3,6 +3,7 @@ import { Platform } from 'ionic-angular';
 import X2JS from 'x2js';
 import { Alert } from '../Services/common/alerts';
 import { Logger } from '../logging/logger';
+import { NativeStorageFactory } from '../Services/Factory/NativeStorageFactory'
 
 declare var chrome: any;
 
@@ -11,7 +12,10 @@ export class Connection {
 
     constructor(private platform: Platform,
         private alertCtrls: Alert,
-        private _logger: Logger) { }
+        private _logger: Logger,
+        private _nativeStorageFactory: NativeStorageFactory) {
+        this.getPort();
+    }
 
     public static servers = [];
 
@@ -19,9 +23,34 @@ export class Connection {
 
     public static socketId: any;
 
+    public static port: any = 5333;
+
+    getPort() {
+        this.platform.ready().then(() => {
+            if (this.platform.is('cordova')) {
+                this._nativeStorageFactory.GetItem("sportspipport")
+                    .then(res => {
+                        this._logger.Debug("Got saved Port: " + res);
+                        if (res != null) { Connection.port = res }
+                    })
+                    .catch(err => { this._logger.Debug("No saved Port: " + JSON.stringify(err)) })
+            }
+        })
+    }
+
+    setPort(port) {
+        this.platform.ready().then(() => {
+            if (this.platform.is('cordova')) {
+                this._nativeStorageFactory.SetItem("sportspipport", port)
+                    .then(res => { this._logger.Debug("Saved Port successfully: " + res) })
+                    .catch(err => { this._logger.Debug("Error saving port: " + JSON.stringify(err)) })
+            }
+        })
+    }
+
     scanUdp() {
         if (this.platform.is('cordova')) {
-            this._logger.Debug("Starting Listening for Sports PIP servers");
+            this._logger.Debug("Starting Listening for Sports PIP servers on Port: " + Connection.port);
             var onReceive = function (info) {
                 var binaryData = info.data;
                 var dataStr = '';
@@ -69,7 +98,7 @@ export class Connection {
                 Connection.socketId = createInfo.socketId;
                 chrome.sockets.udp.onReceive.addListener(onReceive);
                 chrome.sockets.udp.onReceiveError.addListener(onReceiveError);
-                chrome.sockets.udp.bind(createInfo.socketId, '0.0.0.0', 5333, function (result) {
+                chrome.sockets.udp.bind(createInfo.socketId, '0.0.0.0', Connection.port, function (result) {
                     console.log("udp scan bind result: " + result);
                     if (result < 0) {
                         console.log("Error binding socket. " + result);

@@ -1,15 +1,9 @@
 import { Component, DoCheck } from '@angular/core';
-import { NavController, ToastController } from 'ionic-angular';
+import { NavController, ToastController, AlertController } from 'ionic-angular';
 
 import { Connection } from '../../Services/Connection';
 import { Logger } from '../../logging/logger';
-
-/*
-  Generated class for the Connectivity page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
+import { Alert } from '../../Services/common/alerts';
 
 declare var chrome: any;
 
@@ -28,7 +22,8 @@ export class Connectivity implements DoCheck {
     constructor(public navCtrl: NavController,
         private connection: Connection,
         private toastCtrl: ToastController,
-        private _logger: Logger) {
+        private _logger: Logger,
+        private alertCtrls: Alert) {
 
     }
 
@@ -45,9 +40,15 @@ export class Connectivity implements DoCheck {
 
     ionViewDidLoad() {
         console.log('Hello Connectivity Page');
+        this.reloadConnections();
+    }
+
+    reloadConnections() {
         this.showLoader();
         this.connection.close();
-        this.connection.scanUdp();
+        setTimeout(() => {
+            this.connection.scanUdp();
+        }, 500);
     }
 
     showLoader() {
@@ -69,9 +70,7 @@ export class Connectivity implements DoCheck {
             setTimeout(() => {
                 refresher.complete();
                 this.refreshing = false;
-                this.showLoader();
-                this.connection.close();
-                this.connection.scanUdp();
+                this.reloadConnections();
             }, 500);
         }
         catch (err) {
@@ -112,25 +111,15 @@ export class Connectivity implements DoCheck {
             this._logger.Error('Error,changing connectivity : ', error);
         }
     }
-    refreshConnection() {
-        this._logger.Debug('Refresh connection..');
-        try {
-            this.servers.length == 0
-            this.connection.close();
-            let toast = this.toastCtrl.create({
-                message: 'Connections reloaded.',
-                duration: 1500,
-                position: 'bottom',
-                showCloseButton: true,
-                closeButtonText: 'Ok'
-            });
-            toast.present(toast);
-            this.showLoader();
-            this.connection.scanUdp();
-        }
-        catch (err) {
-            this._logger.Error('Error,refreshing connection : ', err);
-        }
+
+    openConfig() {
+        this._logger.Debug('Connection config alert prompt opened');
+        this.alertCtrls.PromptAlert("Listens on port", "", "port", "Port eg. 5333", Connection.port, "number")
+            .then(data => {
+                Connection.port = (<any>data).port;
+                this.connection.setPort((<any>data).port);
+                this.reloadConnections();
+            })
     }
 
     connect(server) {

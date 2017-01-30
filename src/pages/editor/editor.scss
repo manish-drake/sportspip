@@ -18,9 +18,8 @@ page-editor {
         }
   
     ::-webkit-scrollbar,
-    *::-webkit-scrollbar {
-    display: none;
-    }
+    *::-webkit-scrollbar { display: none; }
+    
     .textTrim{
         overflow: hidden;text-overflow: ellipsis;
         }

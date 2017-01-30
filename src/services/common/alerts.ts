@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AlertController } from 'ionic-angular';
 
+import { Logger } from '../../logging/logger';
+
 @Injectable()
 export class Alert {
-    constructor(private alertCtrl: AlertController) {
+    constructor(private alertCtrl: AlertController,
+        private _logger: Logger) {
 
     }
 
@@ -39,8 +42,34 @@ export class Alert {
             alert.present();
 
         })
+    }
 
-
+    PromptAlert(title, message, inputName, inputPlaceholder, inputValue, inputType) {
+        return new Promise((resolve, reject) => {
+            let prompt = this.alertCtrl.create({
+                title: title,
+                message: message,
+                inputs: [
+                    {
+                        name: inputName,
+                        placeholder: inputPlaceholder,
+                        value: inputValue,
+                        type: inputType
+                    },
+                ],
+                buttons: [
+                    {
+                        text: 'Cancel',
+                        handler: data => { this._logger.Debug('Cancel clicked'); }
+                    },
+                    {
+                        text: 'Save',
+                        handler: data => { resolve(data) }
+                    }
+                ]
+            });
+            prompt.present();
+        })
     }
 
 }
