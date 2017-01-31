@@ -1,5 +1,4 @@
 import { Injectable, Component } from '@angular/core';
-import { ICommand } from '../../../Contracts/ICommand';
 import { StorageFactory } from '../../../Services/Factory/StorageFactory';
 import { PopoverController, ViewController, Platform } from 'ionic-angular';
 

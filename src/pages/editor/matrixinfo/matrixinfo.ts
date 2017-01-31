@@ -5,7 +5,6 @@ import { Core } from '../../../Services/core';
 import { Package } from '../../../Services/Package';
 import { Logger } from '../../../logging/logger';
 import { Utils } from '../../../Services/common/utils';
-import { Observable } from 'rxjs/Rx';
 /*
   Generated class for the Matrixinfo page.
 

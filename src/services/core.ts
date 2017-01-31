@@ -4,7 +4,7 @@ import { Platform, ToastController } from 'ionic-angular';
 import { Logger } from '../logging/logger';
 import { StorageFactory } from './Factory/StorageFactory';
 import { Storage } from './Factory/Storage';
-import { Observable, Subscription } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class Core {

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Storage } from '../Factory/Storage';
 import { Core } from '../core';
 import { Platform } from 'ionic-angular';
-import { Observable } from 'rxjs/Rx';
 
 /*$Candidate for refactoring$*/
 @Injectable()

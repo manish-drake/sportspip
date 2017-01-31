@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ModalController, PopoverController, ViewController, LoadingController } from 'ionic-angular';
+import { ModalController, PopoverController, LoadingController } from 'ionic-angular';
 import { Login } from '../settings/login/login'
 import { Subscribe } from '../settings/action/subscribe'
 import { Unsubscribe } from '../settings/action/unsubscribe'

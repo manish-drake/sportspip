@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { Storage } from '../../Services/Factory/Storage';
 import { Utils } from '../../Services/common/utils';
-import { Observable } from 'rxjs/Rx';
 import { Core } from '../../Services/core';
 import { Download } from '../../Services/Action/Download';
 import { Alert } from '../../Services/common/alerts';
-import { PopoverController, NavParams, ActionSheetController, ViewController, Platform, LoadingController } from 'ionic-angular';
+import { PopoverController, NavParams, ActionSheetController, Platform, LoadingController } from 'ionic-angular';
 import { Logger } from '../../logging/logger';
 
 

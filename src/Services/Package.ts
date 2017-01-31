@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Platform } from 'ionic-angular';
-import { DirectoryEntry, Zip } from 'ionic-native';
+import { Zip } from 'ionic-native';
 import { StorageFactory } from './Factory/StorageFactory';
 import { Core } from './core';
 import { Storage } from './Factory/Storage';

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '../../logging/logger';
 import { Core } from '../../Services/core';
-import { Observable } from 'rxjs/Rx';
 import { Package } from '../../Services/Package';
 
 /*$Candidate for refactoring$*/
