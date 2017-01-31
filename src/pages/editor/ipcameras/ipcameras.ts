@@ -98,7 +98,6 @@ export class Ipcameras {
   getIPCam() {
     this.isLoading = false;
     this.isConnected = true;
-    this.isLoading = true;
     var connectedServerIP = Connection.connectedServer.Address;
     this._logger.Debug("Getting IP Cams @ http://" + connectedServerIP + ":10080/icamera/cams/ip/");
     setTimeout(() => {

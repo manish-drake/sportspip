@@ -180,7 +180,6 @@ export class ModelFactory {
                 }
             };
         return data;
-
     }
 
 }

@@ -40,7 +40,6 @@ export class Connectivity implements DoCheck {
 
     ionViewDidLoad() {
         console.log('Hello Connectivity Page');
-        this.reloadConnections();
     }
 
     reloadConnections() {

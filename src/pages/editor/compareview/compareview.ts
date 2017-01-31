@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 /*
@@ -11,7 +11,7 @@ import { NavController, NavParams } from 'ionic-angular';
   selector: 'page-compareview',
   templateUrl: 'compareview.html'
 })
-export class Compareview {
+export class Compareview implements OnInit{
 
   views = [];
   compareSegment1: any;
@@ -19,12 +19,9 @@ export class Compareview {
 
   selectedIndex: number = 0;
 
-  constructor(public navCtrl: NavController,
-    private navParams: NavParams) {
-    this.ionViewDidLoad();
-  }
+  constructor(public navCtrl: NavController, private navParams: NavParams) { }
 
-  ionViewDidLoad() {
+  ngOnInit() {
     console.log('Hello Compareview Page');
     if (this.navParams.data) {
       this.views = this.navParams.data.captureViews;

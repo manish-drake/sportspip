@@ -123,6 +123,12 @@ export class CompareviewComponent {
         this.fade(this.fadableTitle.nativeElement);
     }
 
+    // ngOnDestroy() {
+    //     if (this.video.paused == false) {
+    //         this.playPause();
+    //     }
+    // }
+
     OnVideoMatadataLoad() {
         this._logger.Debug('OnVideoMatadataLoad');
         this.timelineDuration = this.formatTime(this.video.duration);

@@ -57,7 +57,7 @@ export class BackGroundTransferProcessIP {
         while (i <= CamsCount) {
             var name = fileName + "_" + i + ".mp4"
             var view = "View" + " " + i;
-            this.AddMatrixClip(name, view, this.data);
+            this.AddMatrixClip(name, view);
             i++;
         }
     }
@@ -77,18 +77,18 @@ export class BackGroundTransferProcessIP {
     }
 
     private createNewIPMatrix(fileName, duration) {
-        this.modelFactory.createMatrixforServer(fileName, duration, "IP");
+        return this.modelFactory.createMatrixforServer(fileName, duration, "IP");
     }
 
 
-    private AddMatrixClip(kernel, view, data) {
+    private AddMatrixClip(kernel, view) {
         var clip = {
             "_Name": kernel,
             "_name": "",
             "_Key": view,
             "_Duration": "0"
         }
-        data.Matrix.Clips.Clip.push(clip);
+        this.data.Matrix.Clips.Clip.push(clip);
     }
 
     //..............................matrix transfered.......................................
