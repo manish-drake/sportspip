@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { ModalController, PopoverController, LoadingController } from 'ionic-angular';
-import { Login } from '../settings/login/login'
-import { Subscribe } from '../settings/action/subscribe'
-import { Unsubscribe } from '../settings/action/unsubscribe'
-import { Signin } from '../settings/action/login'
-import { SignOut } from '../settings/action/signOut'
+import { Login } from '../account/login/login'
+import { Subscribe } from '../account/action/subscribe'
+import { Unsubscribe } from '../account/action/unsubscribe'
+import { Signin } from '../account/action/login'
+import { SignOut } from '../account/action/signOut'
 import { Subscription } from '../../Services/Subscription';
 import { StorageFactory } from '../../Services/Factory/StorageFactory';
 import { Core } from '../../Services/core';
@@ -21,12 +21,12 @@ import { Logger } from '../../logging/logger';
 */
 
 @Component({
-  selector: 'page-settings',
-  templateUrl: 'settings.html',
+  selector: 'page-account',
+  templateUrl: 'account.html',
   providers: [Subscription, Subscribe, Unsubscribe, Signin, SignOut, Utils]
 })
 
-export class SettingsPage {
+export class AccountPage {
 
   chanelList = [];
   subscribeList = [];

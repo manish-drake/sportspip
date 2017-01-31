@@ -124,7 +124,7 @@ export class Package {
     AuthenticateUser(channel, userid) {
         return this.httpService.GetFileFromServer("http://sportspipservice.cloudapp.net:10106/IMobile/users/auth/" + channel + "?uid=" + userid)
             .then(us => {
-                console.log('Authenticatnig user..');
+                console.log('Authenticatnig user...');
                 var data = JSON.parse(us);
                 return data.Returns;
             })

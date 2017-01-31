@@ -6,7 +6,7 @@ import { Alert } from '../../Services/common/alerts';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
-import { SettingsPage } from '../settings/settings';
+import { AccountPage } from '../account/account';
 import { CollectionPage } from '../collection/collection';
 import { ChannelCollectionPage } from '../channelcollection/channelcollection';
 import { EditorPage } from '../editor/editor';
@@ -116,7 +116,7 @@ export class HomePage {
     }
 
     openSettings() {
-        this.navCtrl.push(SettingsPage);
+        this.navCtrl.push(AccountPage);
     }
 
     openCollection() {

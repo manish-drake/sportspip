@@ -1,12 +1,12 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { sportspip } from './app.component';
-import { UserActionsPopover } from '../pages/settings/action/signOut'
+import { UserActionsPopover } from '../pages/account/action/signOut'
 import { HomePage } from '../pages/home/home';
 import { HomeMorePopover } from '../pages/homemore-popover/homemore-popover';
 import { Connectivity } from '../pages/connectivity/connectivity';
-import { SettingsPage } from '../pages/settings/settings';
-import { Login } from '../pages/settings/login/login';
+import { AccountPage } from '../pages/account/account';
+import { Login } from '../pages/account/login/login';
 import { Alert } from '../Services/common/alerts';
 import { CollectionPage } from '../pages/collection/collection'
 import { ChannelCollectionPage } from '../pages/channelcollection/channelcollection'
@@ -43,7 +43,7 @@ import { HttpService } from '../Services/httpService';
     HomePage,
     HomeMorePopover,
     Connectivity,
-    SettingsPage,
+    AccountPage,
 
     UserActionsPopover,
     Login,
@@ -83,7 +83,7 @@ import { HttpService } from '../Services/httpService';
     EditorPage, EditorActionsPopover,
     MatrixInfoPage,
     Ipcameras, IpCamSettingsModal,
-    SettingsPage,
+    AccountPage,
     UserActionsPopover,
     Login,
     CollectionPage,
