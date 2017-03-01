@@ -39,7 +39,6 @@ export class CompareviewComponent {
         this.storage.externalRootDirectory().then((res) => {
             this.rootDir = res;
         })
-
     }
     sliderValue: any = 0;
     timelinePosition: any;
@@ -191,9 +190,9 @@ export class CompareviewComponent {
                 var factor = (100000 / this.video.duration) * this.video.currentTime;
                 this.sliderValue = factor;
                 this.timelinePosition = this.formatTime(this.video.currentTime);
-                if (this.timelinePosition == this.timelineDuration) {
-                    this.playPauseButtonIcon = 'play';
-                }
+                // if (this.timelinePosition == this.timelineDuration) {
+                //     this.playPauseButtonIcon = 'play';
+                // }
                 this.PlayMarker();
                 this.PlayStoryBoard();
             }, 1 / 60);
