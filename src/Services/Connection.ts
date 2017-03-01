@@ -15,9 +15,10 @@ export class Connection {
         private _logger: Logger,
         private _nativeStorageFactory: NativeStorageFactory) {
         this.getPort();
+        this.getPairedServers();
     }
 
-    public static servers = [];
+    public static servers: any[] = [];
 
     public static connectedServer: any = null;
 
@@ -38,14 +39,19 @@ export class Connection {
         })
     }
 
-    setPort(port) {
+    public static pairedServers: any[] = [];
+
+    getPairedServers() {
         this.platform.ready().then(() => {
             if (this.platform.is('cordova')) {
-                this._nativeStorageFactory.SetItem("sportspipport", port)
-                    .then(res => { this._logger.Debug("Saved Port successfully: " + res) })
-                    .catch(err => { this._logger.Debug("Error saving port: " + JSON.stringify(err)) })
+                this._nativeStorageFactory.GetItem("pairedservers")
+                    .then(res => {
+                        this._logger.Debug("Got paired servers: " + res);
+                        if (res != null) { Connection.pairedServers = JSON.parse(res) }
+                    })
+                    .catch(err => console.log("No paired server: " + JSON.stringify(err)))
             }
-        })
+        });
     }
 
     scanUdp() {
@@ -59,9 +65,7 @@ export class Connection {
                     dataStr = dataStr + String.fromCharCode(ui8[i]);
                 }
                 var parser = new X2JS();
-                // alert(dataStr);
                 var data = parser.xml2js(dataStr)
-                // alert(JSON.stringify(data));
 
                 if (data == null) return;
                 var server = data.Server;
@@ -75,7 +79,6 @@ export class Connection {
                     saved: false,
                     available: true
                 };
-                // alert(JSON.stringify(item));
 
                 var isAlreadyGotserver = false;
                 Connection.servers.forEach(element => {
@@ -86,13 +89,25 @@ export class Connection {
 
                 if (!isAlreadyGotserver) {
                     Connection.servers.push(item);
-                    // alert(JSON.stringify(Connection.servers));
+                    Connection.servers.forEach(server => {
+                        Connection.pairedServers.forEach(element => {
+                            if (element == server.Id) {
+                                server.saved = true;
+                                if (Connection.connectedServer == null) {
+                                    server.status = 'Connected';
+                                    server.connected = true;
+                                    Connection.connectedServer = server;
+                                }
+                            }
+                        });
+                    });
                 }
             }
             var onReceiveError = function (errorinfo) {
                 console.log("Error listening for Sports PIP servers: " + errorinfo);
                 this.alertCtrls.BasicAlert("Error listening server broadcast", errorinfo);
             }
+
             chrome.sockets.udp.create({}, function (createInfo) {
                 console.log("Created UDP Socket:" + JSON.stringify(createInfo));
                 Connection.socketId = createInfo.socketId;
@@ -115,8 +130,24 @@ export class Connection {
             chrome.sockets.udp.close(Connection.socketId, function (info) {
                 Connection.servers.length = 0;
                 console.log('connection closed: ' + info);
-            })
+            });
+            Connection.connectedServer = null;
         }
+    }
+
+    setPort(port) {
+        this.platform.ready().then(() => {
+            if (this.platform.is('cordova')) {
+                this._nativeStorageFactory.SetItem("sportspipport", port)
+                    .then(res => { this._logger.Debug("Saved Port successfully: " + res) })
+                    .catch(err => { this._logger.Debug("Error saving port: " + JSON.stringify(err)) })
+            }
+        })
+    }
+
+    pair(server) {
+        this.connect(server);
+        this.addPairedServer(server.Id);
     }
 
     connect(server) {
@@ -150,6 +181,7 @@ export class Connection {
     }
 
     forget(server) {
+        this.removePairedServer(server.Id);
         Connection.servers.forEach((element, index) => {
             Connection.connectedServer = null;
             if (server == element) {
@@ -164,4 +196,36 @@ export class Connection {
             }
         });
     }
+
+    addPairedServer(id) {
+        this._logger.Debug("Remembering server with Id: " + id);
+        var itemsColl = [];
+        this._nativeStorageFactory.GetItem("pairedservers")
+            .then(res => {
+                itemsColl = JSON.parse(res);
+                itemsColl.push(id);
+                this._nativeStorageFactory.SetItem("pairedservers", JSON.stringify(itemsColl));
+            })
+            .catch(err => {
+                itemsColl.push(id);
+                this._nativeStorageFactory.SetItem("pairedservers", JSON.stringify(itemsColl));
+            })
+        this.getPairedServers();
+    }
+
+    removePairedServer(id) {
+        this._logger.Debug("Removing paired server with Id: " + id);
+        this._nativeStorageFactory.GetItem("pairedservers")
+            .then(res => {
+                var itemsColl = JSON.parse(res);
+                itemsColl.forEach((element, index) => {
+                    if (id == element) {
+                        itemsColl.splice(index, 1);
+                    }
+                });
+                this._nativeStorageFactory.SetItem("pairedservers", JSON.stringify(itemsColl));
+            });
+            this.getPairedServers();
+    }
+
 }

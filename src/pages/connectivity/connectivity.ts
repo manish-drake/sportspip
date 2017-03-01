@@ -4,6 +4,7 @@ import { NavController, ToastController } from 'ionic-angular';
 import { Connection } from '../../Services/Connection';
 import { Logger } from '../../logging/logger';
 import { Alert } from '../../Services/common/alerts';
+import { NativeStorageFactory } from '../../Services/Factory/NativeStorageFactory'
 
 declare var chrome: any;
 
@@ -19,11 +20,14 @@ export class Connectivity implements DoCheck {
     isConnectivityEnabled: boolean = true;
     isLoading: boolean;
 
-    constructor(public navCtrl: NavController,
+    constructor(
+        public navCtrl: NavController,
         private connection: Connection,
         private toastCtrl: ToastController,
         private _logger: Logger,
-        private alertCtrls: Alert) {
+        private alertCtrls: Alert,
+        private _nativeStorageFactory: NativeStorageFactory
+    ) {
 
     }
 
@@ -119,6 +123,10 @@ export class Connectivity implements DoCheck {
                 this.connection.setPort((<any>data).port);
                 this.reloadConnections();
             })
+    }
+
+    pair(server) {
+        this.connection.pair(server);
     }
 
     connect(server) {

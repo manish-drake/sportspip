@@ -12,6 +12,7 @@ import { Storage } from '../../Services/Factory/Storage';
 import { Utils } from '../../Services/common/utils';
 import { Observable } from 'rxjs/Rx';
 import { Logger } from '../../logging/logger';
+import { Alert } from '../../Services/common/alerts';
 
 /*
   Generated class for the Settings page.
@@ -38,13 +39,22 @@ export class AccountPage {
   private storageDataDir: string;
 
   constructor(
-    private storage: Storage, private subscription: Subscription,
-    private core: Core, private unSubscribe: Unsubscribe,
-    private signOut: SignOut, private _logger: Logger,
-    private subscribe: Subscribe, private signin: Signin,
-    private storagefactory: StorageFactory, private utils: Utils,
-    private modalCtrl: ModalController, private popoverCtrl: PopoverController,
-    private loadingCtrl: LoadingController) {
+    private storage: Storage,
+    private subscription: Subscription,
+    private core: Core,
+    private unSubscribe: Unsubscribe,
+    private signOut: SignOut,
+    private _logger: Logger,
+    private subscribe: Subscribe,
+    private signin: Signin,
+    private storagefactory: StorageFactory,
+    private utils: Utils,
+    private modalCtrl: ModalController,
+    private popoverCtrl: PopoverController,
+    private loadingCtrl: LoadingController,
+    private alertCtrls: Alert
+  ) {
+
   }
 
   ionViewDidLoad() {
@@ -77,10 +87,15 @@ export class AccountPage {
   InvalidateSubscribeListAsync(userId) {
     this._logger.Debug('Invalidating subscribe channel list..');
     this.subscribeList = [];
-    return this.subscription.GetSubscriptionList(userId).then((data) => {
-      this.subscribeList = data;
-      return true;
-    });
+    return this.subscription.GetSubscriptionList(userId)
+      .then((data) => {
+        this.subscribeList = data;
+        return true;
+      })
+      .catch(err => {
+        this._logger.Error("Unable to connect to server: ", err);
+        this.alertCtrls.BasicAlert("Unable to connect to server", "Please check internet connection")
+      });
   }
 
   InvalidateChannelListAsync(userId) {
@@ -93,7 +108,10 @@ export class AccountPage {
           this.chanelList.push(channel);
         }
       });
-    }).catch((err) => { });
+    }).catch((err) => {
+      this._logger.Error("Unable to connect to server: ", err);
+      this.alertCtrls.BasicAlert("Unable to connect to server", "Please check internet connection")
+    });
 
   }
 
