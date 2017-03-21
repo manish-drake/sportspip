@@ -115,7 +115,7 @@ export class HomePage {
         popover.present({ ev: event });
     }
 
-    openSettings() {
+    openAccounts() {
         this.navCtrl.push(AccountPage);
     }
 

@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { ViewController, Platform } from 'ionic-angular';
+import { NavController,ViewController, Platform } from 'ionic-angular';
 import { AppVersion, EmailComposer, Device } from 'ionic-native';
 import { Observable } from 'rxjs/Rx';
 import { Alert } from '../../Services/common/alerts';
 import { Storage } from '../../Services/Factory/Storage';
 import { StorageFactory } from '../../Services/Factory/StorageFactory';
 import { Logger } from '../../logging/logger';
+import { SettingsPage } from '../settings/settings';
 
 @Component({
     selector: 'homemore-popover',
@@ -18,6 +19,7 @@ export class HomeMorePopover {
     rootDirectory: any;
 
     constructor(public viewCtrl: ViewController,
+        public navCtrl: NavController,
         private storage: Storage,
         private storageFactory: StorageFactory,
         private alertCtrls: Alert,
@@ -28,7 +30,6 @@ export class HomeMorePopover {
                 this.storage.applicationStorageDirectory().then((res) => {
                     this.sqliteLogDirectory = res + 'databases/';
                 })
-
             }
             else if (this.platform.is('ios')) {
                 this.storage.externalRootDirectory().then((res) => {
@@ -43,11 +44,14 @@ export class HomeMorePopover {
             })
         }
     }
-
-    onAbout() {
-        this.viewCtrl.dismiss();
-        this.alertCtrls.BasicAlert('Sports PIP', 'version ' + this.versionNumber);
+    onSettings() {
+        this.navCtrl.push(SettingsPage);
     }
+
+    // onAbout() {
+    //     this.viewCtrl.dismiss();
+    //     this.alertCtrls.BasicAlert('Sports PIP', 'version ' + this.versionNumber);
+    // }
 
     /*$Candidate for refactoring$*/
     //why storage still lurking outside the storage file
