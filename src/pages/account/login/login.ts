@@ -47,7 +47,7 @@ export class Login {
         this.IsLoginAvailable = "Sign Up";
         this.errorMessege = "";
     }
-    
+
     presentLogin() {
         console.log('Hello Login Page');
         this.LoginAvailable = true;
@@ -62,7 +62,7 @@ export class Login {
                 this.core.SaveUserAsync(user);
                 this.dismiss(user);
             }).catch((err) => {
-                console.log("Registration error: " + err);
+                this._logger.Error("Registration error: " + err);
                 this.errorMessege = "Registration failed";
             });
         }

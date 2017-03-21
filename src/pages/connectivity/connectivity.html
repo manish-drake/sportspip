@@ -54,7 +54,7 @@
               <button ion-button block outline small color="dark" *ngIf="server.saved && server.available" (click)="forget(server)">Forget</button>
             </ion-col>
             <ion-col>
-              <button ion-button block small *ngIf="!server.saved" (click)="connect(server)" [style.background-color]="getStatusColor(server.status)">Pair</button>
+              <button ion-button block small *ngIf="!server.saved" (click)="pair(server)" [style.background-color]="getStatusColor(server.status)">Pair</button>
               <button ion-button block small *ngIf="!server.connected && server.saved && server.available" (click)="connect(server)">Connect</button>
               <button ion-button block outline small *ngIf="server.connected" (click)="disconnect(server)">Disconnect</button>
               <button ion-button block outline small color="dark" *ngIf="!server.available" (click)="forget(server)">Forget</button>
