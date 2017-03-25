@@ -20,7 +20,6 @@ export class SettingsPage {
 
   
   UniqueID: any = "not set";
-  errorMessege: string;
 
   constructor(
     public navCtrl: NavController,
@@ -41,32 +40,12 @@ export class SettingsPage {
 
   AppUniqueIdPrompt() {
     this._logger.Debug('App unique id alert prompt opened');
-    this.alertCtrls.PromptAlert("App Unique ID", "", "uniqueId", "eg. Tab 17", SettingsService.uniqueId, "")
+    this.alertCtrls.PromptAlert("App Unique ID", "", "uniqueId", "eg. Tab 17", SettingsService.uniqueId, "text")
       .then(data => {
         SettingsService.uniqueId = (<any>data).uniqueId;
         this._setttings.setUniqueID((<any>data).uniqueId);
         this.UniqueID = SettingsService.uniqueId;
       });
   }
-
-  // saveUniqueID(uniqueID) {
-  //   if (this.validateSetting()) {
-  //     SettingsService.uniqueId = uniqueID;
-  //     this._setttings.setUniqueID(uniqueID);
-  //   }
-  // }
-
-  // validateSetting() {
-  //   if (!this.UniqueID) {
-  //     this.errorMessege = "App. Unique ID Requried";
-  //     return false;
-  //   }
-  //   else {
-  //     this.errorMessege = "";
-  //     return true;
-  //   }
-  // }
-
-
 
 }
