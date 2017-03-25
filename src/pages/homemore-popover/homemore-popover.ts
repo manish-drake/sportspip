@@ -46,6 +46,7 @@ export class HomeMorePopover {
     }
     onSettings() {
         this.navCtrl.push(SettingsPage);
+        this.viewCtrl.dismiss();
     }
 
     // onAbout() {

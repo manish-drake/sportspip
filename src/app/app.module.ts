@@ -6,6 +6,7 @@ import { HomePage } from '../pages/home/home';
 import { HomeMorePopover } from '../pages/homemore-popover/homemore-popover';
 import { Connectivity } from '../pages/connectivity/connectivity';
 import { AccountPage } from '../pages/account/account';
+import { SettingsPage } from '../pages/settings/settings';
 import { Login } from '../pages/account/login/login';
 import { Alert } from '../Services/common/alerts';
 import { CollectionPage } from '../pages/collection/collection'
@@ -34,6 +35,7 @@ import { ModelFactory } from '../Services/Factory/ModelFactory';
 import { Package } from '../Services/Package';
 import { Core } from '../Services/core';
 import { HttpService } from '../Services/httpService';
+import { SettingsService } from '../Services/SettingsService';
 
 
 @NgModule({
@@ -44,6 +46,7 @@ import { HttpService } from '../Services/httpService';
     HomeMorePopover,
     Connectivity,
     AccountPage,
+    SettingsPage,
 
     UserActionsPopover,
     Login,
@@ -66,8 +69,8 @@ import { HttpService } from '../Services/httpService';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     { provide: AProvider, useClass: SqliteLogProvider },
     Alert, Logger, StorageFactory, Storage, NativeStorageFactory,
-    BackGroundTransferProcess,Utils,
-    ModelFactory,Package,Core,HttpService
+    BackGroundTransferProcess, Utils,
+    ModelFactory, Package, Core, HttpService,SettingsService
 
   ],
   imports: [
@@ -84,6 +87,7 @@ import { HttpService } from '../Services/httpService';
     MatrixInfoPage,
     Ipcameras, IpCamSettingsModal,
     AccountPage,
+    SettingsPage,
     UserActionsPopover,
     Login,
     CollectionPage,

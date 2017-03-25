@@ -6,13 +6,16 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>settings</ion-title>
+  <ion-navbar color="primary">
+    <ion-title>Settings</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
+ <ion-item no-lines (click)="AppUniqueIdPrompt()">
+    <ion-label item-left>App Unique ID:</ion-label>
+    <ion-input item-right disabled type="text" placeholder="Not set" [(value)]="UniqueID"></ion-input>
+  </ion-item>
 </ion-content>

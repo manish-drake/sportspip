@@ -3,6 +3,7 @@ import { Platform } from 'ionic-angular';
 import { VideoEditor, CreateThumbnailOptions } from 'ionic-native';
 import { Observable } from 'rxjs/Rx';
 import { StorageFactory } from '../Factory/StorageFactory';
+import { SettingsService } from '../../Services/SettingsService';
 import { Storage } from '../Factory/Storage';
 import { Logger } from '../../logging/logger';
 
@@ -83,6 +84,7 @@ export class ModelFactory {
     ComposeNewMatrix() {
         this._logger.Debug('Composing new matrix..');
         var name = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
+        var uniqueId = SettingsService.uniqueId;
         let data =
             {
                 "Matrix": {
@@ -95,6 +97,7 @@ export class ModelFactory {
                     "_DateCreated": name,
                     "_Sport": "Tennis",
                     "_Channel": "Local",
+                    "_UniqueID": uniqueId,
                     "Matrix.Children": {
                         "View":
                         {
@@ -116,6 +119,7 @@ export class ModelFactory {
             DateCreated: fromMatrix._DateCreated,
             Name: fromMatrix._Name,
             Channel: fromMatrix._Channel,
+            UniqueID :fromMatrix._UniqueID,
             ThumbnailSource: "thumbnail",
             Sport: fromMatrix._Sport,
             Skill: fromMatrix._Skill,
@@ -133,6 +137,7 @@ export class ModelFactory {
             DateCreated: fromMatrix._DateCreated,
             Name: fromMatrix._Name,
             Channel: fromMatrix._Channel,
+            UniqueID :fromMatrix._UniqueID,
             ThumbnailSource: "thumbnail",
             Sport: fromMatrix._Sport,
             Skill: fromMatrix._Skill,
@@ -149,6 +154,7 @@ export class ModelFactory {
             DateCreated: header.DateCreated,
             Name: header.Name,
             Channel: header.Channel,
+            UniqueID:header.UniqueID,
             ThumbnailSource: header.ThumbnailSource,
             Sport: header.Sport,
             Skill: header.Skill,
@@ -161,6 +167,7 @@ export class ModelFactory {
 
     createMatrixforServer(fileName, duration, source) {
         var name = Date.now().toString();
+        var uniqueID = SettingsService.uniqueId;
         let data =
             {
                 "Matrix": {
@@ -169,6 +176,7 @@ export class ModelFactory {
                     "_Sport": "Tennis",
                     "_Skill": "Serve",
                     "_PIN": " ",
+                    "_UniqueID":uniqueID,
                     "_DateModified": name,
                     "_Duration": duration,
                     "_Location": "Field",
