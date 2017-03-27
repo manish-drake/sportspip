@@ -5,6 +5,7 @@ import { Core } from '../../../Services/core';
 import { Package } from '../../../Services/Package';
 import { Logger } from '../../../logging/logger';
 import { Utils } from '../../../Services/common/utils';
+import { SettingsService } from '../../../Services/SettingsService';
 /*
   Generated class for the Matrixinfo page.
 
@@ -57,9 +58,10 @@ export class MatrixInfoPage {
                     matrix._Title = this.matrixData._Title;
                     matrix._Skill = this.matrixData._Skill;
                     matrix._Location = this.matrixData._Location;
+                    matrix._UniqueID  = this.matrixData._UniqueID;
                     this.core.SaveMatrixAsync(res, matrix._Channel, matrix._Sport, matrix._Name, "Matrices");
-                });
-        }
+                });   
+        }             
     }
 
     dismiss() {

@@ -1,8 +1,11 @@
 <ion-list no-lines style="margin:0;">
-<ion-item (click)="onAbout()">
-  <ion-icon item-left name="information-circle"></ion-icon>About
-</ion-item>
-<ion-item (click)="sendLogs()">
-  <ion-icon item-left name="attach"></ion-icon>Send Logs
-</ion-item>
+  <ion-item (click)="onSettings()">
+    <ion-icon item-left name="settings"></ion-icon>Settings
+  </ion-item>
+  <ion-item (click)="sendLogs()">
+    <ion-icon item-left name="attach"></ion-icon>Send Logs
+  </ion-item>
+  <ion-item no-lines>
+    <p item-right>Version {{versionNumber}}</p>
+  </ion-item>
 </ion-list>
