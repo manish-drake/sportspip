@@ -10,6 +10,7 @@ import { AccountPage } from '../account/account';
 import { CollectionPage } from '../collection/collection';
 import { ChannelCollectionPage } from '../channelcollection/channelcollection';
 import { EditorPage } from '../editor/editor';
+import { SettingsPage } from '../settings/settings';
 //Service
 import { Storage } from '../../Services/Factory/Storage';
 import { Connection } from '../../Services/Connection';
@@ -113,6 +114,12 @@ export class HomePage {
     presentPopover(event) {
         let popover = this.popoverCtrl.create(HomeMorePopover);
         popover.present({ ev: event });
+
+        popover.onWillDismiss((res)=>{
+            if(res == "openSettings"){
+                this.navCtrl.push(SettingsPage);
+            }
+        })
     }
 
     openAccounts() {
