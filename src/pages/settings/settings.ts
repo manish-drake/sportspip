@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Platform } from 'ionic-angular';
-import { StorageFactory } from '../../Services/Factory/StorageFactory';
+
 import { Logger } from '../../logging/logger';
 import { SettingsService } from '../../Services/SettingsService';
 import { Alert } from '../../Services/common/alerts';
@@ -22,12 +21,8 @@ export class SettingsPage {
   UniqueID: any = "not set";
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    private storageFactory: StorageFactory,
-    private _setttings: SettingsService,
+    private _settings: SettingsService,
     private alertCtrls: Alert,
-    private platform: Platform,
     private _logger: Logger
     ) {
 
@@ -43,7 +38,7 @@ export class SettingsPage {
     this.alertCtrls.PromptAlert("App Unique ID", "", "uniqueId", "eg. Tab 17", SettingsService.uniqueId, "text")
       .then(data => {
         SettingsService.uniqueId = (<any>data).uniqueId;
-        this._setttings.setUniqueID((<any>data).uniqueId);
+        this._settings.setUniqueID((<any>data).uniqueId);
         this.UniqueID = SettingsService.uniqueId;
       });
   }
