@@ -54,19 +54,18 @@ export class BackGroundTransferProcess {
     transferMatrix() {
         this._logger.Debug('Transfer matrix');
         var serverAddress = Connection.connectedServer.Address;
-        this.platform.ready().then(() => {
-            let parser: any = new X2JS();
-            var xmlMatrix = parser.js2xml(this.data);
+        let parser: any = new X2JS();
+        var xmlMatrix = parser.js2xml(this.data);
 
-            let headers = new Headers({ 'Content-Type': 'application/xml' });
-            let options = new RequestOptions({ headers: headers });
+        let headers = new Headers({ 'Content-Type': 'application/xml' });
+        let options = new RequestOptions({ headers: headers });
 
-            this.httpService.PostFileToServer("http://" + serverAddress + ":10080/imatrix/matrices/", xmlMatrix, options)
-                .catch(err => new Observable(err => { return this._logger.Error('Error,transfering phone matrix: ', err); }))
-                .then(response => {
-                    console.log("matrix successfully sent");
-                })
-        });
+        this.httpService.PostFileToServer("http://" + serverAddress + ":10080/imatrix/matrices/", xmlMatrix, options)
+            .catch(err => new Observable(err => { return this._logger.Error('Error,transfering phone matrix: ', err); }))
+            .then(response => {
+                console.log("matrix successfully sent with data:" + JSON.stringify(xmlMatrix));
+            })
+
     }
 
 
@@ -102,7 +101,7 @@ export class BackGroundTransferProcess {
         this._logger.Debug('Create phone matrix');
         try {
             var name = Date.now().toString();
-            this.modelFactory.createMatrixforServer(name, duration, "Phone");
+            return this.modelFactory.createMatrixforServer(name, duration, "Phone");
         }
         catch (err) {
             this._logger.Error('Error,creating phone matrix: ', err);
