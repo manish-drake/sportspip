@@ -186,7 +186,13 @@ export class HomePage {
                         console.log('Copy clicked');
                         this.DuplicateMatrix(matrix.Channel, matrix.Name);
                     }
-                }, {
+                },{
+                    icon: 'share-alt',
+                    text: 'Transfer',
+                    handler: () => {
+                        console.log('Transfer clicked');                       
+                    }
+                },{
                     icon: 'close',
                     text: 'Cancel',
                     role: 'cancel',
