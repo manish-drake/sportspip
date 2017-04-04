@@ -93,11 +93,11 @@ export class CollectionPage {
     console.log('Hello Collection Page');
   }
 
-  private _OpenMatrix : OpenMatrix;
-  public get OpenMatrix() : OpenMatrix {
+  private _OpenMatrix: OpenMatrix;
+  public get OpenMatrix(): OpenMatrix {
     return this.openmatrix;
   }
-  
+
 
   DuplicateMatrix(matrixname, channelName) {/*$Candidate for refactoring$*///Can go to actions=> "no"
     this._logger.Debug('Creating duplicate matrix..');
@@ -130,7 +130,15 @@ export class CollectionPage {
           handler: () => {
             this.DuplicateMatrix(matrixName, channel);
           }
-        }, {
+        },
+        // {
+        //     icon: 'share-alt',
+        //     text: 'Transfer',
+        //     handler: () => {
+        //         console.log('Transfer clicked');                       
+        //     }
+        // },
+        {
           icon: 'close',
           text: 'Cancel',
           role: 'cancel',
