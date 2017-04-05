@@ -74,11 +74,16 @@
 				</button>
 			<button ion-fab (click)="playPauseParent()"><ion-icon name="{{playPauseButtonIcon}}"></ion-icon></button>
 		</div>
-		<ion-row #fadableTitle style="position:absolute;top:40% ;color:white;font-size:48px;">
+		<div #fadableTitle class="centered-item-container" style="width:100%; color:white;font-size:42px;">
+			{{view._Title}}
+		</div>
+
+		<!--<ion-row #fadableTitle style="position:absolute;top:40% ;color:white;font-size:48px;">
 			<ion-col center text-center>
 				{{view._Title}}
 			</ion-col>
-		</ion-row>
+		</ion-row>-->
+
 	</ion-row>
 	<ion-row *ngIf="videoSrcAvailable" style="height: auto; flex: 0 0 auto;" color="dark">
 		<ion-col no-padding>
@@ -101,7 +106,7 @@
 						</ion-row>
 					</ion-col>
 				</ion-row>
-				<ion-row padding-horizontal>
+				<ion-row>
 					<ion-col no-padding style="color: gray;">
 						<span>{{timelinePosition}}</span>
 						<span style="float:right;">{{timelineDuration}}</span>

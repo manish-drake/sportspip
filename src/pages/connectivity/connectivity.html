@@ -11,65 +11,61 @@
 
 
 <ion-content style="background:#f4f4f4;position: relative;">
-  <ion-refresher [enabled] ="isConnectivityEnabled" (ionRefresh)="doRefresh($event)">
+  <ion-refresher [enabled]="isConnectivityEnabled" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <ion-item no-lines style="background:transparent;">
     <ion-label>Connectivity</ion-label>
     <ion-toggle [(ngModel)]="isConnectivityEnabled" (ngModelChange)="connectivityChanged(isConnectivityEnabled)"></ion-toggle>
   </ion-item>
-    <ion-list *ngIf="isConnectivityEnabled">
-      <ion-card *ngFor="let server of servers; let i = index;">
-        <ion-item>
-          <ion-row>
-            <ion-col style="overflow: hidden;text-overflow: ellipsis;">
-              <h2>{{server.Data.Name}}</h2>
-            </ion-col>
-            <ion-col style="width: auto; flex: 0 0 auto;" [style.color]="getStatusColor(server.status)">
-              <ion-icon *ngIf="server.connected" name="wifi"></ion-icon>
-              <ion-icon *ngIf="!server.saved && !server.connected" name="link"></ion-icon>
-            </ion-col>
-            <ion-col center style="width: auto; flex: 0 0 auto;">
-              <h3 style="margin-bottom:10px;" [style.color]="getStatusColor(server.status)">{{server.status}}</h3>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col center>
-              <p>IP Address</p>
-            </ion-col>
-            <ion-col style="width: auto; flex: 0 0 auto;overflow: hidden;text-overflow: ellipsis;">
-              <h3>{{server.Address}}</h3>
-            </ion-col>
-          </ion-row>
-          <ion-row style="overflow: hidden;text-overflow: ellipsis;">
-            <ion-col center>
-              <p>Description</p>
-            </ion-col>
-            <ion-col style="width: auto; flex: 0 0 auto;">
-              <h3>{{server.Data.Information}}</h3>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>
-              <button ion-button block outline small color="dark" *ngIf="server.saved && server.available" (click)="forget(server)">Forget</button>
-            </ion-col>
-            <ion-col>
-              <button ion-button block small *ngIf="!server.saved" (click)="pair(server)" [style.background-color]="getStatusColor(server.status)">Pair</button>
-              <button ion-button block small *ngIf="!server.connected && server.saved && server.available" (click)="connect(server)">Connect</button>
-              <button ion-button block outline small *ngIf="server.connected" (click)="disconnect(server)">Disconnect</button>
-              <button ion-button block outline small color="dark" *ngIf="!server.available" (click)="forget(server)">Forget</button>
-            </ion-col>
-          </ion-row>
-        </ion-item>
-      </ion-card>
-    </ion-list>
-  <ion-row style="position: absolute; height:80%;color: gray;">
-    <ion-col text-center center>
-      <ion-spinner *ngIf="isLoading" name="dots"></ion-spinner>
-      <span *ngIf="servers.length == 0 && isConnectivityEnabled && !isLoading  && !refreshing"><b>No server found</b></span>
-      <span *ngIf="!isConnectivityEnabled"><b>Connectivity is off</b></span>
-    </ion-col>
-  </ion-row>
-  
-
+  <ion-list *ngIf="isConnectivityEnabled">
+    <ion-card *ngFor="let server of servers; let i = index;">
+      <ion-item>
+        <ion-row>
+          <ion-col style="overflow: hidden;text-overflow: ellipsis;">
+            <h2>{{server.Data.Name}}</h2>
+          </ion-col>
+          <ion-col col-auto [style.color]="getStatusColor(server.status)">
+            <ion-icon *ngIf="server.connected" name="wifi"></ion-icon>
+            <ion-icon *ngIf="!server.saved && !server.connected" name="link"></ion-icon>
+          </ion-col>
+          <ion-col col-auto center>
+            <h3 style="margin-bottom:10px;" [style.color]="getStatusColor(server.status)">{{server.status}}</h3>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col center>
+            <p>IP Address</p>
+          </ion-col>
+          <ion-col col-auto style="overflow: hidden;text-overflow: ellipsis;">
+            <h3>{{server.Address}}</h3>
+          </ion-col>
+        </ion-row>
+        <ion-row style="overflow: hidden;text-overflow: ellipsis;">
+          <ion-col center>
+            <p>Description</p>
+          </ion-col>
+          <ion-col col-auto>
+            <h3>{{server.Data.Information}}</h3>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <button ion-button block outline small color="dark" *ngIf="server.saved && server.available" (click)="forget(server)">Forget</button>
+          </ion-col>
+          <ion-col>
+            <button ion-button block small *ngIf="!server.saved" (click)="pair(server)" [style.background-color]="getStatusColor(server.status)">Pair</button>
+            <button ion-button block small *ngIf="!server.connected && server.saved && server.available" (click)="connect(server)">Connect</button>
+            <button ion-button block outline small *ngIf="server.connected" (click)="disconnect(server)">Disconnect</button>
+            <button ion-button block outline small color="dark" *ngIf="!server.available" (click)="forget(server)">Forget</button>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+    </ion-card>
+  </ion-list>
+  <div class="centered-item-container" style="height: 80%;" *ngIf="isLoading || servers.length == 0 && isConnectivityEnabled && !isLoading  && !refreshing || !isConnectivityEnabled">
+    <ion-spinner *ngIf="isLoading" name="dots"></ion-spinner>
+    <ion-note *ngIf="servers.length == 0 && isConnectivityEnabled && !isLoading  && !refreshing">No server found</ion-note>
+    <ion-note *ngIf="!isConnectivityEnabled">Connectivity is off</ion-note>
+  </div>
 </ion-content>

@@ -14,7 +14,7 @@
 	</ion-toolbar>
 	<ion-row>
 		<ion-col text-center center *ngFor="let view of views; let i = index" (click)="setSelectedView(view, i)" [command]="deleteView"
-		[cmdArgs]="deleteViewSource(i)" [usePress]="true" [class.selectedview]="i == selectedViewIndex" [class.view]="i != selectedViewIndex">
+		 [cmdArgs]="deleteViewSource(i)" [usePress]="true" [class.selectedview]="i == selectedViewIndex" [class.view]="i != selectedViewIndex">
 			<span ion-text [hidden]="views.length > 5" color="primary">View </span><span ion-text color="primary">{{i+1}}</span>
 		</ion-col>
 		<button ion-button icon-only clear [command]="addView" [usePress]="false" [cmdArgs]="addViewSource()"><ion-icon name="add-circle"></ion-icon></button>
@@ -22,7 +22,7 @@
 </ion-header>
 
 <ion-content no-bounce style="background:#f4f4f4;">
-	<div style="height:100%;" >
+	<div style="height:100%;">
 		<!--ViewCanvasTemplate-->
 		<canvas-component *ngIf="selectedView?.Content?.PIP" [view]="selectedView"></canvas-component>
 		<!--ViewVideoTemplate-->
@@ -31,32 +31,32 @@
 		<ion-row *ngIf="(!selectedView?.Content?.Capture)&&(!selectedView?.Content?.PIP)" style="height:100%;">
 			<ion-col no-padding center text-center>
 				<ion-grid no-padding style="max-width:460px ;margin-left: auto;margin-right: auto;">
-					<div class="items">
-						<div class="itemm" >
+					<ion-row>
+						<ion-col no-padding col-12 col-sm-6 col-lg-4 col-xl-3>
 							<ion-card [command]="chooseVideo" [usePress]="false" [cmdArgs]="addCaptureSource()">
 								<ion-item>
 									<ion-icon name="ios-film" item-left></ion-icon>
 									<h2 class="textTrim">Add Video</h2>
 								</ion-item>
 							</ion-card>
-						</div>
-						<div class="itemm">
+						</ion-col>
+						<ion-col no-padding col-12 col-sm-6 col-lg-4 col-xl-3>
 							<ion-card [command]="recordVideo" [usePress]="false" [cmdArgs]="addPhoneCaptureSource()">
 								<ion-item>
 									<ion-icon name="videocam" item-left></ion-icon>
 									<h2 class="textTrim">Record Video</h2>
 								</ion-item>
 							</ion-card>
-						</div>
-						<div class="itemm" *ngIf="views.length == 1">
+						</ion-col>
+						<ion-col no-padding col-12 col-sm-6 col-lg-4 col-xl-3 *ngIf="views.length == 1">
 							<ion-card [command]="ipCamCapture" [usePress]="false" [cmdArgs]="ipCamCaptureSource()">
 								<ion-item style="background-color:white;">
 									<ion-icon name="wifi" item-left></ion-icon>
 									<h2 class="textTrim">IP Cams Record</h2>
 								</ion-item>
 							</ion-card>
-						</div>
-					</div>
+						</ion-col>
+					</ion-row>
 				</ion-grid>
 			</ion-col>
 		</ion-row>

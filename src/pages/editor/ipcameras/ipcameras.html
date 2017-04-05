@@ -21,34 +21,30 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <ion-row>
-    <ion-col center style="width:auto;flex:0 0 auto;min-width:160px;">
+    <ion-col center col-auto>
       <b item-left>Rec. Duration </b>
       <ion-badge>{{recordingDuration}} sec</ion-badge>
     </ion-col>
-    <ion-col center style="width:100%;">
+    <ion-col center>
       <ion-range min="5" max="45" step="5" snaps="true" [(ngModel)]="recordingDuration" style="padding:0;">
         <ion-label range-left>5s</ion-label>
         <ion-label range-right>45s</ion-label>
       </ion-range>
     </ion-col>
   </ion-row>
-  <div class="items">
-    <div class="itemm" *ngFor="let cam of ipCams;let i = index">
-      <ion-card style="position: relative;max-height:350px;min-height:120px;
-      background-color: #cccccc;background-image: url(assets/sample.jpg);background-repeat:no;background-size: cover;background-position: center;">
+  <ion-row>
+    <ion-col no-padding col-12 col-sm-6 col-lg-4 col-xl-3 *ngFor="let cam of ipCams;let i = index">
+      <ion-card style="position: relative;max-height:350px;min-height:120px; background-color: #cccccc;background-image: url(assets/sample.jpg);background-repeat:no;background-size: cover;background-position: center;">
         <img [attr.src]="getIPCamPreview(cam)" />
         <b style="position: absolute;top: 10px; margin: 0 10px;font-size: 1.0em;;font-weight: bold;color: #fff;">{{cam._IPAdd}}</b>
-        </ion-card>
-    </div>
-  </div>
-
-  <ion-row center style="position: absolute;top:40%; color: gray;">
-    <ion-col text-center center>
-      <ion-spinner *ngIf="isLoading" name="dots"></ion-spinner>
-      <b *ngIf="isConnected && ipCams.length==0 && !isLoading && !refreshing">No IP Camera found</b>
-      <b *ngIf="!isConnected">Not connected to any server</b>
+      </ion-card>
     </ion-col>
   </ion-row>
+  <div class="centered-item-container" style="height: 80%;" *ngIf="isLoading || isConnected && ipCams.length==0 && !isLoading && !refreshing || !isConnected">
+    <ion-spinner *ngIf="isLoading" name="dots"></ion-spinner>
+    <ion-note *ngIf="isConnected && ipCams.length==0 && !isLoading && !refreshing">No IP Camera found</ion-note>
+    <ion-note *ngIf="!isConnected">Not connected to any server</ion-note>
+  </div>
 
   <ion-fab bottom left [command]="openSettingModal" [usePress]="false" [cmdArgs]="openSettingModalSource()">
     <button ion-fab mini><ion-icon name="md-settings"></ion-icon></button>
