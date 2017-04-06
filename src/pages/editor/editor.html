@@ -30,9 +30,9 @@
 		<!--viewOptions-->
 		<ion-row *ngIf="(!selectedView?.Content?.Capture)&&(!selectedView?.Content?.PIP)" style="height:100%;">
 			<ion-col no-padding center text-center>
-				<ion-grid no-padding style="max-width:460px ;margin-left: auto;margin-right: auto;">
+				<ion-grid no-padding style="max-width:260px ;margin-left: auto;margin-right: auto;">
 					<ion-row>
-						<ion-col no-padding col-12 col-sm-6 col-lg-4 col-xl-3>
+						<ion-col no-padding col-12>
 							<ion-card [command]="chooseVideo" [usePress]="false" [cmdArgs]="addCaptureSource()">
 								<ion-item>
 									<ion-icon name="ios-film" item-left></ion-icon>
@@ -40,7 +40,7 @@
 								</ion-item>
 							</ion-card>
 						</ion-col>
-						<ion-col no-padding col-12 col-sm-6 col-lg-4 col-xl-3>
+						<ion-col no-padding col-12>
 							<ion-card [command]="recordVideo" [usePress]="false" [cmdArgs]="addPhoneCaptureSource()">
 								<ion-item>
 									<ion-icon name="videocam" item-left></ion-icon>
@@ -48,7 +48,7 @@
 								</ion-item>
 							</ion-card>
 						</ion-col>
-						<ion-col no-padding col-12 col-sm-6 col-lg-4 col-xl-3 *ngIf="views.length == 1">
+						<ion-col no-padding col-12 *ngIf="views.length == 1">
 							<ion-card [command]="ipCamCapture" [usePress]="false" [cmdArgs]="ipCamCaptureSource()">
 								<ion-item style="background-color:white;">
 									<ion-icon name="wifi" item-left></ion-icon>
