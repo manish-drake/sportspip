@@ -3,7 +3,7 @@
     <name>Sports PIP</name>
     <description>Sports PIP APP</description>
     <author email="manish@drake.in" href="http://sportspip.com/">cougar</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://192.168.145.128:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -62,8 +62,10 @@
         <splash height="2208" src="resources/ios/splash/Default-736h.png" width="1242" />
         <splash height="1242" src="resources/ios/splash/Default-Landscape-736h.png" width="2208" />
         <splash height="1536" src="resources/ios/splash/Default-Landscape@2x~ipad.png" width="2048" />
+        <splash height="2048" src="resources/ios/splash/Default-Landscape@~ipadpro.png" width="2732" />
         <splash height="768" src="resources/ios/splash/Default-Landscape~ipad.png" width="1024" />
         <splash height="2048" src="resources/ios/splash/Default-Portrait@2x~ipad.png" width="1536" />
+        <splash height="2732" src="resources/ios/splash/Default-Portrait@~ipadpro.png" width="2048" />
         <splash height="1024" src="resources/ios/splash/Default-Portrait~ipad.png" width="768" />
         <splash height="960" src="resources/ios/splash/Default@2x~iphone.png" width="640" />
         <splash height="480" src="resources/ios/splash/Default~iphone.png" width="320" />
@@ -86,6 +88,7 @@
     <allow-navigation href="http://192.168.10.2:8100" />
     <allow-navigation href="http://[object Object]:8100" />
     <engine name="android" spec="^6.2.3" />
+    <engine name="ios" spec="^4.4.0" />
     <plugin name="cordova-plugin-app-version" spec="~0.1.9" />
     <plugin name="cordova-plugin-camera" spec="~2.3.1">
         <variable name="CAMERA_USAGE_DESCRIPTION" value="not using camera, just photolibrary" />

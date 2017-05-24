@@ -25,7 +25,7 @@
 			</ion-col>
 		</ion-row>
 		<ion-row>
-			<ion-col no-padding col-12 col-sm-6 col-lg-4 col-xl-3 *ngFor="let subList of subscribeList;let i = index">
+			<ion-col no-padding col-12 col-sm-6 col-lg-4 col-xl-3 *ngFor="let subList of subscribeList;let i = index" style="height: 100%;">
 				<ion-card>
 					<ion-item>
 						<h2>{{subList.ChannelName}}</h2>
@@ -44,7 +44,7 @@
 			</ion-col>
 		</ion-row>
 		<ion-row>
-			<ion-col no-padding col-12 col-sm-6 col-lg-4 col-xl-3 *ngFor='let chanList of chanelList;let i = index'>
+			<ion-col no-padding col-12 col-sm-6 col-lg-4 col-xl-3 *ngFor='let chanList of chanelList;let i = index' style="height: 100%;">
 				<ion-card>
 					<ion-item>
 						<h2>{{chanList.ChannelName}}</h2>
