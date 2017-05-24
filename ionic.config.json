@@ -1,6 +1,5 @@
 {
   "name": "Sports PIP",
   "app_id": "942baffc",
-  "v2": true,
-  "typescript": true
+  "type": "ionic-angular"
 }
