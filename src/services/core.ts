@@ -159,14 +159,18 @@ export class Core {
     }
 
     CreateResourceDirectories() {
-        this.storage.externalRootDirectory().then((res1) => {
-            this.storageRoot = res1;
-            this.storageFactory.createFolder(this.storageRoot, "SportsPIP")
-                .subscribe((success) => {
-                    this._logger.Debug("SportsPIP folder created");
-                    this.CreateVideoFolder();
-                    this.CreatePictureFolder();
+        this.platform.ready().then(() => {
+            if (this.platform.is('cordova')) {
+                this.storage.externalRootDirectory().then((res1) => {
+                    this.storageRoot = res1;
+                    this.storageFactory.createFolder(this.storageRoot, "SportsPIP")
+                        .subscribe((success) => {
+                            this._logger.Debug("SportsPIP folder created");
+                            this.CreateVideoFolder();
+                            this.CreatePictureFolder();
+                        });
                 });
+            }
         });
     }
 

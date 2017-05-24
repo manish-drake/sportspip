@@ -55,74 +55,76 @@ export class Connection {
     }
 
     scanUdp() {
-        if (this.platform.is('cordova')) {
-            this._logger.Debug("Starting Listening for Sports PIP servers on Port: " + Connection.port);
-            var onReceive = function (info) {
-                var binaryData = info.data;
-                var dataStr = '';
-                var ui8 = new Uint8Array(binaryData);
-                for (var i = 39; i < ui8.length - 5; i++) {
-                    dataStr = dataStr + String.fromCharCode(ui8[i]);
-                }
-                var parser = new X2JS();
-                var data = parser.xml2js(dataStr)
-
-                if (data == null) return;
-                var server = data.Server;
-                var item = {
-                    Id: server._ID,
-                    Address: server._Location,
-                    Port: info.remotePort,
-                    Data: { Name: server._Name, Information: server._Information, Location: server._Location },
-                    status: 'Ready to pair',
-                    connected: false,
-                    saved: false,
-                    available: true
-                };
-
-                var isAlreadyGotserver = false;
-                Connection.servers.forEach(element => {
-                    if (server._ID == element.Id) {
-                        isAlreadyGotserver = true;
+        this.platform.ready().then(() => {
+            if (this.platform.is('cordova')) {
+                this._logger.Debug("Starting Listening for Sports PIP servers on Port: " + Connection.port);
+                var onReceive = function (info) {
+                    var binaryData = info.data;
+                    var dataStr = '';
+                    var ui8 = new Uint8Array(binaryData);
+                    for (var i = 39; i < ui8.length - 5; i++) {
+                        dataStr = dataStr + String.fromCharCode(ui8[i]);
                     }
-                });
+                    var parser = new X2JS();
+                    var data = parser.xml2js(dataStr)
 
-                if (!isAlreadyGotserver) {
-                    Connection.servers.push(item);
-                    Connection.servers.forEach(server => {
-                        Connection.pairedServers.forEach(element => {
-                            if (element == server.Id) {
-                                server.saved = true;
-                                if (Connection.connectedServer == null) {
-                                    server.status = 'Connected';
-                                    server.connected = true;
-                                    Connection.connectedServer = server;
-                                }
-                            }
-                        });
+                    if (data == null) return;
+                    var server = data.Server;
+                    var item = {
+                        Id: server._ID,
+                        Address: server._Location,
+                        Port: info.remotePort,
+                        Data: { Name: server._Name, Information: server._Information, Location: server._Location },
+                        status: 'Ready to pair',
+                        connected: false,
+                        saved: false,
+                        available: true
+                    };
+
+                    var isAlreadyGotserver = false;
+                    Connection.servers.forEach(element => {
+                        if (server._ID == element.Id) {
+                            isAlreadyGotserver = true;
+                        }
                     });
-                }
-            }
-            var onReceiveError = function (errorinfo) {
-                console.log("Error listening for Sports PIP servers: " + errorinfo);
-                this.alertCtrls.BasicAlert("Error listening server broadcast", errorinfo);
-            }
 
-            chrome.sockets.udp.create({}, function (createInfo) {
-                console.log("Created UDP Socket:" + JSON.stringify(createInfo));
-                Connection.socketId = createInfo.socketId;
-                chrome.sockets.udp.onReceive.addListener(onReceive);
-                chrome.sockets.udp.onReceiveError.addListener(onReceiveError);
-                chrome.sockets.udp.bind(createInfo.socketId, '0.0.0.0', Connection.port, function (result) {
-                    console.log("udp scan bind result: " + result);
-                    if (result < 0) {
-                        console.log("Error binding socket. " + result);
-                        this.alertCtrls.BasicAlert("Error listening server broadcast", result);
-                        return;
+                    if (!isAlreadyGotserver) {
+                        Connection.servers.push(item);
+                        Connection.servers.forEach(server => {
+                            Connection.pairedServers.forEach(element => {
+                                if (element == server.Id) {
+                                    server.saved = true;
+                                    if (Connection.connectedServer == null) {
+                                        server.status = 'Connected';
+                                        server.connected = true;
+                                        Connection.connectedServer = server;
+                                    }
+                                }
+                            });
+                        });
                     }
-                })
-            });
-        }
+                }
+                var onReceiveError = function (errorinfo) {
+                    console.log("Error listening for Sports PIP servers: " + errorinfo);
+                    this.alertCtrls.BasicAlert("Error listening server broadcast", errorinfo);
+                }
+
+                chrome.sockets.udp.create({}, function (createInfo) {
+                    console.log("Created UDP Socket:" + JSON.stringify(createInfo));
+                    Connection.socketId = createInfo.socketId;
+                    chrome.sockets.udp.onReceive.addListener(onReceive);
+                    chrome.sockets.udp.onReceiveError.addListener(onReceiveError);
+                    chrome.sockets.udp.bind(createInfo.socketId, '0.0.0.0', Connection.port, function (result) {
+                        console.log("udp scan bind result: " + result);
+                        if (result < 0) {
+                            console.log("Error binding socket. " + result);
+                            this.alertCtrls.BasicAlert("Error listening server broadcast", result);
+                            return;
+                        }
+                    })
+                });
+            }
+        });
     }
 
     close() {
@@ -225,7 +227,7 @@ export class Connection {
                 });
                 this._nativeStorageFactory.SetItem("pairedservers", JSON.stringify(itemsColl));
             });
-            this.getPairedServers();
+        this.getPairedServers();
     }
 
 }
