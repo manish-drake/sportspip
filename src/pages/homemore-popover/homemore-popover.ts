@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, ViewController, Platform } from 'ionic-angular';
-import { AppVersion, EmailComposer, Device } from 'ionic-native';
+import { AppVersion } from '@ionic-native/app-version';
+import { Device } from '@ionic-native/device';
+import { EmailComposer } from '@ionic-native/email-composer';
 import { Observable } from 'rxjs/Rx';
 import { Alert } from '../../Services/common/alerts';
 import { Storage } from '../../Services/Factory/Storage';
@@ -17,8 +19,12 @@ export class HomeMorePopover {
     sqliteLogDirectory: any;
     rootDirectory: any;
 
-    constructor(public viewCtrl: ViewController,
+    constructor(
+        public viewCtrl: ViewController,
         public navCtrl: NavController,
+        private appVersion: AppVersion,
+        private emailComposer: EmailComposer,
+        private device: Device,
         private storage: Storage,
         private storageFactory: StorageFactory,
         private alertCtrls: Alert,
@@ -38,7 +44,7 @@ export class HomeMorePopover {
             this.storage.externalRootDirectory().then((res) => {
                 this.rootDirectory = res;
             });
-            AppVersion.getVersionNumber().then((s) => {
+            this.appVersion.getVersionNumber().then((s) => {
                 this.versionNumber = s;
             })
         }
@@ -90,17 +96,17 @@ export class HomeMorePopover {
         let email = {
             to: 'manish@drake.in',
             attachments: [this.rootDirectory + "SportsPIP/data.db"],
-            subject: "Logs for Sports PIP (" + this.versionNumber + ") from " + Device.platform + " (See attachment)",
+            subject: "Logs for Sports PIP (" + this.versionNumber + ") from " + this.device.platform + " (See attachment)",
             body:
             "App Version: " + "<b>" + this.versionNumber + "</b><br>" +
-            "OS: " + "<b>" + Device.platform + " " + Device.version + "</b><br>" +
-            "Device: " + "<b>" + Device.manufacturer.toUpperCase() + " " + Device.model + "</b><br>" +
+            "OS: " + "<b>" + this.device.platform + " " + this.device.version + "</b><br>" +
+            "Device: " + "<b>" + this.device.manufacturer.toUpperCase() + " " + this.device.model + "</b><br>" +
 
             "<br><br>" +
             "Here is the logs file for Sports PIP app as attachment.."
             ,
             isHtml: true
         };
-        EmailComposer.open(email);
+        this.emailComposer.open(email);
     }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Platform } from 'ionic-angular';
-import { Zip } from 'ionic-native';
+import { Zip } from '@ionic-native/zip';
 import { StorageFactory } from './Factory/StorageFactory';
 import { Core } from './core';
 import { Storage } from './Factory/Storage';
@@ -22,6 +22,7 @@ export class Package {
         private storage: Storage,
         private core: Core,
         private platform: Platform,
+        private zip: Zip,
         private storagefactory: StorageFactory) {
 
         this.storage.externalDataDirectory().then((res) => {
@@ -133,7 +134,7 @@ export class Package {
     unzipPackage() {
         var PathToFileInString = this.storageDataDir + "Temp/m1.zip";
         var PathToResultZip = this.storageDataDir + "Temp/matrix1";
-        return Zip.unzip(PathToFileInString, PathToResultZip, (progress) => console.log('Unzipping, ' + Math.round((progress.loaded / progress.total) * 100) + '%'))
+        return this.zip.unzip(PathToFileInString, PathToResultZip, (progress) => console.log('Unzipping, ' + Math.round((progress.loaded / progress.total) * 100) + '%'))
             .then((res) => {
                 console.log("Unzipping....")
                 return res;

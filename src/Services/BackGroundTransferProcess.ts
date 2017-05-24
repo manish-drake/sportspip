@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Headers, RequestOptions } from '@angular/http';
 import { Platform } from 'ionic-angular';
 import { Connection } from '../Services/Connection';
-import { File } from 'ionic-native';
+import { File } from '@ionic-native/file';
 import { Storage } from './Factory/Storage';
 import { ModelFactory } from './Factory/ModelFactory';
 import X2JS from 'x2js';
@@ -16,7 +16,9 @@ import { } from '';
 export class BackGroundTransferProcess {
     private data: any;
     rootDir: string;
-    constructor(private platform: Platform,
+    constructor(
+        private platform: Platform,
+        private file: File,
         private _logger: Logger,
         private storage: Storage,
         private httpService: HttpService,
@@ -28,7 +30,7 @@ export class BackGroundTransferProcess {
 
     TransferVideo(fileName, serverIP, views) {
         this._logger.Debug('Transfer video');
-        File.readAsArrayBuffer(this.rootDir + "SportsPIP/Video", fileName).then(success => {
+        this.file.readAsArrayBuffer(this.rootDir + "SportsPIP/Video", fileName).then(success => {
 
             let headers = new Headers({ 'Content-Type': 'video/mp4' }); // ... Set content type to JSON
             let options = new RequestOptions({ headers: headers });

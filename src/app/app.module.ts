@@ -1,5 +1,20 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpModule } from '@angular/http';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
+import { AppVersion } from '@ionic-native/app-version';
+import { Device } from '@ionic-native/device';
+import { VideoEditor } from "@ionic-native/video-editor";
+import { Zip } from "@ionic-native/zip";
+import { File } from '@ionic-native/file';
+import { NativeStorage } from "@ionic-native/native-storage";
+import { SQLite } from "@ionic-native/sqlite";
+import { Camera } from "@ionic-native/camera";
+import { MediaCapture } from '@ionic-native/media-capture';
+import { EmailComposer } from "@ionic-native/email-composer";
+
 import { sportspip } from './app.component';
 import { UserActionsPopover } from '../pages/account/action/signOut'
 import { HomePage } from '../pages/home/home';
@@ -66,16 +81,34 @@ import { SettingsService } from '../Services/SettingsService';
     Swipeview
   ],
   providers: [
+    StatusBar,
+    SplashScreen,
+    AppVersion,
+    Device,
+    VideoEditor,
+    Zip,
+    File,
+    NativeStorage,
+    SQLite,
+    Camera,
+    MediaCapture,
+    EmailComposer,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     { provide: AProvider, useClass: SqliteLogProvider },
-    Alert, Logger, StorageFactory, Storage, NativeStorageFactory,
-    BackGroundTransferProcess, Utils,
-    ModelFactory, Package, Core, HttpService,SettingsService
-
+    Alert,
+    Logger,
+    StorageFactory,
+    Storage,
+    NativeStorageFactory,
+    BackGroundTransferProcess,
+    Utils,
+    ModelFactory,
+    Package,
+    Core,
+    HttpService,
+    SettingsService
   ],
-  imports: [
-    IonicModule.forRoot(sportspip)
-  ],
+  imports: [IonicModule.forRoot(sportspip), BrowserModule, HttpModule],
   bootstrap: [IonicApp],
   entryComponents: [
     sportspip,

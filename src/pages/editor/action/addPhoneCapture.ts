@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ICommand } from '../../../Contracts/ICommand';
-import { CaptureVideoOptions, MediaFile, CaptureError, MediaCapture } from 'ionic-native';
+import { CaptureVideoOptions, MediaFile, CaptureError, MediaCapture } from '@ionic-native/media-capture';
 
 import { Logger } from '../../../logging/logger';
 import { Alert } from '../../../Services/common/alerts';
@@ -15,7 +15,9 @@ import { Storage } from '../../../Services/Factory/Storage';
 export class AddPhoneCapture implements ICommand {
 
     rootDirectory: string;
-    constructor(private alertCtrls: Alert,
+    constructor(
+        private mediaCapture: MediaCapture,
+        private alertCtrls: Alert,
         private _logger: Logger,
         private backGroundTransferProcess: BackGroundTransferProcess,
         private platform: Platform,
@@ -30,7 +32,7 @@ export class AddPhoneCapture implements ICommand {
     }
     run(cmdArgs) {
         let options: CaptureVideoOptions = {};
-        MediaCapture.captureVideo(options)
+        this.mediaCapture.captureVideo(options)
             .then(
             (data: MediaFile[]) => { this.captureSuccess(data, cmdArgs) },
             (err: CaptureError) => { this.captureError(err) }

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Platform } from 'ionic-angular';
-import { VideoEditor, CreateThumbnailOptions } from 'ionic-native';
+import { VideoEditor, CreateThumbnailOptions } from '@ionic-native/video-editor';
 import { Observable } from 'rxjs/Rx';
 import { StorageFactory } from '../Factory/StorageFactory';
 import { SettingsService } from '../../Services/SettingsService';
@@ -15,10 +15,12 @@ export class ModelFactory {
     private storageDataDir: string;
     private rootDir: string;
 
-    constructor(private _logger: Logger,
+    constructor(
+        private _logger: Logger,
         private storage: Storage,
         private storageFactory: StorageFactory,
-        private platform: Platform) {
+        private platform: Platform,
+        private videoEditor: VideoEditor) {
         this.storage.externalDataDirectory().then((edd) => {
             this.storageDataDir = edd;
             this.storage.externalRootDirectory().then((erd) => {
@@ -30,7 +32,7 @@ export class ModelFactory {
     CreateThumbnail(name, thumbname) {
         var sourcePath = this.rootDir + "SportsPIP/Video/" + name;
         var _createThumbnailOptions: CreateThumbnailOptions = { fileUri: sourcePath, outputFileName: thumbname };
-        VideoEditor.createThumbnail(_createThumbnailOptions)
+        this.videoEditor.createThumbnail(_createThumbnailOptions)
             .then(res => {
                 this._logger.Debug("Thumbnail created in:" + res);
                 var path = res.substr(0, res.lastIndexOf('/') + 1);
@@ -119,7 +121,7 @@ export class ModelFactory {
             DateCreated: fromMatrix._DateCreated,
             Name: fromMatrix._Name,
             Channel: fromMatrix._Channel,
-            UniqueID :fromMatrix._UniqueID,
+            UniqueID: fromMatrix._UniqueID,
             ThumbnailSource: "thumbnail",
             Sport: fromMatrix._Sport,
             Skill: fromMatrix._Skill,
@@ -137,7 +139,7 @@ export class ModelFactory {
             DateCreated: fromMatrix._DateCreated,
             Name: fromMatrix._Name,
             Channel: fromMatrix._Channel,
-            UniqueID :fromMatrix._UniqueID,
+            UniqueID: fromMatrix._UniqueID,
             ThumbnailSource: "thumbnail",
             Sport: fromMatrix._Sport,
             Skill: fromMatrix._Skill,
@@ -154,7 +156,7 @@ export class ModelFactory {
             DateCreated: header.DateCreated,
             Name: header.Name,
             Channel: header.Channel,
-            UniqueID:header.UniqueID,
+            UniqueID: header.UniqueID,
             ThumbnailSource: header.ThumbnailSource,
             Sport: header.Sport,
             Skill: header.Skill,
@@ -176,7 +178,7 @@ export class ModelFactory {
                     "_Sport": "Tennis",
                     "_Skill": "Serve",
                     "_PIN": " ",
-                    "_UniqueID":uniqueID,
+                    "_UniqueID": uniqueID,
                     "_DateModified": name,
                     "_Duration": duration,
                     "_Location": "Field",

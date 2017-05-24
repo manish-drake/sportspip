@@ -4,9 +4,7 @@ import { Http } from '@angular/http';
 /*$Candidate for refactoring$*/
 @Injectable()
 export class HttpService {
-    constructor(private http: Http) {
-
-    }
+    constructor(private http: Http) {}
 
     GetFileFromServer(path: string) {
         return this.http.get(path)

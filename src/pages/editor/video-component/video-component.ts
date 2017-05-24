@@ -1,6 +1,6 @@
 import { Component, ViewChild, Input, ElementRef } from '@angular/core';
 import { ActionSheetController, ModalController, Platform, Events } from 'ionic-angular';
-import { VideoEditor } from 'ionic-native';
+import { VideoEditor } from '@ionic-native/video-editor';
 import { Utils } from '../../../Services/common/utils';
 import { Observable } from 'rxjs/Rx';
 import { Storage } from '../../../Services/Factory/Storage';
@@ -22,7 +22,9 @@ export class VideoComponent {
     rootDir: String;
     objects = [];
 
-    constructor(private alertCtrls: Alert,
+    constructor(
+        private videoEditor: VideoEditor,
+        private alertCtrls: Alert,
         private storage: Storage,
         private storageFactory: StorageFactory,
         private actionSheetCtrl: ActionSheetController,
@@ -93,7 +95,7 @@ export class VideoComponent {
         this.video.play();
         this.video.pause();
 
-        VideoEditor.getVideoInfo({ fileUri: this.video.currentSrc })
+        this.videoEditor.getVideoInfo({ fileUri: this.video.currentSrc })
             .then(res => {
                 this.timelineDuration = this.formatTime(res.duration);
                 this._logger.Debug("View " + (this.viewindex + 1) + '; Video Info:: '

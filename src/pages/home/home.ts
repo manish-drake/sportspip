@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, ActionSheetController, PopoverController, Platform, LoadingController } from 'ionic-angular';
-import { AppVersion, Device } from 'ionic-native';
+import { AppVersion } from '@ionic-native/app-version';
+import { Device } from '@ionic-native/device';
 import { HomeMorePopover } from '../../pages/homemore-popover/homemore-popover';
 import { Alert } from '../../Services/common/alerts';
 import 'rxjs/add/operator/map';
@@ -46,8 +47,12 @@ export class HomePage {
     Header = [];
     dataDirectory: any;
 
-    constructor(private platform: Platform, public navCtrl: NavController,
+    constructor(
+        private platform: Platform, 
+        public navCtrl: NavController,
         private core: Core,
+        private appVersion: AppVersion,
+        private device: Device,
         private addNewMatrix: AddNewMatrix,
         private duplicate: Duplicate,
         private storage: Storage,
@@ -92,11 +97,11 @@ export class HomePage {
     logDeviceInfo() {
         this.platform.ready().then(() => {
             if (this.platform.is('cordova')) {
-                AppVersion.getVersionNumber().then((ver) => {
+                this.appVersion.getVersionNumber().then((ver) => {
                     this._logger.Info('App Version: ', ver);
                 });
-                this._logger.Info('OS: ', Device.platform + " " + Device.version);
-                this._logger.Info('Device: ', Device.manufacturer.toUpperCase() + " " + Device.model);
+                this._logger.Info('OS: ', this.device.platform + " " + this.device.version);
+                this._logger.Info('Device: ', this.device.manufacturer.toUpperCase() + " " + this.device.model);
             }
         });
     }
@@ -115,8 +120,8 @@ export class HomePage {
         let popover = this.popoverCtrl.create(HomeMorePopover);
         popover.present({ ev: event });
 
-        popover.onWillDismiss((res)=>{
-            if(res == "openSettings"){
+        popover.onWillDismiss((res) => {
+            if (res == "openSettings") {
                 this.navCtrl.push(SettingsPage);
             }
         })

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Camera, CameraOptions, CameraPopoverOptions } from 'ionic-native';
+import { Camera, CameraOptions, CameraPopoverOptions } from '@ionic-native/camera';
 import { ICommand } from '../../../Contracts/ICommand';
 import { Logger } from '../../../logging/logger';
 import { Alert } from '../../../Services/common/alerts';
@@ -13,7 +13,9 @@ import { Observable } from 'rxjs/Rx';
 @Injectable()
 export class AddCapture implements ICommand {
     rootDirectory: string;
-    constructor(private _logger: Logger,
+    constructor(
+        private camera: Camera,
+        private _logger: Logger,
         private alertCtrls: Alert,
         private backGroundTransferProcess: BackGroundTransferProcess,
         private platform: Platform,
@@ -28,9 +30,9 @@ export class AddCapture implements ICommand {
             this._logger.Debug("Going to add Video..");
 
             var _cameraPopoverOptions: CameraPopoverOptions = { x: 0, y: 0, height: 400, width: 200, arrowDir: 15 }
-            var _cameraOptions: CameraOptions = { sourceType: Camera.PictureSourceType.PHOTOLIBRARY, mediaType: Camera.MediaType.VIDEO, popoverOptions: _cameraPopoverOptions }
+            var _cameraOptions: CameraOptions = { sourceType: this.camera.PictureSourceType.PHOTOLIBRARY, mediaType: this.camera.MediaType.VIDEO, popoverOptions: _cameraPopoverOptions }
 
-            Camera.getPicture(_cameraOptions)
+            this.camera.getPicture(_cameraOptions)
                 .then((filePath => {
                     this._logger.Debug("Got video: " + filePath);
                     var fileDir;

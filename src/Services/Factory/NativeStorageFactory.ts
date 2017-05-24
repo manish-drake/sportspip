@@ -1,16 +1,16 @@
 import { Injectable } from "@angular/core";
-import { NativeStorage } from 'ionic-native';
+import { NativeStorage } from '@ionic-native/native-storage';
 
 @Injectable()
 export class NativeStorageFactory {
 
-    constructor() { }
+    constructor(private nativeStorage: NativeStorage) { }
 
     SetItem(reference, value): Promise<any> {
-        return NativeStorage.setItem(reference, value);
+        return this.nativeStorage.setItem(reference, value);
     }
 
     GetItem(reference): Promise<any> {
-        return NativeStorage.getItem(reference);
+        return this.nativeStorage.getItem(reference);
     }
 }
