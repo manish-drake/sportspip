@@ -3,7 +3,7 @@
     <name>Sports PIP</name>
     <description>Sports PIP APP</description>
     <author email="manish@drake.in" href="http://sportspip.com/">cougar</author>
-    <content original-src="index.html" src="http://192.168.145.128:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -87,6 +87,7 @@
     <allow-navigation href="http://192.168.10.4:8100" />
     <allow-navigation href="http://192.168.10.2:8100" />
     <allow-navigation href="http://[object Object]:8100" />
+    <allow-navigation href="http://192.168.126.1:8100" />
     <engine name="android" spec="^6.2.3" />
     <engine name="ios" spec="^4.4.0" />
     <plugin name="cordova-plugin-app-version" spec="~0.1.9" />
