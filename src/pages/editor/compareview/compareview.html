@@ -7,14 +7,14 @@
 </ion-header>
 <ion-content no-bounce style="background:#f4f4f4;">
 	<ion-row style="height:48%;">
-		<ion-col center style="height:100%;">
+		<ion-col style="height:100%;">
 			<ion-card style="height:100%;" (click)="componentSelection(0)" [class.componentselected]="selectedIndex == 0">
 				<compareview-component [view]="compareSegment1" [views]="views" [isSelected]="selectedIndex == 0"></compareview-component>
 			</ion-card>
 		</ion-col>
 	</ion-row>
 	<ion-row style="height:48%;">
-		<ion-col center style="height:100%;">
+		<ion-col style="height:100%;">
 			<ion-card style="height:100%;" (click)="componentSelection(1)" [class.componentselected]="selectedIndex == 1">
 				<compareview-component [view]="compareSegment2" [views]="views" [isSelected]="selectedIndex == 1"></compareview-component>
 			</ion-card>

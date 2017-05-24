@@ -13,7 +13,7 @@
 		</ion-buttons>
 	</ion-toolbar>
 	<ion-row>
-		<ion-col text-center center *ngFor="let view of views; let i = index" (click)="setSelectedView(view, i)" [command]="deleteView"
+		<ion-col text-center align-self-center *ngFor="let view of views; let i = index" (click)="setSelectedView(view, i)" [command]="deleteView"
 		 [cmdArgs]="deleteViewSource(i)" [usePress]="true" [class.selectedview]="i == selectedViewIndex" [class.view]="i != selectedViewIndex">
 			<span ion-text [hidden]="views.length > 5" color="primary">View </span><span ion-text color="primary">{{i+1}}</span>
 		</ion-col>
@@ -29,7 +29,7 @@
 		<video-component *ngIf="selectedView?.Content?.Capture" [view]="selectedView" [viewindex]="selectedViewIndex"></video-component>
 		<!--viewOptions-->
 		<ion-row *ngIf="(!selectedView?.Content?.Capture)&&(!selectedView?.Content?.PIP)" style="height:100%;">
-			<ion-col no-padding center text-center>
+			<ion-col no-padding text-center align-self-center>
 				<ion-grid no-padding style="max-width:260px ;margin-left: auto;margin-right: auto;">
 					<ion-row>
 						<ion-col no-padding col-12>

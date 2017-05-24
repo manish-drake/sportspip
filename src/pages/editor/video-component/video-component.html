@@ -91,27 +91,27 @@
 				</ion-col>
 			</ion-row>
 			<ion-row>
-				<ion-col no-padding center>
+				<ion-col no-padding align-self-center>
 					<ion-row>
-						<ion-col no-padding center></ion-col>
-						<ion-col no-padding center col-auto>
+						<ion-col no-padding align-self-center></ion-col>
+						<ion-col no-padding align-self-center col-auto>
 							<button no-margin ion-button icon-only clear (click)="playbackRateVideo()" style="width:40px;" text-lowercase text-nowrap><b>{{video.playbackRate}}x</b></button>
 							<button no-margin ion-button icon-only clear (tap)="previousVideoFrame()" (press)="previousVideoFrame()"><ion-icon name="rewind"></ion-icon></button>
 						</ion-col>
 					</ion-row>
 				</ion-col>
-				<ion-col no-padding center col-auto>
+				<ion-col no-padding col-auto align-self-center>
 					<button no-margin ion-button icon-only clear large (click)="playPause()"><ion-icon name="{{playPauseButtonIcon}}"></ion-icon></button>
 				</ion-col>
-				<ion-col no-padding center>
+				<ion-col no-padding align-self-center>
 					<ion-row>
-						<ion-col no-padding center col-auto>
+						<ion-col no-padding align-self-center  col-auto>
 							<button no-margin ion-button icon-only clear (tap)="nextVideoFrame()" (press)="nextVideoFrame()"><ion-icon name="fastforward"></ion-icon></button>
 						</ion-col>
-						<ion-col no-padding center>
+						<ion-col no-padding align-self-center>
 							<button no-margin ion-button icon-only clear color="{{repeatColor}}" (click)="repeatVideo()"><ion-icon name="repeat"></ion-icon></button>
 						</ion-col>
-						<ion-col no-padding col-auto>
+						<ion-col no-padding align-self-center col-auto >
 							<button no-margin ion-button icon-only clear (click)="addMarker()"><ion-icon name="pin"></ion-icon></button>
 						</ion-col>
 					</ion-row>
