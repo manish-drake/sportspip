@@ -225,13 +225,13 @@ export class CompareviewComponent {
         this.oldCurrentTime = this.video.currentTime;
         this.timelinePosition = this.formatTime(this.video.currentTime);
         var factor = this.video.duration * (this.sliderValue / 100000);
-        this.video.currentTime = factor;
         this.timelinePosition = this.formatTime(factor);
         this.PlayStoryBoard();
     }
 
-    timelineThumbTapped(){
-        
+    timelineSeek(){
+        var factor = this.video.duration * (this.sliderValue / 100000);
+        this.video.currentTime = factor;
     }
 
     returnVidPath(filename) {

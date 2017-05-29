@@ -94,7 +94,7 @@
 						</ion-row>
 						<ion-row>
 							<ion-col no-padding>
-								<ion-range [disabled]="isLinked && !isSelected" style="padding:0;margin-top:10px; height:10px" min="0" max="100000" step="0.01" [(ngModel)]="sliderValue" (ionChange)="parentSliderValueChange()" (pan)="timelineThumbTapped()"></ion-range>
+								<ion-range [disabled]="isLinked && !isSelected" style="padding:0;margin-top:10px; height:10px" min="0" max="100000" step="0.01" [(ngModel)]="sliderValue" (ionChange)="parentSliderValueChange()" (pan)="timelineSeek()"></ion-range>
 							</ion-col>
 						</ion-row>
 					</ion-col>
