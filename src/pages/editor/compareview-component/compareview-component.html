@@ -62,6 +62,9 @@
 				</svg>
 			</div>
 		</div>
+		<div #fadableTitle class="centered-item-container" style="width:100%; color:white;font-size:42px;">
+			{{view._Title}}
+		</div>
 		<button ion-button icon-right small (click)="presentViewPopover($event)" style="position:absolute; left:5px; top:5px; background-color:rgba(0,0,0,0.4);color:white;">
 			{{view._Title}}<ion-icon name="arrow-dropdown"></ion-icon>
 		</button>
@@ -73,9 +76,6 @@
 				{{video.playbackRate}}x
 				</button>
 			<button ion-fab (click)="playPauseParent()"><ion-icon name="{{playPauseButtonIcon}}"></ion-icon></button>
-		</div>
-		<div #fadableTitle class="centered-item-container" style="width:100%; color:white;font-size:42px;">
-			{{view._Title}}
 		</div>
 	</ion-row>
 	<ion-row *ngIf="videoSrcAvailable" style="height: auto; flex: 0 0 auto;" color="dark">
