@@ -6,7 +6,6 @@
 		<ion-buttons end>
 			<button ion-button icon-only (click)="openConnectivity()"><ion-icon name="wifi"></ion-icon><span></span></button>
 			<button ion-button icon-only (click)="openAccounts()"><ion-icon name="person"></ion-icon></button>
-			<!--<button ion-button icon-only (click)="openSettings()"><ion-icon name="settings"></ion-icon></button>-->
 			<button ion-button icon-only (click)="presentPopover($event)"><ion-icon name="more"></ion-icon></button>
 		</ion-buttons>
 	</ion-navbar>
@@ -21,15 +20,9 @@
 </ion-header>
 
 <ion-content style="background:#f4f4f4;" [ngSwitch]="selectedSegment">
-
-	<!-- Real floating action button, fixed. It will not scroll with the content -->
 	<ion-fab bottom right *ngSwitchCase="'local'">
 		<button ion-fab [command]="newMatrix" [cmdArgs]="'addNew'" [usePress]="false"><ion-icon name="add"></ion-icon></button>
 	</ion-fab>
-	<!--(For testing only) - Open matrix file placed in assets-->
-	<!--<ion-fab bottom center>
-		<button ion-fab color="light" (click)="testOpenMatrix()">M</button>
-	</ion-fab>-->
 
 	<div *ngSwitchCase="'local'" style="position: relative; height:100%;">
 		<ion-refresher (ionRefresh)="doRefreshLocal($event)" no-lines>

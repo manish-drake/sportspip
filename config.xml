@@ -83,11 +83,6 @@
     <feature name="StatusBar">
         <param name="ios-package" onload="true" value="CDVStatusBar" />
     </feature>
-    <allow-navigation href="http://192.168.145.128:8100" />
-    <allow-navigation href="http://192.168.10.4:8100" />
-    <allow-navigation href="http://192.168.10.2:8100" />
-    <allow-navigation href="http://[object Object]:8100" />
-    <allow-navigation href="http://192.168.126.1:8100" />
     <engine name="android" spec="^6.2.3" />
     <engine name="ios" spec="^4.4.0" />
     <plugin name="cordova-plugin-app-version" spec="~0.1.9" />

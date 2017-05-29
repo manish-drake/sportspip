@@ -230,12 +230,16 @@ export class CompareviewComponent {
         this.PlayStoryBoard();
     }
 
+    timelineThumbTapped(){
+        
+    }
+
     returnVidPath(filename) {
         if (this.platform.is('cordova')) {
             return this.rootDir + "SportsPIP/Video/" + filename;
         }
         else {
-            return 'assets/' + filename;
+            return '../../assets/' + filename;
         }
     }
 

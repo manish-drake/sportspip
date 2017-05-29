@@ -350,20 +350,5 @@ export class HomePage {
     public get newMatrix(): AddNewMatrix {
         return this.addNewMatrix;
     }
-    // For testing only --starts
-    testOpenMatrix() {
-        this.httpService.GetFileFromServer("assets/matrix1.mtx")
-            .then(res => {
-                this.testNavToEditor(res);
-            });
-
-    }
-
-    testNavToEditor(data) {
-        this.navCtrl.push(EditorPage, {
-            matrixData: data.Matrix
-        });
-    }
-    // For testing only --ends
 
 }

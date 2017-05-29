@@ -6,9 +6,9 @@
 				style="position: absolute; background-color: black; " 
 				width="100%" 
 				height="100%"
-				poster="assets/poster.png"
+				poster="../../assets/poster.png"
 				type="video/mp4" 
-				src="{{returnVidPath(view.Content.Capture._Kernel)}}">
+				[attr.src]="returnVidPath(view.Content.Capture._Kernel)">
 		</video>
 		<svg *ngFor="let obj of objects;" [ngSwitch]="obj.key" [attr.viewBox]="viewBoxSize" height="100%" width="100%" style="position:absolute">
 			<rect *ngSwitchCase="'Rectangle'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
@@ -23,7 +23,7 @@
 			<text *ngSwitchCase="'RichTextObject'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.font-size]="obj.val._FontSize"
 				[attr.fill]="clrCvt(obj.val._Foreground)" [attr.opacity]="obj.val._Opacity">Video</text>
 			<image *ngSwitchCase="'Picture'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
-				xlink:href="assets/sample.jpg" />
+				xlink:href="../../assets/sample.jpg" />
 			<defs *ngSwitchCase="'Arrow'">
 				<marker id="videoarrow" viewBox="0 0 14 14" markerWidth="6" markerHeight="6" refX="9" refY="6" orient="auto">
 					<path d="M0,0 L0,12 L12,6 L0,0" [attr.fill]="clrCvt(obj.val._Stroke)"></path>
@@ -32,7 +32,7 @@
 			<line *ngSwitchCase="'Arrow'" #arrow marker-end="url(#videoarrow)" [attr.x1]="obj.val._X1" [attr.y1]="obj.val._Y1" [attr.x2]="obj.val._X2"
 				[attr.y2]="obj.val._Y2" [attr.stroke]="clrCvt(obj.val._Stroke)" [attr.stroke-width]="obj.val._StrokeThickness" [attr.opacity]="obj.val._Opacity"
 			/>
-			<image *ngSwitchCase="'Ink'" #Ink x="0" y="0" width="100%" height="100%" xlink:href="assets/inksample.gif" />
+			<image *ngSwitchCase="'Ink'" #Ink x="0" y="0" width="100%" height="100%" xlink:href="../../assets/inksample.gif" />
 		</svg>
 		<div style="position:absolute;height:100%;width:100%;">
 			<div>
@@ -49,7 +49,7 @@
 					<text *ngSwitchCase="'RichTextObject'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.font-size]="obj.val._FontSize"
 						[attr.fill]="clrCvt(obj.val._Foreground)" [attr.opacity]="obj.val._Opacity">Video</text>
 					<image *ngSwitchCase="'Picture'" [attr.x]="obj.val._Left" [attr.y]="obj.val._Top" [attr.width]="obj.val._Width" [attr.height]="obj.val._Height"
-						xlink:href="assets/sample.jpg" />
+						xlink:href="../../assets/sample.jpg" />
 					<defs *ngSwitchCase="'Arrow'">
 						<marker id="markerarrow" viewBox="0 0 14 14" markerWidth="6" markerHeight="6" refX="9" refY="6" orient="auto">
 							<path d="M0,0 L0,12 L12,6 L0,0" [attr.fill]="clrCvt(obj.val._Stroke)"></path>
@@ -58,7 +58,7 @@
 					<line *ngSwitchCase="'Arrow'" #arrow marker-end="url(#markerarrow)" [attr.x1]="obj.val._X1" [attr.y1]="obj.val._Y1" [attr.x2]="obj.val._X2"
 						[attr.y2]="obj.val._Y2" [attr.stroke]="clrCvt(obj.val._Stroke)" [attr.stroke-width]="obj.val._StrokeThickness" [attr.opacity]="obj.val._Opacity"
 					/>
-					<image *ngSwitchCase="'Ink'" #Ink x="0" y="0" width="100%" height="100%" xlink:href="assets/inksample.gif" />
+					<image *ngSwitchCase="'Ink'" #Ink x="0" y="0" width="100%" height="100%" xlink:href="../../assets/inksample.gif" />
 				</svg>
 			</div>
 		</div>
@@ -94,7 +94,7 @@
 						</ion-row>
 						<ion-row>
 							<ion-col no-padding>
-								<ion-range [disabled]="isLinked && !isSelected" style="padding:0;margin-top:10px; height:10px" min="0" max="100000" step="0.01" [(ngModel)]="sliderValue" (ionChange)="parentSliderValueChange()"></ion-range>
+								<ion-range [disabled]="isLinked && !isSelected" style="padding:0;margin-top:10px; height:10px" min="0" max="100000" step="0.01" [(ngModel)]="sliderValue" (ionChange)="parentSliderValueChange()" (pan)="timelineThumbTapped()"></ion-range>
 							</ion-col>
 						</ion-row>
 					</ion-col>
