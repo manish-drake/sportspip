@@ -54,7 +54,7 @@ export class CanvasComponent {
       return this.rootDir + "SportsPIP/Picture" + name;
     }
     else {
-      return '../../assets/sample.jpg';
+      return 'assets/sample.jpg';
     }
   }
 
@@ -63,7 +63,7 @@ export class CanvasComponent {
       return this.rootDir + "SportsPIP/Picture" + name + ".gif";
     }
     else {
-      return '../../assets/inksample.gif';
+      return 'assets/inksample.gif';
     }
   }
 

@@ -239,7 +239,7 @@ export class CompareviewComponent {
             return this.rootDir + "SportsPIP/Video/" + filename;
         }
         else {
-            return '../../assets/' + filename;
+            return 'assets/' + filename;
         }
     }
 

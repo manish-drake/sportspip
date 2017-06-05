@@ -534,7 +534,7 @@ export class VideoComponent {
             return this.rootDir + "SportsPIP/Video/" + filename;
         }
         else {
-            return '../../assets/' + filename;
+            return 'assets/' + filename;
         }
     }
 
@@ -543,7 +543,7 @@ export class VideoComponent {
             return this.rootDir + "SportsPIP/Picture/" + name;
         }
         else {
-            return '../../assets/sample.jpg';
+            return 'assets/sample.jpg';
         }
     }
 
@@ -552,7 +552,7 @@ export class VideoComponent {
             return this.rootDir + "SportsPIP/Picture/" + name + ".gif";
         }
         else {
-            return '../../assets/inksample.gif';
+            return 'assets/inksample.gif';
         }
     }
 
