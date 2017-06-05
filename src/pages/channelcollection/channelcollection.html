@@ -18,7 +18,7 @@
 
 <ion-content style="background:#f1f1f1; position: relative;">
 	<ion-row>
-		<ion-col no-padding col-12 col-sm-6 col-lg-4 col-xl-3 *ngFor="let matrix of channelMatrices; let i = index">
+		<ion-col no-padding col-12 col-sm-6 col-lg-4 col-xl-3 *ngFor="let matrix of channelMatrices; index as i">
 			<ion-card (tap)="downloadMatrix(i,matrix)" (press)="channelMatrixPressed(i,matrix)">
 				<ion-row>
 					<ion-col no-padding [style.background-image]="retrunThumbnailPath(matrix.UploadID)" style="position: relative; height: 120px;background-size: cover;background-color:lightgray;background-position: center;">

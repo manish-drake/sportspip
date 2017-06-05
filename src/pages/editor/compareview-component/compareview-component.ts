@@ -572,7 +572,7 @@ export class CompareviewComponent {
 @Component({
     template: `
     <ion-list radio-group style="margin:0;">
-    <ion-item *ngFor="let view of views; let i = index">
+    <ion-item *ngFor="let view of views; index as i">
     <ion-label>{{view._Title}}</ion-label>
     <ion-radio value="view" [checked]="view == currentView" (click)="changeView(view)"></ion-radio>
     </ion-item>

@@ -30,7 +30,7 @@
 		</ion-refresher>
 		<button ion-item *ngIf="localMatrices.length > 0" style="background:transparent;" (click)="openCollection()"> All Matrices<ion-badge item-right>{{localMatrices.length}}</ion-badge></button>
 		<ion-row>
-			<ion-col no-padding col-12 col-sm-6 col-lg-4 col-xl-3 *ngFor='let matrix of localMatrices | slice: 0:12; let i = index'>
+			<ion-col no-padding col-12 col-sm-6 col-lg-4 col-xl-3 *ngFor='let matrix of localMatrices | slice: 0:12; index as i'>
 				<ion-card tappable [command]="OpenMatrix" [cmdArgs]="matrix" [usePress]="false" (press)="matrixPressed(i,matrix)">
 					<ion-row>
 						<ion-col no-padding [style.background-image]="retrunThumbnailPath(matrix.ThumbnailSource)" style="height: 120px;background-size: cover;background-color:lightgray;background-position: center;">
@@ -72,7 +72,7 @@
 		<ion-item-group *ngFor="let channel of channels|groupBy:'Channel'">
 			<button ion-item *ngIf="channel.value.length > 0" style="background:transparent;" (click)="openChannelCollection(channel.key)"> {{channel.key}}<ion-badge item-right>{{channel.value.length}}</ion-badge></button>
 			<ion-row>
-				<ion-col no-padding col-12 col-sm-6 col-lg-4 col-xl-3 *ngFor="let matrix of channel.value | slice: 0:6; let i = index">
+				<ion-col no-padding col-12 col-sm-6 col-lg-4 col-xl-3 *ngFor="let matrix of channel.value | slice: 0:6; index as i">
 					<ion-card (tap)="channelMatrixClicked(i,matrix,channel.value)" (press)="channelMatrixPressed(i,matrix,channel.value)">
 						<ion-row>
 							<ion-col no-padding [style.background-image]="retrunThumbnailPath(matrix.UploadID)" style="position: relative; height: 120px;background-size: cover;background-color:lightgray;background-position: center;">

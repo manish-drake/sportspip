@@ -13,7 +13,7 @@
 		</ion-buttons>
 	</ion-toolbar>
 	<ion-row>
-		<ion-col text-center align-self-center *ngFor="let view of views; let i = index" (click)="setSelectedView(view, i)" [command]="deleteView"
+		<ion-col text-center align-self-center *ngFor="let view of views; index as i" (click)="setSelectedView(view, i)" [command]="deleteView"
 		 [cmdArgs]="deleteViewSource(i)" [usePress]="true" [class.selectedview]="i == selectedViewIndex" [class.view]="i != selectedViewIndex">
 			<span ion-text [hidden]="views.length > 5" color="primary">View </span><span ion-text color="primary">{{i+1}}</span>
 		</ion-col>
