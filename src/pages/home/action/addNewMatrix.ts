@@ -45,18 +45,18 @@ export class AddNewMatrix implements ICommand {
         this._logger.Debug('Creating new matrix..');
         var data = this.modelFactory.ComposeNewMatrix();
         var result = data.Matrix;
-        // if (this.platform.is('cordova')) {
-        //     this.core.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices").then((success) => {
-        //         var headerContent = this.modelFactory.ComposeNewMatrixHeader(result);
-        //         this.core.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
-        //             .then((success) => {
-        //                 this.navCtrl.push(EditorPage, {
-        //                     matrixData: result
-        //                 });
-        //             });
-        //     });
-        // }
-        // else {
+        if (this.platform.is('cordova')) {
+            this.core.SaveMatrixAsync(data, result._Channel, result._Sport, result._Name, "Matrices").then((success) => {
+                var headerContent = this.modelFactory.ComposeNewMatrixHeader(result);
+                this.core.SaveLocalHeader(headerContent, headerContent.Channel, headerContent.Sport, headerContent.Name, "Matrices")
+                    .then((success) => {
+                        this.navCtrl.push(EditorPage, {
+                            matrixData: result
+                        });
+                    });
+            });
+        }
+        else {
             this.http.get("assets/matrix1.mtx")
                 .subscribe(data => {
                     var res = JSON.parse(data.text());
@@ -65,6 +65,6 @@ export class AddNewMatrix implements ICommand {
                         matrixData: result
                     });
                 });
-        // }
+        }
     }
 }
