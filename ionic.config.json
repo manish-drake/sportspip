@@ -1,5 +1,8 @@
 {
   "name": "Sports PIP",
   "app_id": "942baffc",
-  "type": "ionic-angular"
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
 }
