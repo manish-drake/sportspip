@@ -33,7 +33,7 @@ export class AddCapture implements ICommand {
             var _cameraOptions: CameraOptions = { sourceType: this.camera.PictureSourceType.PHOTOLIBRARY, mediaType: this.camera.MediaType.VIDEO, popoverOptions: _cameraPopoverOptions }
 
             this.camera.getPicture(_cameraOptions)
-                .then((filePath => {
+                .then(filePath => {
                     this._logger.Debug("Got video: " + filePath);
                     var fileDir;
                     if (this.platform.is('android')) {
@@ -57,7 +57,7 @@ export class AddCapture implements ICommand {
                             if (Connection.connectedServer != null)
                                 this.backGroundTransferProcess.TransferVideo(newFileName, cmdArgs.editor.Connection.connectedServer.Address, cmdArgs.editor.views);
                         })
-                }))
+                })
                 .catch(err => {
                     this._logger.Debug("Cancelled or Failed getting video: " + JSON.stringify(err));
                 })

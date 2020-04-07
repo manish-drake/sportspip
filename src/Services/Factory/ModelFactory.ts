@@ -34,7 +34,7 @@ export class ModelFactory {
         var _createThumbnailOptions: CreateThumbnailOptions = { fileUri: sourcePath, outputFileName: thumbname };
         this.videoEditor.createThumbnail(_createThumbnailOptions)
             .then(res => {
-                this._logger.Debug("Thumbnail created in:" + res);
+                this._logger.Debug("Thumbnail created in: " + res);
                 var path = res.substr(0, res.lastIndexOf('/') + 1);
                 var fileName = res.substr(res.lastIndexOf('/') + 1);
                 this.storageFactory.MoveFile("file:///" + path, fileName, this.storageDataDir, thumbname + ".jpg")
@@ -42,7 +42,7 @@ export class ModelFactory {
                         this._logger.Error("Error getting Thumbnail from cache: " + JSON.stringify(err));
                     }))
                     .subscribe(res => {
-                        this._logger.Debug("Got thumbnail")
+                        this._logger.Debug("Got thumbnail: " + res)
                     })
             })
             .catch(err => {

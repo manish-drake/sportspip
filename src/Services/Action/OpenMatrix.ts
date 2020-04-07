@@ -25,6 +25,9 @@ export class OpenMatrix implements ICommand {
     }
 
     run(cmdArgs) {
+        console.log(":: " + this.storageDataDir + "Local/" + cmdArgs.Channel + "/Tennis/Matrices/" + cmdArgs.Name + ".mtx")
+
+
         this._logger.Debug('open matrix..');
         this.core.ReadMatrixFile(this.storageDataDir + "Local/" + cmdArgs.Channel + "/Tennis/Matrices/" + cmdArgs.Name, cmdArgs.Name + ".mtx")
             .catch(err => new Observable(err => {

@@ -203,7 +203,7 @@ export class Core {
                         success.forEach((res) => {
                             return this.ReadMatrixFile(this.storageDataDir + "Local/" + channelName.name + "/Tennis/Matrices/" + res.name, "Header.xml")
                                 .subscribe((data) => {
-                                    //deserialiae server header  
+                                    //deserialiae server header
                                     var result = JSON.parse(data.toString());
                                     // console.log(result);
                                     var item = this.modelFactory.ComposeHeader(result);

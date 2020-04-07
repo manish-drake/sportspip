@@ -4,6 +4,8 @@ import { AppVersion } from '@ionic-native/app-version';
 import { Device } from '@ionic-native/device';
 import { HomeMorePopover } from '../../pages/homemore-popover/homemore-popover';
 import { Alert } from '../../Services/common/alerts';
+import { ToastController } from 'ionic-angular';
+import { DomSanitizer } from '@angular/platform-browser'
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
@@ -12,6 +14,7 @@ import { CollectionPage } from '../collection/collection';
 import { ChannelCollectionPage } from '../channelcollection/channelcollection';
 import { EditorPage } from '../editor/editor';
 import { SettingsPage } from '../settings/settings';
+
 //Service
 import { Storage } from '../../Services/Factory/Storage';
 import { Connection } from '../../Services/Connection';
@@ -29,6 +32,7 @@ import { DeleteHeader } from '../../Services/Action/DeleteHeader';
 import { OpenMatrix } from '../../Services/Action/OpenMatrix';
 import { Download } from '../../Services/Action/Download';
 import { AddNewMatrix } from '../home/action/addNewMatrix';
+import { Upload } from '../../Services/Action/Upload';
 
 declare var FileTransfer: any;
 declare var navigator: any;
@@ -36,7 +40,7 @@ declare var navigator: any;
 @Component({
     selector: 'page-home',
     templateUrl: 'home.html',
-    providers: [ModelFactory, DeleteHeader, Package, OpenMatrix, Connection, Duplicate, Download, AddNewMatrix]
+    providers: [ModelFactory, DeleteHeader, Package, OpenMatrix, Connection, Duplicate, Download, AddNewMatrix, Upload]
 })
 
 export class HomePage {
@@ -68,11 +72,12 @@ export class HomePage {
         private loadingCtrl: LoadingController,
         private connection: Connection,
         private httpService: HttpService,
-        private _logger: Logger) {
+        private _logger: Logger,
+        private upload: Upload,
+        private toastCtrl: ToastController,
+        private sanitizer: DomSanitizer) {
 
-        this.storage.externalDataDirectory().then((res) => {
-            this.dataDirectory = res;
-        });
+        
     }
 
     ionViewDidEnter() {
@@ -102,6 +107,10 @@ export class HomePage {
                 });
                 this._logger.Info('OS: ', this.device.platform + " " + this.device.version);
                 this._logger.Info('Device: ', this.device.manufacturer.toUpperCase() + " " + this.device.model);
+                this.storage.externalDataDirectory().then((res) => {
+                    this.dataDirectory = res;
+                    console.log(":: data: " + this.dataDirectory);
+                });
             }
         });
     }
@@ -176,6 +185,22 @@ export class HomePage {
             title: matrix.Title,
             buttons: [
                 {
+                    icon: 'cloud-upload',
+                    text: 'Upload',
+                    handler: () => {
+                        console.log('Upload clicked');
+                        this.UploadMatrix(matrix);                   
+                    }
+                },
+                {
+                    icon: 'copy',
+                    text: 'Save Copy',
+                    handler: () => {
+                        console.log('Copy clicked');
+                        this.DuplicateMatrix(matrix.Channel, matrix.Name);
+                    }
+                },
+                {
                     icon: 'trash',
                     text: 'Delete',
                     role: 'destructive',
@@ -184,21 +209,7 @@ export class HomePage {
                         this.deleteHeader.DeleteLocalHeader(matrix.Name, matrix.Channel);
                         this.localMatrices.splice(index, 1);
                     }
-                }, {
-                    icon: 'copy',
-                    text: 'Save Copy',
-                    handler: () => {
-                        console.log('Copy clicked');
-                        this.DuplicateMatrix(matrix.Channel, matrix.Name);
-                    }
                 },
-                // {
-                //     icon: 'share-alt',
-                //     text: 'Transfer',
-                //     handler: () => {
-                //         console.log('Transfer clicked');                       
-                //     }
-                // },
                 {
                     icon: 'close',
                     text: 'Cancel',
@@ -237,11 +248,27 @@ export class HomePage {
         actionSheet.present();
     }
 
+    UploadMatrix(matrix) {
+        this._logger.Debug('Uploading  matrix..', );
+        this.platform.ready().then(() => {
+            this.upload.Run(matrix)
+                .catch(err => new Observable(err => { this._logger.Error('Error uploading matrix.', err); }))
+                .then((res) => {
+                    this._logger.Debug('Matrix uploaded.')
+                let toast = this.toastCtrl.create({
+                    message: 'Uploaded Successfully',
+                    duration: 2000,
+                });
+                toast.present();
+                })
+        })
+    }
+
     DuplicateMatrix(channelName, matrixname) {
         this._logger.Debug('Duplicate  matrix..', );
         this.platform.ready().then(() => {
             this.duplicate.Run(channelName, matrixname)
-                .catch(err => new Observable(err => { this._logger.Error('Error,Duplicate  matrix..', err); }))
+                .catch(err => new Observable(err => { this._logger.Error('Error,Duplicate matrix..', err); }))
                 .then((res) => {
                     this.localMatrices = [];
                     this.GetLocalMatrixHeader();
@@ -249,8 +276,10 @@ export class HomePage {
         })
     }
 
-    retrunThumbnailPath(name) {
-        return "url(" + this.dataDirectory + name + ".jpg" + ")";
+    returnThumbnailPath(name) {
+        // return this.dataDirectory + name + ".jpg";
+        // return "url(" + this.dataDirectory + name + ".jpg" + ")";
+        return this.sanitizer.bypassSecurityTrustUrl("url(" + this.dataDirectory + name + ".jpg" + ")");
     }
 
     GetLocalMatrixHeader() {

@@ -11,8 +11,6 @@ export class Download {
         private _logger: Logger,
         private packages: Package) {
 
-
-
     }
 
     DownloadServerHeaderAsync(fileName, channelName, path): Promise<any> {

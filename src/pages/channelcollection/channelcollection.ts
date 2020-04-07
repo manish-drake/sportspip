@@ -89,7 +89,7 @@ export class ChannelCollectionPage {
     return Utils.FormatDate(value);
   }
 
-  retrunThumbnailPath(name) {
+  returnThumbnailPath(name) {
     return "url(" + this.dataDir + name + ".jpg" + ")";
   }
 

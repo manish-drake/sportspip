@@ -85,7 +85,7 @@ export class CollectionPage {
     return Utils.FormatDate(value);
   }
 
-  retrunThumbnailPath(name) {
+  returnThumbnailPath(name) {
     return "url(" + this.dataDir + name + ".jpg" + ")";
   }
 

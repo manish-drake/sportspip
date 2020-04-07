@@ -51,6 +51,7 @@ import { Package } from '../Services/Package';
 import { Core } from '../Services/core';
 import { HttpService } from '../Services/httpService';
 import { SettingsService } from '../Services/SettingsService';
+import { StrapiService } from '../Services/strapi.service';
 
 
 @NgModule({
@@ -106,7 +107,8 @@ import { SettingsService } from '../Services/SettingsService';
     Package,
     Core,
     HttpService,
-    SettingsService
+    SettingsService,
+    StrapiService
   ],
   imports: [IonicModule.forRoot(sportspip), BrowserModule, HttpModule],
   bootstrap: [IonicApp],

@@ -4,16 +4,24 @@
 			Sports PIP
 		</ion-title>
 		<ion-buttons end>
-			<button ion-button icon-only (click)="openConnectivity()"><ion-icon name="wifi"></ion-icon><span></span></button>
-			<button ion-button icon-only (click)="openAccounts()"><ion-icon name="person"></ion-icon></button>
-			<button ion-button icon-only (click)="presentPopover($event)"><ion-icon name="more"></ion-icon></button>
+			<button ion-button icon-only (click)="openConnectivity()">
+				<ion-icon name="wifi"></ion-icon><span></span>
+			</button>
+			<button ion-button icon-only (click)="openAccounts()">
+				<ion-icon name="person"></ion-icon>
+			</button>
+			<button ion-button icon-only (click)="presentPopover($event)">
+				<ion-icon name="more"></ion-icon>
+			</button>
 		</ion-buttons>
 	</ion-navbar>
 	<ion-row>
-		<ion-col text-center align-self-center (click)="showSegment('local')" [class.selectedsegment]="selectedSegment != 'local'">
+		<ion-col text-center align-self-center (click)="showSegment('local')"
+			[class.selectedsegment]="selectedSegment != 'local'">
 			<b ion-text style="padding:9px 0; display: inline-block;" color="primary">Matrices</b>
 		</ion-col>
-		<ion-col text-center align-self-center (click)="showSegment('server')" [class.selectedsegment]="selectedSegment != 'server'">
+		<ion-col text-center align-self-center (click)="showSegment('server')"
+			[class.selectedsegment]="selectedSegment != 'server'">
 			<b ion-text style="padding:9px 0; display: inline-block;" color="primary">Channels</b>
 		</ion-col>
 	</ion-row>
@@ -21,33 +29,44 @@
 
 <ion-content style="background:#f4f4f4;" [ngSwitch]="selectedSegment">
 	<ion-fab bottom right *ngSwitchCase="'local'">
-		<button ion-fab [command]="newMatrix" [cmdArgs]="'addNew'" [usePress]="false"><ion-icon name="add"></ion-icon></button>
+		<button ion-fab [command]="newMatrix" [cmdArgs]="'addNew'" [usePress]="false">
+			<ion-icon name="add"></ion-icon>
+		</button>
 	</ion-fab>
 
 	<div *ngSwitchCase="'local'" style="position: relative; height:100%;">
 		<ion-refresher (ionRefresh)="doRefreshLocal($event)" no-lines>
 			<ion-refresher-content></ion-refresher-content>
 		</ion-refresher>
-		<button ion-item *ngIf="localMatrices.length > 0" style="background:transparent;" (click)="openCollection()"> All Matrices<ion-badge item-right>{{localMatrices.length}}</ion-badge></button>
+		<button ion-item *ngIf="localMatrices.length > 0" style="background:transparent;" (click)="openCollection()">
+			All Matrices<ion-badge item-right>{{localMatrices.length}}</ion-badge></button>
 		<ion-row>
-			<ion-col no-padding col-12 col-sm-6 col-lg-4 col-xl-3 *ngFor='let matrix of localMatrices | slice: 0:12; index as i'>
-				<ion-card tappable [command]="OpenMatrix" [cmdArgs]="matrix" [usePress]="false" (press)="matrixPressed(i,matrix)">
+			<ion-col no-padding col-12 col-sm-6 col-lg-4 col-xl-3
+				*ngFor='let matrix of localMatrices | slice: 0:12; index as i'>
+				<ion-card tappable [command]="OpenMatrix" [cmdArgs]="matrix" [usePress]="false"
+					(press)="matrixPressed(i,matrix)">
 					<ion-row>
-						<ion-col no-padding [style.background-image]="retrunThumbnailPath(matrix.ThumbnailSource)" style="height: 120px;background-size: cover;background-color:lightgray;background-position: center;">
+						<ion-col no-padding style="height: 120px;background-size: cover;background-color:lightgray;background-position: center;">
+							<!-- <ion-img [src]="returnThumbnailPath(matrix.ThumbnailSource)" style="height: 100%; width: 100%"></ion-img> -->
+							<img [attr.src]="returnThumbnailPath(matrix.ThumbnailSource)" style="height: 100%; width: 100%"/>
+							<!-- [style.background-image]="returnThumbnailPath(matrix.UploadID)" -->
 						</ion-col>
 					</ion-row>
 					<ion-row>
 						<ion-col no-padding>
 							<ion-card-content style="padding:5px 10px 2px 10px ">
 								<ion-row>
-									<ion-col no-padding style="font-size: 18px;overflow: hidden;text-overflow: ellipsis;"> {{matrix.Title}}
+									<ion-col no-padding
+										style="font-size: 18px;overflow: hidden;text-overflow: ellipsis;">
+										{{matrix.Title}}
 									</ion-col>
 									<ion-col no-padding align-self-center text-right col-auto>
 										<p>{{FormatDate(matrix.DateCreated)}}</p>
 									</ion-col>
 								</ion-row>
 								<ion-row>
-									<ion-col no-padding style="overflow: hidden;text-overflow: ellipsis;"> {{matrix.Sport}}/{{matrix.Skill}}
+									<ion-col no-padding style="overflow: hidden;text-overflow: ellipsis;">
+										{{matrix.Sport}}/{{matrix.Skill}}
 									</ion-col>
 									<ion-col no-padding align-self-center text-right col-auto>
 										<!--<p>{{formatDuration(matrix.Duration)}}</p>-->
@@ -70,15 +89,24 @@
 			<ion-refresher-content></ion-refresher-content>
 		</ion-refresher>
 		<ion-item-group *ngFor="let channel of channels|groupBy:'Channel'">
-			<button ion-item *ngIf="channel.value.length > 0" style="background:transparent;" (click)="openChannelCollection(channel.key)"> {{channel.key}}<ion-badge item-right>{{channel.value.length}}</ion-badge></button>
+			<button ion-item *ngIf="channel.value.length > 0" style="background:transparent;"
+				(click)="openChannelCollection(channel.key)"> {{channel.key}}<ion-badge item-right>
+					{{channel.value.length}}</ion-badge></button>
 			<ion-row>
-				<ion-col no-padding col-12 col-sm-6 col-lg-4 col-xl-3 *ngFor="let matrix of channel.value | slice: 0:6; index as i">
-					<ion-card (tap)="channelMatrixClicked(i,matrix,channel.value)" (press)="channelMatrixPressed(i,matrix,channel.value)">
+				<ion-col no-padding col-12 col-sm-6 col-lg-4 col-xl-3
+					*ngFor="let matrix of channel.value | slice: 0:6; index as i">
+					<ion-card (tap)="channelMatrixClicked(i,matrix,channel.value)"
+						(press)="channelMatrixPressed(i,matrix,channel.value)">
 						<ion-row>
-							<ion-col no-padding [style.background-image]="retrunThumbnailPath(matrix.UploadID)" style="position: relative; height: 120px;background-size: cover;background-color:lightgray;background-position: center;">
-								<ion-row style="position: absolute;top: 0;width: 100%;height: 100%;background-color: rgba(0,0,0,0.2);">
+							<ion-col no-padding [style.background-image]="returnThumbnailPath(matrix.UploadID)"
+								style="position: relative; height: 120px;background-size: cover;background-color:lightgray;background-position: center;">
+								<ion-row
+									style="position: absolute;top: 0;width: 100%;height: 100%;background-color: rgba(0,0,0,0.2);">
 									<ion-col text-center align-self-center>
-										<button ion-button icon-left clear color="light" style="font-size: 20px; font-weight: bold;"><ion-icon name="download"></ion-icon>Download</button>
+										<button ion-button icon-left clear color="light"
+											style="font-size: 20px; font-weight: bold;">
+											<ion-icon name="download"></ion-icon>Download
+										</button>
 									</ion-col>
 								</ion-row>
 							</ion-col>
@@ -87,14 +115,17 @@
 							<ion-col no-padding>
 								<ion-card-content style="padding:5px 10px 2px 10px ">
 									<ion-row>
-										<ion-col no-padding style="font-size: 18px;overflow: hidden;text-overflow: ellipsis;"> {{matrix.Title}}
+										<ion-col no-padding
+											style="font-size: 18px;overflow: hidden;text-overflow: ellipsis;">
+											{{matrix.Title}}
 										</ion-col>
 										<ion-col no-padding align-self-center text-right col-auto>
 											<p>{{FormatDate(matrix.DateCreated)}}</p>
 										</ion-col>
 									</ion-row>
 									<ion-row>
-										<ion-col no-padding style="overflow: hidden;text-overflow: ellipsis;"> {{matrix.Sport}}/{{matrix.Skill}}
+										<ion-col no-padding style="overflow: hidden;text-overflow: ellipsis;">
+											{{matrix.Sport}}/{{matrix.Skill}}
 										</ion-col>
 										<ion-col no-padding align-self-center text-right col-auto>
 											<!--<p>{{formatDuration(matrix.Duration)}}</p>-->
