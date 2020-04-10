@@ -22,7 +22,7 @@
   </ion-refresher>
   <ion-row>
     <ion-col no-padding col-12 col-sm-6 col-lg-4 col-xl-3 *ngFor='let matrix of localMatrices; index as i'>
-      <ion-card [command]="OpenMatrix" [cmdArgs]="matrix" [usePress]="false" (press)="matrixPressed(i,matrix.Name,matrix.Channel,matrix.Title)">
+      <ion-card [command]="OpenMatrix" [cmdArgs]="matrix" [usePress]="false" (press)="matrixPressed(i,matrix)">
         <ion-row>
           <ion-col no-padding [style.background-image]="returnThumbnailPath(matrix.ThumbnailSource)" style="height: 120px;background-size: cover;background-color:lightgray;background-position: center;">
           </ion-col>

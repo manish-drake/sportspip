@@ -52,7 +52,7 @@ export class HomePage {
     dataDirectory: any;
 
     constructor(
-        private platform: Platform, 
+        private platform: Platform,
         public navCtrl: NavController,
         private core: Core,
         private appVersion: AppVersion,
@@ -77,7 +77,7 @@ export class HomePage {
         private toastCtrl: ToastController,
         private sanitizer: DomSanitizer) {
 
-        
+
     }
 
     ionViewDidEnter() {
@@ -189,7 +189,7 @@ export class HomePage {
                     text: 'Upload',
                     handler: () => {
                         console.log('Upload clicked');
-                        this.UploadMatrix(matrix);                   
+                        this.UploadMatrix(matrix);
                     }
                 },
                 {
@@ -249,23 +249,23 @@ export class HomePage {
     }
 
     UploadMatrix(matrix) {
-        this._logger.Debug('Uploading  matrix..', );
+        this._logger.Debug('Uploading  matrix..');
         this.platform.ready().then(() => {
             this.upload.Run(matrix)
                 .catch(err => new Observable(err => { this._logger.Error('Error uploading matrix.', err); }))
                 .then((res) => {
                     this._logger.Debug('Matrix uploaded.')
-                let toast = this.toastCtrl.create({
-                    message: 'Uploaded Successfully',
-                    duration: 2000,
-                });
-                toast.present();
+                    let toast = this.toastCtrl.create({
+                        message: 'Uploaded Successfully',
+                        duration: 2000,
+                    });
+                    toast.present();
                 })
         })
     }
 
     DuplicateMatrix(channelName, matrixname) {
-        this._logger.Debug('Duplicate  matrix..', );
+        this._logger.Debug('Duplicate  matrix..');
         this.platform.ready().then(() => {
             this.duplicate.Run(channelName, matrixname)
                 .catch(err => new Observable(err => { this._logger.Error('Error,Duplicate matrix..', err); }))

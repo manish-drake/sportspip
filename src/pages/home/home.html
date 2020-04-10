@@ -43,8 +43,7 @@
 		<ion-row>
 			<ion-col no-padding col-12 col-sm-6 col-lg-4 col-xl-3
 				*ngFor='let matrix of localMatrices | slice: 0:12; index as i'>
-				<ion-card tappable [command]="OpenMatrix" [cmdArgs]="matrix" [usePress]="false"
-					(press)="matrixPressed(i,matrix)">
+				<ion-card tappable [command]="OpenMatrix" [cmdArgs]="matrix" [usePress]="false" (press)="matrixPressed(i,matrix)">
 					<ion-row>
 						<ion-col no-padding style="height: 120px;background-size: cover;background-color:lightgray;background-position: center;">
 							<!-- <ion-img [src]="returnThumbnailPath(matrix.ThumbnailSource)" style="height: 100%; width: 100%"></ion-img> -->

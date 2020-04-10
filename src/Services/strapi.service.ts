@@ -67,6 +67,9 @@ export class StrapiService {
   }
 
   public uploadFile(formData: any){
-    return this.httpClient.post(`${this.apiURL}/upload`,formData, this.getHttpOptions());
+    // let headers = new Headers;
+    // headers.set('Content-Type', 'multipart/form-data')
+    // let httpOptions = {headers: headers};
+    return this.httpClient.post(`${this.apiURL}/upload`,formData);
   }
 }

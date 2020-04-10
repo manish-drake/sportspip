@@ -7,6 +7,7 @@ import { Storage } from '../../Services/Factory/Storage';
 import { StorageFactory } from '../Factory/StorageFactory';
 import { Observable } from 'rxjs/Rx';
 import { JsonPipe } from '@angular/common';
+import { File, FileEntry } from '@ionic-native/file'
 
 
 @Injectable()
@@ -19,7 +20,8 @@ export class Upload {
         private platform: Platform,
         private apiService: StrapiService,
         private storage: Storage,
-        private storageFactory: StorageFactory) {
+        private storageFactory: StorageFactory,
+        private file: File) {
         this.storage.externalDataDirectory().then((res) => {
             this.dataDirectory = res;
         });
@@ -41,24 +43,40 @@ export class Upload {
     }
 
     UploadThumbnail(fileName: string, refId: string) {
-
-        this.storageFactory.ReadFileAync(this.dataDirectory, fileName + ".jpg")
+        this.storageFactory.ReadFileDataAync(this.dataDirectory, fileName + ".jpg")
             .subscribe((data) => {
-                console.log(":: Got file data.")
-
-                const formData = new FormData();
-                formData.append('files', data);
-                formData.append('refId', refId);
-                formData.append('ref', 'pips');
-                formData.append('field', 'Thumbnail');
-                this.apiService.uploadFile(formData)
-                    .subscribe((res) => {
-                        console.log(":: Success: Thumbnail uploaded; res: " + res)
-                    }, (err) => {
-                        console.log(":: Error uploading Thumbnail: " + err)
+                this.file.resolveLocalFilesystemUrl(this.dataDirectory + fileName + ".jpg")
+                    .then(entry => {
+                        console.log(":: success; resolveLocalFilesystemUrl: " + JSON.stringify(entry));
+                        (entry as FileEntry).file(file => {
+                            this.uploadFile(file, fileName, refId)
+                        })
                     })
+                    .catch(err => {
+                        alert(':: Error while reading file.');
+                    });
             }, (err) => {
                 console.log(":: err: " + JSON.stringify(err))
             })
+    }
+
+    uploadFile(file: any, fileName: any, refId: any): any {
+        console.log(":: file: " + JSON.stringify(file))
+        const reader = new FileReader();
+        reader.onload = () => {
+            const blob = new Blob([reader.result], { type: file.type });
+            const formData = new FormData();
+            formData.append('files', blob)
+            formData.append('refId', refId);
+            formData.append('ref', 'pips');
+            formData.append('field', 'Thumbnail');
+            this.apiService.uploadFile(formData)
+                .subscribe((res) => {
+                    console.log(":: Success: Thumbnail uploaded; res: " + res)
+                }, (err) => {
+                    console.log(":: Error uploading Thumbnail: " + err)
+                })
+        };
+        reader.readAsDataURL(file);
     }
 }

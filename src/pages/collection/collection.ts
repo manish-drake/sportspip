@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ActionSheetController, Platform } from 'ionic-angular';
+import { NavController, ActionSheetController, Platform, ToastController } from 'ionic-angular';
 import { Package } from '../../Services/Package';
 import { Duplicate } from '../../Services/Action/Duplicate';
 import { OpenMatrix } from '../../Services/Action/OpenMatrix';
@@ -10,7 +10,7 @@ import { Logger } from '../../logging/logger';
 import { Storage } from '../../Services/Factory/Storage';
 import { Core } from '../../Services/core';
 import { Utils } from '../../Services/common/utils';
-
+import { Upload } from '../../Services/Action/Upload';
 
 /*
   Generated class for the Collection page.
@@ -21,12 +21,13 @@ import { Utils } from '../../Services/common/utils';
 @Component({
   selector: 'page-collection',
   templateUrl: 'collection.html',
-  providers: [OpenMatrix, DeleteHeader, Duplicate],
+  providers: [OpenMatrix, DeleteHeader, Duplicate, Upload],
 })
 export class CollectionPage {
   localMatrices = [];
   dataDir: any;
-  constructor(public navCtrl: NavController, private actionSheetCtrl: ActionSheetController,
+  constructor(public navCtrl: NavController, 
+    private actionSheetCtrl: ActionSheetController,
     private storage: Storage,
     private core: Core,
     private deleteHeader: DeleteHeader,
@@ -35,7 +36,9 @@ export class CollectionPage {
     private openmatrix: OpenMatrix,
     private packages: Package,
     private platform: Platform,
-    private _logger: Logger) {
+    private _logger: Logger,
+    private upload: Upload,
+    private toastCtrl: ToastController) {
 
     this.storage.externalDataDirectory().then((res) => {
       this.dataDir = res;
@@ -111,24 +114,24 @@ export class CollectionPage {
     })
   }
 
-  matrixPressed(index, matrixName, channel, title) {/*$Candidate for refactoring$*///can go to actions="yes before that we have to make two different command and pressed action"
+  matrixPressed(index, matrix) {/*$Candidate for refactoring$*///can go to actions="yes before that we have to make two different command and pressed action"
     this._logger.Debug('Matrix pressed (local collection..)');
     let actionSheet = this.actionSheetCtrl.create({
-      title: title,
+      title: matrix.Title,
       buttons: [
         {
-          icon: 'trash',
-          text: 'Delete',
-          role: 'destructive',
+          icon: 'cloud-upload',
+          text: 'Upload',
           handler: () => {
-            this.deleteHeader.DeleteLocalHeader(matrixName, channel);
-            this.localMatrices.splice(index, 1);
+            console.log('Upload clicked');
+            this.UploadMatrix(matrix);
           }
-        }, {
+        },
+        {
           icon: 'copy',
           text: 'Save Copy',
           handler: () => {
-            this.DuplicateMatrix(matrixName, channel);
+            this.DuplicateMatrix(matrix.Name, matrix.Channel);
           }
         },
         // {
@@ -138,6 +141,15 @@ export class CollectionPage {
         //         console.log('Transfer clicked');                       
         //     }
         // },
+        {
+          icon: 'trash',
+          text: 'Delete',
+          role: 'destructive',
+          handler: () => {
+            this.deleteHeader.DeleteLocalHeader(matrix.Name, matrix.Channel);
+            this.localMatrices.splice(index, 1);
+          }
+        },
         {
           icon: 'close',
           text: 'Cancel',
@@ -150,5 +162,21 @@ export class CollectionPage {
     });
     actionSheet.present();
   }
+
+  UploadMatrix(matrix) {
+    this._logger.Debug('Uploading  matrix..', );
+    this.platform.ready().then(() => {
+        this.upload.Run(matrix)
+            .catch(err => new Observable(err => { this._logger.Error('Error uploading matrix.', err); }))
+            .then((res) => {
+                this._logger.Debug('Matrix uploaded.')
+            let toast = this.toastCtrl.create({
+                message: 'Uploaded Successfully',
+                duration: 2000,
+            });
+            toast.present();
+            })
+    })
+}
 
 }

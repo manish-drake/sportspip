@@ -70,5 +70,15 @@ export class StorageFactory {
             .map(x => x.toString());
     }
 
+    ReadFileDataAync(path, dirName): Observable<any> {
+        this._logger.Debug("reading local file  data async.. ")
+        return Observable.fromPromise(this.file.readAsDataURL(path, dirName))
+            .map(x => x.toString());
+    }
 
+    ReadFileBufferAync(path, dirName): Observable<any> {
+        this._logger.Debug("reading local file  data async.. ")
+        return Observable.fromPromise(this.file.readAsArrayBuffer(path, dirName))
+            .map(x => x);
+    }
 }
