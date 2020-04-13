@@ -1,0 +1,13 @@
+
+
+#icon{
+  color: #1776D2;
+}
+
+#content{
+    padding: 30px;
+  }
+  
+th.mat-sort-header-sorted {
+  color: black;
+}
