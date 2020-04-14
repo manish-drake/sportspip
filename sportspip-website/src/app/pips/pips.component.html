@@ -1,56 +1,29 @@
 <div id="content">
-    <p *ngIf="!items.length">No item</p>
+  <p *ngIf="!items.length">No item</p>
+  <div class="flexcontainer">
+    <div *ngFor="let item of items" class="item-container">
+      <mat-card>
+        <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+        <mat-card-content>
+          <p style="color: gray;"> {{FormatDate(item.metadata.DateCreated) | date:'dd MMM yyyy'}} </p>
+          <p style="font-size: 18px;overflow: hidden;text-overflow: ellipsis;"> {{item.metadata.Title}} </p>
+          <p style="overflow: hidden;text-overflow: ellipsis; color: #555555;"> {{item.metadata.Sport}} /
+            {{item.metadata.Skill}} </p>
+          <p style="color: #555555;"> Views: {{item.metadata.Views}} </p>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-icon-button [matMenuTriggerFor]="appMenu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #appMenu="matMenu">
+            <button mat-menu-item (click)="DeleteItem(item.id)">Delete</button>
+          </mat-menu>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
 
-
-  
-
-
-
-
-
-
-    <!-- <ion-row>
-        <ion-col no-padding col-12 col-sm-6 col-lg-4 col-xl-3
-            *ngFor='let item of items | slice: 0:12; index as i'>
-            <ion-card tappable [command]="ViewItem" [cmdArgs]="item.metadata" [usePress]="false">
-                <ion-row>
-                    <ion-col no-padding style="height: 120px;background-size: cover;background-color:lightgray;background-position: center;"> -->
-                        <!-- <img [attr.src]="returnThumbnailPath(item.metadata.ThumbnailSource)" style="height: 100%; width: 100%"/> -->
-                        <!-- <ion-img [src]="returnThumbnailPath(item.metadata.ThumbnailSource)" style="height: 100%; width: 100%"></ion-img> -->
-                        <!-- [style.background-image]="returnThumbnailPath(item.UploadID)" -->
-                    <!-- </ion-col>
-                </ion-row>
-                <ion-row>
-                    <ion-col no-padding>
-                        <ion-card-content style="padding:5px 10px 2px 10px ">
-                            <ion-row>
-                                <ion-col no-padding
-                                    style="font-size: 18px;overflow: hidden;text-overflow: ellipsis;">
-                                    {{item.metadata.Title}}
-                                </ion-col>
-                                <ion-col no-padding align-self-center text-right col-auto>
-                                    <p>{{FormatDate(item.metadata.DateCreated)}}</p>
-                                </ion-col>
-                            </ion-row>
-                            <ion-row>
-                                <ion-col no-padding style="overflow: hidden;text-overflow: ellipsis;">
-                                    {{item.metadata.Sport}}/{{item.metadata.Skill}}
-                                </ion-col>
-                                <ion-col no-padding align-self-center text-right col-auto> -->
-                                    <!--<p>{{formatDuration(item.metadata.Duration)}}</p>-->
-                                    <!-- <p>{{item.metadata.Views}}</p>
-                                </ion-col>
-                            </ion-row>
-                        </ion-card-content>
-                    </ion-col>
-                </ion-row>
-            </ion-card>
-        </ion-col>
-    </ion-row> -->
-
-    
-
-    <!-- <table mat-table [dataSource]="items" *ngIf="!loadingData" class="mat-elevation-z8" style="width: 100%;">
+  <!-- <table mat-table [dataSource]="items" *ngIf="!loadingData" class="mat-elevation-z8" style="width: 100%;">
   
       <ng-container matColumnDef="Date">
         <th mat-header-cell *matHeaderCellDef> Date </th>
@@ -81,13 +54,7 @@
         <th mat-header-cell *matHeaderCellDef> Duration </th>
         <td mat-cell *matCellDef="let element"> {{element.metadata.Duration}} </td>
       </ng-container>
-  
-      <ng-container matColumnDef="ViewAction">
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let element" style="text-align: center;">
-          <button mat-button color="primary" [routerLink]="['/order-detail']" [queryParams]="{id: element.id}">View</button>
-        </td>
-      </ng-container>
+
   
       <ng-container matColumnDef="DeleteAction">
         <th mat-header-cell *matHeaderCellDef></th>
@@ -102,4 +69,4 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table> -->
 
-    <mat-spinner *ngIf="loadingData" style="left: 45%;"></mat-spinner>
+  <mat-spinner *ngIf="loadingData" style="left: 45%;"></mat-spinner>

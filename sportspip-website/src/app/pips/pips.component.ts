@@ -29,7 +29,7 @@ export class PipsComponent implements OnInit {
 
   items: any = [];
   loadingData: Boolean = false;
-  displayedColumns: string[] = ["Date","Title", "Sport", "Skill", "Views", "Duration", 'ViewAction', 'DeleteAction'];
+  displayedColumns: string[] = ["Date","Title", "Sport", "Skill", "Views", "Duration", "DeleteAction"];
 
 
   constructor(private apiService: ApiService) { }
@@ -53,7 +53,15 @@ export class PipsComponent implements OnInit {
       );
   }
 
-  
+  DeleteItem(id: number) {
+    console.log(":: Deleting item with id: " + id)
+
+    this.apiService.deleteItem('pips', id)
+      .subscribe((res) => {
+        console.log("Delete Response:" + res.toString());
+        this.FetchItems();
+      })
+  }
 
   FormatDate(value) {
     var st = value;
