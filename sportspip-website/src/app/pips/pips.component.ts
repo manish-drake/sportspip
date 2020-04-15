@@ -1,5 +1,5 @@
 import { Component, OnInit, Pipe, PipeTransform, Injectable } from '@angular/core';
- 
+import { MatTableDataSource } from '@angular/material/table';
 import { ApiService } from '../service/api.service';
 
 @Pipe({
@@ -8,14 +8,17 @@ import { ApiService } from '../service/api.service';
 
 @Injectable()
 export class FilterPipe implements PipeTransform {
-  transform(items: any[], field: string, value: string): any {
-      if (!items) {
-          return [];
-      }
-      if (!field || !value) {
-          return items;
-      }
-      return items.filter(singleItem => singleItem[field].includes(value));
+  transform(items: any[], value: any): any[] {
+    if (!items) {
+      return [];
+    }
+    if (!value) {
+      return items;
+    }
+    let keys: any[] = ['Title','Sport','Skill'];
+    return items.filter(item => {
+      return keys.every(key => item.metadata[key].toLowerCase().indexOf(value) !== -1);
+    });
   }
 }
 
@@ -26,10 +29,10 @@ export class FilterPipe implements PipeTransform {
 })
 export class PipsComponent implements OnInit {
 
-
   items: any = [];
   loadingData: Boolean = false;
-  displayedColumns: string[] = ["Date","Title", "Sport", "Skill", "Views", "Duration", "DeleteAction"];
+  displayedColumns: string[] = ["Date", "Title", "Sport", "Skill", "Views", "Duration", "DeleteAction"];
+  filterValue: any = '';
 
 
   constructor(private apiService: ApiService) { }
@@ -65,9 +68,17 @@ export class PipsComponent implements OnInit {
 
   FormatDate(value) {
     var st = value;
-        let pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
-        let date = new Date(st.replace(pattern, '$1-$2-$3 $4:$5:$6'));
-        return date;
-}
+    let pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
+    let date = new Date(st.replace(pattern, '$1-$2-$3 $4:$5:$6'));
+    return date;
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+
+    // let dataSource: any = new MatTableDataSource().data.push(this.items);
+    // dataSource.filter = filterValue.trim().toLowerCase();
+    // this.items = dataSource.data;
+  }
 
 }

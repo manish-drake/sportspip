@@ -1,4 +1,9 @@
 <div id="content">
+  <mat-form-field name="myForm">
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Enter Title, Sport or Skill">
+    <!-- <input #filterInput matInput type="search" placeholder="ex. Title, Sport, Skill"> -->
+  </mat-form-field>
   <p *ngIf="!items.length">No item</p>
   <div class="flexcontainer">
     <div *ngFor="let item of items" class="item-container">
