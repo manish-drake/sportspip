@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PipsComponent, FilterPipe } from './pips/pips.component';
+import { PipsComponent, FilterPipe, SortPipe } from './pips/pips.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -25,7 +25,8 @@ import { MatInputModule } from '@angular/material/input'
   declarations: [
     AppComponent,
     PipsComponent,
-    FilterPipe
+    FilterPipe,
+    SortPipe
   ],
   imports: [
     BrowserModule,

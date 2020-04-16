@@ -59,8 +59,5 @@ export class ApiService {
   public deleteItem(apiName: string, id: number) {
     return this.httpClient.delete(`${this.apiURL}/${apiName}/${id}`, this.getHttpOptions());
   }
-
-  public getFilteredItems(apiName: string) {
-    return this.httpClient.get(`${this.apiURL}/${apiName}`, this.getHttpOptions());
-  }
+  
 }

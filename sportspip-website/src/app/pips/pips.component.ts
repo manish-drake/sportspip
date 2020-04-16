@@ -5,7 +5,6 @@ import { ApiService } from '../service/api.service';
 @Pipe({
   name: 'filter'
 })
-
 @Injectable()
 export class FilterPipe implements PipeTransform {
   transform(items: any[], value: any): any[] {
@@ -15,10 +14,53 @@ export class FilterPipe implements PipeTransform {
     if (!value) {
       return items;
     }
-    let keys: any[] = ['Title','Sport','Skill'];
+    let keys: any[] = ['Title', 'Sport', 'Skill'];
     return items.filter(item => {
-      return keys.every(key => item.metadata[key].toLowerCase().indexOf(value) !== -1);
+      let itemMatched = false;
+      keys.forEach(key => {
+        if (item.metadata[key].toLowerCase().indexOf(value.toLowerCase()) !== -1) {
+          itemMatched = true;
+        }
+      });
+      return itemMatched;
     });
+  }
+}
+
+@Pipe({
+  name: 'sort'
+})
+@Injectable()
+export class SortPipe implements PipeTransform {
+
+  constructor(private pipsComponent: PipsComponent) { }
+
+  transform(items: any[], order = ''): any[] {
+    if (!items || order === '' || !order) {
+      return items;
+    }
+    if (items.length <= 1) {
+      return items;
+    }
+    if (order === 'dt_up_asc') {
+      return items.slice().sort();
+    }
+    else if (order === 'dt_up_des') {
+      return items.slice().reverse(); 
+    }
+    else if (order === 'dt_cr_asc') {
+      return items.slice().sort((a, b) => {
+        return <any>this.pipsComponent.FormatDate(b.metadata.DateCreated) - <any>this.pipsComponent.FormatDate(a.metadata.DateCreated);
+      });
+    }
+    else if (order === 'dt_cr_des') {
+      return items.slice().sort((a, b) => {
+        return <any>this.pipsComponent.FormatDate(b.metadata.DateCreated) - <any>this.pipsComponent.FormatDate(a.metadata.DateCreated);;
+      }).reverse();
+    }
+    else {
+      return items;
+    }
   }
 }
 
@@ -29,6 +71,7 @@ export class FilterPipe implements PipeTransform {
 })
 export class PipsComponent implements OnInit {
 
+  apiURL: string = '';
   items: any = [];
   loadingData: Boolean = false;
   displayedColumns: string[] = ["Date", "Title", "Sport", "Skill", "Views", "Duration", "DeleteAction"];
@@ -39,6 +82,7 @@ export class PipsComponent implements OnInit {
 
   ngOnInit(): void {
     this.FetchItems();
+    this.apiURL = this.apiService.getApiUrl();
   }
 
   FetchItems(): void {
@@ -57,7 +101,7 @@ export class PipsComponent implements OnInit {
   }
 
   DeleteItem(id: number) {
-    console.log(":: Deleting item with id: " + id)
+    console.log("Deleting item with id: " + id)
 
     this.apiService.deleteItem('pips', id)
       .subscribe((res) => {
@@ -71,14 +115,6 @@ export class PipsComponent implements OnInit {
     let pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
     let date = new Date(st.replace(pattern, '$1-$2-$3 $4:$5:$6'));
     return date;
-  }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-
-    // let dataSource: any = new MatTableDataSource().data.push(this.items);
-    // dataSource.filter = filterValue.trim().toLowerCase();
-    // this.items = dataSource.data;
   }
 
 }

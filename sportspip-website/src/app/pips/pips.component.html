@@ -1,22 +1,40 @@
 <div id="content">
-  <mat-form-field name="myForm">
-    <mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Enter Title, Sport or Skill">
-    <!-- <input #filterInput matInput type="search" placeholder="ex. Title, Sport, Skill"> -->
-  </mat-form-field>
-  <p *ngIf="!items.length">No item</p>
+
+  <div align="right">
+    <mat-form-field>
+      <mat-label>Filter</mat-label>
+      <input #filterInput matInput type="search" placeholder="ex. Title, Sport, Skill">
+    </mat-form-field>
+    <mat-form-field style="padding-left: 50px;">
+      <mat-label>Sort</mat-label>
+      <select #sortSelect matNativeControl>
+        <option value="dt_up_asc">Uploaded (Newest)</option>
+        <option value="dt_up_des">Uploaded (Oldest)</option>
+        <option value="dt_cr_asc">Created (Newest)</option>
+        <option value="dt_cr_des">Created (Oldest)</option>
+      </select>
+    </mat-form-field>
+  </div>
+  <div class="placeholder-container" align="center" *ngIf="!items.length">
+    No item
+  </div>
   <div class="flexcontainer">
-    <div *ngFor="let item of items" class="item-container">
+    <div *ngFor="let item of items | sort: sortSelect.value | filter: filterInput.value; let idx = index"
+      class="item-container">
       <mat-card>
-        <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
-        <mat-card-content>
-          <p style="color: gray;"> {{FormatDate(item.metadata.DateCreated) | date:'dd MMM yyyy'}} </p>
-          <p style="font-size: 18px;overflow: hidden;text-overflow: ellipsis;"> {{item.metadata.Title}} </p>
-          <p style="overflow: hidden;text-overflow: ellipsis; color: #555555;"> {{item.metadata.Sport}} /
-            {{item.metadata.Skill}} </p>
-          <p style="color: #555555;"> Views: {{item.metadata.Views}} </p>
+        <img mat-card-image style="height: 140px; width: 220px; background-color:lightgray;" 
+        [attr.src]="item.thumbnail[0] ? apiURL + item.thumbnail[0].url : ''">
+        <mat-card-content style="margin-bottom: 0px;"> 
+          <span style="font-size: 18px;overflow: hidden;text-overflow: ellipsis;"> {{item.metadata.Title}} </span>
+        <br/>
+          <div class="row-content">
+            <span style="overflow: hidden;text-overflow: ellipsis; color: #555555;"> {{item.metadata.Sport}} / {{item.metadata.Skill}} </span>
+            <span style="color: #555555;"> Views: {{item.metadata.Views}} </span>
+          </div>
         </mat-card-content>
-        <mat-card-actions align="end">
+        <mat-card-actions align="end" >
+          <p style="color: gray; flex: 1 1 auto; margin: 12px;">
+            {{FormatDate(item.metadata.DateCreated) | date:'dd MMM yyyy'}} </p>
           <button mat-icon-button [matMenuTriggerFor]="appMenu">
             <mat-icon>more_vert</mat-icon>
           </button>
