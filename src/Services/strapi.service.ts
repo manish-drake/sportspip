@@ -4,7 +4,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 @Injectable()
 export class StrapiService {
 
-  apiURL: string = 'http://192.168.113.137:1337'
+  apiURL: string = 'http://3.22.235.152:1337'
 
   constructor(private httpClient: Http) {
     let token = localStorage.getItem("tid_token");

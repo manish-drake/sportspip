@@ -56,6 +56,7 @@ export class MatrixInfoPage {
                     var res = JSON.parse(data.toString());
                     var matrix = res.Matrix;
                     matrix._Title = this.matrixData._Title;
+                    matrix._Sport = this.matrixData._Sport;
                     matrix._Skill = this.matrixData._Skill;
                     matrix._Location = this.matrixData._Location;
                     matrix._UniqueID  = this.matrixData._UniqueID;
