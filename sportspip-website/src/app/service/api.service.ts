@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 
 export class ApiService {
 
-  apiURL: string = 'http://localhost:1337'
+  apiURL: string = 'http://3.22.235.152:1337'
 
   constructor(private httpClient: HttpClient) {
     let token = localStorage.getItem("mid_token");
