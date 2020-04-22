@@ -59,4 +59,5 @@ export class ApiService {
   public deleteItem(apiName: string, id: number) {
     return this.httpClient.delete(`${this.apiURL}/${apiName}/${id}`, this.getHttpOptions());
   }
+  
 }

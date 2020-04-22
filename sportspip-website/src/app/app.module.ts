@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PipsComponent, FilterPipe } from './pips/pips.component';
+import { PipsComponent, FilterPipe, SortPipe } from './pips/pips.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -18,12 +18,15 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input'
 
 @NgModule({
   declarations: [
     AppComponent,
     PipsComponent,
-    FilterPipe
+    FilterPipe,
+    SortPipe
   ],
   imports: [
     BrowserModule,
@@ -40,7 +43,9 @@ import { MatButtonModule } from '@angular/material/button';
     MatGridListModule,
     MatCardModule,
     MatMenuModule,
-    MatButtonModule
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]
