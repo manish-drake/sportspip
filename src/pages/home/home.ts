@@ -251,6 +251,7 @@ export class HomePage {
     UploadMatrix(matrix) {
         this._logger.Debug('Uploading  matrix..');
         this.platform.ready().then(() => {
+            matrix.Channel = "Channel1";
             this.upload.Run(matrix)
                 .catch(err => new Observable(err => { this._logger.Error('Error uploading matrix.', err); }))
                 .then((res) => {
