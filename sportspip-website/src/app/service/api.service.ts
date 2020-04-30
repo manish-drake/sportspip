@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 
 export class ApiService {
 
-  apiURL: string = 'http://localhost:1337'
+  apiURL: string = 'http://3.22.235.152:1337'
 
   constructor(private httpClient: HttpClient) {
     let token = localStorage.getItem("mid_token");
@@ -56,7 +56,7 @@ export class ApiService {
   public updateItem(apiName: string, item) {
     return this.httpClient.put(`${this.apiURL}/${apiName}/${item.id}`, item, this.getHttpOptions());
   }
-  public deleteItem(apiName: string, id: number) {
+  public deleteItem(apiName: string, id: string) {
     return this.httpClient.delete(`${this.apiURL}/${apiName}/${id}`, this.getHttpOptions());
   }
   

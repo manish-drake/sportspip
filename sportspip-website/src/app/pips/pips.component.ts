@@ -100,14 +100,28 @@ export class PipsComponent implements OnInit {
       );
   }
 
-  DeleteItem(id: number) {
+  DeleteItem(id: number, thumbnailId: string, packageId: string) {
     console.log("Deleting item with id: " + id)
 
     this.apiService.deleteItem('pips', id)
       .subscribe((res) => {
-        console.log("Delete Response:" + res.toString());
+        console.log("Delete PIP Response:" + res.toString());
         this.FetchItems();
-      })
+      });
+
+    console.log("Deleting thumbnail with id: " + thumbnailId);
+    this.apiService.deleteItem('upload/files', thumbnailId)
+    .subscribe((res) => {
+      console.log("Delete Thumbnail Response:" + res.toString());
+      this.FetchItems();
+    });
+
+    console.log("Deleting package with id: " + packageId);
+    this.apiService.deleteItem('upload/files', packageId)
+      .subscribe((res) => {
+        console.log("Delete Package Response:" + res.toString());
+        this.FetchItems();
+      });
   }
 
   FormatDate(value) {

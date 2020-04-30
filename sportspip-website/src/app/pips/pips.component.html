@@ -39,7 +39,7 @@
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #appMenu="matMenu">
-            <button mat-menu-item (click)="DeleteItem(item.id)">Delete</button>
+            <button mat-menu-item (click)="DeleteItem(item.id, item.thumbnail[0].id, item.package[0].id)">Delete</button>
           </mat-menu>
         </mat-card-actions>
       </mat-card>
