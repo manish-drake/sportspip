@@ -278,9 +278,9 @@ export class HomePage {
     }
 
     returnThumbnailPath(name) {
-        // return this.dataDirectory + name + ".jpg";
-        // return "url(" + this.dataDirectory + name + ".jpg" + ")";
-        return this.sanitizer.bypassSecurityTrustUrl("url(" + this.dataDirectory + name + ".jpg" + ")");
+        let filePath = this.dataDirectory + name + ".jpg";
+        // console.log(":: fileName: " + filePath);
+        return this.sanitizer.bypassSecurityTrustUrl("url(" + filePath + ")");
     }
 
     GetLocalMatrixHeader() {

@@ -5,9 +5,7 @@ import { Platform } from 'ionic-angular';
 import { StrapiService } from '../../Services/strapi.service';
 import { Storage } from '../../Services/Factory/Storage';
 import { StorageFactory } from '../Factory/StorageFactory';
-import { Observable } from 'rxjs/Rx';
-import { JsonPipe } from '@angular/common';
-import { File, FileEntry } from '@ionic-native/file'
+import { Response } from '@angular/http';
 
 
 @Injectable()
@@ -20,20 +18,24 @@ export class Upload {
         private platform: Platform,
         private apiService: StrapiService,
         private storage: Storage,
-        private storageFactory: StorageFactory,
-        private file: File) {
+        private storageFactory: StorageFactory) {
         this.storage.externalDataDirectory().then((res) => {
             this.dataDirectory = res;
         });
     }
 
     Run(matrix): Promise<any> {
-        var item = { 'name': matrix.name, 'metadata': matrix }
+        var item = { 'metadata': matrix }
         return new Promise((resolve, reject) => {
             return this.apiService.addItem('pips', item)
-                .subscribe((res) => {
+                .subscribe((res: Response) => {
                     if (res) {
-                        this.UploadThumbnail(matrix.ThumbnailSource, res['id'])
+                        let body = res.json();
+                        let refId: string = body['id'];
+                        if (refId) {
+                            this.UploadThumbnail(matrix.ThumbnailSource, refId);
+                            this.UploadPackage(matrix.ThumbnailSource, refId);
+                        }
                         return resolve(res)
                     }
                 }, (err) => {
@@ -43,40 +45,46 @@ export class Upload {
     }
 
     UploadThumbnail(fileName: string, refId: string) {
-        this.storageFactory.ReadFileDataAync(this.dataDirectory, fileName + ".jpg")
-            .subscribe((data) => {
-                this.file.resolveLocalFilesystemUrl(this.dataDirectory + fileName + ".jpg")
-                    .then(entry => {
-                        console.log(":: success; resolveLocalFilesystemUrl: " + JSON.stringify(entry));
-                        (entry as FileEntry).file(file => {
-                            this.uploadFile(file, fileName, refId)
-                        })
-                    })
-                    .catch(err => {
-                        alert(':: Error while reading file.');
-                    });
-            }, (err) => {
-                console.log(":: err: " + JSON.stringify(err))
+        console.log("Initializing thumbnail upload for pip id: " + refId)
+        this.UploadFile(fileName + ".jpg", refId, 'thumbnail')
+            .catch(err => {
+                this._logger.Error('Uploading thumbnail; Error:', err);
             })
+            .then((res: Response) => {
+                console.log("Uploading thumbnail; success: " + res.text())
+            });
     }
 
-    uploadFile(file: any, fileName: any, refId: any): any {
-        console.log(":: file: " + JSON.stringify(file))
-        const reader = new FileReader();
-        reader.onload = () => {
-            const blob = new Blob([reader.result], { type: file.type });
-            const formData = new FormData();
-            formData.append('files', blob)
-            formData.append('refId', refId);
-            formData.append('ref', 'pips');
-            formData.append('field', 'Thumbnail');
-            this.apiService.uploadFile(formData)
-                .subscribe((res) => {
-                    console.log(":: Success: Thumbnail uploaded; res: " + res)
-                }, (err) => {
-                    console.log(":: Error uploading Thumbnail: " + err)
-                })
-        };
-        reader.readAsDataURL(file);
+    UploadPackage(fileName: string, refId: string) {
+        console.log("Initializing package upload for pip id: " + refId)
+        this.UploadFile(fileName + ".sar", refId, 'package')
+            .catch(err => {
+                this._logger.Error('Uploading package; Error:', err);
+            })
+            .then((res: Response) => {
+                console.log("Uploading package; success: " + res.text())
+            });
     }
+
+    UploadFile(fileName: any, refId: any, field): Promise<any> {
+        return new Promise((resolve, reject) => {
+            return this.storageFactory.ReadFileBufferAync(this.dataDirectory, fileName)
+                .subscribe((data) => {
+                    const blob = new Blob([data]);
+                    const formData = new FormData();
+                    formData.append('files', blob, fileName)
+                    formData.append('refId', refId);
+                    formData.append('ref', 'pips');
+                    formData.append('field', field);
+                    console.log("Posting file to server..")
+                    this.apiService.uploadFile(formData)
+                        .subscribe((res) => { return resolve(res); }
+                            , (err) => { return reject(err); })
+
+                }, (err) => {
+                    return reject(err);
+                })
+        });
+    }
+
 }
