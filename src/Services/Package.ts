@@ -8,10 +8,11 @@ import { HttpService } from './httpService';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import X2JS from 'x2js';
+import * as JSZip from 'jszip';
+// import { } from 'jszip';
 
 declare var FileTransfer: any;
 declare var navigator: any;
-
 
 @Injectable()
 export class Package {
@@ -24,6 +25,7 @@ export class Package {
         private platform: Platform,
         private zip: Zip,
         private storagefactory: StorageFactory) {
+            this.zipPackage();
 
         this.storage.externalDataDirectory().then((res) => {
             this.storageDataDir = res;
@@ -139,6 +141,19 @@ export class Package {
                 console.log("Unzipping....")
                 return res;
             })
+    }
+
+    
+    zipPackage() {
+        const jszip = new JSZip();
+        jszip.file("file:///storage/emulated/0/Android/data/io.ionic.starter/files/1588338298376.jpg");
+        jszip.generateAsync().then(function(content) {
+            console.log(":: jszip; success: " + content);
+        })
+        .catch((err) => { 
+            console.log(":: jszip; error: " + err);
+        });
+
     }
 
     DownloadThumbnailfromServer(channelName, matrixName) {

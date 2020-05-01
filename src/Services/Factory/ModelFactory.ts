@@ -31,7 +31,7 @@ export class ModelFactory {
 
     CreateThumbnail(name, thumbname) {
         var sourcePath = this.rootDir + "SportsPIP/Video/" + name;
-        var _createThumbnailOptions: CreateThumbnailOptions = { fileUri: sourcePath, outputFileName: thumbname };
+        var _createThumbnailOptions: CreateThumbnailOptions = { fileUri: sourcePath, outputFileName: thumbname, width: 400, height: 300, quality: 75 };
         this.videoEditor.createThumbnail(_createThumbnailOptions)
             .then(res => {
                 this._logger.Debug("Thumbnail created in: " + res);

@@ -34,7 +34,7 @@ export class Upload {
                         let refId: string = body['id'];
                         if (refId) {
                             this.UploadThumbnail(matrix.ThumbnailSource, refId);
-                            this.UploadPackage(matrix.ThumbnailSource, refId);
+                            // this.UploadPackage(matrix.ThumbnailSource, refId);
                         }
                         return resolve(res)
                     }
