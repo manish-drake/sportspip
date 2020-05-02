@@ -14,4 +14,4 @@
 
 declare module 'x2js';
 
-declare module 'lodash';
+// declare module 'lodash';

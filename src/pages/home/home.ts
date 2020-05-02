@@ -34,9 +34,6 @@ import { Download } from '../../Services/Action/Download';
 import { AddNewMatrix } from '../home/action/addNewMatrix';
 import { Upload } from '../../Services/Action/Upload';
 
-declare var FileTransfer: any;
-declare var navigator: any;
-
 @Component({
     selector: 'page-home',
     templateUrl: 'home.html',
@@ -279,7 +276,7 @@ export class HomePage {
 
     returnThumbnailPath(name) {
         let filePath = this.dataDirectory + name + ".jpg";
-        console.log(":: fileName: " + filePath);
+        // console.log(":: fileName: " + filePath);
         return this.sanitizer.bypassSecurityTrustUrl("url(" + filePath + ")");
     }
 

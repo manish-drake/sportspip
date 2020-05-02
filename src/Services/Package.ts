@@ -8,11 +8,11 @@ import { HttpService } from './httpService';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import X2JS from 'x2js';
-import * as JSZip from 'jszip';
-// import { } from 'jszip';
+// import * as JSZip from 'jszip';
+// import { saveAs } from 'file-saver';
+
 
 declare var FileTransfer: any;
-declare var navigator: any;
 
 @Injectable()
 export class Package {
@@ -25,14 +25,31 @@ export class Package {
         private platform: Platform,
         private zip: Zip,
         private storagefactory: StorageFactory) {
-            this.zipPackage();
-
         this.storage.externalDataDirectory().then((res) => {
             this.storageDataDir = res;
             this.storage.externalRootDirectory().then((res1) => {
                 this.storageRootDirectory = res1;
             })
         });
+
+        this.platform.ready().then(() => {
+            if (this.platform.is('cordova')) {
+                this.zipPackage();
+            }
+        })
+    }
+
+    zipPackage() {
+
+        // var zip = new JSZip();
+        // zip.file("Hello.txt", "Hello World\n");
+
+        // let zipFilename = "zipFilename.zip";
+        // var zipFile = zip.generateAsync({type: "blob"});
+        // console.log(":: zipFile: " + JSON.stringify(zipFile));
+
+        // saveAs(zipFile, zipFilename);
+        
     }
 
     public fileName: any;
@@ -141,19 +158,6 @@ export class Package {
                 console.log("Unzipping....")
                 return res;
             })
-    }
-
-    
-    zipPackage() {
-        const jszip = new JSZip();
-        jszip.file("file:///storage/emulated/0/Android/data/io.ionic.starter/files/1588338298376.jpg");
-        jszip.generateAsync().then(function(content) {
-            console.log(":: jszip; success: " + content);
-        })
-        .catch((err) => { 
-            console.log(":: jszip; error: " + err);
-        });
-
     }
 
     DownloadThumbnailfromServer(channelName, matrixName) {

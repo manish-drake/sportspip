@@ -8,7 +8,6 @@ import { ModelFactory } from './Factory/ModelFactory';
 import { HttpService } from './httpService';
 import { Storage } from './Factory/Storage';
 import { Observable } from 'rxjs/Rx';
-declare var FileTransfer: any;
 
 @Injectable()
 export class BackGroundTransferProcessIP {

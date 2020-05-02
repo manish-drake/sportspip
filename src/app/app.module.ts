@@ -37,7 +37,7 @@ import { IpCamSettingsModal } from '../pages/editor/ipcamsettings-modal/ipcamset
 import { VideoComponent } from '../pages/editor/video-component/video-component'
 import { CanvasComponent } from '../pages/editor/canvas-component/canvas-component'
 import { Compareview } from '../pages/editor/compareview/compareview'
-import { CompareviewComponent, CaptureViewsPopover } from '../pages/editor/Compareview-Component/Compareview-Component'
+// import { CompareviewComponent, CaptureViewsPopover } from '../pages/editor/Compareview-Component/Compareview-Component'
 import { Swipeview } from '../pages/editor/swipeview/swipeview'
 import { StorageFactory } from '../Services/Factory/StorageFactory';
 import { NativeStorageFactory } from '../Services/Factory/NativeStorageFactory';
@@ -77,8 +77,8 @@ import { StrapiService } from '../Services/strapi.service';
     VideoComponent,
     CanvasComponent,
     Compareview,
-    CompareviewComponent,
-    CaptureViewsPopover,
+    // CompareviewComponent,
+    // CaptureViewsPopover,
     Swipeview
   ],
   providers: [
@@ -128,8 +128,8 @@ import { StrapiService } from '../Services/strapi.service';
     CollectionPage,
     ChannelCollectionPage,
     Compareview,
-    CompareviewComponent,
-    CaptureViewsPopover,
+    // CompareviewComponent,
+    // CaptureViewsPopover,
     Swipeview
   ],
 })
