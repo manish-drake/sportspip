@@ -65,7 +65,7 @@ export class EditorPage {
     this._logger.Debug('Editor page loaded');
     if (this.params.data != null) {
       this.matrix = this.params.data.matrixData;
-      // console.log("editor page: " + this.matrix));
+      console.log("editor page: " + JSON.stringify(this.matrix));
     }
     if (this.matrix["Matrix.Children"]["View"] instanceof Array) {
       this.views = this.matrix["Matrix.Children"]["View"];

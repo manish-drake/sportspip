@@ -11,6 +11,7 @@ import { Storage } from '../../Services/Factory/Storage';
 import { Core } from '../../Services/core';
 import { Utils } from '../../Services/common/utils';
 import { Upload } from '../../Services/Action/Upload';
+import { DomSanitizer } from '@angular/platform-browser'
 
 /*
   Generated class for the Collection page.
@@ -26,7 +27,7 @@ import { Upload } from '../../Services/Action/Upload';
 export class CollectionPage {
   localMatrices = [];
   dataDir: any;
-  constructor(public navCtrl: NavController, 
+  constructor(public navCtrl: NavController,
     private actionSheetCtrl: ActionSheetController,
     private storage: Storage,
     private core: Core,
@@ -38,7 +39,8 @@ export class CollectionPage {
     private platform: Platform,
     private _logger: Logger,
     private upload: Upload,
-    private toastCtrl: ToastController) {
+    private toastCtrl: ToastController,
+    private sanitizer: DomSanitizer) {
 
     this.storage.externalDataDirectory().then((res) => {
       this.dataDir = res;
@@ -89,7 +91,10 @@ export class CollectionPage {
   }
 
   returnThumbnailPath(name) {
-    return "url(" + this.dataDir + name + ".jpg" + ")";
+    let filePath = this.dataDir + name + ".jpg";
+
+    return "url(" + filePath + ")";
+    // return this.sanitizer.bypassSecurityTrustUrl("url(" + filePath + ")");
   }
 
   ionViewDidLoad() {
@@ -164,20 +169,20 @@ export class CollectionPage {
   }
 
   UploadMatrix(matrix) {
-    this._logger.Debug('Uploading  matrix..', );
+    this._logger.Debug('Uploading  matrix..');
     this.platform.ready().then(() => {
-        matrix.Channel = "Channel1";
-        this.upload.Run(matrix)
-            .catch(err => new Observable(err => { this._logger.Error('Error uploading matrix.', err); }))
-            .then((res) => {
-                this._logger.Debug('Matrix uploaded.')
-            let toast = this.toastCtrl.create({
-                message: 'Uploaded Successfully',
-                duration: 2000,
-            });
-            toast.present();
-            })
+      matrix.Channel = "Channel1";
+      this.upload.Run(matrix)
+        .then((res) => {
+          this._logger.Debug('Matrix uploaded.')
+          let toast = this.toastCtrl.create({
+            message: 'Uploaded Successfully',
+            duration: 2000,
+          });
+          toast.present();
+        })
+        .catch(err => new Observable(err => { this._logger.Error('Error uploading matrix.', err); }))
     })
-}
+  }
 
 }

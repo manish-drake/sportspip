@@ -8,11 +8,12 @@ import { HttpService } from './httpService';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import X2JS from 'x2js';
-// import * as JSZip from 'jszip';
-// import { saveAs } from 'file-saver';
+// import archiver from 'archiver';
+import * as JSZip from 'jszip';
 
 
 declare var FileTransfer: any;
+declare var cordova: any;
 
 @Injectable()
 export class Package {
@@ -25,35 +26,135 @@ export class Package {
         private platform: Platform,
         private zip: Zip,
         private storagefactory: StorageFactory) {
-        this.storage.externalDataDirectory().then((res) => {
-            this.storageDataDir = res;
-            this.storage.externalRootDirectory().then((res1) => {
-                this.storageRootDirectory = res1;
-            })
-        });
-
         this.platform.ready().then(() => {
             if (this.platform.is('cordova')) {
-                this.zipPackage();
+                this.storage.externalDataDirectory().then((res) => {
+                    this.storageDataDir = res;
+                    this.storage.externalRootDirectory().then((res1) => {
+                        this.storageRootDirectory = res1;
+                    });
+                });
             }
-        })
-    }
-
-    zipPackage() {
-
-        // var zip = new JSZip();
-        // zip.file("Hello.txt", "Hello World\n");
-
-        // let zipFilename = "zipFilename.zip";
-        // var zipFile = zip.generateAsync({type: "blob"});
-        // console.log(":: zipFile: " + JSON.stringify(zipFile));
-
-        // saveAs(zipFile, zipFilename);
-        
+        });
     }
 
     public fileName: any;
     public channelName: any;
+
+    CreatePackage(channel: any, matrixName: any): Promise<any> {
+        console.log("Initialized zipPackage");
+        console.log("Channel: " + channel);
+        console.log("Matrix Name: " + matrixName);
+        var matrixPath = this.storageDataDir + "Local/" + channel + "/Tennis/Matrices/" + matrixName;
+
+        return new Promise((resolve, reject) => {
+            return this.storagefactory.createFolder(this.storageDataDir, "Temp").subscribe((success) => {
+                console.log("Success creating Temp folder")
+                var tempPath = this.storageDataDir + "Temp/";
+                return this.storagefactory.createFolder(tempPath, "matrix" + matrixName).subscribe((success) => {
+                    console.log("Success creating Temp Matrix folder")
+                    var tempMatrixPath = tempPath + "matrix" + matrixName;
+                    return this.storagefactory.CopyFile(matrixPath, matrixName + ".mtx", tempMatrixPath + "/", matrixName + ".mtx").subscribe((success) => {
+                        console.log("File copied to temp folder");
+                        this.zipPackage(tempPath, matrixName).then((res) => {
+                            return resolve(res);
+                        })
+                            .catch((error) => {
+                                return reject(error);
+                            });
+                    }, (error) => {
+                        console.log(":: Error copying file to temp: " + JSON.stringify(error));
+                        return reject();
+                    });
+                }, (error) => {
+                    console.log("Error creating Temp Matrix folder: " + JSON.stringify(error));
+                    return reject();
+                });
+            }, (error) => {
+                console.log("Error creating Temp folder: " + JSON.stringify(error));
+                return reject();
+            });
+        });
+
+
+
+        // this.core.ReadMatrixFile(matrixPath, matrixName + ".mtx")
+        //     .subscribe((data) => {
+        //         var res = JSON.parse(data.toString());
+        //         var matrix = res.Matrix;
+        //         var views = matrix['Matrix.Children'].View;
+        //         views.forEach(view => {
+        //             if (view.Content !== undefined) {
+        //                 if (view.Content.Capture != undefined) {
+        //                     var kernel = view.Content.Capture._Kernel as string;
+        //                     console.log(":: kernel: " + JSON.stringify(kernel));
+
+        //                 }
+        //             }
+        //         });
+        //     },
+        //         (error) => {
+        //             console.log("Error, reading matrix file: " + JSON.stringify(error));
+        //         });
+    }
+
+    zipPackage(tempPath: any, matrixName: any): Promise<any> {
+        var tempMatrixPath = tempPath + "matrix" + matrixName;
+        console.log(":: tempMatrixPath: " + tempMatrixPath);
+        return new Promise((resolve, reject) => {
+            // return this.storagefactory.GetLisOfDirectory(tempPath, "matrix" + matrixName).then((success) => {
+            //     console.log(":: list: " + JSON.stringify(success));
+            // return success.forEach(file => {
+
+
+                let zipFile: JSZip = new JSZip();
+                // zipFile.file("Hello.txt", "Hello World\n");
+                zipFile.file(tempMatrixPath + "/" + matrixName + ".mtx");
+                // zipFile.folder(tempMatrixPath);
+
+            console.log(":: 88888888888")
+
+            zipFile.generateAsync({type:"blob"}).then(function(content) {
+                console.log(":: content: " + JSON.stringify(content));
+                // see FileSaver.js
+                // saveAs(content, "example.zip");
+            }).catch(function(error) {
+                console.log(":: error: " + JSON.stringify(error));
+                // see FileSaver.js
+                // saveAs(content, "example.zip");
+            });
+
+
+
+            // const jjzip = (<any>window).JJzip;
+            // console.log('zipping...');
+            // return jjzip.zip(tempMatrixPath + "/", { target: tempPath, name: matrixName },
+            // (data) => {
+            //     console.log("Succesful zipped folder: " + JSON.stringify(data));
+            //     return resolve();
+
+            // return this.storagefactory.CopyFile(tempPath, matrixName + ".zip", tempPath, matrixName + ".sar").subscribe(
+            //     (res) => {
+            //         console.log("Created .sar package file: " + JSON.stringify(res));
+            //         return resolve(res);
+            //     },
+            //     (error) => {
+            //         console.log("Error Creating .sar package file: " + JSON.stringify(error));
+            //         return reject(error)
+            //     });
+            // },
+            // (error) => {
+            //     console.log("Error zipping folder: " + JSON.stringify(error));
+            //     return reject(error)
+            // });
+
+            // });
+            // }).catch((error) => {
+            //     console.log(":: error: " + JSON.stringify(error));
+            //     return reject();
+            // });
+        });
+    }
 
     MoveToLocalCollection(channelName) {
         this.fileName = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);

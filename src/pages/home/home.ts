@@ -250,7 +250,6 @@ export class HomePage {
         this.platform.ready().then(() => {
             matrix.Channel = "Channel1";
             this.upload.Run(matrix)
-                .catch(err => new Observable(err => { this._logger.Error('Error uploading matrix.', err); }))
                 .then((res) => {
                     this._logger.Debug('Matrix uploaded.')
                     let toast = this.toastCtrl.create({
@@ -258,6 +257,9 @@ export class HomePage {
                         duration: 2000,
                     });
                     toast.present();
+                })
+                .catch(err => {
+                    this._logger.Error('Error uploading matrix.', err);
                 })
         })
     }
