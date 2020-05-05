@@ -27,79 +27,124 @@ export class Upload {
     }
 
     Run(matrix): Promise<any> {
-        var item = { 'metadata': matrix }
         return new Promise((resolve, reject) => {
             this.packages.CreatePackage('Local', matrix.Name).then((res) => {
-                // console.log("Package created successfully");
-                // var tempPath = this.dataDirectory + "Temp/";
-                // this.UploadFile(tempPath, matrix.Name + ".zip", "", "")
-                // .catch(err => {
-                //     this._logger.Error('Uploading sar Error:', err);
-                // })
-                // .then((res: Response) => {
-                //     console.log("Uploading sar success: " + res.text())
-                // });
+                console.log("Package created successfully");
+                var tempPath = this.dataDirectory + "Temp/";
+                this.UploadFile(tempPath, matrix.Name + ".zip", "", "")
+                .catch(err => {
+                    this._logger.Error('Uploading sar Error:', err);
+                    return reject("errr")
+                })
+                .then((res: Response) => {
+                    console.log("Uploading sar success: " + res.text())
+                    return resolve()
+                });
             })
             .catch((error) => {
                 console.log("Error creating Package: " + JSON.stringify(error));
+                return reject("failed")
             })
 
-            // return this.apiService.addItem('pipsoo', item)
+            // this.UploadMedia(matrix, "")
+            //     .then(() => {
+            //         return resolve();
+            //     })
+            //     .catch((error) => {
+            //         return reject(error);
+            //     })
+
+            // var item = { 'metadata': matrix }
+            // this.apiService.addItem('pips', item)
             //     .subscribe((res: Response) => {
             //         if (res) {
+            //             console.log("PIP item posted to server: " + JSON.stringify(res))
             //             let body = res.json();
             //             let refId: string = body['id'];
             //             if (refId) {
-            //                 // this.UploadMedia(matrix, refId);
+            //                 this.UploadMedia(matrix, refId)
+            //                     .then(() => {
+            //                         return resolve();
+            //                     })
+            //                     .catch((error) => {
+            //                         return reject(error);
+            //                     })
             //             }
-            //             return resolve(res)
+            //             else{
+            //                 return reject();
+            //             }
             //         }
             //     }, (err) => {
             //         return reject(err);
             //     });
+
         });
     }
 
-    UploadMedia(matrix: any, refId: any){
-        this.UploadThumbnail(matrix.ThumbnailSource, refId);
-
-        
-
-        // this.UploadPackage("", refId);
+    UploadMedia(matrix: any, refId: any) {
+        return new Promise((resolve, reject) => {
+            this.packages.CreatePackage('Local', matrix.Name).then((res) => {
+                console.log("Package created successfully");
+                this.UploadThumbnail(matrix.ThumbnailSource, refId)
+                    .then(() => {
+                        this.UploadPackage(matrix.Name, refId)
+                            .then(() => {
+                                return resolve();
+                            })
+                            .catch(() => {
+                                return reject();
+                            })
+                    }).catch(() => {
+                        return reject();
+                    });
+            }).catch((error) => {
+                    console.log("Error creating Package: " + JSON.stringify(error));
+                    return reject(error);
+                })
+        });
     }
 
     UploadThumbnail(fileName: string, refId: string) {
         console.log("Initializing thumbnail upload for pip id: " + refId)
-        this.UploadFile(this.dataDirectory, fileName + ".jpg", refId, 'thumbnail')
-            .catch(err => {
-                this._logger.Error('Uploading thumbnail; Error:', err);
-            })
-            .then((res: Response) => {
-                console.log("Uploading thumbnail; success: " + res.text())
-            });
+        return new Promise((resolve, reject) => {
+            this.UploadFile(this.dataDirectory, fileName + ".jpg", refId, 'thumbnail')
+                .then((res: Response) => {
+                    console.log("Uploading thumbnail; success: " + res.text())
+                    return resolve();
+                })
+                .catch(err => {
+                    this._logger.Error('Uploading thumbnail; Error:', err);
+                    return reject();
+                });
+        });
     }
 
     UploadPackage(fileName: string, refId: string) {
-        console.log("Initializing package upload for pip id: " + refId)
-        this.UploadFile("", fileName + ".sar", refId, 'package')
-            .catch(err => {
-                this._logger.Error('Uploading package; Error:', err);
-            })
-            .then((res: Response) => {
-                console.log("Uploading package; success: " + res.text())
-            });
+        var tempPath = this.dataDirectory + "Temp/";
+        return new Promise((resolve, reject) => {
+            console.log("Initializing package upload for pip id: " + refId)
+            this.UploadFile(tempPath, fileName + ".sar", refId, 'package')
+                .then((res: Response) => {
+                    console.log("Uploading package; success: " + res.text())
+                    return resolve();
+                })
+                .catch(err => {
+                    this._logger.Error('Uploading package; Error:', err);
+                    return reject();
+                });
+        });
     }
 
     UploadFile(path: any, fileName: any, refId: any, field): Promise<any> {
         return new Promise((resolve, reject) => {
-            return this.storageFactory.ReadFileBufferAync(path, fileName)
+            this.storageFactory.ReadFileBufferAync(path, fileName)
                 .subscribe((data) => {
                     const blob = new Blob([data]);
                     const formData = new FormData();
                     formData.append('files', blob, fileName)
-                    // formData.append('refId', refId);
-                    // formData.append('ref', 'pips');
-                    // formData.append('field', field);
+                    formData.append('refId', refId);
+                    formData.append('ref', 'pips');
+                    formData.append('field', field);
                     console.log("Posting file to server..")
                     this.apiService.uploadFile(formData)
                         .subscribe((res) => { return resolve(res); }

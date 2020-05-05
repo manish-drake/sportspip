@@ -4,7 +4,7 @@ import { AppVersion } from '@ionic-native/app-version';
 import { Device } from '@ionic-native/device';
 import { HomeMorePopover } from '../../pages/homemore-popover/homemore-popover';
 import { Alert } from '../../Services/common/alerts';
-import { ToastController } from 'ionic-angular';
+import { ToastController, AlertController } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser'
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
@@ -72,7 +72,8 @@ export class HomePage {
         private _logger: Logger,
         private upload: Upload,
         private toastCtrl: ToastController,
-        private sanitizer: DomSanitizer) {
+        private sanitizer: DomSanitizer,
+        private alertCtrl: AlertController) {
 
 
     }
@@ -249,18 +250,35 @@ export class HomePage {
         this._logger.Debug('Uploading  matrix..');
         this.platform.ready().then(() => {
             matrix.Channel = "Channel1";
+            const loader = this.loadingCtrl.create({
+                content: "Uploading...",
+                duration: 60000
+            });
+            loader.present();
             this.upload.Run(matrix)
                 .then((res) => {
+                    loader.dismiss();
                     this._logger.Debug('Matrix uploaded.')
-                    let toast = this.toastCtrl.create({
-                        message: 'Uploaded Successfully',
-                        duration: 2000,
+                    const alert = this.alertCtrl.create({
+                        title: 'Uploaded Successfully',
+                        buttons: ['OK']
                     });
-                    toast.present();
+                    alert.present();
                 })
                 .catch(err => {
-                    this._logger.Error('Error uploading matrix.', err);
-                })
+                    loader.dismiss();
+                    this._logger.Error('Error uploading matrix: ', err);
+                    let error: string = '';
+                    if (err != undefined) {
+                        'Error: ' + err;
+                    }
+                    const alert = this.alertCtrl.create({
+                        title: 'Error uploading matrix!',
+                        subTitle: error,
+                        buttons: ['OK']
+                    });
+                    alert.present();
+                });
         })
     }
 

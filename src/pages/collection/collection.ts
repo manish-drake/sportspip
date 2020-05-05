@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ActionSheetController, Platform, ToastController } from 'ionic-angular';
+import { NavController, ActionSheetController, Platform, ToastController, LoadingController, AlertController } from 'ionic-angular';
 import { Package } from '../../Services/Package';
 import { Duplicate } from '../../Services/Action/Duplicate';
 import { OpenMatrix } from '../../Services/Action/OpenMatrix';
@@ -40,7 +40,10 @@ export class CollectionPage {
     private _logger: Logger,
     private upload: Upload,
     private toastCtrl: ToastController,
-    private sanitizer: DomSanitizer) {
+    private sanitizer: DomSanitizer,
+    private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController
+    ) {
 
     this.storage.externalDataDirectory().then((res) => {
       this.dataDir = res;
@@ -172,16 +175,35 @@ export class CollectionPage {
     this._logger.Debug('Uploading  matrix..');
     this.platform.ready().then(() => {
       matrix.Channel = "Channel1";
-      this.upload.Run(matrix)
-        .then((res) => {
-          this._logger.Debug('Matrix uploaded.')
-          let toast = this.toastCtrl.create({
-            message: 'Uploaded Successfully',
-            duration: 2000,
-          });
-          toast.present();
-        })
-        .catch(err => new Observable(err => { this._logger.Error('Error uploading matrix.', err); }))
+            const loader = this.loadingCtrl.create({
+                content: "Uploading...",
+                duration: 60000
+            });
+            loader.present();
+            this.upload.Run(matrix)
+                .then((res) => {
+                    loader.dismiss();
+                    this._logger.Debug('Matrix uploaded.')
+                    const alert = this.alertCtrl.create({
+                        title: 'Uploaded Successfully',
+                        buttons: ['OK']
+                    });
+                    alert.present();
+                })
+                .catch(err => {
+                    loader.dismiss();
+                    this._logger.Error('Error uploading matrix: ', err);
+                    let error: string = '';
+                    if (err != undefined) {
+                        'Error: ' + err;
+                    }
+                    const alert = this.alertCtrl.create({
+                        title: 'Error uploading matrix!',
+                        subTitle: error,
+                        buttons: ['OK']
+                    });
+                    alert.present();
+                });
     })
   }
 

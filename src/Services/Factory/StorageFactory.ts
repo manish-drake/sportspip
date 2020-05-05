@@ -21,6 +21,11 @@ export class StorageFactory {
             .map(x => x);
     }
 
+    CheckFolder(dirpath, dirName): Observable<any> {
+        return Observable.fromPromise(this.file.checkDir(dirpath, dirName))
+            .map(x => x);
+    }
+
     createFolder(path: string, dirName: string): Observable<string> {
         return Observable.fromPromise(this.file.createDir(path, dirName, true))
             .map(value => value["nativeURL"]);
@@ -51,6 +56,11 @@ export class StorageFactory {
 
     RemoveFile(path, fileName): Promise<any> {
         return this.file.removeFile(path, fileName);
+    }
+
+    RemoveFolder(path, dirName): Observable<any> {
+        return Observable.fromPromise(this.file.removeDir(path, dirName))
+            .map(x => x.success);
     }
 
     RemoveFileAsync(path, dirName): Observable<boolean> {

@@ -9,7 +9,8 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import X2JS from 'x2js';
 // import archiver from 'archiver';
-import * as JSZip from 'jszip';
+// import * as JSZip from 'jszip';
+// import { saveAs } from 'file-saver';
 
 
 declare var FileTransfer: any;
@@ -42,117 +43,182 @@ export class Package {
     public channelName: any;
 
     CreatePackage(channel: any, matrixName: any): Promise<any> {
-        console.log("Initialized zipPackage");
+        console.log("CreatePackage() called..");
         console.log("Channel: " + channel);
         console.log("Matrix Name: " + matrixName);
-        var matrixPath = this.storageDataDir + "Local/" + channel + "/Tennis/Matrices/" + matrixName;
 
         return new Promise((resolve, reject) => {
-            return this.storagefactory.createFolder(this.storageDataDir, "Temp").subscribe((success) => {
-                console.log("Success creating Temp folder")
-                var tempPath = this.storageDataDir + "Temp/";
-                return this.storagefactory.createFolder(tempPath, "matrix" + matrixName).subscribe((success) => {
-                    console.log("Success creating Temp Matrix folder")
-                    var tempMatrixPath = tempPath + "matrix" + matrixName;
-                    return this.storagefactory.CopyFile(matrixPath, matrixName + ".mtx", tempMatrixPath + "/", matrixName + ".mtx").subscribe((success) => {
-                        console.log("File copied to temp folder");
-                        this.zipPackage(tempPath, matrixName).then((res) => {
-                            return resolve(res);
-                        })
-                            .catch((error) => {
-                                return reject(error);
+
+            var chkPromise = new Promise((resolve, reject) => {
+                this.storagefactory.CheckFolder(this.storageDataDir, 'Temp').subscribe((res) => {
+                    if (res) {
+                        console.log("Pre-existing Temp folder found")
+                        this.storagefactory.RemoveFileAsync(this.storageDataDir, 'Temp').subscribe(() => {
+                            console.log("Removed existing Temp folder data")
+                            return resolve();
+                        }, (error) => {
+                            console.log("Error removing existing Temp folder data: " + JSON.stringify(error));
+                            return reject();
+                        });
+                    }
+                    else {
+                        console.log("No pre-existing Temp folder exists")
+                        return resolve()
+                    }
+                }, (error) => {
+                    console.log("No pre-existing Temp folder exists")
+                    return resolve()
+                })
+            })
+            chkPromise.then(() => {
+                console.log("Temp folder is empty");
+
+                console.log("Initialized zipPackage");
+
+                this.storagefactory.createFolder(this.storageDataDir, "Temp").subscribe((success) => {
+                    console.log("Success creating Temp folder")
+                    var tempPath = this.storageDataDir + "Temp/";
+                    this.storagefactory.createFolder(tempPath, "matrix" + matrixName).subscribe((success) => {
+                        console.log("Success creating Temp Matrix folder")
+                        var tempMatrixPath = tempPath + "matrix" + matrixName;
+                        var matrixPath = this.storageDataDir + "Local/" + channel + "/Tennis/Matrices/" + matrixName;
+                        this.AddMatrixToPackage(matrixPath, matrixName, tempMatrixPath).then(() => {
+                            this.AddVideosToPackage(matrixPath, matrixName, tempMatrixPath).then(() => {
+                                this.zipPackage(tempPath, matrixName).then((res) => {
+                                    return resolve(res);
+                                }).catch((error) => {
+                                    return reject(error);
+                                });
+                            }).catch((err) => {
+                                return reject(err);
                             });
+                        }).catch(() => {
+                            return reject()
+                        });
                     }, (error) => {
-                        console.log(":: Error copying file to temp: " + JSON.stringify(error));
+                        console.log("Error creating Temp Matrix folder: " + JSON.stringify(error));
                         return reject();
                     });
                 }, (error) => {
-                    console.log("Error creating Temp Matrix folder: " + JSON.stringify(error));
+                    console.log("Error creating Temp folder: " + JSON.stringify(error));
+                    return reject();
+                });
+
+            }).catch(() => {
+                return reject();
+            })
+        });
+    }
+
+    AddMatrixToPackage(matrixPath: any, matrixName: any, tempMatrixPath: any): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.storagefactory.ReadFileAync(matrixPath, matrixName + ".mtx").subscribe((data) => {
+                console.log("Success reading json matrix file");
+                let parser: any = new X2JS();
+                var xmlData = parser.js2xml(JSON.parse(data));
+                this.storagefactory.WriteFile(tempMatrixPath, matrixName + ".mtx", xmlData).subscribe((res) => {
+                    console.log("Success creating xml matrix file" + JSON.stringify(res));
+                    return resolve();
+                }, (error) => {
+                    console.log("Error creating xml matrix file !!" + JSON.stringify(error));
                     return reject();
                 });
             }, (error) => {
-                console.log("Error creating Temp folder: " + JSON.stringify(error));
+                console.log("Error reading json matrix file !!" + JSON.stringify(error));
                 return reject();
             });
         });
+    }
 
+    AddVideosToPackage(matrixPath: any, matrixName: any, tempMatrixPath: any): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.core.ReadMatrixFile(matrixPath, matrixName + ".mtx")
+                .subscribe((data) => {
+                    var res = JSON.parse(data.toString());
+                    var matrix = res.Matrix;
+                    var views = matrix['Matrix.Children'].View;
+                    var resPromise = new Promise((resolve, reject) => {
+                        views.forEach((view, index, array) => {
+                            if (view.Content !== undefined) {
+                                if (view.Content.Capture != undefined) {
+                                    var videoFileName = view.Content.Capture._Kernel as string;
+                                    console.log(":: fileName: " + videoFileName);
+                                    let videosPath = this.storageRootDirectory + "SportsPIP/Video";
+                                    this.storagefactory.CopyFile(videosPath, videoFileName, tempMatrixPath, videoFileName).subscribe((res) => {
+                                        console.log("Success copying video fle: " + videoFileName);
+                                        if (index === array.length - 1) resolve();
+                                    }, (error) => {
+                                        console.log("Error copying video file: " + JSON.stringify(error));
+                                        return reject()
+                                    });
 
-
-        // this.core.ReadMatrixFile(matrixPath, matrixName + ".mtx")
-        //     .subscribe((data) => {
-        //         var res = JSON.parse(data.toString());
-        //         var matrix = res.Matrix;
-        //         var views = matrix['Matrix.Children'].View;
-        //         views.forEach(view => {
-        //             if (view.Content !== undefined) {
-        //                 if (view.Content.Capture != undefined) {
-        //                     var kernel = view.Content.Capture._Kernel as string;
-        //                     console.log(":: kernel: " + JSON.stringify(kernel));
-
-        //                 }
-        //             }
-        //         });
-        //     },
-        //         (error) => {
-        //             console.log("Error, reading matrix file: " + JSON.stringify(error));
-        //         });
+                                }
+                                else {
+                                    console.log("view.Content.Capture undefined")
+                                    return reject("Matrix have no content in views.");
+                                }
+                            }
+                            else {
+                                console.log("view.Content undefined")
+                                return reject();
+                            }
+                        });
+                    });
+                    resPromise.then(() => {
+                        console.log("Videos added successfully.");
+                        return resolve();
+                    }).catch(() => {
+                        return reject();
+                    })
+                }, (error) => {
+                    console.log("Error, reading matrix file: " + JSON.stringify(error));
+                });
+        });
     }
 
     zipPackage(tempPath: any, matrixName: any): Promise<any> {
         var tempMatrixPath = tempPath + "matrix" + matrixName;
-        console.log(":: tempMatrixPath: " + tempMatrixPath);
         return new Promise((resolve, reject) => {
-            // return this.storagefactory.GetLisOfDirectory(tempPath, "matrix" + matrixName).then((success) => {
-            //     console.log(":: list: " + JSON.stringify(success));
-            // return success.forEach(file => {
+            const jjzip = (<any>window).JJzip;
+            console.log('zipping...');
+            jjzip.zip(tempMatrixPath, { target: tempPath, name: matrixName },
+                (data) => {
+                    console.log("Succesful zipped folder: " + JSON.stringify(data));
+                    this.storagefactory.CopyFile(tempPath, matrixName + ".zip", tempPath, matrixName + ".sar").subscribe(
+                        (res) => {
+                            console.log("Created .sar package file: " + JSON.stringify(res));
+                            return resolve(res);
+                        },
+                        (error) => {
+                            console.log("Error Creating .sar package file: " + JSON.stringify(error));
+                            return reject(error)
+                        });
+                },
+                (error) => {
+                    console.log("Error zipping folder: " + JSON.stringify(error));
+                    return reject(error)
+                });
 
+            // var jszip = new JSZip();
+            // // jszip.file(tempMatrixPath + "/" + "Hello.txt", "Hello World88888888888888888888888888\n");
+            // // var fileResp = jszip.file(tempMatrixPath + "/" + matrixName + ".mtx");
+            // // console.log("file: " + fileResp);
+            // var folderResp = jszip.folder(tempMatrixPath);
+            // console.log("folderResp: " + JSON.stringify(folderResp));
 
-                let zipFile: JSZip = new JSZip();
-                // zipFile.file("Hello.txt", "Hello World\n");
-                zipFile.file(tempMatrixPath + "/" + matrixName + ".mtx");
-                // zipFile.folder(tempMatrixPath);
+            // console.log(":: 88888888888")
 
-            console.log(":: 88888888888")
-
-            zipFile.generateAsync({type:"blob"}).then(function(content) {
-                console.log(":: content: " + JSON.stringify(content));
-                // see FileSaver.js
-                // saveAs(content, "example.zip");
-            }).catch(function(error) {
-                console.log(":: error: " + JSON.stringify(error));
-                // see FileSaver.js
-                // saveAs(content, "example.zip");
-            });
-
-
-
-            // const jjzip = (<any>window).JJzip;
-            // console.log('zipping...');
-            // return jjzip.zip(tempMatrixPath + "/", { target: tempPath, name: matrixName },
-            // (data) => {
-            //     console.log("Succesful zipped folder: " + JSON.stringify(data));
-            //     return resolve();
-
-            // return this.storagefactory.CopyFile(tempPath, matrixName + ".zip", tempPath, matrixName + ".sar").subscribe(
-            //     (res) => {
-            //         console.log("Created .sar package file: " + JSON.stringify(res));
-            //         return resolve(res);
-            //     },
-            //     (error) => {
-            //         console.log("Error Creating .sar package file: " + JSON.stringify(error));
-            //         return reject(error)
-            //     });
-            // },
-            // (error) => {
-            //     console.log("Error zipping folder: " + JSON.stringify(error));
-            //     return reject(error)
-            // });
-
-            // });
-            // }).catch((error) => {
+            // folderResp.generateAsync({ type: "blob" }).then(function (content) {
+            //     console.log("content.size: " + content.size);
+            //     // see FileSaver.js
+            //     saveAs(content, tempPath + "example.zip");
+            // }).catch(function (error) {
             //     console.log(":: error: " + JSON.stringify(error));
-            //     return reject();
+            //     // see FileSaver.js
+            //     // saveAs(content, "example.zip");
             // });
+
+            // console.log(":: 9999999999")
         });
     }
 
