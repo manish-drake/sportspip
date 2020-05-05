@@ -8,13 +8,9 @@ import { HttpService } from './httpService';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import X2JS from 'x2js';
-// import archiver from 'archiver';
-// import * as JSZip from 'jszip';
-// import { saveAs } from 'file-saver';
-
+import * as JSZip from 'jszip';
 
 declare var FileTransfer: any;
-declare var cordova: any;
 
 @Injectable()
 export class Package {
@@ -72,9 +68,7 @@ export class Package {
             })
             chkPromise.then(() => {
                 console.log("Temp folder is empty");
-
                 console.log("Initialized zipPackage");
-
                 this.storagefactory.createFolder(this.storageDataDir, "Temp").subscribe((success) => {
                     console.log("Success creating Temp folder")
                     var tempPath = this.storageDataDir + "Temp/";
@@ -142,7 +136,6 @@ export class Package {
                             if (view.Content !== undefined) {
                                 if (view.Content.Capture != undefined) {
                                     var videoFileName = view.Content.Capture._Kernel as string;
-                                    console.log(":: fileName: " + videoFileName);
                                     let videosPath = this.storageRootDirectory + "SportsPIP/Video";
                                     this.storagefactory.CopyFile(videosPath, videoFileName, tempMatrixPath, videoFileName).subscribe((res) => {
                                         console.log("Success copying video fle: " + videoFileName);
@@ -177,48 +170,46 @@ export class Package {
     }
 
     zipPackage(tempPath: any, matrixName: any): Promise<any> {
+        console.log('zipPackage() called');
         var tempMatrixPath = tempPath + "matrix" + matrixName;
         return new Promise((resolve, reject) => {
-            const jjzip = (<any>window).JJzip;
-            console.log('zipping...');
-            jjzip.zip(tempMatrixPath, { target: tempPath, name: matrixName },
-                (data) => {
-                    console.log("Succesful zipped folder: " + JSON.stringify(data));
-                    this.storagefactory.CopyFile(tempPath, matrixName + ".zip", tempPath, matrixName + ".sar").subscribe(
-                        (res) => {
-                            console.log("Created .sar package file: " + JSON.stringify(res));
-                            return resolve(res);
-                        },
-                        (error) => {
-                            console.log("Error Creating .sar package file: " + JSON.stringify(error));
-                            return reject(error)
+            var jszip = new JSZip();
+            this.storagefactory.GetLisOfDirectory(tempPath, 'matrix' + matrixName).then((files) => {
+                var resPromise = new Promise((resolve, reject) => {
+                    files.forEach((file, index, array) => {
+                        this.storagefactory.ReadFileAync(tempMatrixPath, file.name).subscribe((data) => {
+                            console.log("Got file data to include in zip: " + file.name)
+                            jszip.file(file.name, data);
+                            if (index === array.length - 1) resolve();
+                        }, (error) => {
+                            console.log("Error reading file: " + JSON.stringify(error));
+                            reject()
                         });
-                },
-                (error) => {
-                    console.log("Error zipping folder: " + JSON.stringify(error));
-                    return reject(error)
+                    });
                 });
-
-            // var jszip = new JSZip();
-            // // jszip.file(tempMatrixPath + "/" + "Hello.txt", "Hello World88888888888888888888888888\n");
-            // // var fileResp = jszip.file(tempMatrixPath + "/" + matrixName + ".mtx");
-            // // console.log("file: " + fileResp);
-            // var folderResp = jszip.folder(tempMatrixPath);
-            // console.log("folderResp: " + JSON.stringify(folderResp));
-
-            // console.log(":: 88888888888")
-
-            // folderResp.generateAsync({ type: "blob" }).then(function (content) {
-            //     console.log("content.size: " + content.size);
-            //     // see FileSaver.js
-            //     saveAs(content, tempPath + "example.zip");
-            // }).catch(function (error) {
-            //     console.log(":: error: " + JSON.stringify(error));
-            //     // see FileSaver.js
-            //     // saveAs(content, "example.zip");
-            // });
-
-            // console.log(":: 9999999999")
+                resPromise.then(() => {
+                    console.log("Files added to zip utility");
+                    jszip.generateAsync({ type: "blob" }).then((content) => {
+                        console.log("Zip content generated");
+                        console.log("Content size: " + content.size);
+                        this.storagefactory.WriteFile(tempPath, matrixName + ".sar", content).subscribe((data) => {
+                            console.log("Zip file created: " + JSON.stringify(data))
+                            return resolve();
+                        }, (error) => {
+                            console.log("Error saving zip file: " + JSON.stringify(error))
+                            return reject();
+                        });
+                    }).catch(function (error) {
+                        console.log("Error generating zip content: " + JSON.stringify(error));
+                        return reject();
+                    });
+                }).catch(() => {
+                    return reject();
+                })
+            }).catch((error) => {
+                console.log("Error getting files from directory: " + JSON.stringify(error))
+                return reject();
+            });
         });
     }
 

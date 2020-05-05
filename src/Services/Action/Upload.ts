@@ -28,56 +28,47 @@ export class Upload {
 
     Run(matrix): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.packages.CreatePackage('Local', matrix.Name).then((res) => {
-                console.log("Package created successfully");
-                var tempPath = this.dataDirectory + "Temp/";
-                this.UploadFile(tempPath, matrix.Name + ".zip", "", "")
-                .catch(err => {
-                    this._logger.Error('Uploading sar Error:', err);
-                    return reject("errr")
-                })
-                .then((res: Response) => {
-                    console.log("Uploading sar success: " + res.text())
-                    return resolve()
-                });
-            })
-            .catch((error) => {
-                console.log("Error creating Package: " + JSON.stringify(error));
-                return reject("failed")
-            })
-
-            // this.UploadMedia(matrix, "")
-            //     .then(() => {
-            //         return resolve();
+            // this.packages.CreatePackage('Local', matrix.Name).then((res) => {
+            //     console.log("Package created successfully");
+            //     var tempPath = this.dataDirectory + "Temp/";
+            //     this.UploadFile(tempPath, matrix.Name + ".zip", "", "")
+            //     .catch(err => {
+            //         this._logger.Error('Uploading sar Error:', err);
+            //         return reject("errr")
             //     })
-            //     .catch((error) => {
-            //         return reject(error);
-            //     })
-
-            // var item = { 'metadata': matrix }
-            // this.apiService.addItem('pips', item)
-            //     .subscribe((res: Response) => {
-            //         if (res) {
-            //             console.log("PIP item posted to server: " + JSON.stringify(res))
-            //             let body = res.json();
-            //             let refId: string = body['id'];
-            //             if (refId) {
-            //                 this.UploadMedia(matrix, refId)
-            //                     .then(() => {
-            //                         return resolve();
-            //                     })
-            //                     .catch((error) => {
-            //                         return reject(error);
-            //                     })
-            //             }
-            //             else{
-            //                 return reject();
-            //             }
-            //         }
-            //     }, (err) => {
-            //         return reject(err);
+            //     .then((res: Response) => {
+            //         console.log("Uploading sar success: " + res.text())
+            //         return resolve()
             //     });
+            // })
+            // .catch((error) => {
+            //     console.log("Error creating Package: " + JSON.stringify(error));
+            //     return reject("failed")
+            // })
 
+            var item = { 'metadata': matrix }
+            this.apiService.addItem('pips', item)
+                .subscribe((res: Response) => {
+                    if (res) {
+                        console.log("PIP item posted to server: " + JSON.stringify(res))
+                        let body = res.json();
+                        let refId: string = body['id'];
+                        if (refId) {
+                            this.UploadMedia(matrix, refId)
+                                .then(() => {
+                                    return resolve();
+                                })
+                                .catch((error) => {
+                                    return reject(error);
+                                })
+                        }
+                        else{
+                            return reject();
+                        }
+                    }
+                }, (err) => {
+                    return reject(err);
+                });
         });
     }
 

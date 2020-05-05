@@ -252,7 +252,6 @@ export class HomePage {
             matrix.Channel = "Channel1";
             const loader = this.loadingCtrl.create({
                 content: "Uploading...",
-                duration: 60000
             });
             loader.present();
             this.upload.Run(matrix)
