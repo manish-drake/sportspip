@@ -27,55 +27,55 @@ export class Upload {
 
     Run(matrix): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.packages.CreatePackage('Local', matrix.Name).then((res) => {
-                console.log("Package created successfully");
+            // this.packages.CreatePackage('Local', matrix.Name).then((res) => {
+            //     console.log("Package created successfully");
 
-                var tempPath = this.dataDirectory + "Temp/";
-                this.UploadFile(tempPath, matrix.Name + ".zip", "", "")
-                .catch(err => {
-                    this._logger.Error('Uploading sar Error:', err);
-                    return reject("errr")
-                })
-                .then((res) => {
-                    console.log("Uploading sar success: " + res)
-                    return resolve()
-                });
-
-            })
-            .catch((error) => {
-                console.log("Error creating Package: " + JSON.stringify(error));
-                return reject("failed")
-            })
-
-            // var item = { 'metadata': matrix }
-            // this.apiService.addItem('pips', item)
-            //     .subscribe((res: Response) => {
-            //         if (res) {
-            //             console.log("PIP item posted to server: " + JSON.stringify(res))
-            //             let body = res.json();
-            //             let refId: string = body['id'];
-            //             if (refId) {
-            //                 this.UploadMedia(matrix, refId)
-            //                     .then(() => {
-            //                         return resolve();
-            //                     })
-            //                     .catch((error) => {
-            //                         this.apiService.deleteItem('pips', refId).subscribe((res) => {
-            //                             console.log("Success removing failed pip item")
-            //                             return reject(error);
-            //                         }, (err) => {
-            //                             console.log("Error removing failed pip item: " + JSON.stringify(err))
-            //                             return reject(error);
-            //                         })
-            //                     })
-            //             }
-            //             else{
-            //                 return reject();
-            //             }
-            //         }
-            //     }, (err) => {
-            //         return reject(err);
+            //     var tempPath = this.dataDirectory + "Temp/";
+            //     this.UploadFile(tempPath, matrix.Name + ".zip", "", "")
+            //     .catch(err => {
+            //         this._logger.Error('Uploading sar Error:', err);
+            //         return reject("errr")
+            //     })
+            //     .then((res) => {
+            //         console.log("Uploading sar success: " + res)
+            //         return resolve()
             //     });
+
+            // })
+            // .catch((error) => {
+            //     console.log("Error creating Package: " + JSON.stringify(error));
+            //     return reject("failed")
+            // })
+
+            var item = { 'metadata': matrix }
+            this.apiService.addItem('pips', item)
+                .subscribe((res) => {
+                    if (res) {
+                        console.log("PIP item posted to server: " + JSON.stringify(res))
+                        let body = res.json();
+                        let refId: string = body['id'];
+                        if (refId) {
+                            this.UploadMedia(matrix, refId)
+                                .then(() => {
+                                    return resolve();
+                                })
+                                .catch((error) => {
+                                    this.apiService.deleteItem('pips', refId).subscribe((res) => {
+                                        console.log("Success removing failed pip item")
+                                        return reject(error);
+                                    }, (err) => {
+                                        console.log("Error removing failed pip item: " + JSON.stringify(err))
+                                        return reject(error);
+                                    })
+                                })
+                        }
+                        else{
+                            return reject();
+                        }
+                    }
+                }, (err) => {
+                    return reject(err);
+                });
 
         });
     }

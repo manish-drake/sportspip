@@ -131,11 +131,13 @@ export class Package {
                     var res = JSON.parse(data.toString());
                     var matrix = res.Matrix;
                     var views = matrix['Matrix.Children'].View;
+                    var fileKernels: any = []
                     var resPromise = new Promise((resolve, reject) => {
                         views.forEach((view, index, array) => {
                             if (view.Content !== undefined) {
                                 if (view.Content.Capture != undefined) {
                                     var videoFileName = view.Content.Capture._Kernel as string;
+                                    fileKernels.push(videoFileName);
                                     let videosPath = this.storageRootDirectory + "SportsPIP/Video";
                                     this.storagefactory.CopyFile(videosPath, videoFileName, tempMatrixPath, videoFileName).subscribe((res) => {
                                         console.log("Success copying video fle: " + videoFileName);
@@ -159,7 +161,13 @@ export class Package {
                     });
                     resPromise.then(() => {
                         console.log("Videos added successfully.");
-                        return resolve();
+                        this.core.SavePackageHeader(tempMatrixPath, matrixName + ".mtx", fileKernels)
+                        .then((res) => {
+                            return resolve();
+                        })
+                        .catch((err) => {
+                            return reject();
+                        });
                     }).catch(() => {
                         return reject();
                     })
@@ -177,7 +185,7 @@ export class Package {
             this.storagefactory.GetLisOfDirectory(tempPath, 'matrix' + matrixName).then((files) => {
                 var resPromise = new Promise((resolve, reject) => {
                     files.forEach((file, index, array) => {
-                        this.storagefactory.ReadFileAync(tempMatrixPath, file.name).subscribe((data) => {
+                        this.storagefactory.ReadFileBufferAync(tempMatrixPath, file.name).subscribe((data) => {
                             console.log("Got file data to include in zip: " + file.name)
                             jszip.file(file.name, data);
                             console.log(":: file; index: " + index + " ; array.length: " + array.length )
@@ -186,7 +194,7 @@ export class Package {
                                 setTimeout(() => {
                                     console.log("Wait end");
                                     resolve();
-                                }, 5000);
+                                }, 6000);
                             }
                         }, (error) => {
                             console.log("Error reading file: " + JSON.stringify(error));
@@ -199,7 +207,7 @@ export class Package {
                     jszip.generateAsync({ type: "blob" }).then((content) => {
                         console.log("Zip content generated");
                         console.log("Content size: " + content.size);
-                        this.storagefactory.WriteFile(tempPath, matrixName + ".zip", content).subscribe((data) => {
+                        this.storagefactory.WriteFile(tempPath, matrixName + ".sar", content).subscribe((data) => {
                             console.log("Zip file created: " + JSON.stringify(data))
                             return resolve();
                         }, (error) => {

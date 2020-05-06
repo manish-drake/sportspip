@@ -278,4 +278,22 @@ export class Core {
     }
 
 
+    SavePackageHeader(path: any, matrixFileName: any, files: any[]): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this._logger.Debug('Save package header..');
+            let content = this.modelFactory.ComposePackageHeader(matrixFileName, files);
+            this.storageFactory.WriteFile(path, "headerFile.xml", content)
+                .subscribe((success) => {
+                    console.log("Success creating package header file: " + JSON.stringify(success))
+                    return resolve(success);
+                }, (error) => {
+                    console.log("Error creating package header file: " + JSON.stringify(error))
+                    return reject();
+                })
+
+        })
+
+    }
+
+
 }

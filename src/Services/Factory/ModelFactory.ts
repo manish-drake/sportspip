@@ -6,8 +6,8 @@ import { StorageFactory } from '../Factory/StorageFactory';
 import { SettingsService } from '../../Services/SettingsService';
 import { Storage } from '../Factory/Storage';
 import { Logger } from '../../logging/logger';
-
 import 'rxjs/Rx';
+import X2JS from 'x2js';
 
 @Injectable()
 export class ModelFactory {
@@ -88,29 +88,29 @@ export class ModelFactory {
         var name = (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 14);
         var uniqueId = SettingsService.uniqueId;
         let data =
-            {
-                "Matrix": {
-                    "_name": name,
-                    "_Name": name,
-                    "_Title": "Title1",
-                    "_Skill": "Serve",
-                    "_Location": "Field",
-                    "_Duration": "00:00:00",
-                    "_DateCreated": name,
-                    "_Sport": "Tennis",
-                    "_Channel": "Local",
-                    "_UniqueID": uniqueId,
-                    "Matrix.Children": {
-                        "View":
-                        {
-                            "_name": "View 1",
-                            "_Title": "View 1",
-                            "_Source": "(Blank)",
-                            "Content": {}
-                        }
+        {
+            "Matrix": {
+                "_name": name,
+                "_Name": name,
+                "_Title": "Title1",
+                "_Skill": "Serve",
+                "_Location": "Field",
+                "_Duration": "00:00:00",
+                "_DateCreated": name,
+                "_Sport": "Tennis",
+                "_Channel": "Local",
+                "_UniqueID": uniqueId,
+                "Matrix.Children": {
+                    "View":
+                    {
+                        "_name": "View 1",
+                        "_Title": "View 1",
+                        "_Source": "(Blank)",
+                        "Content": {}
                     }
                 }
-            };
+            }
+        };
         return data;
     }
 
@@ -171,25 +171,39 @@ export class ModelFactory {
         var name = Date.now().toString();
         var uniqueID = SettingsService.uniqueId;
         let data =
-            {
-                "Matrix": {
-                    "_Name": fileName,
-                    "_Title": "Title1",
-                    "_Sport": "Tennis",
-                    "_Skill": "Serve",
-                    "_PIN": " ",
-                    "_UniqueID": uniqueID,
-                    "_DateModified": name,
-                    "_Duration": duration,
-                    "_Location": "Field",
-                    "_HasTransferred": false,
-                    "_Source": source,
-                    "Clips": {
-                        "Clip": []
-                    }
+        {
+            "Matrix": {
+                "_Name": fileName,
+                "_Title": "Title1",
+                "_Sport": "Tennis",
+                "_Skill": "Serve",
+                "_PIN": " ",
+                "_UniqueID": uniqueID,
+                "_DateModified": name,
+                "_Duration": duration,
+                "_Location": "Field",
+                "_HasTransferred": false,
+                "_Source": source,
+                "Clips": {
+                    "Clip": []
                 }
-            };
+            }
+        };
         return data;
+    }
+
+    ComposePackageHeader(matrixFileName, files: any[]) {
+        let data = {
+            "PackageHeader": {
+                "MtxFileName": matrixFileName,
+                "Kernel": {
+                    "string": files
+                }
+            }
+        };
+        let parser: any = new X2JS();
+        var xmlData = parser.js2xml(data);
+        return xmlData;
     }
 
 }
