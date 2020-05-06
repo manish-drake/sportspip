@@ -3,7 +3,7 @@
     <name>Sports PIP</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="manish@drake.in" href="http://sportspip.com/">cougar</author>
-    <content original-src="index.html" src="http://192.168.43.217:8100" />
+    <content original-src="index.html" src="http://192.168.18.19:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />

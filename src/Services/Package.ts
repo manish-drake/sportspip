@@ -180,7 +180,14 @@ export class Package {
                         this.storagefactory.ReadFileAync(tempMatrixPath, file.name).subscribe((data) => {
                             console.log("Got file data to include in zip: " + file.name)
                             jszip.file(file.name, data);
-                            if (index === array.length - 1) resolve();
+                            console.log(":: file; index: " + index + " ; array.length: " + array.length )
+                            if (index === array.length - 1) {
+                                console.log("Waiting..");
+                                setTimeout(() => {
+                                    console.log("Wait end");
+                                    resolve();
+                                }, 5000);
+                            }
                         }, (error) => {
                             console.log("Error reading file: " + JSON.stringify(error));
                             reject()
@@ -192,7 +199,7 @@ export class Package {
                     jszip.generateAsync({ type: "blob" }).then((content) => {
                         console.log("Zip content generated");
                         console.log("Content size: " + content.size);
-                        this.storagefactory.WriteFile(tempPath, matrixName + ".sar", content).subscribe((data) => {
+                        this.storagefactory.WriteFile(tempPath, matrixName + ".zip", content).subscribe((data) => {
                             console.log("Zip file created: " + JSON.stringify(data))
                             return resolve();
                         }, (error) => {

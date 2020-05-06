@@ -9,6 +9,7 @@ import { Device } from '@ionic-native/device';
 import { VideoEditor } from "@ionic-native/video-editor";
 import { Zip } from "@ionic-native/zip";
 import { File } from '@ionic-native/file';
+import { FileTransfer } from '@ionic-native/file-transfer';
 import { NativeStorage } from "@ionic-native/native-storage";
 import { SQLite } from "@ionic-native/sqlite";
 import { Camera } from "@ionic-native/camera";
@@ -89,6 +90,7 @@ import { StrapiService } from '../Services/strapi.service';
     VideoEditor,
     Zip,
     File,
+    FileTransfer,
     NativeStorage,
     SQLite,
     Camera,
