@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
+declare var FileTransfer: any;
 
 @Injectable()
 export class StrapiService {
 
   apiURL: string = 'http://3.22.235.152:1337'
 
-  constructor(private httpClient: Http,
-    private transfer: FileTransfer) {
+  constructor(private httpClient: Http) {
     let token = localStorage.getItem("tid_token");
     if (token == null) {
       this.login("admin@mail.com", "sportspip");
@@ -73,23 +72,36 @@ export class StrapiService {
   //   return this.httpClient.post(`${this.apiURL}/upload`,formData, this.getHttpOptions());
   // }
 
-  public uploadFile(path: any, fileName: any, params: any) {
-    let options: FileUploadOptions = {
-      fileKey: 'files',
-      fileName: fileName,
-      params: params,
-      headers: this.getHttpOptions()
-    }
-    const fileTransfer: FileTransferObject = this.transfer.create();
-    let lpercent = 0;
-    fileTransfer.onProgress((progress) => {
-      var percent: any = Number(progress.loaded / progress.total * 100);
-      percent = Math.round(percent);
-      if ((percent % 10) === 0 && percent !== lpercent) {
-        lpercent = percent;
-        console.log("Upload Progress: " + percent + "%");
+  public uploadFile(path: any, fileName: any, params: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+
+      let options: any = {
+        fileKey: 'files',
+        fileName: fileName,
+        params: params,
+        headers: this.getHttpOptions()
       }
-    })
-    return fileTransfer.upload(path + fileName, `${this.apiURL}/upload`, options, true)
+      const fileTransfer = new FileTransfer();
+      let lpercent = 0;
+      fileTransfer.onprogress = function(progress) {
+        var percent: any = Number(progress.loaded / progress.total * 100);
+        percent = Math.round(percent);
+        if ((percent % 10) === 0 && percent !== lpercent) {
+          lpercent = percent;
+          console.log("Upload Progress: " + percent + "%");
+        }
+      }
+      fileTransfer.upload(
+        path + fileName,
+        `${this.apiURL}/upload`,
+        (res) => {
+          return resolve(res.responseCode);
+        },
+        (error) => {
+          return reject(JSON.stringify(error));
+        },
+        options,
+        true)
+    });
   }
 }

@@ -3,7 +3,7 @@
     <name>Sports PIP</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="manish@drake.in" href="http://sportspip.com/">cougar</author>
-    <content original-src="index.html" src="http://192.168.18.19:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -123,4 +123,5 @@
     <plugin name="com.jjdltc.cordova.plugin.zip" />
     <plugin name="cordova-plugin-compat" spec="^1.2.0" />
     <plugin name="cordova-plugin-file" spec="^4.3.3" />
+    <plugin name="cordova-plugin-file-transfer" spec="^1.6.3" />
 </widget>

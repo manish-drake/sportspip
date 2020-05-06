@@ -143,7 +143,7 @@ export class Upload {
             params['field'] = field;
             this.apiService.uploadFile(path, fileName, params)
             .then((res) => {
-                return resolve(res.responseCode);
+                return resolve(res);
             })
             .catch((error) => {
                 return reject(error);
