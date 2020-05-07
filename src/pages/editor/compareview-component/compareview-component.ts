@@ -344,7 +344,7 @@
 //                     this.markers.forEach(marker => {
 //                         var pos = marker._Position;
 //                         var positionInMilliseconds = this.formatPoistionInMiliSecond(pos);
-//                         marker.Left = positionInMilliseconds * factor + 'px';
+//                         marker._Left = positionInMilliseconds * factor + 'px';
 //                     });
 //                     clearInterval(interval);
 

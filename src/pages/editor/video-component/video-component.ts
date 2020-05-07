@@ -7,6 +7,7 @@ import { Storage } from '../../../Services/Factory/Storage';
 import { StorageFactory } from '../../../Services/Factory/StorageFactory';
 import { Alert } from '../../../Services/common/alerts';
 import { Logger } from '../../../logging/logger';
+import X2JS from 'x2js';
 
 @Component({
     selector: 'video-component',
@@ -161,6 +162,15 @@ export class VideoComponent {
                 error = "An unknown error occured"
         }
         return error;
+    }
+
+    returnVidPath(filename) {
+        if (this.platform.is('cordova')) {
+            return this.rootDir + "SportsPIP/Video/" + filename;
+        }
+        else {
+            return 'assets/' + filename;
+        }
     }
 
     LoadMarkers() {
@@ -383,7 +393,7 @@ export class VideoComponent {
                     this.markers.forEach(marker => {
                         var pos = marker._Position;
                         var positionInMilliseconds = this.formatPoistionInMiliSecond(pos);
-                        marker.Left = positionInMilliseconds * factor + 'px';
+                        marker._Left = positionInMilliseconds * factor + 'px';
                     });
                     clearInterval(interval);
 
@@ -400,7 +410,8 @@ export class VideoComponent {
             console.log("markers are undefined");
             this.markers = [];
             var name = 'Marker 1';
-            this.markers.push({ _Duration: '00:00:03', _Name: name, _Position: currentPosition, _Speed: 1, _name: name });
+            var marker = { _Duration: '00:00:03', _Name: name, _Position: currentPosition, _Speed: 1, _name: name, _Left: "", "Marker.Objects": {} };
+            this.markers.push(marker);
             this.saveMarkers();
             this.evaluateMarkerPosition();
             console.log("..Marker Added");
@@ -409,13 +420,19 @@ export class VideoComponent {
             var canAddMarker = this.canAddMarker(currentPosition);
             if (canAddMarker) {
                 var name = 'Marker ' + (this.markers.length + 1);
-                this.markers.push({ _Duration: '00:00:03', _Name: name, _Position: currentPosition, _Speed: 1, _name: name });
+                var marker = { _Duration: '00:00:03', _Name: name, _Position: currentPosition, _Speed: 1, _name: name, _Left: "", "Marker.Objects": {} };
+                this.markers.push(marker);
                 this.evaluateMarkerPosition();
                 console.log("..Marker Added");
                 this.saveMarkers();
             }
             else { this.alertCtrls.BasicAlert('Limit Reached', 'Only 4 markers can be added on same position.'); }
         }
+
+        console.log("json marker data: \n" + JSON.stringify(this.markers));
+        let parser: any = new X2JS();
+        var xmlData = parser.js2xml(this.markers);
+        console.log("xml marker data: \n" + xmlData);
     }
 
     saveMarkers() {
@@ -528,14 +545,6 @@ export class VideoComponent {
 
     sum(a, b) {
         return Number(a) + Number(b);
-    }
-    returnVidPath(filename) {
-        if (this.platform.is('cordova')) {
-            return this.rootDir + "SportsPIP/Video/" + filename;
-        }
-        else {
-            return 'assets/' + filename;
-        }
     }
 
     returnImagePath(name) {

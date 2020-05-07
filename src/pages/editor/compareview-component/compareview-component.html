@@ -86,7 +86,7 @@
 						<ion-row>
 							<ion-col #markersContainer no-padding (window:resize)="onResize($event)">
 								<button ion-button icon-only clear color="inactive" *ngFor="let marker of markers; index as i" [class.markerselected]="marker.checked"
-									[style.left]="marker.Left" style="width:18px;height:26px;margin:0 -9px;" (tap)="updateSelection(i,marker.checked)"
+									[style.left]="marker._Left" style="width:18px;height:26px;margin:0 -9px;" (tap)="updateSelection(i,marker.checked)"
 									(press)="deleteMarker(i)">
 										<ion-icon name="pin"></ion-icon>
 										</button>
