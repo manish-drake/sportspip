@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 
 export class ApiService {
 
-  apiURL: string = 'http://3.22.235.152:1337'
+  apiURL: any = 'http://3.22.235.152:1337'
 
   constructor(private httpClient: HttpClient) {
     let token = localStorage.getItem("mid_token");
@@ -16,7 +16,7 @@ export class ApiService {
     }
   }
 
-  getApiUrl(): string {
+  getApiUrl(): any {
     return this.apiURL;
   }
 
@@ -29,7 +29,7 @@ export class ApiService {
     }
   }
 
-  login(email: string, password: string) {
+  login(email: any, password: any) {
     this.httpClient.post(`${this.apiURL}/admin/auth/local`,
       {
         identifier: email,
@@ -44,19 +44,19 @@ export class ApiService {
       });
   }
 
-  public getItems(apiName: string) {
+  public getItems(apiName: any) {
     return this.httpClient.get(`${this.apiURL}/${apiName}`, this.getHttpOptions());
   }
-  public getItemById(apiName: string, id: any) {
+  public getItemById(apiName: any, id: any) {
     return this.httpClient.get(`${this.apiURL}/${apiName}/${id}`, this.getHttpOptions());
   }
-  public addItem(apiName: string, item) {
+  public addItem(apiName: any, item: any) {
     return this.httpClient.post(`${this.apiURL}/${apiName}`, item, this.getHttpOptions());
   }
-  public updateItem(apiName: string, item) {
+  public updateItem(apiName: any, item: any) {
     return this.httpClient.put(`${this.apiURL}/${apiName}/${item.id}`, item, this.getHttpOptions());
   }
-  public deleteItem(apiName: string, id: string) {
+  public deleteItem(apiName: any, id: any) {
     return this.httpClient.delete(`${this.apiURL}/${apiName}/${id}`, this.getHttpOptions());
   }
   

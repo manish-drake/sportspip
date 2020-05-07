@@ -100,7 +100,7 @@ export class PipsComponent implements OnInit {
       );
   }
 
-  DeleteItem(id: number, thumbnailId: string, packageId: string) {
+  DeleteItem(id: any, thumbnailId: any, packageId: any) {
     console.log("Deleting item with id: " + id)
 
     this.apiService.deleteItem('pips', id)
