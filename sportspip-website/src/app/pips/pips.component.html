@@ -1,50 +1,119 @@
-<div id="content">
 
-  <div align="right">
-    <mat-form-field>
-      <mat-label>Filter</mat-label>
-      <input #filterInput matInput type="search" placeholder="ex. Title, Sport, Skill">
-    </mat-form-field>
-    <mat-form-field style="padding-left: 50px;">
-      <mat-label>Sort</mat-label>
-      <select #sortSelect matNativeControl>
-        <option value="dt_up_asc">Uploaded (Newest)</option>
-        <option value="dt_up_des">Uploaded (Oldest)</option>
-        <option value="dt_cr_asc">Created (Newest)</option>
-        <option value="dt_cr_des">Created (Oldest)</option>
-      </select>
-    </mat-form-field>
-  </div>
-  <div class="placeholder-container" align="center" *ngIf="!items.length">
-    No item
-  </div>
-  <div class="flexcontainer">
-    <div *ngFor="let item of items | sort: sortSelect.value | filter: filterInput.value; let idx = index"
-      class="item-container">
-      <mat-card>
-        <img mat-card-image style="height: 140px; width: 220px; background-color:lightgray;" 
-        [attr.src]="item.thumbnail[0] ? apiURL + item.thumbnail[0].url : ''">
-        <mat-card-content style="margin-bottom: 0px;"> 
-          <span style="font-size: 18px;overflow: hidden;text-overflow: ellipsis;"> {{item.metadata.Title}} </span>
-        <br/>
-          <div class="row-content">
-            <span style="overflow: hidden;text-overflow: ellipsis; color: #555555;"> {{item.metadata.Sport}} / {{item.metadata.Skill}} </span>
-            <span style="color: #555555;"> Views: {{item.metadata.Views}} </span>
-          </div>
-        </mat-card-content>
-        <mat-card-actions align="end" >
-          <p style="color: gray; flex: 1 1 auto; margin: 12px;">
-            {{FormatDate(item.metadata.DateCreated) | date:'dd MMM yyyy'}} </p>
-          <button mat-icon-button [matMenuTriggerFor]="appMenu">
-            <mat-icon>more_vert</mat-icon>
-          </button>
-          <mat-menu #appMenu="matMenu">
-            <button mat-menu-item (click)="DeleteItem(item.id, item.thumbnail[0].id, item.package[0].id)">Delete</button>
-          </mat-menu>
-        </mat-card-actions>
-      </mat-card>
+  <mat-sidenav-container style=" width: 100%; height: 100%;" (backdropClick)="setSelectedItem(-1)">
+    <mat-sidenav #drawer mode="side" position="end" [(opened)]="isPIPInfoPanelOpen" (closed)="setSelectedItem(-1)" style="width: 320px;">
+      <mat-toolbar>
+        <mat-toolbar-row>
+          <span *ngIf="selectedItem">{{selectedItem.metadata.Title}}</span>
+          <span class="example-spacer"></span>
+        </mat-toolbar-row>
+      </mat-toolbar>
+
+      <mat-grid-list cols="5" rowHeight="40px" *ngIf="selectedItem" style="width: 100%; margin-top: 30px;">
+
+        <mat-grid-tile colspan="2"> <div class="iLabel"> Created </div> </mat-grid-tile>
+        <mat-grid-tile colspan="3"> <div class="iValue"> {{FormatDate(selectedItem.metadata.DateCreated) | date:'dd MMM yyyy  HH:mm'}} </div> </mat-grid-tile>
+
+        <mat-grid-tile colspan="2"> <div class="iLabel"> Uploaded </div> </mat-grid-tile>
+        <mat-grid-tile colspan="3"> <div class="iValue"> {{selectedItem.createdAt | date:'dd MMM yyyy  HH:mm'}} </div> </mat-grid-tile>
+
+        <mat-grid-tile colspan="2"> <div class="iLabel"> Updated </div> </mat-grid-tile>
+        <mat-grid-tile colspan="3"> <div class="iValue"> {{selectedItem.updatedAt | date:'dd MMM yyyy  HH:mm'}} </div> </mat-grid-tile>
+
+        <mat-grid-tile colspan="2"> <div class="iLabel"> Title </div> </mat-grid-tile> 
+        <mat-grid-tile colspan="3"> <div class="iValue"> {{selectedItem.metadata.Title}} </div> </mat-grid-tile>
+
+        <mat-grid-tile colspan="2"> <div class="iLabel"> Name </div> </mat-grid-tile> 
+        <mat-grid-tile colspan="3"> <div class="iValue"> {{selectedItem.metadata.Name}} </div> </mat-grid-tile>
+
+        <mat-grid-tile colspan="2"> <div class="iLabel"> Unique ID </div> </mat-grid-tile>
+        <mat-grid-tile colspan="3"> <div class="iValue"> {{selectedItem.metadata.UniqueID}} </div> </mat-grid-tile>
+
+        <mat-grid-tile colspan="2"> <div class="iLabel"> Sport </div> </mat-grid-tile> 
+        <mat-grid-tile colspan="3"> <div class="iValue"> {{selectedItem.metadata.Sport}} </div> </mat-grid-tile>
+
+        <mat-grid-tile colspan="2"> <div class="iLabel"> Skill </div> </mat-grid-tile>
+        <mat-grid-tile colspan="3"> <div class="iValue"> {{selectedItem.metadata.Skill}} </div> </mat-grid-tile>
+
+        <mat-grid-tile colspan="2"> <div class="iLabel"> Views </div> </mat-grid-tile>
+        <mat-grid-tile colspan="3"> <div class="iValue"> {{selectedItem.metadata.Views}} </div> </mat-grid-tile>
+
+        <mat-grid-tile colspan="2"> <div class="iLabel"> Package Size </div> </mat-grid-tile>
+        <mat-grid-tile colspan="3"> <div class="iValue" *ngIf="selectedItem.package"> {{selectedItem.package[0].size / 1000}} MB </div> </mat-grid-tile>
+
+      </mat-grid-list>
+
+
+
+
+            <!-- "Channel": "Channel1",
+  "ThumbnailSource": "1588782022035",
+  "Name": "20200506161958",
+  "UniqueID": "Droid1",
+  "Views": 2,
+  "Skill": "Serve",
+  "Duration": "00:00:00",
+  "Sport": "Tennis",
+  "Title": "Title1",
+  "DateCreated": "20200506161958",
+  "UploadID": "0" -->
+
+
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div class="upload-btn-wrapper" *ngIf="isPIPInfoPanelOpen">
+        <button id="btn" mat-mini-fab color="primary" (click)="drawer.close()"><mat-icon>close</mat-icon></button>
     </div>
-  </div>
+      <div style="margin: 20px; width: 100%;" [ngStyle]="{ 'visibility': items.length ? 'visible' : 'collapse'}">
+        <mat-form-field>
+          <mat-label>Sort</mat-label>
+          <select #sortSelect matNativeControl>
+            <option value="dt_up_asc">Uploaded (Newest)</option>
+            <option value="dt_up_des">Uploaded (Oldest)</option>
+            <option value="dt_cr_asc">Created (Newest)</option>
+            <option value="dt_cr_des">Created (Oldest)</option>
+          </select>
+        </mat-form-field>
+        <mat-form-field style="padding-left: 50px;">
+          <mat-label>Filter</mat-label>
+          <input #filterInput matInput type="search" placeholder="ex. Title, Sport, Skill">
+        </mat-form-field> 
+      </div>
+      <div class="placeholder-container" align="center" *ngIf="!items.length">
+        No item
+      </div>
+      <div class="flexcontainer">
+        <div *ngFor="let item of items | sort: sortSelect.value | filter: filterInput.value; let idx = index"
+          class="item-container">
+          <mat-card (click)="setSelectedItem(item.id)" [ngStyle]="{'border': selectedItemId == item.id ? '3px solid #598BD9' : '3px solid transparent'}"> 
+            <img mat-card-image style="height: 140px; width: 220px; background-color:lightgray;" 
+            [attr.src]="item.thumbnail[0] ? apiURL + item.thumbnail[0].url : ''">
+            <mat-card-content style="margin-bottom: 0px;"> 
+              <span style="font-size: 18px;overflow: hidden;text-overflow: ellipsis;"> {{item.metadata.Title}} </span>
+            <br/>
+              <div class="row-content">
+                <span style="overflow: hidden;text-overflow: ellipsis; color: #555555;"> {{item.metadata.Sport}} / {{item.metadata.Skill}} </span>
+                <span style="color: #555555;"> Views: {{item.metadata.Views}} </span>
+              </div>
+            </mat-card-content>
+            <mat-card-actions align="end" >
+              <p style="color: gray; flex: 1 1 auto; margin: 12px;">
+                {{FormatDate(item.metadata.DateCreated) | date:'dd MMM yyyy'}} </p>
+              <button mat-icon-button [matMenuTriggerFor]="appMenu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #appMenu="matMenu">
+                <button mat-menu-item (click)="DeleteItem(item.id, item.thumbnail[0].id, item.package[0].id)">Delete</button>
+              </mat-menu>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+
+
+
+    </mat-sidenav-content>
+  
+  </mat-sidenav-container>
 
   <!-- <table mat-table [dataSource]="items" *ngIf="!loadingData" class="mat-elevation-z8" style="width: 100%;">
   
