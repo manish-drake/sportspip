@@ -162,12 +162,12 @@ export class Package {
                     resPromise.then(() => {
                         console.log("Videos added successfully.");
                         this.core.SavePackageHeader(tempMatrixPath, matrixName + ".mtx", fileKernels)
-                        .then((res) => {
-                            return resolve();
-                        })
-                        .catch((err) => {
-                            return reject();
-                        });
+                            .then((res) => {
+                                return resolve();
+                            })
+                            .catch((err) => {
+                                return reject();
+                            });
                     }).catch(() => {
                         return reject();
                     })
@@ -184,16 +184,18 @@ export class Package {
             var jszip = new JSZip();
             this.storagefactory.GetLisOfDirectory(tempPath, 'matrix' + matrixName).then((files) => {
                 var resPromise = new Promise((resolve, reject) => {
-                    files.forEach((file, index, array) => {
+                    let processIndex = -1;
+                    files.forEach((file,index, array) => {
                         this.storagefactory.ReadFileBufferAync(tempMatrixPath, file.name).subscribe((data) => {
                             console.log("Got file data to include in zip: " + file.name)
                             jszip.file(file.name, data);
-                            console.log(":: file; index: " + index + " ; array.length: " + array.length )
-                            if (index === array.length - 1) {
+                            processIndex++;
+                            console.log(":: file; index: " + processIndex + " ; array.length: " + array.length)
+                            if (processIndex === array.length - 1) {
                                 console.log("Waiting..");
                                 setTimeout(() => {
                                     console.log("Wait end");
-                                    resolve();
+                                        resolve();
                                 }, 6000);
                             }
                         }, (error) => {

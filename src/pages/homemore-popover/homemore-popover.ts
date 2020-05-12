@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, ViewController, Platform } from 'ionic-angular';
 import { AppVersion } from '@ionic-native/app-version';
 import { Device } from '@ionic-native/device';
-import { EmailComposer } from '@ionic-native/email-composer';
-import { Observable } from 'rxjs/Rx';
+import { EmailComposer, EmailComposerOptions } from '@ionic-native/email-composer';
+
 import { Alert } from '../../Services/common/alerts';
 import { Storage } from '../../Services/Factory/Storage';
 import { StorageFactory } from '../../Services/Factory/StorageFactory';
@@ -57,56 +57,71 @@ export class HomeMorePopover {
     //why storage still lurking outside the storage file
     sendLogs() {
         this.viewCtrl.dismiss();
-
+        console.log("sendLogs() called")
+        console.log("Logs directory: " + this.sqliteLogDirectory)
         this.platform.ready().then(() => {
             this.storageFactory.CheckFile(this.sqliteLogDirectory, "data.db")
-                .catch(err => new Observable(err => {
-                    this._Logger.Error("Error: no log file exists", JSON.stringify(err));
-                    this.alertCtrls.BasicAlert("No log file found", JSON.stringify(err));
-                }))
                 .subscribe(promise => {
                     console.log("Success: " + JSON.stringify(promise));
                     this.storageFactory.CheckFile(this.rootDirectory + "SportsPIP/", "data.db")
-                        .catch(err => new Observable(err => { this.getLogsFile(); }))
                         .subscribe(promise => {
+                            console.log("Temporary logs file found: " + JSON.stringify(promise))
                             this.storageFactory.RemoveFile(this.rootDirectory + "SportsPIP/", "data.db")
                                 .then(promise => {
                                     this.getLogsFile();
                                 })
-                        })
+                        }, (err) => {
+                            console.log("Temporary Logs file not found: " + JSON.stringify(err))
+                            this.getLogsFile();
+                        });
+                }, (err) => {
+                    this._Logger.Error("Error: no log file exists", JSON.stringify(err));
+                    this.alertCtrls.BasicAlert("No log file found", JSON.stringify(err));
                 })
         });
 
     }
 
     getLogsFile() {
+        console.log("getLogsFile() called")
         this.storageFactory.CopyFile(this.sqliteLogDirectory, "data.db", this.rootDirectory + "SportsPIP/", "data.db")
-            .catch(err => new Observable(err => {
-                this._Logger.Error("Error copying log file: ", JSON.stringify(err));
-                this.alertCtrls.BasicAlert("Error getting logs file", JSON.stringify(err));
-            }))
-            .subscribe(promise => {
-                this._Logger.Debug("Composing email");
+        .subscribe((res) => {
+            this._Logger.Debug("Composing email");
                 this.composeEmail();
-            })
-
+        }, (err) => {
+            this._Logger.Error("Error copying log file: ", JSON.stringify(err));
+                this.alertCtrls.BasicAlert("Error getting logs file", JSON.stringify(err));
+        })
     }
 
     composeEmail() {
-        let email = {
-            to: 'manish@drake.in',
-            attachments: [this.rootDirectory + "SportsPIP/data.db"],
-            subject: "Logs for Sports PIP (" + this.versionNumber + ") from " + this.device.platform + " (See attachment)",
-            body:
-            "App Version: " + "<b>" + this.versionNumber + "</b><br>" +
-            "OS: " + "<b>" + this.device.platform + " " + this.device.version + "</b><br>" +
-            "Device: " + "<b>" + this.device.manufacturer.toUpperCase() + " " + this.device.model + "</b><br>" +
+        this.emailComposer.isAvailable().then((available) => {
+                console.log("Email composer available: " + JSON.stringify(available))
+        })
 
-            "<br><br>" +
-            "Here is the logs file for Sports PIP app as attachment.."
-            ,
-            isHtml: true
-        };
-        this.emailComposer.open(email);
+        let attachmentPath: string = this.rootDirectory + "SportsPIP/data.db";
+        console.log("Attachment Path: " + attachmentPath)
+
+        // let email: EmailComposerOptions = {
+        //     to: 'manish@drake.in',
+        //     attachments: [attachmentPath],
+        //     subject: "Logs for Sports PIP (" + this.versionNumber + ") from " + this.device.platform + " (See attachment)",
+        //     body:
+        //         "App Version: " + "<b>" + this.versionNumber + "</b><br>" +
+        //         "OS: " + "<b>" + this.device.platform + " " + this.device.version + "</b><br>" +
+        //         "Device: " + "<b>" + this.device.manufacturer.toUpperCase() + " " + this.device.model + "</b><br>" +
+        //         "<br><br>" +
+        //         "Here is the logs file for Sports PIP app as attachment.."
+        //     ,
+        //     isHtml: true
+        // };
+        // this.emailComposer.open(email)
+        //     .then((res) => {
+        //         console.log("Success composing mail: " + JSON.stringify(res))
+        //     })
+        //     .catch((err) => {
+        //         console.log("Error composing mail: " + JSON.stringify(err))
+        //     })
+
     }
 }

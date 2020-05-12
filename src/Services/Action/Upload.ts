@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Core } from '../core';
 import { Logger } from '../../logging/logger';
 import { StrapiService } from '../../Services/strapi.service';
@@ -21,7 +21,7 @@ export class Upload {
         });
     }
 
-    Run(matrix): Promise<any> {
+    Run(matrix, status: EventEmitter<any>): Promise<any> {
         return new Promise((resolve, reject) => {
             var item = { 'metadata': matrix }
             this.apiService.addItem('pips', item)
@@ -31,7 +31,7 @@ export class Upload {
                         let body = res.json();
                         let refId: string = body['id'];
                         if (refId) {
-                            this.UploadMedia(matrix, refId)
+                            this.UploadMedia(matrix, refId, status)
                                 .then(() => {
                                     return resolve();
                                 })
@@ -56,12 +56,14 @@ export class Upload {
         });
     }
 
-    UploadMedia(matrix: any, refId: any) {
+    UploadMedia(matrix: any, refId: any, status: EventEmitter<any>) {
         return new Promise((resolve, reject) => {
+            status.emit("creating package");
             this.packages.CreatePackage('Local', matrix.Name).then((res) => {
                 console.log("Package created successfully");
                 this.UploadThumbnail(matrix.ThumbnailSource, refId)
                     .then(() => {
+                        status.emit("uploading package");
                         this.UploadPackage(matrix.Name, refId)
                             .then(() => {
                                 return resolve();

@@ -5,6 +5,7 @@ import { Device } from '@ionic-native/device';
 import { HomeMorePopover } from '../../pages/homemore-popover/homemore-popover';
 import { Alert } from '../../Services/common/alerts';
 import { ToastController, AlertController } from 'ionic-angular';
+import { EventEmitter } from '@angular/core'
 import { DomSanitizer } from '@angular/platform-browser'
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
@@ -254,8 +255,18 @@ export class HomePage {
                 content: "Uploading...",
             });
             loader.present();
-            this.upload.Run(matrix)
+
+            let uploadStatus: EventEmitter<any> = new EventEmitter();
+            uploadStatus.subscribe((res) => {
+                console.log("Upload status update: " + res)
+                loader.setContent("Uploading... <br/>" + "(" + res + ")");
+            }, (err) => {
+                console.log("Error to subscribe Upload status update: " + JSON.stringify(err))
+            })
+
+            this.upload.Run(matrix, uploadStatus)
                 .then((res) => {
+                    uploadStatus.unsubscribe();
                     loader.dismiss();
                     this._logger.Debug('Matrix uploaded.')
                     const alert = this.alertCtrl.create({
@@ -265,6 +276,7 @@ export class HomePage {
                     alert.present();
                 })
                 .catch(err => {
+                    uploadStatus.unsubscribe();
                     loader.dismiss();
                     this._logger.Error('Error uploading matrix: ', err);
                     let error: string = '';

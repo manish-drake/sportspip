@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, ActionSheetController, Platform, ToastController, LoadingController, AlertController } from 'ionic-angular';
+import { EventEmitter } from '@angular/core'
 import { Package } from '../../Services/Package';
 import { Duplicate } from '../../Services/Action/Duplicate';
 import { OpenMatrix } from '../../Services/Action/OpenMatrix';
@@ -179,8 +180,18 @@ export class CollectionPage {
                 content: "Uploading...",
             });
             loader.present();
-            this.upload.Run(matrix)
+
+            let uploadStatus: EventEmitter<any> = new EventEmitter();
+            uploadStatus.subscribe((res) => {
+                console.log("Upload status update: " + res)
+                loader.setContent("Uploading... <br/>" + "(" + res + ")");
+            }, (err) => {
+                console.log("Error to subscribe Upload status update: " + JSON.stringify(err))
+            })
+
+            this.upload.Run(matrix, uploadStatus)
                 .then((res) => {
+                  uploadStatus.unsubscribe();
                     loader.dismiss();
                     this._logger.Debug('Matrix uploaded.')
                     const alert = this.alertCtrl.create({
@@ -190,6 +201,7 @@ export class CollectionPage {
                     alert.present();
                 })
                 .catch(err => {
+                  uploadStatus.unsubscribe();
                     loader.dismiss();
                     this._logger.Error('Error uploading matrix: ', err);
                     let error: string = '';
