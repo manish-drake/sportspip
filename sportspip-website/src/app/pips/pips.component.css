@@ -13,6 +13,10 @@
    -webkit-align-content: flex-end;
 }
 
+.example-spacer {
+  flex: 1 1 auto;
+}
+
 .item-container{
   margin: 10px;
   min-width: 180px;
@@ -43,4 +47,32 @@
   
 th.mat-sort-header-sorted {
   color: black;
+}
+
+.upload-btn-wrapper {
+  position: absolute;
+  overflow: hidden;
+  display: inline-block;
+  top: 0;
+  right: 0;
+}
+
+#btn{
+  top:0;
+  right:0;
+  margin: 20px;
+}
+
+
+.iLabel{
+  position: absolute;
+  left: 15px;
+  font-size: 16px;
+  color: gray;
+}
+
+.iValue{
+  position: absolute;
+  left: 15px;
+  font-size: 16px;
 }

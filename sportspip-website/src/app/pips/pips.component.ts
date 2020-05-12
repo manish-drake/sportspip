@@ -1,5 +1,5 @@
 import { Component, OnInit, Pipe, PipeTransform, Injectable } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+// import { MatTableDataSource } from '@angular/material/table';
 import { ApiService } from '../service/api.service';
 
 @Pipe({
@@ -76,7 +76,9 @@ export class PipsComponent implements OnInit {
   loadingData: Boolean = false;
   displayedColumns: string[] = ["Date", "Title", "Sport", "Skill", "Views", "Duration", "DeleteAction"];
   filterValue: any = '';
-
+  selectedItemId: any = -1;
+  selectedItem: any;
+  isPIPInfoPanelOpen: boolean = false;
 
   constructor(private apiService: ApiService) { }
 
@@ -129,6 +131,23 @@ export class PipsComponent implements OnInit {
     let pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
     let date = new Date(st.replace(pattern, '$1-$2-$3 $4:$5:$6'));
     return date;
+  }
+
+  setSelectedItem(id: any) {
+    if(id === this.selectedItemId || id === -1){
+      this.selectedItemId = -1;
+      this.isPIPInfoPanelOpen = false;
+      this.selectedItem = undefined;
+    }
+    else{
+      this.selectedItemId = id;
+      this.isPIPInfoPanelOpen = true;
+      this.items.forEach((item)=>{
+        if(item.id == this.selectedItemId){
+          this.selectedItem = item;
+        }
+      })
+    }
   }
 
 }
