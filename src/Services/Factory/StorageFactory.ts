@@ -91,4 +91,16 @@ export class StorageFactory {
         return Observable.fromPromise(this.file.readAsArrayBuffer(path, dirName))
             .map(x => x);
     }
+
+    ResolveLocalFileAsync(path): Observable<any> {
+        this._logger.Debug("resolving local file async.. ")
+        return Observable.fromPromise(this.file.resolveLocalFilesystemUrl (path))
+            .map(x => x);
+    }
+
+    GetFile(path, fileName): Observable<any> {
+        this._logger.Debug("get file.. ")
+        return Observable.fromPromise(this.file.getFile(path, fileName, {}))
+            .map(x => x);
+    }
 }

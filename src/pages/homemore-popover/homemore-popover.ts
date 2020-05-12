@@ -95,33 +95,29 @@ export class HomeMorePopover {
     }
 
     composeEmail() {
-        this.emailComposer.isAvailable().then((available) => {
-                console.log("Email composer available: " + JSON.stringify(available))
-        })
-
         let attachmentPath: string = this.rootDirectory + "SportsPIP/data.db";
         console.log("Attachment Path: " + attachmentPath)
 
-        // let email: EmailComposerOptions = {
-        //     to: 'manish@drake.in',
-        //     attachments: [attachmentPath],
-        //     subject: "Logs for Sports PIP (" + this.versionNumber + ") from " + this.device.platform + " (See attachment)",
-        //     body:
-        //         "App Version: " + "<b>" + this.versionNumber + "</b><br>" +
-        //         "OS: " + "<b>" + this.device.platform + " " + this.device.version + "</b><br>" +
-        //         "Device: " + "<b>" + this.device.manufacturer.toUpperCase() + " " + this.device.model + "</b><br>" +
-        //         "<br><br>" +
-        //         "Here is the logs file for Sports PIP app as attachment.."
-        //     ,
-        //     isHtml: true
-        // };
-        // this.emailComposer.open(email)
-        //     .then((res) => {
-        //         console.log("Success composing mail: " + JSON.stringify(res))
-        //     })
-        //     .catch((err) => {
-        //         console.log("Error composing mail: " + JSON.stringify(err))
-        //     })
+        let email: EmailComposerOptions = {
+            to: 'manish@drake.in',
+            attachments: [attachmentPath],
+            subject: "Logs for Sports PIP (" + this.versionNumber + ") from " + this.device.platform + " (See attachment)",
+            body:
+                "App Version: " + "<b>" + this.versionNumber + "</b><br>" +
+                "OS: " + "<b>" + this.device.platform + " " + this.device.version + "</b><br>" +
+                "Device: " + "<b>" + this.device.manufacturer.toUpperCase() + " " + this.device.model + "</b><br>" +
+                "<br><br>" +
+                "Here is the logs file for Sports PIP app as attachment.."
+            ,
+            isHtml: true
+        };
+        this.emailComposer.open(email)
+            .then((res) => {
+                console.log("Success composing mail: " + JSON.stringify(res))
+            })
+            .catch((err) => {
+                console.log("Error composing mail: " + JSON.stringify(err))
+            })
 
     }
 }

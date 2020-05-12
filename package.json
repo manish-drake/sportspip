@@ -47,6 +47,7 @@
     "cordova-plugin-console": "^1.0.5",
     "cordova-plugin-device": "^1.1.4",
     "cordova-plugin-email": "^1.2.7",
+    "cordova-plugin-email-composer": "^0.9.2",
     "cordova-plugin-file": "^4.3.3",
     "cordova-plugin-file-transfer": "^1.6.3",
     "cordova-plugin-ionic-keyboard": "^2.2.0",
@@ -100,7 +101,10 @@
       "com.jjdltc.cordova.plugin.zip": {},
       "cordova-plugin-compat": {},
       "cordova-plugin-file": {},
-      "cordova-plugin-file-transfer": {}
+      "cordova-plugin-file-transfer": {},
+      "cordova-plugin-email-composer": {
+        "ANDROID_SUPPORT_V4_VERSION": "27.+"
+      }
     },
     "platforms": [
       "ios",
