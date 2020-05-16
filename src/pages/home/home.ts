@@ -307,8 +307,7 @@ export class HomePage {
 
     returnThumbnailPath(name) {
         let filePath = this.dataDirectory + name + ".jpg";
-        // console.log(":: fileName: " + filePath);
-        return this.sanitizer.bypassSecurityTrustUrl("url(" + filePath + ")");
+        return "url(" + filePath + ")";
     }
 
     GetLocalMatrixHeader() {

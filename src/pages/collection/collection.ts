@@ -96,9 +96,7 @@ export class CollectionPage {
 
   returnThumbnailPath(name) {
     let filePath = this.dataDir + name + ".jpg";
-
     return "url(" + filePath + ")";
-    // return this.sanitizer.bypassSecurityTrustUrl("url(" + filePath + ")");
   }
 
   ionViewDidLoad() {
