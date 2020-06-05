@@ -19,14 +19,16 @@ import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input'
+import { MatInputModule } from '@angular/material/input';
+import { CoachesComponent } from './coaches/coaches.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     PipsComponent,
     FilterPipe,
-    SortPipe
+    SortPipe,
+    CoachesComponent
   ],
   imports: [
     BrowserModule,

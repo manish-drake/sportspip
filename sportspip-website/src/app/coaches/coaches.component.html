@@ -1,0 +1,31 @@
+<p>coaches</p>
+ 
+<div class="flexcontainer">
+    <div *ngFor="let item of items ; let idx = index"
+      class="item-container">
+      <mat-card> 
+        <img mat-card-image style="height: 140px; width: 220px; background-color:lightgray;" 
+        [attr.src]="item.ProfileImage ? apiURL + item.ProfileImage.url : ''">
+        <mat-card-content style="margin-bottom: 0px;"> 
+          <span style="font-size: 18px;overflow: hidden;text-overflow: ellipsis;"> {{item.FirstName}} {{item.LastName}}</span>
+        <br/>
+          <div class="row-content">
+            <span style="overflow: hidden;text-overflow: ellipsis; color: #555555;"> {{item.Title}} </span>
+            <!-- <span style="color: #555555;"> Views: {{item.metadata.Views}} </span> -->
+          </div>
+        </mat-card-content>
+        <mat-card-actions align="end" >
+          <p style="color: gray; flex: 1 1 auto; margin: 12px;">
+            {{FormatDate(item.createdAt) | date:'dd MMM yyyy'}} </p>
+          <button mat-icon-button [matMenuTriggerFor]="appMenu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #appMenu="matMenu">
+            <!-- <button mat-menu-item (click)="DeleteItem(item.id, item.thumbnail[0].id, item.package[0].id)">Delete</button> -->
+          </mat-menu>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+ 
+  <mat-spinner *ngIf="loadingData" style="left: 45%;"></mat-spinner>
