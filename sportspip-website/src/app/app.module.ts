@@ -20,7 +20,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { CoachesComponent } from './coaches/coaches.component'
+import { MatSelectModule } from '@angular/material/select';
+import { CoachesComponent, FiltersportPipe, FilterlevelPipe, FilteryearPipe, FilterprogramPipe } from './coaches/coaches.component'
 
 @NgModule({
   declarations: [
@@ -28,7 +29,11 @@ import { CoachesComponent } from './coaches/coaches.component'
     PipsComponent,
     FilterPipe,
     SortPipe,
-    CoachesComponent
+    CoachesComponent,
+    FiltersportPipe,
+    FilterlevelPipe,
+    FilteryearPipe,
+    FilterprogramPipe
   ],
   imports: [
     BrowserModule,
@@ -47,7 +52,8 @@ import { CoachesComponent } from './coaches/coaches.component'
     MatMenuModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
