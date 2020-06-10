@@ -124,6 +124,54 @@ export class FilterprogramPipe implements PipeTransform {
   }
 }
 
+@Pipe({
+  name: 'sortcoach'
+}) 
+export class SortCoachPipe implements PipeTransform { 
+
+  transform(items: any[], order = ''): any[] {
+    //console.log("order  " + order);
+    if (order === 'ch_first_name') {
+      return items.slice().sort((a, b)  =>
+      {
+        if (a.sports < b.sports) {
+          console.log("-1");
+          return -1;
+        } else if (a.sports > b.sports) {
+          console.log("1");
+          return 1;
+        } else {
+          console.log("0");
+          return 0;
+        }
+        // console.log(a);
+        // console.log(b);
+        // return 1;
+      }
+      //a.Sports.localeCompare(b.Sports)
+      );
+    }
+    else if (order === 'ch_first_name_desc') {
+      return items.slice().sort((a, b) => a.FirstName.localeCompare(b.FirstName)).reverse();
+    }
+    else if (order === 'ch_last_name') {
+      return items.slice().sort((a, b)  => a.LastName.localeCompare(b.LastName));
+    }
+    else if (order === 'ch_last_name_desc') {
+        return items.slice().sort((a, b) => a.LastName.localeCompare(b.LastName)).reverse();
+    }
+    else if (order === 'ch_title') {
+      return items.slice().sort((a, b)  => a.LastName.localeCompare(b.LastName));
+    }
+    else if (order === 'ch_title_desc') {
+      return items.slice().sort((a, b)  => a.Title.localeCompare(b.Title)).reverse();
+    }
+    else {
+      return items;
+    }
+  }
+}
+
 @Component({
   selector: 'app-coaches',
   templateUrl: './coaches.component.html',
@@ -142,6 +190,7 @@ export class CoachesComponent implements OnInit {
   selectedYear: any = '';
   selectedGame: any = '';
   selectedLevel: any = '';
+  sortcoachOrder: string = '';
   loadingData: Boolean = false;
 
   constructor(private apiService : ApiService) { }
@@ -153,6 +202,16 @@ export class CoachesComponent implements OnInit {
 
   FetchItems(): void {
     this.loadingData = true;
+    // this.apiService.getItems('categories')
+    // .subscribe(
+    //   (data) => {
+    //    console.log(data);
+    //   },
+    //   (error) => {
+    //     console.log("Error; get categories data: ", error);
+    //     this.loadingData = false;
+    //   }
+    // );
     this.apiService.getItems('coaches')
       .subscribe(
         (data) => {
