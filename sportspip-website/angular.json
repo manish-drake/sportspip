@@ -123,5 +123,8 @@
       }
     }
   },
-  "defaultProject": "sportspip-website"
+  "defaultProject": "sportspip-website",
+  "cli": {
+    "analytics": "92b1c2f2-1903-403d-b2ad-66508cf5f9d2"
+  }
 }
