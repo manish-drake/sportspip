@@ -166,6 +166,12 @@ export class SortCoachPipe implements PipeTransform {
     else if (order === 'ch_title_desc') {
       return items.slice().sort((a, b)  => a.Title.localeCompare(b.Title)).reverse();
     }
+    else if (order === 'ch_sport'){
+      return items.slice().sort((a, b)  => a.sports[0].Name.localeCompare(b.sports[0].Name));
+    }
+    else if (order === 'ch_sport_desc'){
+      return items.slice().sort((a, b)  => a.sports[0].Name.localeCompare(b.sports[0].Name)).reverse();      
+    }
     else {
       return items;
     }
