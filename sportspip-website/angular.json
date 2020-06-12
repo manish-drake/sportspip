@@ -23,11 +23,9 @@
               "src/favicon.ico",
               "src/assets"
             ],
-            "styles": [               
-              "src/styles.css",
-              "./node_modules/bootstrap/dist/css/bootstrap.css",
-              "src/assets/sass/paper-kit.scss",
-              "src/assets/css/nucleo-icons.css"
+            "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
+              "src/styles.css"
             ],
             "scripts": []
           },
@@ -125,8 +123,5 @@
       }
     }
   },
-  "defaultProject": "sportspip-website",
-  "cli": {
-    "analytics": "ed613748-43a1-42d8-a7a7-708de434c1b7"
-  }
+  "defaultProject": "sportspip-website"
 }
