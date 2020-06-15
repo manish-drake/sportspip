@@ -1,18 +1,3 @@
-.flexcontainer {
-  display: flex;
-  display: -webkit-flex;
-   align-items: center;
-  -webkit-align-items: center;
-   flex-direction: row;
-   -webkit-flex-direction: row;
-   flex-wrap: wrap;
-   -webkit-flex-wrap: wrap;
-   flex-flow: row wrap;
-   -webkit-flex-flow: row wrap;
-   align-content: flex-end;
-   -webkit-align-content: flex-end;
-}
-
 .example-spacer {
   flex: 1 1 auto;
 }
@@ -75,4 +60,9 @@ th.mat-sort-header-sorted {
   position: absolute;
   left: 15px;
   font-size: 16px;
+}
+
+.mat-drawer-content { 
+  overflow-y: auto;
+  overflow-x: hidden;
 }

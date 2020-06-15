@@ -21,7 +21,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { CoachesComponent, FiltersportPipe, FilterlevelPipe, FilteryearPipe, FilterprogramPipe, SortCoachPipe } from './coaches/coaches.component'
+import { CoachesComponent, FiltersportPipe, FilterlevelPipe, FilteryearPipe, FilterprogramPipe, SortCoachPipe } from './coaches/coaches.component';
+import { CoachComponent } from './coach/coach.component';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
+import { PlayersComponent } from './players/players.component'
 
 @NgModule({
   declarations: [
@@ -34,7 +38,11 @@ import { CoachesComponent, FiltersportPipe, FilterlevelPipe, FilteryearPipe, Fil
     FilterlevelPipe,
     FilteryearPipe,
     FilterprogramPipe,
-    SortCoachPipe
+    SortCoachPipe,
+    CoachComponent,
+    HeaderComponent,
+    FooterComponent,
+    PlayersComponent
   ],
   imports: [
     BrowserModule,

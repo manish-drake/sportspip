@@ -1,5 +1,6 @@
 import { Component, OnInit, Pipe, PipeTransform, Injectable } from '@angular/core';
 import { ApiService } from '../service/api.service';
+import { Router } from '@angular/router';
 
 @Pipe({
   name: 'filtersport'
@@ -131,48 +132,32 @@ export class SortCoachPipe implements PipeTransform {
 
   transform(items: any[], order = ''): any[] {
     //console.log("order  " + order);
-    if (order === 'ch_first_name') {
-      return items.slice().sort((a, b)  =>
-      {
-        if (a.sports < b.sports) {
-          console.log("-1");
-          return -1;
-        } else if (a.sports > b.sports) {
-          console.log("1");
-          return 1;
-        } else {
-          console.log("0");
-          return 0;
+    if (order.indexOf("_lst") !== -1) {      
+      
+        if (order.indexOf("_desc") === -1) {
+          order = order.slice(0, order.indexOf("_"));
+          console.log(order);
+          return items.slice().sort((a, b) =>  a[order][0].Name.localeCompare(b[order][0].Name));
         }
-        // console.log(a);
-        // console.log(b);
-        // return 1;
-      }
-      //a.Sports.localeCompare(b.Sports)
-      );
+        else{
+          order = order.slice(0, order.indexOf("_"));
+          return items.slice().sort((a, b) =>  a[order][0].Name.localeCompare(b[order][0].Name)).reverse();
+        }       
+      
     }
-    else if (order === 'ch_first_name_desc') {
-      return items.slice().sort((a, b) => a.FirstName.localeCompare(b.FirstName)).reverse();
-    }
-    else if (order === 'ch_last_name') {
-      return items.slice().sort((a, b)  => a.LastName.localeCompare(b.LastName));
-    }
-    else if (order === 'ch_last_name_desc') {
-        return items.slice().sort((a, b) => a.LastName.localeCompare(b.LastName)).reverse();
-    }
-    else if (order === 'ch_title') {
-      return items.slice().sort((a, b)  => a.LastName.localeCompare(b.LastName));
-    }
-    else if (order === 'ch_title_desc') {
-      return items.slice().sort((a, b)  => a.Title.localeCompare(b.Title)).reverse();
-    }
-    else if (order === 'ch_sport'){
-      return items.slice().sort((a, b)  => a.sports[0].Name.localeCompare(b.sports[0].Name));
-    }
-    else if (order === 'ch_sport_desc'){
-      return items.slice().sort((a, b)  => a.sports[0].Name.localeCompare(b.sports[0].Name)).reverse();      
-    }
-    else {
+    else  if (order.indexOf("_desc") === -1) {
+      return items.slice().sort((a, b) => { 
+          return a[order].localeCompare(b[order]);    
+      });
+    }  
+    else  if (order.indexOf("_desc") !== -1) {
+      order = order.slice(0, order.indexOf("_"));
+      return items.slice().sort((a, b) => { 
+        return a[order].localeCompare(b[order]);    
+      }).reverse();
+    }  
+    else  
+    {
       return items;
     }
   }
@@ -196,10 +181,10 @@ export class CoachesComponent implements OnInit {
   selectedYear: any = '';
   selectedGame: any = '';
   selectedLevel: any = '';
-  sortcoachOrder: string = '';
+  sortcoachOrder: string = 'LastName';
   loadingData: Boolean = false;
 
-  constructor(private apiService : ApiService) { }
+  constructor(private apiService: ApiService, private router: Router) { }
 
   ngOnInit(): void {
     this.FetchItems();
@@ -207,17 +192,7 @@ export class CoachesComponent implements OnInit {
   }
 
   FetchItems(): void {
-    this.loadingData = true;
-    // this.apiService.getItems('categories')
-    // .subscribe(
-    //   (data) => {
-    //    console.log(data);
-    //   },
-    //   (error) => {
-    //     console.log("Error; get categories data: ", error);
-    //     this.loadingData = false;
-    //   }
-    // );
+    this.loadingData = true;  
     this.apiService.getItems('coaches')
       .subscribe(
         (data) => {
@@ -282,5 +257,9 @@ export class CoachesComponent implements OnInit {
     let pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
     let date = new Date(st.replace(pattern, '$1-$2-$3 $4:$5:$6'));
     return date;
+  }
+
+  goToCoach(id: any) {
+     this.router.navigate(['/coach', id]);
   }
 }

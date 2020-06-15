@@ -1,9 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
+.row-content{
+    display: flex;
+    display: -webkit-flex;
+    justify-content: space-between;
+  }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-.flexcontainer {
+  .flexcontainer {
     display: flex;
     display: -webkit-flex;
      align-items: center;
@@ -16,10 +17,4 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
      -webkit-flex-flow: row wrap;
      align-content: flex-end;
      -webkit-align-content: flex-end;
-  }
-
-  .item-container{
-    margin: 10px;
-    min-width: 180px;
-    max-width: 320px;
   }

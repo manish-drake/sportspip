@@ -1,0 +1,60 @@
+<div class="jumbotron" style="background-color: #fff; height: calc(95vh);">
+  
+    <div style="margin: 20px; width: 100%;" [ngStyle]="{ 'visibility': items.length ? 'visible' : 'collapse'}">
+      <mat-form-field>
+        <mat-label>Sort</mat-label>
+        <mat-select #sortSelect [(value)]="sortplayerOrder">
+          <mat-option value="FirstName">First Name</mat-option>
+          <mat-option value="FirstName_desc">First Name-Desc</mat-option>
+          <mat-option value="LastName">Last Name</mat-option>
+          <mat-option value="LastName_desc">Last Name-Desc</mat-option>          
+          <mat-option value="sports_lst">Sport</mat-option> 
+          <mat-option value="sports_lst_desc">Sport-Desc</mat-option>
+          <mat-option value="levels_lst">Level</mat-option> 
+          <mat-option value="levels_lst_desc">Level-Desc</mat-option>
+          <mat-option value="years_lst">Year</mat-option> 
+          <mat-option value="years_lst_desc">Year-Desc</mat-option>
+          <mat-option value="programs_lst">Program</mat-option> 
+          <mat-option value="programs_lst_desc">Program-Desc</mat-option>
+        </mat-select>
+      </mat-form-field>    
+      <mat-form-field  style="padding-left: 50px;">
+          <mat-label>Sports Filter</mat-label>
+          <mat-select #sportselect multiple [(value)]="selectedGame">
+            <mat-option *ngFor="let sport of sports" [value]="sport.Name">{{sport.Name}}</mat-option>
+          </mat-select>
+      </mat-form-field> 
+      <mat-form-field style="padding-left: 50px;">
+        <mat-label>Levels Filter</mat-label>
+        <mat-select #levelselect multiple [(value)]="selectedLevel">
+          <mat-option *ngFor="let level of levels" [value]="level.Name">{{level.Name}}</mat-option>
+        </mat-select>
+    </mat-form-field> 
+    <mat-form-field style="padding-left: 50px;">
+      <mat-label>Programs Filter</mat-label>
+      <mat-select #yearselect multiple [(value)]="selectedProgram">
+        <mat-option *ngFor="let program of programs" [value]="program.Name">{{program.Name}}</mat-option>
+      </mat-select>
+    </mat-form-field> 
+    <mat-form-field style="padding-left: 50px;">
+      <mat-label>Years Filter</mat-label>
+      <mat-select #yearselect multiple [(value)]="selectedYear">
+        <mat-option *ngFor="let year of years" [value]="year.Name">{{year.Name}}</mat-option>
+      </mat-select>
+    </mat-form-field> 
+    </div>
+    <div class="flexcontainer">
+        <div *ngFor="let item of items ; let idx = index"
+          class="item-container">
+          <mat-card  style="cursor: pointer !important"> 
+            <img mat-card-image style="height: 140px; width: 220px; background-color:lightgray;" 
+            [attr.src]="item.ProfileImage ? apiURL + item.ProfileImage.url : ''">
+            <mat-card-content style="margin-bottom: 0px;"> 
+              <span style="font-size: 18px;overflow: hidden;text-overflow: ellipsis;"> {{item.FirstName}} {{item.LastName}}</span>          
+            </mat-card-content>            
+          </mat-card>
+        </div>
+    </div>
+    <mat-spinner *ngIf="loadingData" style="left: 45%;"></mat-spinner>
+  </div>
+    
