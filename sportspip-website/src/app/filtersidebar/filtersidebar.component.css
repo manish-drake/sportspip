@@ -1,0 +1,25 @@
+.mat-list-option {    
+    height: 28px !important;   
+    font-size: 15px;
+}
+
+.mat-selection-list{
+    padding-top: 0 !important; 
+}
+
+mat-label{
+    font-weight: 500 !important;
+    font-size: 15px;
+}
+
+.mat-expansion-panel-header{
+    height: 30px !important;
+}
+
+.mat-expansion-panel-body {
+    padding: 0 24px 5px;
+}
+
+.mat-expansion-panel{
+    margin-bottom: 10px !important;
+}

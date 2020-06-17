@@ -5,7 +5,8 @@ import { PipsComponent } from './pips/pips.component';
 import { CoachesComponent } from './coaches/coaches.component';
 import { CoachComponent } from './coach/coach.component';
 import { PlayersComponent } from './players/players.component';
-import { PlayerComponent } from './player/player.component'
+import { PlayerComponent } from './player/player.component';
+import { FiltersidebarComponent } from './filtersidebar/filtersidebar.component';
 
 
 const routes: Routes = [{path:'', component: PipsComponent},
@@ -14,6 +15,7 @@ const routes: Routes = [{path:'', component: PipsComponent},
                         {path:'coach/:id', component: CoachComponent},
                         {path:'players', component: PlayersComponent},
                         {path:'player/:id', component: PlayerComponent},
+                        {path:'filter', component: FiltersidebarComponent},
                         {path:'', redirectTo: '', pathMatch:'full'}];
 
 @NgModule({

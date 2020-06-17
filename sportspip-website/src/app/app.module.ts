@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -21,12 +22,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { CoachesComponent, FiltersportPipe, FilterlevelPipe, FilteryearPipe, FilterprogramPipe, SortCoachPipe } from './coaches/coaches.component';
 import { CoachComponent } from './coach/coach.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { PlayersComponent, FilterPlayerPipe, SortPlayerPipe } from './players/players.component';
-import { PlayerComponent } from './player/player.component'
+import { PlayerComponent } from './player/player.component';
+import { FiltersidebarComponent } from './filtersidebar/filtersidebar.component'
 
 @NgModule({
   declarations: [
@@ -46,10 +49,12 @@ import { PlayerComponent } from './player/player.component'
     PlayersComponent,
     FilterPlayerPipe,
     SortPlayerPipe,
-    PlayerComponent
+    PlayerComponent,
+    FiltersidebarComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
@@ -66,7 +71,8 @@ import { PlayerComponent } from './player/player.component'
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]

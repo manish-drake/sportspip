@@ -1,0 +1,67 @@
+<div class="jumbotron" style="background-color: #fff; height: calc(95vh); overflow: auto;">
+    <mat-expansion-panel expanded="true">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <mat-label>Sport</mat-label>
+            </mat-panel-title>
+
+        </mat-expansion-panel-header>
+
+        <!-- <mat-label>Sport</mat-label> -->
+        <mat-selection-list [(ngModel)]="selectedGame">
+            <mat-list-option *ngFor="let sport of sports" [value]="sport.Name" checkboxPosition="before">
+                {{sport.Name}}
+            </mat-list-option>
+        </mat-selection-list>
+        <!-- <p>        Sports selected: {{selectedGame | json}}    </p> -->
+
+    </mat-expansion-panel>
+
+    <mat-expansion-panel expanded="true">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <mat-label>Level</mat-label>
+            </mat-panel-title>
+
+        </mat-expansion-panel-header>
+        <!-- <mat-label>Level</mat-label> -->
+        <mat-selection-list [(ngModel)]="selectedLevel">
+            <mat-list-option *ngFor="let level of levels" [value]="level.Name" checkboxPosition="before">
+                {{level.Name}}
+            </mat-list-option>
+        </mat-selection-list>
+        <!-- <p>        selectedLevel : {{selectedLevel | json}}    </p> -->
+    </mat-expansion-panel>
+
+    <mat-expansion-panel expanded="true">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <mat-label>Program</mat-label>
+            </mat-panel-title>
+
+        </mat-expansion-panel-header>
+        <!-- <mat-label>Program</mat-label> -->
+        <mat-selection-list [(ngModel)]="selectedProgram">
+            <mat-list-option *ngFor="let program of programs" [value]="program.Name" checkboxPosition="before">
+                {{program.Name}}
+            </mat-list-option>
+        </mat-selection-list>
+        <!-- <p>        selectedProgram: {{selectedProgram | json}}    </p> -->
+    </mat-expansion-panel>
+
+    <mat-expansion-panel expanded="true">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <mat-label>Year</mat-label>
+            </mat-panel-title>
+
+        </mat-expansion-panel-header>
+        <!-- <mat-label>Year</mat-label> -->
+        <mat-selection-list [(ngModel)]="selectedYear">
+            <mat-list-option *ngFor="let year of years" [value]="year.Name" checkboxPosition="before">
+                {{year.Name}}
+            </mat-list-option>
+        </mat-selection-list>
+        <!-- <p>       selectedYear: {{selectedYear | json}}    </p> -->
+    </mat-expansion-panel>
+</div>
