@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { ApiService } from '../service/api.service';
 
 @Component({
@@ -19,7 +19,7 @@ export class CoachComponent implements OnInit {
   years: string = '';
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {
-    this.route.params.subscribe( params => this.coachId = params.id );
+    this.route.params.subscribe(params => this.coachId = params.id);
   }
 
   ngOnInit(): void {
@@ -28,7 +28,7 @@ export class CoachComponent implements OnInit {
   }
 
   FetchItem(): void {
-    this.loadingData = true;  
+    this.loadingData = true;
     this.apiService.getItems('coaches/' + this.coachId)
       .subscribe(
         (data) => {
@@ -41,7 +41,7 @@ export class CoachComponent implements OnInit {
           this.years = this.coach.years.map(e => e.Name).join(", ");
         },
         (error) => {
-          console.log("Error; get coaches data: ", error);
+          console.log("Error; get coach data: ", error);
           this.loadingData = false;
         }
       );

@@ -46,7 +46,7 @@
     <div class="flexcontainer">
         <div *ngFor="let item of items | sortplayer: sortplayerOrder | filterplayer: selectedYear: []: []: [] | filterplayer: []: selectedLevel: []: [] | filterplayer: []: []: selectedProgram: [] | filterplayer: []: []: []: selectedGame ; let idx = index"
           class="item-container">
-          <mat-card  style="cursor: pointer !important"> 
+          <mat-card (click)="goToPlayer(item.id)"  style="cursor: pointer !important"> 
             <img mat-card-image style="height: 140px; width: 220px; background-color:lightgray;" 
             [attr.src]="item.ProfileImage ? apiURL + item.ProfileImage.url : ''">
             <mat-card-content style="margin-bottom: 0px;"> 

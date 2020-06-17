@@ -1,0 +1,23 @@
+<div class="jumbotron" style="background-color: #fff; height: calc(95vh);">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                <img style="height: 220px; width: 220px; background-color:lightgray;"
+                    [attr.src]="player.ProfileImage ? apiURL + player.ProfileImage.url : ''">
+            </div>
+            <div class="col-sm-8">
+                <h4>Name :      {{player.FirstName}} {{player.LastName}}</h4>
+                <h4>Height :    {{player.Height}}</h4>
+                <h4>Weight :    {{player.Weight}} </h4>
+                <h4>Class :     {{player.Class}}</h4>
+                <h4>Hometown :  {{player.Height}}</h4>                
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <p>{{player.Description}}</p>
+            </div>
+        </div>
+    </div>
+    <mat-spinner *ngIf="loadingData" style="left: 45%;"></mat-spinner>
+    </div>

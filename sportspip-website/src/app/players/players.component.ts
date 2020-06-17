@@ -1,5 +1,6 @@
 import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { ApiService } from '../service/api.service';
+import { Router } from '@angular/router';
 
 @Pipe({
   name: 'filterplayer'
@@ -125,7 +126,7 @@ export class PlayersComponent implements OnInit {
   sortplayerOrder: string = 'LastName';
   loadingData: Boolean = false;
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private router: Router) { }
 
   ngOnInit(): void {
     this.FetchItems();
@@ -193,5 +194,7 @@ export class PlayersComponent implements OnInit {
       );
   }
 
-
+  goToPlayer(id: any) {
+    this.router.navigate(['/player', id]);
+  }
 }
