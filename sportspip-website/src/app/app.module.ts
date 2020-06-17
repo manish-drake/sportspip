@@ -25,7 +25,7 @@ import { CoachesComponent, FiltersportPipe, FilterlevelPipe, FilteryearPipe, Fil
 import { CoachComponent } from './coach/coach.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
-import { PlayersComponent } from './players/players.component'
+import { PlayersComponent, FilterPlayerPipe, SortPlayerPipe } from './players/players.component'
 
 @NgModule({
   declarations: [
@@ -42,7 +42,9 @@ import { PlayersComponent } from './players/players.component'
     CoachComponent,
     HeaderComponent,
     FooterComponent,
-    PlayersComponent
+    PlayersComponent,
+    FilterPlayerPipe,
+    SortPlayerPipe
   ],
   imports: [
     BrowserModule,

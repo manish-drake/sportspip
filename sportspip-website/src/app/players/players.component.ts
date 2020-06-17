@@ -1,5 +1,109 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { ApiService } from '../service/api.service';
+
+@Pipe({
+  name: 'filterplayer'
+})
+export class FilterPlayerPipe implements PipeTransform {
+  transform(items: any[], years: any[], levels: any[], programs: any[], sports: any[]): any[] {
+    //console.log("value");
+    if (!items) {
+      return [];
+    }
+    if (years.length <= 0 && levels.length <= 0 && programs.length <= 0 && sports.length <= 0) {
+      return items;
+    }
+    //console.log(sports);
+    return items.filter(item => {
+      let itemMatched = false;
+      if (years.length > 0) {
+        years.forEach(key => {
+          if (item.years.length > 0) {
+            item.years.forEach(year => {
+              if (year.Name.toLowerCase().indexOf(key.toLowerCase()) !== -1) {
+                itemMatched = true;
+              }
+            });
+          }
+        });
+      }
+      if (levels.length > 0) {
+        levels.forEach(key => {
+          if (item.level) {
+            if (item.level.Name.toLowerCase().indexOf(key.toLowerCase()) !== -1) {
+              itemMatched = true;
+            }
+          }
+        });
+      }
+      if (programs.length > 0) {
+        programs.forEach(key => {
+          if (item.program) {
+            if (item.program.Name.toLowerCase().indexOf(key.toLowerCase()) !== -1) {
+              itemMatched = true;
+            }
+          }
+        });
+      }
+      if (sports.length > 0) {
+        sports.forEach(key => {
+          if (item.sport) {
+            if (item.sport.Name.toLowerCase().indexOf(key.toLowerCase()) !== -1) {
+              itemMatched = true;
+            }
+          }
+        });
+      }
+      
+      return itemMatched;
+    });
+  }
+}
+
+@Pipe({
+  name: 'sortplayer'
+})
+export class SortPlayerPipe implements PipeTransform {
+  transform(items: any[], order = ''): any[] {
+    //console.log("order  " + order);
+    if (order.indexOf("_lst") !== -1) {
+      if (order.indexOf("_desc") === -1) {
+        order = order.slice(0, order.indexOf("_"));
+        console.log(order);
+        return items.slice().sort((a, b) => a[order][0].Name.localeCompare(b[order][0].Name));
+      }
+      else {
+        order = order.slice(0, order.indexOf("_"));
+        return items.slice().sort((a, b) => a[order][0].Name.localeCompare(b[order][0].Name)).reverse();
+      }
+    }
+    else  if (order.indexOf("_obj") !== -1) {
+      if (order.indexOf("_desc") === -1) {
+        order = order.slice(0, order.indexOf("_"));
+        console.log(order);
+        return items.slice().sort((a, b) => a[order].Name.localeCompare(b[order].Name));
+      }
+      else {
+        order = order.slice(0, order.indexOf("_"));
+        return items.slice().sort((a, b) => a[order].Name.localeCompare(b[order].Name)).reverse();
+      }
+    }
+    else if (order.indexOf("_desc") === -1) {
+      return items.slice().sort((a, b) => {
+        return a[order].localeCompare(b[order]);
+      });
+    }
+    else if (order.indexOf("_desc") !== -1) {
+      order = order.slice(0, order.indexOf("_"));
+      return items.slice().sort((a, b) => {
+        return a[order].localeCompare(b[order]);
+      }).reverse();
+    }
+    else {
+      return items;
+    }
+  }
+}
 
 @Component({
   selector: 'app-players',
@@ -29,7 +133,7 @@ export class PlayersComponent implements OnInit {
   }
 
   FetchItems(): void {
-    this.loadingData = true;  
+    this.loadingData = true;
     this.apiService.getItems('players')
       .subscribe(
         (data) => {
@@ -41,7 +145,7 @@ export class PlayersComponent implements OnInit {
           this.loadingData = false;
         }
       );
-      this.apiService.getItems('sports')
+    this.apiService.getItems('sports')
       .subscribe(
         (data) => {
           this.loadingData = false;
@@ -52,7 +156,7 @@ export class PlayersComponent implements OnInit {
           this.loadingData = false;
         }
       );
-      this.apiService.getItems('levels')
+    this.apiService.getItems('levels')
       .subscribe(
         (data) => {
           this.loadingData = false;
@@ -63,7 +167,7 @@ export class PlayersComponent implements OnInit {
           this.loadingData = false;
         }
       );
-      this.apiService.getItems('years')
+    this.apiService.getItems('years')
       .subscribe(
         (data) => {
           this.loadingData = false;
@@ -75,7 +179,7 @@ export class PlayersComponent implements OnInit {
           this.loadingData = false;
         }
       );
-      this.apiService.getItems('programs')
+    this.apiService.getItems('programs')
       .subscribe(
         (data) => {
           this.loadingData = false;

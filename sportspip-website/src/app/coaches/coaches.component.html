@@ -1,12 +1,13 @@
 <div class="jumbotron" style="background-color: #fff; height: calc(95vh);">
+  
   <div style="margin: 20px; width: 100%;" [ngStyle]="{ 'visibility': items.length ? 'visible' : 'collapse'}">
     <mat-form-field>
       <mat-label>Sort</mat-label>
-      <mat-select #sortSelect [(value)]="sortcoachOrder">
-        <mat-option value="FirstName">First Name</mat-option>
-        <mat-option value="FirstName_desc">First Name-Desc</mat-option>
+      <mat-select #sortSelect [(value)]="sortcoachOrder">        
         <mat-option value="LastName">Last Name</mat-option>
         <mat-option value="LastName_desc">Last Name-Desc</mat-option>
+        <mat-option value="FirstName">First Name</mat-option>
+        <mat-option value="FirstName_desc">First Name-Desc</mat-option>
         <mat-option value="Title">Title</mat-option> 
         <mat-option value="Title_desc">Title-Desc</mat-option>
         <mat-option value="sports_lst">Sport</mat-option> 

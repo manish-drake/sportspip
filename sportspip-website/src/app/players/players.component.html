@@ -4,18 +4,18 @@
       <mat-form-field>
         <mat-label>Sort</mat-label>
         <mat-select #sortSelect [(value)]="sortplayerOrder">
-          <mat-option value="FirstName">First Name</mat-option>
-          <mat-option value="FirstName_desc">First Name-Desc</mat-option>
           <mat-option value="LastName">Last Name</mat-option>
-          <mat-option value="LastName_desc">Last Name-Desc</mat-option>          
-          <mat-option value="sports_lst">Sport</mat-option> 
-          <mat-option value="sports_lst_desc">Sport-Desc</mat-option>
-          <mat-option value="levels_lst">Level</mat-option> 
-          <mat-option value="levels_lst_desc">Level-Desc</mat-option>
+          <mat-option value="LastName_desc">Last Name-Desc</mat-option>
+          <mat-option value="FirstName">First Name</mat-option>
+          <mat-option value="FirstName_desc">First Name-Desc</mat-option>              
+          <mat-option value="sport_obj">Sport</mat-option> 
+          <mat-option value="sport_obj_desc">Sport-Desc</mat-option>
+          <mat-option value="level_obj">Level</mat-option> 
+          <mat-option value="level_obj_desc">Level-Desc</mat-option>
           <mat-option value="years_lst">Year</mat-option> 
           <mat-option value="years_lst_desc">Year-Desc</mat-option>
-          <mat-option value="programs_lst">Program</mat-option> 
-          <mat-option value="programs_lst_desc">Program-Desc</mat-option>
+          <mat-option value="program_obj">Program</mat-option> 
+          <mat-option value="program_obj_desc">Program-Desc</mat-option>
         </mat-select>
       </mat-form-field>    
       <mat-form-field  style="padding-left: 50px;">
@@ -44,7 +44,7 @@
     </mat-form-field> 
     </div>
     <div class="flexcontainer">
-        <div *ngFor="let item of items ; let idx = index"
+        <div *ngFor="let item of items | sortplayer: sortplayerOrder | filterplayer: selectedYear: []: []: [] | filterplayer: []: selectedLevel: []: [] | filterplayer: []: []: selectedProgram: [] | filterplayer: []: []: []: selectedGame ; let idx = index"
           class="item-container">
           <mat-card  style="cursor: pointer !important"> 
             <img mat-card-image style="height: 140px; width: 220px; background-color:lightgray;" 

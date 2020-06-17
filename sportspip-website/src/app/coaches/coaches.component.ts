@@ -1,4 +1,4 @@
-import { Component, OnInit, Pipe, PipeTransform, Injectable } from '@angular/core';
+import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { ApiService } from '../service/api.service';
 import { Router } from '@angular/router';
 
@@ -14,7 +14,7 @@ export class FiltersportPipe implements PipeTransform {
     if (value.length <= 0) {
       return items;
     }
-    //console.log(value);
+    console.log(items);
     //let keys: any[] = ['Title', 'FirstName', 'LastName'];
     return items.filter(item => {
       let itemMatched = false;
@@ -28,7 +28,7 @@ export class FiltersportPipe implements PipeTransform {
         }
         //console.log(key);
         //console.log(item.sports.length);
-         
+
       });
       return itemMatched;
     });
@@ -38,7 +38,7 @@ export class FiltersportPipe implements PipeTransform {
 @Pipe({
   name: 'filterlevel'
 })
-export class FilterlevelPipe implements PipeTransform { 
+export class FilterlevelPipe implements PipeTransform {
   transform(items: any[], value: any[]): any[] {
     //console.log("value");
     if (!items) {
@@ -58,7 +58,7 @@ export class FilterlevelPipe implements PipeTransform {
               itemMatched = true;
             }
           });
-        } 
+        }
       });
       return itemMatched;
     });
@@ -68,7 +68,7 @@ export class FilterlevelPipe implements PipeTransform {
 @Pipe({
   name: 'filteryear'
 })
-export class FilteryearPipe implements PipeTransform { 
+export class FilteryearPipe implements PipeTransform {
   transform(items: any[], value: any[]): any[] {
     //console.log("value");
     if (!items) {
@@ -77,7 +77,7 @@ export class FilteryearPipe implements PipeTransform {
     if (value.length <= 0) {
       return items;
     }
-    //console.log(value);
+    console.log(items);
     //let keys: any[] = ['Title', 'FirstName', 'LastName'];
     return items.filter(item => {
       let itemMatched = false;
@@ -88,7 +88,7 @@ export class FilteryearPipe implements PipeTransform {
               itemMatched = true;
             }
           });
-        } 
+        }
       });
       return itemMatched;
     });
@@ -98,9 +98,9 @@ export class FilteryearPipe implements PipeTransform {
 @Pipe({
   name: 'filterprogram'
 })
-export class FilterprogramPipe implements PipeTransform { 
+export class FilterprogramPipe implements PipeTransform {
   transform(items: any[], value: any[]): any[] {
-   // console.log("value");
+    // console.log("value");
     if (!items) {
       return [];
     }
@@ -118,7 +118,7 @@ export class FilterprogramPipe implements PipeTransform {
               itemMatched = true;
             }
           });
-        } 
+        }
       });
       return itemMatched;
     });
@@ -127,37 +127,36 @@ export class FilterprogramPipe implements PipeTransform {
 
 @Pipe({
   name: 'sortcoach'
-}) 
-export class SortCoachPipe implements PipeTransform { 
+})
+export class SortCoachPipe implements PipeTransform {
 
   transform(items: any[], order = ''): any[] {
     //console.log("order  " + order);
-    if (order.indexOf("_lst") !== -1) {      
-      
-        if (order.indexOf("_desc") === -1) {
-          order = order.slice(0, order.indexOf("_"));
-          console.log(order);
-          return items.slice().sort((a, b) =>  a[order][0].Name.localeCompare(b[order][0].Name));
-        }
-        else{
-          order = order.slice(0, order.indexOf("_"));
-          return items.slice().sort((a, b) =>  a[order][0].Name.localeCompare(b[order][0].Name)).reverse();
-        }       
-      
+    if (order.indexOf("_lst") !== -1) {
+
+      if (order.indexOf("_desc") === -1) {
+        order = order.slice(0, order.indexOf("_"));
+        console.log(order);
+        return items.slice().sort((a, b) => a[order][0].Name.localeCompare(b[order][0].Name));
+      }
+      else {
+        order = order.slice(0, order.indexOf("_"));
+        return items.slice().sort((a, b) => a[order][0].Name.localeCompare(b[order][0].Name)).reverse();
+      }
+
     }
-    else  if (order.indexOf("_desc") === -1) {
-      return items.slice().sort((a, b) => { 
-          return a[order].localeCompare(b[order]);    
+    else if (order.indexOf("_desc") === -1) {
+      return items.slice().sort((a, b) => {
+        return a[order].localeCompare(b[order]);
       });
-    }  
-    else  if (order.indexOf("_desc") !== -1) {
+    }
+    else if (order.indexOf("_desc") !== -1) {
       order = order.slice(0, order.indexOf("_"));
-      return items.slice().sort((a, b) => { 
-        return a[order].localeCompare(b[order]);    
+      return items.slice().sort((a, b) => {
+        return a[order].localeCompare(b[order]);
       }).reverse();
-    }  
-    else  
-    {
+    }
+    else {
       return items;
     }
   }
@@ -192,7 +191,7 @@ export class CoachesComponent implements OnInit {
   }
 
   FetchItems(): void {
-    this.loadingData = true;  
+    this.loadingData = true;
     this.apiService.getItems('coaches')
       .subscribe(
         (data) => {
@@ -204,7 +203,7 @@ export class CoachesComponent implements OnInit {
           this.loadingData = false;
         }
       );
-      this.apiService.getItems('sports')
+    this.apiService.getItems('sports')
       .subscribe(
         (data) => {
           this.loadingData = false;
@@ -215,7 +214,7 @@ export class CoachesComponent implements OnInit {
           this.loadingData = false;
         }
       );
-      this.apiService.getItems('levels')
+    this.apiService.getItems('levels')
       .subscribe(
         (data) => {
           this.loadingData = false;
@@ -226,7 +225,7 @@ export class CoachesComponent implements OnInit {
           this.loadingData = false;
         }
       );
-      this.apiService.getItems('years')
+    this.apiService.getItems('years')
       .subscribe(
         (data) => {
           this.loadingData = false;
@@ -238,7 +237,7 @@ export class CoachesComponent implements OnInit {
           this.loadingData = false;
         }
       );
-      this.apiService.getItems('programs')
+    this.apiService.getItems('programs')
       .subscribe(
         (data) => {
           this.loadingData = false;
@@ -260,6 +259,6 @@ export class CoachesComponent implements OnInit {
   }
 
   goToCoach(id: any) {
-     this.router.navigate(['/coach', id]);
+    this.router.navigate(['/coach', id]);
   }
 }
