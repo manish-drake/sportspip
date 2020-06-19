@@ -29,3 +29,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     display: -webkit-flex;
     justify-content: space-between;
   }
+
+  .mat-expansion-panel-body {
+    padding: 0 10px 10px  !important;
+}

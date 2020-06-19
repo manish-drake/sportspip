@@ -22,10 +22,10 @@ export class FiltersidebarComponent implements OnInit {
   constructor(private apiService: ApiService) { }
 
   ngOnInit(): void {
-    this.FetchItems();    
+    this.FetchItems();
   }
 
-  FetchItems(): void {   
+  FetchItems(): void {
     this.apiService.getItems('sports')
       .subscribe(
         (data) => {
@@ -64,4 +64,52 @@ export class FiltersidebarComponent implements OnInit {
       );
   }
 
+  allCheckboxChange(e) {
+     
+    if (e.source.id === "sportListAll") {
+      if (e.checked) { 
+        this.selectedGame = [];
+        this.sports.forEach(key => { 
+            this.selectedGame.push(key.Name.toString()); 
+        });
+      }
+      else {
+        this.selectedGame = [];
+      }
+    }
+    else if (e.source.id === "levelListAll") {
+      if (e.checked) { 
+        this.selectedLevel = [];
+        this.levels.forEach(key => { 
+            this.selectedLevel.push(key.Name.toString()); 
+        });
+      }
+      else {
+        this.selectedLevel = [];
+      }
+    }
+    else if (e.source.id === "programListAll") {
+      if (e.checked) { 
+        this.selectedProgram = [];
+        this.programs.forEach(key => { 
+            this.selectedProgram.push(key.Name.toString()); 
+        });
+      }
+      else {
+        this.selectedProgram = [];
+      }
+    }
+    else if (e.source.id === "yearListAll") {
+      if (e.checked) { 
+        this.selectedYear = [];
+        this.years.forEach(key => { 
+            this.selectedYear.push(key.Name.toString()); 
+        });
+      }
+      else {
+        this.selectedYear = [];
+      }
+    }
+    //console.log(this.selectedGame);
+  }
 }

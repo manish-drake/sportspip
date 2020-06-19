@@ -14,12 +14,10 @@ mat-label{
 
 .mat-expansion-panel-header{
     height: 30px !important;
-}
-
-.mat-expansion-panel-body {
-    padding: 0 24px 5px;
+    padding: 0 !important;
 }
 
 .mat-expansion-panel{
     margin-bottom: 10px !important;
 }
+ 
