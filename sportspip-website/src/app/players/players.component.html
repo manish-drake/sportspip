@@ -1,7 +1,8 @@
 <div class="jumbotron" style="background-color: #fff; height: calc(95vh);">
   <div class="row">
     <div class="col-sm-2">
-      <app-filtersidebar></app-filtersidebar>
+      <app-filtersidebar (sportsChanged)="updateSportsFilter($event)" (levelsChanged)="updateLevelsFilter($event)"
+      (programsChanged)="updateProgramsFilter($event)" (yearsChanged)="updateYearsFilter($event)"></app-filtersidebar>
     </div>
     <div class="col-sm-10">
       <div style="margin: 20px; width: 100%;" [ngStyle]="{ 'visibility': items.length ? 'visible' : 'collapse'}">
@@ -21,31 +22,7 @@
             <mat-option value="program_obj">Program</mat-option>
             <mat-option value="program_obj_desc">Program-Desc</mat-option>
           </mat-select>
-        </mat-form-field>
-        <mat-form-field style="padding-left: 50px;">
-          <mat-label>Sports Filter</mat-label>
-          <mat-select #sportselect multiple [(value)]="selectedGame">
-            <mat-option *ngFor="let sport of sports" [value]="sport.Name">{{sport.Name}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field style="padding-left: 50px;">
-          <mat-label>Levels Filter</mat-label>
-          <mat-select #levelselect multiple [(value)]="selectedLevel">
-            <mat-option *ngFor="let level of levels" [value]="level.Name">{{level.Name}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field style="padding-left: 50px;">
-          <mat-label>Programs Filter</mat-label>
-          <mat-select #yearselect multiple [(value)]="selectedProgram">
-            <mat-option *ngFor="let program of programs" [value]="program.Name">{{program.Name}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field style="padding-left: 50px;">
-          <mat-label>Years Filter</mat-label>
-          <mat-select #yearselect multiple [(value)]="selectedYear">
-            <mat-option *ngFor="let year of years" [value]="year.Name">{{year.Name}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+        </mat-form-field>         
       </div>
       <div class="flexcontainer">
         <div
@@ -60,7 +37,7 @@
             </mat-card-content>
           </mat-card>
         </div>
-      </div>
+      </div> 
     </div>
   </div>
   <mat-spinner *ngIf="loadingData" style="left: 45%;"></mat-spinner>

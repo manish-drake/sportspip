@@ -261,4 +261,20 @@ export class CoachesComponent implements OnInit {
   goToCoach(id: any) {
     this.router.navigate(['/coach', id]);
   }
+
+  updateSportsFilter(emittedValue) {
+    this.selectedGame = emittedValue;
+  }
+
+  updateLevelsFilter(emittedValue) {
+    this.selectedLevel = emittedValue;
+  }
+
+  updateProgramsFilter(emittedValue) {
+    this.selectedProgram = emittedValue;
+  }
+
+  updateYearsFilter(emittedValue) {
+    this.selectedYear = emittedValue;
+  }
 }

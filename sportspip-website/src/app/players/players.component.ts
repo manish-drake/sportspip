@@ -55,7 +55,7 @@ export class FilterPlayerPipe implements PipeTransform {
           }
         });
       }
-      
+
       return itemMatched;
     });
   }
@@ -78,7 +78,7 @@ export class SortPlayerPipe implements PipeTransform {
         return items.slice().sort((a, b) => a[order][0].Name.localeCompare(b[order][0].Name)).reverse();
       }
     }
-    else  if (order.indexOf("_obj") !== -1) {
+    else if (order.indexOf("_obj") !== -1) {
       if (order.indexOf("_desc") === -1) {
         order = order.slice(0, order.indexOf("_"));
         console.log(order);
@@ -126,12 +126,14 @@ export class PlayersComponent implements OnInit {
   sortplayerOrder: string = 'LastName';
   loadingData: Boolean = false;
 
+
   constructor(private apiService: ApiService, private router: Router) { }
 
   ngOnInit(): void {
     this.FetchItems();
     this.apiURL = this.apiService.getApiUrl();
   }
+
 
   FetchItems(): void {
     this.loadingData = true;
@@ -196,5 +198,21 @@ export class PlayersComponent implements OnInit {
 
   goToPlayer(id: any) {
     this.router.navigate(['/player', id]);
+  }
+
+  updateSportsFilter(emittedValue) {
+    this.selectedGame = emittedValue;
+  }
+
+  updateLevelsFilter(emittedValue) {
+    this.selectedLevel = emittedValue;
+  }
+
+  updateProgramsFilter(emittedValue) {
+    this.selectedProgram = emittedValue;
+  }
+
+  updateYearsFilter(emittedValue) {
+    this.selectedYear = emittedValue;
   }
 }

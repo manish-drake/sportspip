@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ApiService } from '../service/api.service';
 
 @Component({
@@ -7,6 +7,10 @@ import { ApiService } from '../service/api.service';
   styleUrls: ['./filtersidebar.component.css']
 })
 export class FiltersidebarComponent implements OnInit {
+  @Output() sportsChanged = new EventEmitter<[]>(); 
+  @Output() levelsChanged = new EventEmitter<[]>(); 
+  @Output() programsChanged = new EventEmitter<[]>(); 
+  @Output() yearsChanged = new EventEmitter<[]>(); 
 
   typesOfShoes: any[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
   selectedOptions: any = [];
@@ -67,49 +71,57 @@ export class FiltersidebarComponent implements OnInit {
   allCheckboxChange(e) {
      
     if (e.source.id === "sportListAll") {
-      if (e.checked) { 
-        this.selectedGame = [];
+      this.selectedGame = [];
+      if (e.checked) {        
         this.sports.forEach(key => { 
             this.selectedGame.push(key.Name.toString()); 
         });
-      }
-      else {
-        this.selectedGame = [];
-      }
+      }      
+      this.sportsChanged.emit(this.selectedGame);
     }
     else if (e.source.id === "levelListAll") {
-      if (e.checked) { 
-        this.selectedLevel = [];
+      this.selectedLevel = [];
+      if (e.checked) {         
         this.levels.forEach(key => { 
             this.selectedLevel.push(key.Name.toString()); 
         });
       }
-      else {
-        this.selectedLevel = [];
-      }
+      this.levelsChanged.emit(this.selectedLevel);
     }
     else if (e.source.id === "programListAll") {
-      if (e.checked) { 
-        this.selectedProgram = [];
+      this.selectedProgram = [];
+      if (e.checked) {        
         this.programs.forEach(key => { 
             this.selectedProgram.push(key.Name.toString()); 
         });
       }
-      else {
-        this.selectedProgram = [];
-      }
+      this.programsChanged.emit(this.selectedProgram);
     }
     else if (e.source.id === "yearListAll") {
-      if (e.checked) { 
-        this.selectedYear = [];
+      this.selectedYear = [];
+      if (e.checked) {         
         this.years.forEach(key => { 
             this.selectedYear.push(key.Name.toString()); 
         });
       }
-      else {
-        this.selectedYear = [];
-      }
+      this.yearsChanged.emit(this.selectedYear);
     }
     //console.log(this.selectedGame);
+  }
+
+  sportsCheckChange(){
+    this.sportsChanged.emit(this.selectedGame);
+  }
+
+  levelsCheckChange(){
+    this.levelsChanged.emit(this.selectedLevel);
+  }
+
+  programsCheckChange(){
+    this.programsChanged.emit(this.selectedProgram);
+  }
+
+  yearsCheckChange(){
+    this.yearsChanged.emit(this.selectedYear);
   }
 }
