@@ -171,11 +171,7 @@ export class SortCoachPipe implements PipeTransform {
 export class CoachesComponent implements OnInit {
 
   apiURL: string = '';
-  items: any = [];
-  sports: any = [];
-  levels: any = [];
-  years: any = [];
-  programs: any = [];
+  items: any = [];  
   selectedProgram: any = '';
   selectedYear: any = '';
   selectedGame: any = '';
@@ -202,53 +198,7 @@ export class CoachesComponent implements OnInit {
           console.log("Error; get coaches data: ", error);
           this.loadingData = false;
         }
-      );
-    this.apiService.getItems('sports')
-      .subscribe(
-        (data) => {
-          this.loadingData = false;
-          this.sports = data;
-        },
-        (error) => {
-          console.log("Error; get sports data: ", error);
-          this.loadingData = false;
-        }
-      );
-    this.apiService.getItems('levels')
-      .subscribe(
-        (data) => {
-          this.loadingData = false;
-          this.levels = data;
-        },
-        (error) => {
-          console.log("Error; get levels data: ", error);
-          this.loadingData = false;
-        }
-      );
-    this.apiService.getItems('years')
-      .subscribe(
-        (data) => {
-          this.loadingData = false;
-          //console.log(data);
-          this.years = data;
-        },
-        (error) => {
-          console.log("Error; get years data: ", error);
-          this.loadingData = false;
-        }
-      );
-    this.apiService.getItems('programs')
-      .subscribe(
-        (data) => {
-          this.loadingData = false;
-          //console.log(data);
-          this.programs = data;
-        },
-        (error) => {
-          console.log("Error; get programs data: ", error);
-          this.loadingData = false;
-        }
-      );
+      );   
   }
 
   FormatDate(value) {

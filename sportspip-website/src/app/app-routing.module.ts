@@ -7,16 +7,20 @@ import { CoachComponent } from './coach/coach.component';
 import { PlayersComponent } from './players/players.component';
 import { PlayerComponent } from './player/player.component';
 import { FiltersidebarComponent } from './filtersidebar/filtersidebar.component';
+import { CoacheslistComponent } from './admin/coach/coacheslist/coacheslist.component';
+import { UpdatecoachComponent } from './admin/coach/updatecoach/updatecoach.component'
 
 
-const routes: Routes = [{path:'', component: PipsComponent},
-                        {path:'pips', component: PipsComponent},
-                        {path:'coaches', component: CoachesComponent},
-                        {path:'coach/:id', component: CoachComponent},
-                        {path:'players', component: PlayersComponent},
-                        {path:'player/:id', component: PlayerComponent},
-                        {path:'filter', component: FiltersidebarComponent},
-                        {path:'', redirectTo: '', pathMatch:'full'}];
+const routes: Routes = [{ path: '', component: PipsComponent },
+                        { path: 'pips', component: PipsComponent },
+                        { path: 'coaches', component: CoachesComponent },
+                        { path: 'coach/:id', component: CoachComponent },
+                        { path: 'players', component: PlayersComponent },
+                        { path: 'player/:id', component: PlayerComponent },
+                        { path: 'filter', component: FiltersidebarComponent },
+                        { path: 'admin/coaches', component: CoacheslistComponent },
+                        { path: 'admin/coach/:id', component: UpdatecoachComponent },
+                        { path: '', redirectTo: '', pathMatch: 'full' }];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
