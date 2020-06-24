@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../../service/api.service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-coacheslist',
@@ -18,12 +21,21 @@ export class CoacheslistComponent implements OnInit {
   sortcoachOrder: string = 'LastName';
   loadingData: Boolean = false;
   displayedColumns: string[] = ["FirstName", "LastName", "Title", "Date", "DeleteAction"];
+  dataSource: any;
 
-  constructor(private apiService: ApiService, private router: Router) { }
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  
+  constructor(private apiService: ApiService, private router: Router, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.FetchItems();
     this.apiURL = this.apiService.getApiUrl();
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+    });
   }
 
   FetchItems(): void {
@@ -33,6 +45,8 @@ export class CoacheslistComponent implements OnInit {
         (data) => {
           this.loadingData = false;
           this.items = data;
+          this.dataSource = new MatTableDataSource<any>(this.items);
+          this.dataSource.paginator = this.paginator;
         },
         (error) => {
           console.log("Error; get coaches data: ", error);
@@ -55,17 +69,13 @@ export class CoacheslistComponent implements OnInit {
     this.apiService.deleteItem('coaches', id)
       .subscribe(
         (data) => {
-          this.loadingData = false;
-          console.log(data);
-          let itemIndex = this.items.findIndex(x => x == data);
-          console.log(itemIndex);
-          if (itemIndex >= 0) {
-            this.items.pop(itemIndex);
-          }
-          //this.FetchItems();
+          //console.log(data);
+          this.openSnackBar("Item deleted successfully!", "");
+          this.FetchItems();
           //this.items = data;
         },
         (error) => {
+          this.openSnackBar("Error; delete Item!", "");
           console.log("Error; get coaches data: ", error);
           this.loadingData = false;
         }
