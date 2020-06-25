@@ -27,6 +27,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 import { CoachesComponent, FiltersportPipe, FilterlevelPipe, FilteryearPipe, FilterprogramPipe, SortCoachPipe } from './coaches/coaches.component';
 import { CoachComponent } from './coach/coach.component';
 import { HeaderComponent } from './header/header.component';
@@ -35,7 +36,7 @@ import { PlayersComponent, FilterPlayerPipe, SortPlayerPipe } from './players/pl
 import { PlayerComponent } from './player/player.component';
 import { FiltersidebarComponent } from './filtersidebar/filtersidebar.component';
 import { AddcoachComponent } from './admin/coach/addcoach/addcoach.component';
-import { CoacheslistComponent } from './admin/coach/coacheslist/coacheslist.component';
+import { CoacheslistComponent, FilterCoachPipe } from './admin/coach/coacheslist/coacheslist.component';
 import { UpdatecoachComponent } from './admin/coach/updatecoach/updatecoach.component'
 
 @NgModule({
@@ -60,6 +61,7 @@ import { UpdatecoachComponent } from './admin/coach/updatecoach/updatecoach.comp
     FiltersidebarComponent,
     AddcoachComponent,
     CoacheslistComponent,
+    FilterCoachPipe,
     UpdatecoachComponent
   ],
   imports: [
@@ -86,7 +88,8 @@ import { UpdatecoachComponent } from './admin/coach/updatecoach/updatecoach.comp
     MatCheckboxModule,
     MatSnackBarModule,
     MatTooltipModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSortModule
   ],
   providers: [],
   bootstrap: [AppComponent]

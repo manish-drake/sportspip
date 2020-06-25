@@ -1,24 +1,99 @@
 <div class="jumbotron" style="background-color: #fff; height: calc(95vh);">
     <div class="container">
         <div class="row">
+            <div class="col-sm-10"></div>
+            <div class="col-sm-2">
+                <button mat-raised-button (click)="UpdateItem()">Save</button>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-sm-4">
                 <img style="height: 220px; width: 220px; background-color:lightgray;"
                     [attr.src]="coach.ProfileImage ? apiURL + coach.ProfileImage.url : ''">
             </div>
             <div class="col-sm-8">
-                <h4>Name : {{coach.FirstName}} {{coach.LastName}}</h4>
-                <h4>Title : {{coach.Title}}</h4>
-                <h4>Sports : {{sports}} </h4>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <mat-label class="">First Name</mat-label>
+                            <input matInput placeholder="Ex. John" [(ngModel)]="coach.FirstName">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <mat-label>Last Name</mat-label>
+                            <input matInput placeholder="Ex. James" [(ngModel)]="coach.LastName">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <mat-form-field class="widht-90">
+                            <mat-label class="">Title</mat-label>
+                            <input matInput placeholder="Ex. Title" [(ngModel)]="coach.Title">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <mat-form-field class="widht-90">
+                            <mat-label>Sports</mat-label>
+                            <mat-select multiple [(value)]="selectedGame">
+                                <mat-option *ngFor="let sport of sports" [value]="sport.id">{{sport.Name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <mat-form-field class="widht-90">
+                            <mat-label>Levels</mat-label>
+                            <mat-select multiple [(value)]="selectedLevel">
+                                <mat-option *ngFor="let level of levels" [value]="level.id">{{level.Name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <mat-form-field class="widht-90">
+                            <mat-label>Programs</mat-label>
+                            <mat-select multiple [(value)]="selectedProgram">
+                                <mat-option *ngFor="let program of programs" [value]="program.id">{{program.Name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <mat-form-field class="widht-90">
+                            <mat-label>Years</mat-label>
+                            <mat-select multiple [(value)]="selectedYear">
+                                <mat-option *ngFor="let year of years" [value]="year.id">{{year.Name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- <h4>Title : {{coach.Title}}</h4> -->
+                <!-- <h4>Sports : {{sports}} </h4>
                 <h4>Levels : {{levels}}</h4>
                 <h4>Programs : {{programs}}</h4>
-                <h4>Years : {{years}}</h4>
+                <h4>Years : {{years}}</h4> -->
             </div>
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <p>{{coach.Description}}</p>
+                <mat-form-field class="widht-90">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
+                        cdkAutosizeMaxRows="15" placeholder="Ex. Description"
+                        [(ngModel)]="coach.Description">  </textarea>
+                    <!-- <input matInput placeholder="Ex. Description" [(ngModel)]="coach.Description"> -->
+                </mat-form-field>
+                <!-- <p>{{coach.Description}}</p> -->
             </div>
         </div>
     </div>
     <mat-spinner *ngIf="loadingData" style="left: 45%;"></mat-spinner>
-    </div>
+</div>

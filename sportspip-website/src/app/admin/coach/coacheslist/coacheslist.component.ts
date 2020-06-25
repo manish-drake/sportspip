@@ -1,16 +1,29 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Pipe, PipeTransform, AfterViewInit } from '@angular/core';
 import { ApiService } from '../../../service/api.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+
+@Pipe({
+  name: 'filtercoach'
+})
+export class FilterCoachPipe implements PipeTransform {
+  transform(dataSource: any): any {
+    console.log(dataSource);
+
+    return dataSource;
+  }
+}
+
 
 @Component({
   selector: 'app-coacheslist',
   templateUrl: './coacheslist.component.html',
   styleUrls: ['./coacheslist.component.css']
 })
-export class CoacheslistComponent implements OnInit {
+export class CoacheslistComponent implements OnInit, AfterViewInit {
 
   apiURL: string = '';
   items: any = [];
@@ -21,11 +34,17 @@ export class CoacheslistComponent implements OnInit {
   sortcoachOrder: string = 'LastName';
   loadingData: Boolean = false;
   displayedColumns: string[] = ["FirstName", "LastName", "Title", "Date", "DeleteAction"];
-  dataSource: any;
+  //dataSource: any;
+  dataSource = new MatTableDataSource([]);
 
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+
   constructor(private apiService: ApiService, private router: Router, private _snackBar: MatSnackBar) { }
+
+  ngAfterViewInit(): void {
+    // this.dataSource.sort = this.sort;
+  }
 
   ngOnInit(): void {
     this.FetchItems();
@@ -45,8 +64,10 @@ export class CoacheslistComponent implements OnInit {
         (data) => {
           this.loadingData = false;
           this.items = data;
-          this.dataSource = new MatTableDataSource<any>(this.items);
+          this.dataSource.data = this.items;
           this.dataSource.paginator = this.paginator;
+          console.log(this.sort);
+          this.dataSource.sort = this.sort;
         },
         (error) => {
           console.log("Error; get coaches data: ", error);
