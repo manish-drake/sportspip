@@ -138,6 +138,7 @@ export class AddeditplayerComponent implements OnInit {
       .subscribe(
         (data) => {
           this.loadingData = false;
+          this.player = data;
           this.openSnackBar("Item added successfully!", "");
           this.router.navigate(['/admin/player', this.player.id]);
         },

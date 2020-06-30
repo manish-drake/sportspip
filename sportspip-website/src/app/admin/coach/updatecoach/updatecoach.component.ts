@@ -131,7 +131,8 @@ export class UpdatecoachComponent implements OnInit {
       .subscribe(
         (data) => {
           this.loadingData = false;
-          this.openSnackBar("Item added successfully!", "");          
+          this.coach = data;
+          this.openSnackBar("Item added successfully!", "");
           this.router.navigate(['/admin/coach', this.coach.id]);
         },
         (error) => {
