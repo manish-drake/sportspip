@@ -34,10 +34,11 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { PlayersComponent, FilterPlayerPipe, SortPlayerPipe } from './players/players.component';
 import { PlayerComponent } from './player/player.component';
-import { FiltersidebarComponent } from './filtersidebar/filtersidebar.component';
-import { AddcoachComponent } from './admin/coach/addcoach/addcoach.component';
+import { FiltersidebarComponent } from './filtersidebar/filtersidebar.component'; 
 import { CoacheslistComponent, FilterCoachPipe } from './admin/coach/coacheslist/coacheslist.component';
-import { UpdatecoachComponent } from './admin/coach/updatecoach/updatecoach.component'
+import { UpdatecoachComponent } from './admin/coach/updatecoach/updatecoach.component';
+import { PlayerslistComponent } from './admin/player/playerslist/playerslist.component';
+import { AddeditplayerComponent } from './admin/player/addeditplayer/addeditplayer.component'
 
 @NgModule({
   declarations: [
@@ -58,11 +59,12 @@ import { UpdatecoachComponent } from './admin/coach/updatecoach/updatecoach.comp
     FilterPlayerPipe,
     SortPlayerPipe,
     PlayerComponent,
-    FiltersidebarComponent,
-    AddcoachComponent,
+    FiltersidebarComponent, 
     CoacheslistComponent,
     FilterCoachPipe,
-    UpdatecoachComponent
+    UpdatecoachComponent,
+    PlayerslistComponent,
+    AddeditplayerComponent
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Pipe, PipeTransform, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../../service/api.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -6,24 +6,12 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 
-@Pipe({
-  name: 'filtercoach'
-})
-export class FilterCoachPipe implements PipeTransform {
-  transform(dataSource: any): any {
-    console.log(dataSource);
-
-    return dataSource;
-  }
-}
-
-
 @Component({
-  selector: 'app-coacheslist',
-  templateUrl: './coacheslist.component.html',
-  styleUrls: ['./coacheslist.component.css']
+  selector: 'app-playerslist',
+  templateUrl: './playerslist.component.html',
+  styleUrls: ['./playerslist.component.css']
 })
-export class CoacheslistComponent implements OnInit, AfterViewInit {
+export class PlayerslistComponent implements OnInit {
 
   apiURL: string = '';
   items: any = [];
@@ -33,7 +21,7 @@ export class CoacheslistComponent implements OnInit, AfterViewInit {
   selectedLevel: any = '';
   sortcoachOrder: string = 'LastName';
   loadingData: Boolean = false;
-  displayedColumns: string[] = ["FirstName", "LastName", "Title", "createdAt", "DeleteAction"];
+  displayedColumns: string[] = ["FirstName", "LastName", "Height", "Hometown", "createdAt", "DeleteAction"];
   //dataSource: any;
   dataSource = new MatTableDataSource([]);
 
@@ -42,9 +30,6 @@ export class CoacheslistComponent implements OnInit, AfterViewInit {
 
   constructor(private apiService: ApiService, private router: Router, private _snackBar: MatSnackBar) { }
 
-  ngAfterViewInit(): void {
-    // this.dataSource.sort = this.sort;
-  }
 
   ngOnInit(): void {
     this.FetchItems();
@@ -59,14 +44,14 @@ export class CoacheslistComponent implements OnInit, AfterViewInit {
 
   FetchItems(): void {
     this.loadingData = true;
-    this.apiService.getItems('coaches')
+    this.apiService.getItems('players')
       .subscribe(
         (data) => {
           this.loadingData = false;
           this.items = data;
           this.dataSource.data = this.items;
           this.dataSource.paginator = this.paginator;
-         // console.log(this.sort);
+          //console.log(this.sort);
           this.dataSource.sort = this.sort;
         },
         (error) => {
@@ -87,7 +72,7 @@ export class CoacheslistComponent implements OnInit, AfterViewInit {
   DeleteItem(id: any) {
     console.log(id);
     this.loadingData = true;
-    this.apiService.deleteItem('coaches', id)
+    this.apiService.deleteItem('players', id)
       .subscribe(
         (data) => {
           //console.log(data);
@@ -97,7 +82,7 @@ export class CoacheslistComponent implements OnInit, AfterViewInit {
         },
         (error) => {
           this.openSnackBar("Error; delete Item!", "");
-          console.log("Error; get coaches data: ", error);
+          console.log("Error; delete players data: ", error);
           this.loadingData = false;
         }
       );
@@ -105,28 +90,11 @@ export class CoacheslistComponent implements OnInit, AfterViewInit {
 
   EditItem(id: any) {
     //console.log("id:  " + id);
-    this.router.navigate(['/admin/coach', id]);
+    this.router.navigate(['/admin/player', id]);
   }
 
   AddItem() {
     //console.log("id:  " + id);
-    this.router.navigate(['/admin/coach/add']);
+    this.router.navigate(['/admin/player/add']);
   }
-
-  updateSportsFilter(emittedValue) {
-    this.selectedGame = emittedValue;
-  }
-
-  updateLevelsFilter(emittedValue) {
-    this.selectedLevel = emittedValue;
-  }
-
-  updateProgramsFilter(emittedValue) {
-    this.selectedProgram = emittedValue;
-  }
-
-  updateYearsFilter(emittedValue) {
-    this.selectedYear = emittedValue;
-  }
-
 }

@@ -4,32 +4,32 @@ import { ApiService } from '../../../service/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-updatecoach',
-  templateUrl: './updatecoach.component.html',
-  styleUrls: ['./updatecoach.component.css']
+  selector: 'app-addeditplayer',
+  templateUrl: './addeditplayer.component.html',
+  styleUrls: ['./addeditplayer.component.css']
 })
-export class UpdatecoachComponent implements OnInit {
+export class AddeditplayerComponent implements OnInit {
 
   loadingData: Boolean = false;
   apiURL: string = '';
-  coachId: string = '';
-  coach: any = {};
+  playerId: string = '';
+  player: any = {};
   sports: any = [];
   levels: any = [];
   years: any = [];
   programs: any = [];
-  selectedProgram: any = [];
+  selectedProgram: string = '';
   selectedYear: any = [];
-  selectedGame: any = [];
-  selectedLevel: any = [];
+  selectedGame: string = '';
+  selectedLevel: string = '';
   updateItem: boolean = true;
 
   constructor(private route: ActivatedRoute, private router: Router, private apiService: ApiService, private _snackBar: MatSnackBar) {
     this.route.params.subscribe(params => {
       // console.log(params.id);
       if (params.id !== undefined) {
-        this.coachId = params.id;
-        if (this.coachId.trim() === "0" || this.coachId.trim() === "") {
+        this.playerId = params.id;
+        if (this.playerId.trim() === "0" || this.playerId.trim() === "") {
           this.updateItem = false;
         }
       }
@@ -58,20 +58,17 @@ export class UpdatecoachComponent implements OnInit {
 
   FetchItem(): void {
     this.loadingData = true;
-    this.apiService.getItemById('coaches', this.coachId)
+    this.apiService.getItemById('players', this.playerId)
       .subscribe(
         (data) => {
           this.loadingData = false;
-          this.coach = data;
-          //console.log(this.coach.years.map(e => e.id));
-          this.selectedGame = this.coach.sports.map(e => e.id);
-          this.selectedLevel = this.coach.levels.map(e => e.id);
-          this.selectedProgram = this.coach.programs.map(e => e.id);
-          this.selectedYear = this.coach.years.map(e => e.id);
-          // this.years = this.coach.years.map(e => e.Name).join(", ");
+          this.player = data;
+          //console.log(this.player);
+          this.MapPlayerToCategories();
+          // this.years = this.player.years.map(e => e.Name).join(", ");
         },
         (error) => {
-          console.log("Error; get coach data: ", error);
+          console.log("Error; get player data: ", error);
           this.loadingData = false;
         }
       );
@@ -100,22 +97,35 @@ export class UpdatecoachComponent implements OnInit {
       );
   }
 
+  MapCategoriesToPlayer(): void {
+    this.player.sport = this.sports.find(x => x.id === this.selectedGame);
+    this.player.level = this.levels.find(x => x.id === this.selectedLevel);
+    this.player.program = this.programs.find(x => x.id === this.selectedProgram);
+    this.player.years = this.selectedYear;
+  }
+
+  MapPlayerToCategories(): void { 
+    this.selectedGame = this.player.sport !== undefined ? this.player.sport.id : '';
+    this.selectedLevel = this.player.level !== undefined ? this.player.level.id : '';
+    this.selectedProgram = this.player.program !== undefined ? this.player.program.id : '';
+    this.selectedYear = this.player.years.map(e => e.id);
+  }
+
   UpdateItem(): void {
     this.loadingData = true;
-    this.coach.sports = this.selectedGame;
-    this.coach.levels = this.selectedLevel;
-    this.coach.programs = this.selectedProgram;
-    this.coach.years = this.selectedYear;
-    this.apiService.updateItem('coaches', this.coach)
+    this.MapCategoriesToPlayer();
+    console.log(this.player);
+    this.apiService.updateItem('players', this.player)
       .subscribe(
         (data) => {
           this.loadingData = false;
           this.openSnackBar("Item updated successfully!", "");
           //console.log(data);
-          this.coach = data;
+          this.player = data;
+          this.MapPlayerToCategories();
         },
         (error) => {
-          console.log("Error; update coach data: ", error);
+          console.log("Error; update player data: ", error);
           this.loadingData = false;
         }
       );
@@ -123,19 +133,16 @@ export class UpdatecoachComponent implements OnInit {
 
   AddItem(): void {
     this.loadingData = true;
-    this.coach.sports = this.selectedGame;
-    this.coach.levels = this.selectedLevel;
-    this.coach.programs = this.selectedProgram;
-    this.coach.years = this.selectedYear;
-    this.apiService.addItem('coaches', this.coach)
+    this.MapCategoriesToPlayer();
+    this.apiService.addItem('players', this.player)
       .subscribe(
         (data) => {
           this.loadingData = false;
-          this.openSnackBar("Item added successfully!", "");          
-          this.router.navigate(['/admin/coach', this.coach.id]);
+          this.openSnackBar("Item added successfully!", "");
+          this.router.navigate(['/admin/player', this.player.id]);
         },
         (error) => {
-          console.log("Error; add coach data: ", error);
+          console.log("Error; add player data: ", error);
           this.loadingData = false;
         }
       );
@@ -150,7 +157,7 @@ export class UpdatecoachComponent implements OnInit {
       this.apiService.addItem('upload/', uploadFile)
         .subscribe(
           (data) => {
-            this.coach.ProfileImage = data[0];
+            this.player.ProfileImage = data[0];
           },
           (error) => {
             console.log("Error; upload file data: ", error);

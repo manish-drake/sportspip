@@ -37,3 +37,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .row{
   padding: 10px 10px;
 }
+
+.widht-90
+{
+    width: 90%;
+}
+
+.widht-full
+{
+    width: 100%;
+}

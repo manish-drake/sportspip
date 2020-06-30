@@ -4,15 +4,15 @@
             <div class="col-sm-10"></div>
             <div class="col-sm-2">
                 <button mat-raised-button *ngIf="updateItem" (click)="UpdateItem()"
-                    [disabled]="!coach.FirstName || !coach.LastName">Update</button>
+                    [disabled]="!player.FirstName || !player.LastName">Update</button>
                 <button mat-raised-button *ngIf="!updateItem" (click)="AddItem()"
-                    [disabled]="!coach.FirstName || !coach.LastName">Save</button>
+                    [disabled]="!player.FirstName || !player.LastName">Save</button>
             </div>
         </div>
         <div class="row" *ngIf="!loadingData">
             <div class="col-sm-4">
                 <img style="height: 220px; width: 220px; background-color:lightgray;"
-                    [attr.src]="coach.ProfileImage ? apiURL + coach.ProfileImage.url : ''">
+                    [attr.src]="player.ProfileImage ? apiURL + player.ProfileImage.url : ''">
 
                 <!-- <mat-label class="">Upload</mat-label> -->
                 <input type="file" id="input-file" (change)="uploadFile($event)" style="display: none;">
@@ -24,55 +24,71 @@
                     <div class="col-sm-4">
                         <mat-form-field>
                             <mat-label class="">First Name</mat-label>
-                            <input matInput required placeholder="Ex. John" [(ngModel)]="coach.FirstName">
+                            <input matInput required placeholder="Ex. John" [(ngModel)]="player.FirstName">
                         </mat-form-field>
                     </div>
                     <div class="col-sm-4">
                         <mat-form-field>
                             <mat-label>Last Name</mat-label>
-                            <input matInput required placeholder="Ex. James" [(ngModel)]="coach.LastName">
+                            <input matInput required placeholder="Ex. James" [(ngModel)]="player.LastName">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <mat-label>Class</mat-label>
+                            <input matInput [(ngModel)]="player.Class">
                         </mat-form-field>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-8">
-                        <mat-form-field class="widht-90">
-                            <mat-label class="">Title</mat-label>
-                            <input matInput placeholder="Ex. Title" [(ngModel)]="coach.Title">
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <mat-label>Height</mat-label>
+                            <input matInput [(ngModel)]="player.Height">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <mat-label>Weight</mat-label>
+                            <input matInput [(ngModel)]="player.Weight">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <mat-label>Hometown</mat-label>
+                            <input matInput [(ngModel)]="player.Hometown">
                         </mat-form-field>
                     </div>
                 </div>
+                
                 <div class="row">
-                    <div class="col-sm-8">
+                    <div class="col-sm-4">
                         <mat-form-field class="widht-90">
-                            <mat-label>Sports</mat-label>
-                            <mat-select multiple [(value)]="selectedGame">
+                            <mat-label>Sport</mat-label>
+                            <mat-select [(value)]="selectedGame">
                                 <mat-option *ngFor="let sport of sports" [value]="sport.id">{{sport.Name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-8">
+                    <div class="col-sm-4">
                         <mat-form-field class="widht-90">
-                            <mat-label>Levels</mat-label>
-                            <mat-select multiple [(value)]="selectedLevel">
+                            <mat-label>Level</mat-label>
+                            <mat-select [(value)]="selectedLevel">
                                 <mat-option *ngFor="let level of levels" [value]="level.id">{{level.Name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-8">
+                    <div class="col-sm-4">
                         <mat-form-field class="widht-90">
-                            <mat-label>Programs</mat-label>
-                            <mat-select multiple [(value)]="selectedProgram">
+                            <mat-label>Program</mat-label>
+                            <mat-select [(value)]="selectedProgram">
                                 <mat-option *ngFor="let program of programs" [value]="program.id">{{program.Name}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
-                </div>
+                </div>                 
+                 
                 <div class="row">
                     <div class="col-sm-8">
                         <mat-form-field class="widht-90">
@@ -87,11 +103,11 @@
         </div>
         <div class="row" *ngIf="!loadingData">
             <div class="col-sm-12">
-                <mat-form-field class="widht-90">
+                <mat-form-field class="widht-full">
                     <mat-label>Description</mat-label>
                     <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
                         cdkAutosizeMaxRows="15" placeholder="Ex. Description"
-                        [(ngModel)]="coach.Description">  </textarea>
+                        [(ngModel)]="player.Description">  </textarea>
                 </mat-form-field>
             </div>
         </div>
