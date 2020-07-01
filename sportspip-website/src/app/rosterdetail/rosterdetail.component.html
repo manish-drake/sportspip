@@ -1,0 +1,51 @@
+<div class="mat-elevation-z8">
+  <table mat-table class="full-width-table" matSort aria-label="Elements">
+    <!-- Jersey Number Column -->
+    <ng-container matColumnDef="jerseyNumber">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Jersey Number</th>
+      <td mat-cell *matCellDef="let row">{{row.jerseyNumber}}</td>
+    </ng-container>
+
+    <!-- First Column -->
+    <ng-container matColumnDef="first">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>First</th>
+      <td mat-cell *matCellDef="let row">{{row.first}}</td>
+    </ng-container>
+
+    <!-- Last Column -->
+    <ng-container matColumnDef="last">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Last</th>
+      <td mat-cell *matCellDef="let row">{{row.last}}</td>
+    </ng-container>
+
+    <!-- Role Column -->
+    <ng-container matColumnDef="role">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>
+      <td mat-cell *matCellDef="let row">{{row.memberType}}</td>
+    </ng-container>
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Position</th>
+      <td mat-cell *matCellDef="let row">{{row.positions}}</td>
+    </ng-container>
+
+    <!-- Year Column -->
+    <ng-container matColumnDef="year">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Year</th>
+      <td mat-cell *matCellDef="let row">{{row.year}}</td>
+    </ng-container>
+
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator #paginator
+      [length]="dataSource?.data.length"
+      [pageIndex]="0"
+      [pageSize]="50"
+      [pageSizeOptions]="[25, 50, 100, 250]">
+  </mat-paginator>
+</div>

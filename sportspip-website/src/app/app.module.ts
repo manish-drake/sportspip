@@ -37,7 +37,12 @@ import { PlayerComponent } from './player/player.component';
 import { FiltersidebarComponent } from './filtersidebar/filtersidebar.component';
 import { AddcoachComponent } from './admin/coach/addcoach/addcoach.component';
 import { CoacheslistComponent, FilterCoachPipe } from './admin/coach/coacheslist/coacheslist.component';
-import { UpdatecoachComponent } from './admin/coach/updatecoach/updatecoach.component'
+import { UpdatecoachComponent } from './admin/coach/updatecoach/updatecoach.component';
+import { RosterComponent } from './roster/roster.component';
+import { Test1Component } from './test1/test1.component';
+import { Test1NavComponent } from './test1-nav/test1-nav.component';
+import { LayoutModule } from '@angular/cdk/layout';
+import { RosterdetailComponent } from './rosterdetail/rosterdetail.component'
 
 @NgModule({
   declarations: [
@@ -62,7 +67,11 @@ import { UpdatecoachComponent } from './admin/coach/updatecoach/updatecoach.comp
     AddcoachComponent,
     CoacheslistComponent,
     FilterCoachPipe,
-    UpdatecoachComponent
+    UpdatecoachComponent,
+    RosterComponent,
+    Test1Component,
+    Test1NavComponent,
+    RosterdetailComponent
   ],
   imports: [
     BrowserModule,
@@ -89,7 +98,8 @@ import { UpdatecoachComponent } from './admin/coach/updatecoach/updatecoach.comp
     MatSnackBarModule,
     MatTooltipModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    LayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]
