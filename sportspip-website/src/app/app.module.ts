@@ -38,7 +38,8 @@ import { FiltersidebarComponent } from './filtersidebar/filtersidebar.component'
 import { CoacheslistComponent, FilterCoachPipe } from './admin/coach/coacheslist/coacheslist.component';
 import { UpdatecoachComponent } from './admin/coach/updatecoach/updatecoach.component';
 import { PlayerslistComponent } from './admin/player/playerslist/playerslist.component';
-import { AddeditplayerComponent } from './admin/player/addeditplayer/addeditplayer.component'
+import { AddeditplayerComponent } from './admin/player/addeditplayer/addeditplayer.component';
+import { CategoriesComponent } from './admin/categories/categories.component'
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { AddeditplayerComponent } from './admin/player/addeditplayer/addeditplay
     FilterCoachPipe,
     UpdatecoachComponent,
     PlayerslistComponent,
-    AddeditplayerComponent
+    AddeditplayerComponent,
+    CategoriesComponent
   ],
   imports: [
     BrowserModule,

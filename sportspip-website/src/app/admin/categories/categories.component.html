@@ -1,0 +1,68 @@
+<div class="jumbotron" style="background-color: #fff; height: calc(95vh);">
+    <div class="row">
+        <div class="col-sm-3">
+            <h2>Sports</h2>
+            <ul class="list-group">
+                <li class="list-group-item" *ngFor="let sport of sports">{{sport.Name}}</li>
+                <li class="list-group-item">
+                    <mat-form-field>
+                        <mat-label class="">Name</mat-label>
+                        <input matInput placeholder="Ex. Cricket" [(ngModel)]="sportName">
+                    </mat-form-field>                    
+                </li>
+                <li class="list-group-item">
+                    <button mat-raised-button (click)="AddItem('sports',sportName)"
+                        [disabled]="sportName.trim()===''">Add</button>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-3">
+            <h2>Levels</h2>
+            <ul class="list-group">
+                <li class="list-group-item" *ngFor="let level of levels">{{level.Name}}</li>
+                <li class="list-group-item">
+                    <mat-form-field>
+                        <mat-label class="">Name</mat-label>
+                        <input matInput placeholder="Ex. Senior" [(ngModel)]="levelName">
+                    </mat-form-field>
+                </li>
+                <li class="list-group-item">
+                    <button mat-raised-button (click)="AddItem('levels',levelName)"
+                        [disabled]="levelName.trim()===''">Add</button>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-3">
+            <h2>Programs</h2>
+            <ul class="list-group">
+                <li class="list-group-item" *ngFor="let program of programs">{{program.Name}}</li>
+                <li class="list-group-item">
+                    <mat-form-field>
+                        <mat-label class="">Name</mat-label>
+                        <input matInput placeholder="Ex. Men's" [(ngModel)]="programName">
+                    </mat-form-field>
+                </li>
+                <li class="list-group-item">
+                    <button mat-raised-button (click)="AddItem('programs',programName)"
+                        [disabled]="programName.trim()===''">Add</button>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-3">
+            <h2>Years</h2>
+            <ul class="list-group">
+                <li class="list-group-item" *ngFor="let year of years">{{year.Name}}</li>
+                <li class="list-group-item">
+                    <mat-form-field>
+                        <mat-label class="">Name</mat-label>
+                        <input matInput placeholder="Ex. 2020" [(ngModel)]="yearName">
+                    </mat-form-field>
+                </li>
+                <li class="list-group-item">
+                    <button mat-raised-button (click)="AddItem('years',yearName)"
+                        [disabled]="yearName.trim()===''">Add</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

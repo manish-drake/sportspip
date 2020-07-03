@@ -10,7 +10,8 @@ import { FiltersidebarComponent } from './filtersidebar/filtersidebar.component'
 import { CoacheslistComponent } from './admin/coach/coacheslist/coacheslist.component';
 import { UpdatecoachComponent } from './admin/coach/updatecoach/updatecoach.component';
 import { PlayerslistComponent } from './admin/player/playerslist/playerslist.component';
-import { AddeditplayerComponent } from './admin/player/addeditplayer/addeditplayer.component'
+import { AddeditplayerComponent } from './admin/player/addeditplayer/addeditplayer.component';
+import { CategoriesComponent } from './admin/categories/categories.component'
 
 
 const routes: Routes = [{ path: '', component: PipsComponent },
@@ -26,6 +27,7 @@ const routes: Routes = [{ path: '', component: PipsComponent },
 { path: 'admin/players', component: PlayerslistComponent },
 { path: 'admin/player/add', component: AddeditplayerComponent },
 { path: 'admin/player/:id', component: AddeditplayerComponent },
+{ path: 'admin/categories', component: CategoriesComponent },
 { path: '', redirectTo: '', pathMatch: 'full' }];
 
 @NgModule({
