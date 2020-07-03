@@ -1,4 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+@import '~bulma/bulma.sass';
+
+.modal {
+  pointer-events: none !important;
+}
+
+.modal-content {
+  pointer-events: all !important;
+}
+
+.modal-backdrop {
+  /* bug fix - no overlay */    
+  display: none;    
+}
+.modal-background {
+  background-color:rgba(10,10,10,.86)
+}
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

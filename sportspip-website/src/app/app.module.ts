@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -43,6 +43,10 @@ import { AddeditplayerComponent } from './admin/player/addeditplayer/addeditplay
 import { CategoriesComponent } from './admin/categories/categories.component';
 import { RosterComponent } from './roster/roster.component';
 import { AddplayerdialogComponent } from './roster/addplayerdialog/addplayerdialog.component'
+import { OverlayComponent } from './overlay/overlay.component'
+import { OverlayModule } from '@angular/cdk/overlay';
+import { ScheduleComponent } from './schedule/schedule.component';
+import { ScheduleFormComponent } from './schedule-form/schedule-form.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +74,10 @@ import { AddplayerdialogComponent } from './roster/addplayerdialog/addplayerdial
     PlayerslistComponent,
     AddeditplayerComponent,
     CategoriesComponent,
-    RosterComponent, AddplayerdialogComponent
+    RosterComponent, AddplayerdialogComponent,
+    OverlayComponent,
+    ScheduleComponent,
+    ScheduleFormComponent
   ],
   imports: [
     BrowserModule,
@@ -98,9 +105,12 @@ import { AddplayerdialogComponent } from './roster/addplayerdialog/addplayerdial
     MatTooltipModule,
     MatPaginatorModule,
     MatSortModule,
-    MatDialogModule
+    MatDialogModule,
+    OverlayModule,
+    ReactiveFormsModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [OverlayComponent]
 })
 export class AppModule { }

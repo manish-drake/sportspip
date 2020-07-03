@@ -5,7 +5,11 @@
   "projects": {
     "sportspip-website": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -25,7 +29,7 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -90,7 +94,7 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           }
@@ -123,5 +127,8 @@
       }
     }
   },
-  "defaultProject": "sportspip-website"
+  "defaultProject": "sportspip-website",
+  "cli": {
+    "analytics": "ecd4a5c1-d18d-43d3-8534-869baa649e52"
+  }
 }
