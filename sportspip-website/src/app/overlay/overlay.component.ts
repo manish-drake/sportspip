@@ -9,6 +9,7 @@ import { OverlayHandle } from '../overlay-handle';
 export class OverlayComponent implements OnInit {
   contentType: 'template' | 'string' | 'component';
   content: string | TemplateRef<any> | Type<any>;
+  data: any;
   context;
 
   constructor(private ref: OverlayHandle) {}

@@ -1,7 +1,5 @@
 import { Subject } from 'rxjs';
-
 import { OverlayRef } from '@angular/cdk/overlay';
-
 import { TemplateRef, Type } from '@angular/core';
 
 export interface OverlayCloseEvent<R> {

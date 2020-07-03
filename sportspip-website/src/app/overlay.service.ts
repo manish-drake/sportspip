@@ -17,7 +17,7 @@ export class OverlayService {
     const configs = new OverlayConfig({
       hasBackdrop: true,
       panelClass: ['modal', 'is-active'],
-      backdropClass: 'modal-background'
+      backdropClass: 'modal-backdrop'
     });
 
     const overlayRef = this.overlay.create(configs);

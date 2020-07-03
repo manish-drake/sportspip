@@ -1,0 +1,49 @@
+<div class="modal-card">
+    <form [formGroup]="frmSubscribe" (submit)="submit()">
+      <header class="modal-card-head has-text-weight-bold">
+        Event
+      </header>
+      <section class="modal-card-body">
+        <div class="field">
+          <label class="label">Event Type</label>
+          <div class="control">
+            <!-- <input formControlName="eventType" class="input" type="text" placeholder="e.g Profession"> -->
+            <mat-select formControlName="eventType">
+                <mat-option *ngFor="let et of eventTypes" [value]="et">{{et}}</mat-option>
+              </mat-select>
+          </div>
+        </div>
+  
+        <div class="field">
+          <label class="label">Opponent</label>
+          <div class="control">
+            <input formControlName="opponent" class="input" type="text" placeholder="e.g. Team X">
+          </div>
+        </div>
+  
+        <div class="field">
+          <label class="label">Schedule</label>
+          <div class="control">
+            <!-- <input formControlName="eventDatetime" class="input" type="text" placeholder="e.g. 2020-10-20 10:00 AM"> -->
+            <mat-form-field>
+                <input matInput type="datetime-local" placeholder="Date/Time">
+              </mat-form-field>
+          </div>
+        </div>
+  
+        <div class="field">
+          <label class="label">Location</label>
+          <div class="control">
+            <input formControlName="location" class="input" type="text" placeholder="e.g. Liverpool">
+          </div>
+        </div>
+  
+      </section>
+      <footer class="modal-card-foot">
+        <div class="buttons">
+          <button type="submit" class="button is-success">Add</button>
+          <button (click)="cancel()" type="button" class="button is-danger">Cancel</button>
+        </div>
+      </footer>
+    </form>
+  </div>

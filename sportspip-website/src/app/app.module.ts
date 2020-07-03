@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -42,6 +42,8 @@ import { AddeditplayerComponent } from './admin/player/addeditplayer/addeditplay
 import { CategoriesComponent } from './admin/categories/categories.component';
 import { OverlayComponent } from './overlay/overlay.component'
 import { OverlayModule } from '@angular/cdk/overlay';
+import { ScheduleComponent } from './schedule/schedule.component';
+import { ScheduleFormComponent } from './schedule-form/schedule-form.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +71,9 @@ import { OverlayModule } from '@angular/cdk/overlay';
     PlayerslistComponent,
     AddeditplayerComponent,
     CategoriesComponent,
-    OverlayComponent
+    OverlayComponent,
+    ScheduleComponent,
+    ScheduleFormComponent
   ],
   imports: [
     BrowserModule,
@@ -97,7 +101,8 @@ import { OverlayModule } from '@angular/cdk/overlay';
     MatTooltipModule,
     MatPaginatorModule,
     MatSortModule,
-    OverlayModule
+    OverlayModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

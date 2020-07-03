@@ -12,6 +12,7 @@ import { UpdatecoachComponent } from './admin/coach/updatecoach/updatecoach.comp
 import { PlayerslistComponent } from './admin/player/playerslist/playerslist.component';
 import { AddeditplayerComponent } from './admin/player/addeditplayer/addeditplayer.component';
 import { CategoriesComponent } from './admin/categories/categories.component'
+import { ScheduleComponent } from './schedule/schedule.component';
 
 
 const routes: Routes = [{ path: '', component: PipsComponent },
@@ -21,6 +22,7 @@ const routes: Routes = [{ path: '', component: PipsComponent },
 { path: 'players', component: PlayersComponent },
 { path: 'player/:id', component: PlayerComponent },
 { path: 'filter', component: FiltersidebarComponent },
+{ path: 'schedule', component: ScheduleComponent },
 { path: 'admin/coaches', component: CoacheslistComponent },
 { path: 'admin/coach/add', component: UpdatecoachComponent },
 { path: 'admin/coach/:id', component: UpdatecoachComponent },
