@@ -39,7 +39,9 @@ import { CoacheslistComponent, FilterCoachPipe } from './admin/coach/coacheslist
 import { UpdatecoachComponent } from './admin/coach/updatecoach/updatecoach.component';
 import { PlayerslistComponent } from './admin/player/playerslist/playerslist.component';
 import { AddeditplayerComponent } from './admin/player/addeditplayer/addeditplayer.component';
-import { CategoriesComponent } from './admin/categories/categories.component'
+import { CategoriesComponent } from './admin/categories/categories.component';
+import { OverlayComponent } from './overlay/overlay.component'
+import { OverlayModule } from '@angular/cdk/overlay';
 
 @NgModule({
   declarations: [
@@ -66,7 +68,8 @@ import { CategoriesComponent } from './admin/categories/categories.component'
     UpdatecoachComponent,
     PlayerslistComponent,
     AddeditplayerComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    OverlayComponent
   ],
   imports: [
     BrowserModule,
@@ -93,9 +96,11 @@ import { CategoriesComponent } from './admin/categories/categories.component'
     MatSnackBarModule,
     MatTooltipModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    OverlayModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [OverlayComponent]
 })
 export class AppModule { }
