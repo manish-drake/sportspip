@@ -28,18 +28,21 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatDialogModule } from '@angular/material/dialog';
 import { CoachesComponent, FiltersportPipe, FilterlevelPipe, FilteryearPipe, FilterprogramPipe, SortCoachPipe } from './coaches/coaches.component';
 import { CoachComponent } from './coach/coach.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { PlayersComponent, FilterPlayerPipe, SortPlayerPipe } from './players/players.component';
 import { PlayerComponent } from './player/player.component';
-import { FiltersidebarComponent } from './filtersidebar/filtersidebar.component'; 
+import { FiltersidebarComponent } from './filtersidebar/filtersidebar.component';
 import { CoacheslistComponent, FilterCoachPipe } from './admin/coach/coacheslist/coacheslist.component';
 import { UpdatecoachComponent } from './admin/coach/updatecoach/updatecoach.component';
 import { PlayerslistComponent } from './admin/player/playerslist/playerslist.component';
 import { AddeditplayerComponent } from './admin/player/addeditplayer/addeditplayer.component';
-import { CategoriesComponent } from './admin/categories/categories.component'
+import { CategoriesComponent } from './admin/categories/categories.component';
+import { RosterComponent } from './roster/roster.component';
+import { AddplayerdialogComponent } from './roster/addplayerdialog/addplayerdialog.component'
 
 @NgModule({
   declarations: [
@@ -60,13 +63,14 @@ import { CategoriesComponent } from './admin/categories/categories.component'
     FilterPlayerPipe,
     SortPlayerPipe,
     PlayerComponent,
-    FiltersidebarComponent, 
+    FiltersidebarComponent,
     CoacheslistComponent,
     FilterCoachPipe,
     UpdatecoachComponent,
     PlayerslistComponent,
     AddeditplayerComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    RosterComponent, AddplayerdialogComponent
   ],
   imports: [
     BrowserModule,
@@ -93,7 +97,8 @@ import { CategoriesComponent } from './admin/categories/categories.component'
     MatSnackBarModule,
     MatTooltipModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

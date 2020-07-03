@@ -62,7 +62,7 @@ export class CategoriesComponent implements OnInit {
     console.log(this.isValid(apiName, value)); 
     if (!this.isValid(apiName, value)) {
       this.openSnackBar(apiName + " name should be unique!", "Error");
-    }
+    } 
     else if (value.trim() !== '') {
       this.loadingData = true;
       let item = { Name: value.trim() };
