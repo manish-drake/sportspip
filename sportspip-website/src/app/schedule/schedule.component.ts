@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild, TemplateRef, Type} from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, TemplateRef, Type } from '@angular/core';
 import { OverlayService } from '../overlay.service';
 import { ComponentType } from '@angular/cdk/portal';
 import { MatPaginator } from '@angular/material/paginator';
@@ -8,10 +8,10 @@ import { ScheduleFormComponent } from '../schedule-form/schedule-form.component'
 import { ApiService } from '../service/api.service';
 
 export interface ScheduleItem {
-  eventType: string;
-  opponent: string;
-  eventDatetime: Date
-  location: string
+  EventType: string;
+  Opponent: string;
+  EventDate: Date
+  Location: string
   id: string
 }
 
@@ -26,11 +26,11 @@ export class ScheduleComponent implements AfterViewInit, OnInit {
   @ViewChild(MatTable) table: MatTable<ScheduleItem>;
   dataSource: MatTableDataSource<ScheduleItem>;
   scheduleEditForm: Type<any> = ScheduleFormComponent
-  
-  constructor(private overlayService: OverlayService, private apiService: ApiService){}
+
+  constructor(private overlayService: OverlayService, private apiService: ApiService) { }
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['eventType', 'opponent', 'eventDatetime', 'location', 'DeleteAction'];
+  displayedColumns = ['EventType', 'Opponent', 'EventDate', 'Location', 'DeleteAction'];
   isOpen = false;
   ngOnInit() {
     this.dataSource = new MatTableDataSource<ScheduleItem>([]);
@@ -39,10 +39,10 @@ export class ScheduleComponent implements AfterViewInit, OnInit {
       let newData: ScheduleItem[] = [];
       (item as any[]).forEach(row => {
         newData.push({
-          'eventType': row.EventType, 
-          'opponent': row.Opponent, 
-          'eventDatetime': new Date(row.EventDate), 
-          'location': row.Location,
+          'EventType': row.EventType,
+          'Opponent': row.Opponent,
+          'EventDate': new Date(row.EventDate),
+          'Location': row.Location,
           'id': row.id
         });
       });
@@ -60,13 +60,19 @@ export class ScheduleComponent implements AfterViewInit, OnInit {
 
     ref.afterClosed$.subscribe(res => {
       let modData = res.data;
-       data.eventType = modData.eventType;
-       data.opponent = modData.opponent;
-       data.eventDatetime = modData.eventDatetime;
-       data.location = modData.location;
-       this.apiService.updateItem("events", data).subscribe(result=>{
-          let resp = result;
-       });
+     // console.log(modData);
+      data.EventType = modData.eventType;
+      data.Opponent = modData.opponent;
+      data.EventDate = modData.eventDatetime;
+      data.Location = modData.location;
+      this.apiService.updateItem("events", data).subscribe(result => {
+        // console.log("success");
+        // console.log(result);
+        let resp = result;
+      },
+        (error) => {
+          console.log("Error; update events data: ", error);
+        });
     });
   }
 }

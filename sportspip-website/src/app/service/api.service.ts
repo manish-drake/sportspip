@@ -39,9 +39,9 @@ export class ApiService {
         localStorage.setItem("mid_token", res['jwt']);
         window.location.reload();
       },
-      (error) => {
-        console.log("Login error: ", error);
-      });
+        (error) => {
+          console.log("Login error: ", error);
+        });
   }
 
   public getItems(apiName: any) {
@@ -54,11 +54,12 @@ export class ApiService {
     return this.httpClient.post(`${this.apiURL}/${apiName}`, item, this.getHttpOptions());
   }
   public updateItem(apiName: any, item: any) {
-    console.log(item);
+    //console.log(item);
+    //console.log(this.apiURL + "/" + apiName + "/" + item.id);
     return this.httpClient.put(`${this.apiURL}/${apiName}/${item.id}`, item, this.getHttpOptions());
   }
   public deleteItem(apiName: any, id: any) {
     return this.httpClient.delete(`${this.apiURL}/${apiName}/${id}`, this.getHttpOptions());
   }
-  
+
 }
