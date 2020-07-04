@@ -1,8 +1,10 @@
-import { DataSource } from '@angular/cdk/collections';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { map } from 'rxjs/operators';
-import { Observable, of as observableOf, merge } from 'rxjs';
+import {DataSource} from '@angular/cdk/collections';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {merge, Observable, of as observableOf} from 'rxjs';
+import {map} from 'rxjs/operators';
+
+import {ApiService} from '../service/api.service';
 
 // TODO: Replace this with your own data model type
 export interface ScheduleItem {
@@ -14,9 +16,24 @@ export interface ScheduleItem {
 
 // TODO: replace this with real data from your application
 const EXAMPLE_DATA: ScheduleItem[] = [
-  {eventType: 'Regular Season', opponent: 'Oppo Team 1', eventDatetime: new Date("2020-05-20"), location: 'Liverpool'},
-  {eventType: 'Profession', opponent: 'Oppo Team 2', eventDatetime: new Date("2020-07-13"), location: 'Oxford'},
-  {eventType: 'Tournament', opponent: 'Oppo Team 3', eventDatetime: new Date("2020-10-27"), location: 'London'},
+  {
+    eventType: 'Regular Season',
+    opponent: 'Oppo Team 1',
+    eventDatetime: new Date('2020-05-20'),
+    location: 'Liverpool'
+  },
+  {
+    eventType: 'Profession',
+    opponent: 'Oppo Team 2',
+    eventDatetime: new Date('2020-07-13'),
+    location: 'Oxford'
+  },
+  {
+    eventType: 'Tournament',
+    opponent: 'Oppo Team 3',
+    eventDatetime: new Date('2020-10-27'),
+    location: 'London'
+  },
 ];
 
 /**
@@ -28,8 +45,8 @@ export class ScheduleDataSource extends DataSource<ScheduleItem> {
   data: ScheduleItem[] = EXAMPLE_DATA;
   paginator: MatPaginator;
   sort: MatSort;
-
-  constructor() {
+  
+  constructor(private apiService: ApiService) {
     super();
   }
 
@@ -41,11 +58,8 @@ export class ScheduleDataSource extends DataSource<ScheduleItem> {
   connect(): Observable<ScheduleItem[]> {
     // Combine everything that affects the rendered data into one update
     // stream for the data-table to consume.
-    const dataMutations = [
-      observableOf(this.data),
-      this.paginator.page,
-      this.sort.sortChange
-    ];
+    const dataMutations =
+        [observableOf(this.data), this.paginator.page, this.sort.sortChange];
 
     return merge(...dataMutations).pipe(map(() => {
       return this.getPagedData(this.getSortedData([...this.data]));
@@ -54,7 +68,8 @@ export class ScheduleDataSource extends DataSource<ScheduleItem> {
 
   /**
    *  Called when the table is being destroyed. Use this function, to clean up
-   * any open connections or free any held resources that were set up during connect.
+   * any open connections or free any held resources that were set up during
+   * connect.
    */
   disconnect() {}
 
@@ -71,7 +86,7 @@ export class ScheduleDataSource extends DataSource<ScheduleItem> {
    * Sort the data (client-side). If you're using server-side sorting,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getSortedData(data: ScheduleItem[]) {
+  private getSortedData(data: ScheduleItem[]) {data
     if (!this.sort.active || this.sort.direction === '') {
       return data;
     }
@@ -79,15 +94,21 @@ export class ScheduleDataSource extends DataSource<ScheduleItem> {
     return data.sort((a, b) => {
       const isAsc = this.sort.direction === 'asc';
       switch (this.sort.active) {
-        case 'name': return compare(a.opponent, b.opponent, isAsc);
-        case 'id': return compare(a.location, b.location, isAsc);
-        default: return 0;
+        case 'name':
+          return compare(a.opponent, b.opponent, isAsc);
+        case 'id':
+          return compare(a.location, b.location, isAsc);
+        default:
+          return 0;
       }
     });
   }
 }
 
-/** Simple sort comparator for example ID/Name columns (for client-side sorting). */
-function compare(a: string | number, b: string | number, isAsc: boolean) {
+/**
+ * Simple sort comparator for example ID/Name columns (for client-side
+ * sorting).
+ */
+function compare(a: string|number, b: string|number, isAsc: boolean) {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

@@ -21,7 +21,7 @@ export class ScheduleFormComponent implements OnInit {
     eventDatetime: '2020-10-20',
     location: 'Liverpool'
   });
-  eventTypes: string[] = ['Regular Season', 'Profession', 'Tournament'];
+  eventTypes: string[] = ['Season', 'Profession', 'Tournament'];
   constructor(private fb: FormBuilder, private ref: OverlayHandle) {
     this.frmSubscribe = this.fb.group({
       eventType: ref.data.eventType,

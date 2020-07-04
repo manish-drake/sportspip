@@ -54,6 +54,7 @@ export class ApiService {
     return this.httpClient.post(`${this.apiURL}/${apiName}`, item, this.getHttpOptions());
   }
   public updateItem(apiName: any, item: any) {
+    console.log(item);
     return this.httpClient.put(`${this.apiURL}/${apiName}/${item.id}`, item, this.getHttpOptions());
   }
   public deleteItem(apiName: any, id: any) {
