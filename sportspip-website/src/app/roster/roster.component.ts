@@ -96,8 +96,8 @@ export class RosterComponent implements OnInit {
 
   updateDialog(elem: any): void {
     const dialogRef = this.dialog.open(UpdaterosterdialogComponent, {
-      width: '400px',
-      //height: '90%',
+      width: '500px',
+      //height: '500px',
       data: elem
     });
 

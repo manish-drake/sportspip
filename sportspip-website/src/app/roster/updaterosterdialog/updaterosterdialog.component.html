@@ -4,6 +4,12 @@
         <mat-label class="">JerseyNumber</mat-label>
         <input matInput placeholder="Ex. John" [(ngModel)]="roster.JerseyNumber">
     </mat-form-field>
+    <mat-form-field class="widht-90">
+        <mat-label>Positions</mat-label>
+        <mat-select multiple [(value)]="selectedpositions">
+            <mat-option *ngFor="let position of positions" [value]="position.id">{{position.Position}}</mat-option>
+        </mat-select>
+    </mat-form-field>
 </div>
 <div mat-dialog-actions align="end">
     <button mat-button  [disabled]="!roster.JerseyNumber" (click)="onNoClick()">Update</button>
