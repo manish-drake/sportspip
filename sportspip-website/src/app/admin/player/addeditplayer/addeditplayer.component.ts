@@ -180,4 +180,7 @@ export class AddeditplayerComponent implements OnInit {
     this.handle.close(data);
   }
 
+  cancel() {
+    this.handle.close(null);
+  }
 }

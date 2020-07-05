@@ -25,13 +25,14 @@ export class ScheduleComponent implements AfterViewInit, OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatTable) table: MatTable<ScheduleItem>;
   dataSource: MatTableDataSource<ScheduleItem>;
-  scheduleEditForm: Type<any> = ScheduleFormComponent
+  crudComponent: Type<any> = ScheduleFormComponent
 
   constructor(private overlayService: OverlayService, private apiService: ApiService) { }
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['EventType', 'Opponent', 'EventDate', 'Location', 'DeleteAction'];
   isOpen = false;
+  loadingData: Boolean = false;
   ngOnInit() {
     this.dataSource = new MatTableDataSource<ScheduleItem>([]);
 

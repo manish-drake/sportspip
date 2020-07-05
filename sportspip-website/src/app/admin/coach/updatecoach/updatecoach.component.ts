@@ -171,4 +171,8 @@ export class UpdatecoachComponent implements OnInit {
   close(data: any) {
     this.handle.close(data);
   }
+
+  cancel() {
+    this.handle.close(null);
+  }
 }

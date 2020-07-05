@@ -1,14 +1,8 @@
-<div class="jumbotron" style="background-color: #fff; height: calc(95vh);">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-10"></div>
-            <div class="col-sm-2">
-                <button mat-raised-button *ngIf="updateItem" (click)="UpdateItem()"
-                    [disabled]="!coach.FirstName || !coach.LastName">Update</button>
-                <button mat-raised-button *ngIf="!updateItem" (click)="AddItem()"
-                    [disabled]="!coach.FirstName || !coach.LastName">Save</button>
-            </div>
-        </div>
+<div class="crud-form modal-card">
+    <header class="modal-card-head has-text-weight-bold">
+        COACH
+    </header>
+    <section class="modal-card-body">        
         <div class="row" *ngIf="!loadingData">
             <div class="col-sm-4">
                 <img style="height: 220px; width: 220px; background-color:lightgray;"
@@ -16,8 +10,9 @@
 
                 <!-- <mat-label class="">Upload</mat-label> -->
                 <input type="file" id="input-file" (change)="uploadFile($event)" style="display: none;">
-                <button mat-raised-button onclick="document.querySelector('#input-file').click()">Upload
-                    Picture</button>
+                <button style="margin-top: 20px;" mat-raised-button onclick="document.querySelector('#input-file').click()">Upload
+                    Picture
+                </button>
             </div>
             <div class="col-sm-8" *ngIf="!loadingData">
                 <div class="row">
@@ -95,6 +90,15 @@
                 </mat-form-field>
             </div>
         </div>
-    </div>
+    </section>
+    <footer class="modal-card-foot">
+      <div class="btn-toolbar">
+        <button class="footer-button" *ngIf="updateItem" (click)="UpdateItem()"
+                    [disabled]="!coach.FirstName || !coach.LastName">Update</button>
+        <button  class="footer-button" *ngIf="!updateItem" (click)="AddItem()"
+                    [disabled]="!coach.FirstName || !coach.LastName">   Save   </button>
+        <button  class="footer-button" (click)="cancel()" >Cancel</button>
+      </div>
+    </footer>
     <mat-spinner *ngIf="loadingData" style="left: 45%;"></mat-spinner>
 </div>
