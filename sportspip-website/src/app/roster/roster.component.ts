@@ -6,6 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { AddplayerdialogComponent } from './addplayerdialog/addplayerdialog.component';
+import { AddcoachdialogComponent } from './addcoachdialog/addcoachdialog.component';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -46,6 +47,7 @@ export class RosterComponent implements OnInit {
         (data) => {
           this.loadingData = false;
           this.items = data;
+
           this.dataSource.data = this.items;
           this.dataSource.paginator = this.paginator;
           //console.log(this.sort);
@@ -65,17 +67,29 @@ export class RosterComponent implements OnInit {
     return date;
   }
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open(AddplayerdialogComponent, {
+  openDialog(type: string): void {
+    let rosterdata = [];
+    let dialogtemplate;
+    if (type === "player") {
+      rosterdata = this.items.filter(elem => { return elem.MemberType === "Player" });
+      dialogtemplate = AddplayerdialogComponent;
+    }
+    else {
+      rosterdata = this.items.filter(elem => { return elem.MemberType === "Coach" })
+      dialogtemplate = AddcoachdialogComponent;
+    }
+
+    const dialogRef = this.dialog.open(dialogtemplate, {
       width: '50%',
       //height: '90%',
-      data: this.items.filter(elem => { return elem.MemberType === "Player" })
+      data: rosterdata
     });
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed');
-    //   this.animal = result;
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.dataSource = new MatTableDataSource([]);
+      this.FetchItems();
+    });
   }
 
 }

@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Add Coaches</h1>
+<div mat-dialog-content>
+    <mat-selection-list #levelList [(ngModel)]="selectedcoaches">
+        <mat-list-option *ngFor="let coach of coaches" [value]="coach.id" checkboxPosition="before">
+            {{coach.FirstName}}  {{coach.LastName}}           
+        </mat-list-option>
+    </mat-selection-list>
+    <mat-spinner *ngIf="loadingData" style="left: 45%;"></mat-spinner>
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-button (click)="onNoClick()">Save</button>
+</div>
