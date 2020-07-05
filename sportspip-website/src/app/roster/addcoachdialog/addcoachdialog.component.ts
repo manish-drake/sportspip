@@ -57,6 +57,7 @@ export class AddcoachdialogComponent implements OnInit {
         if (idx === -1) {
           let coach = this.coaches.filter(ncoach => { return ncoach.id === item });
           let newItem = {
+            "JerseyNumber":"",
             "MemberType": "Coach",
             "Coach": coach.length > 0 ? coach[0] : null,
             "FirstName": coach.length > 0 ? coach[0].FirstName : null,
@@ -66,6 +67,7 @@ export class AddcoachdialogComponent implements OnInit {
         }
       });
     }
+    this.dialogRef.close();
   }
 
   AddItem(roster: any): void {
@@ -74,7 +76,7 @@ export class AddcoachdialogComponent implements OnInit {
       .subscribe(
         (_data) => {
           console.log("success");
-          this.dialogRef.close();
+         
         },
         (error) => {
           console.log("Error; add roster data: ", error);

@@ -48,6 +48,8 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { ScheduleFormComponent } from './schedule-form/schedule-form.component';
 import { AddcoachdialogComponent } from './roster/addcoachdialog/addcoachdialog.component';
+import { HomeComponent } from './home/home.component';
+import { UpdaterosterdialogComponent } from './roster/updaterosterdialog/updaterosterdialog.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +81,9 @@ import { AddcoachdialogComponent } from './roster/addcoachdialog/addcoachdialog.
     OverlayComponent,
     ScheduleComponent,
     ScheduleFormComponent,
-    AddcoachdialogComponent
+    AddcoachdialogComponent,
+    HomeComponent,
+    UpdaterosterdialogComponent
   ],
   imports: [
     BrowserModule,

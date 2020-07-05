@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { AddplayerdialogComponent } from './addplayerdialog/addplayerdialog.component';
 import { AddcoachdialogComponent } from './addcoachdialog/addcoachdialog.component';
+import { UpdaterosterdialogComponent } from './updaterosterdialog/updaterosterdialog.component';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -74,10 +75,11 @@ export class RosterComponent implements OnInit {
       rosterdata = this.items.filter(elem => { return elem.MemberType === "Player" });
       dialogtemplate = AddplayerdialogComponent;
     }
-    else {
+    else if (type === "coach") {
       rosterdata = this.items.filter(elem => { return elem.MemberType === "Coach" })
       dialogtemplate = AddcoachdialogComponent;
     }
+     
 
     const dialogRef = this.dialog.open(dialogtemplate, {
       width: '50%',
@@ -92,4 +94,35 @@ export class RosterComponent implements OnInit {
     });
   }
 
+  updateDialog(elem: any): void {
+    const dialogRef = this.dialog.open(UpdaterosterdialogComponent, {
+      width: '400px',
+      //height: '90%',
+      data: elem
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.dataSource = new MatTableDataSource([]);
+      this.FetchItems();
+    });
+  }
+
+  DeleteItem(id: any) {
+    //console.log(id);
+    this.loadingData = true;
+    this.apiService.deleteItem('rosters', id)
+        .subscribe(
+            (data) => {
+              // console.log(data);
+              this.openSnackBar('Item deleted successfully!', '');
+              this.FetchItems();
+              // this.items = data;
+            },
+            (error) => {
+              this.openSnackBar('Error; delete Item!', '');
+              console.log('Error; delete players data: ', error);
+              this.loadingData = false;
+            });
+  }
 }
