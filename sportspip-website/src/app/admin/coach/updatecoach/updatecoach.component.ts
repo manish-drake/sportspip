@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../../service/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { OverlayHandle } from 'src/app/overlay-handle';
 
 @Component({
   selector: 'app-updatecoach',
   templateUrl: './updatecoach.component.html',
-  styleUrls: ['./updatecoach.component.css']
+  styleUrls: ['./updatecoach.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class UpdatecoachComponent implements OnInit {
 
@@ -24,11 +26,16 @@ export class UpdatecoachComponent implements OnInit {
   selectedLevel: any = [];
   updateItem: boolean = true;
 
-  constructor(private route: ActivatedRoute, private router: Router, private apiService: ApiService, private _snackBar: MatSnackBar) {
+  constructor(
+    private route: ActivatedRoute, 
+    private router: Router, 
+    private apiService: ApiService, 
+    private _snackBar: MatSnackBar,
+    private handle: OverlayHandle) {
     this.route.params.subscribe(params => {
       // console.log(params.id);
-      if (params.id !== undefined) {
-        this.coachId = params.id;
+      if (handle.data !== null) {
+        this.coachId = handle.data;
         if (this.coachId.trim() === "0" || this.coachId.trim() === "") {
           this.updateItem = false;
         }
@@ -113,6 +120,7 @@ export class UpdatecoachComponent implements OnInit {
           this.openSnackBar("Item updated successfully!", "");
           //console.log(data);
           this.coach = data;
+          this.close(this.coach);
         },
         (error) => {
           console.log("Error; update coach data: ", error);
@@ -133,7 +141,8 @@ export class UpdatecoachComponent implements OnInit {
           this.loadingData = false;
           this.coach = data;
           this.openSnackBar("Item added successfully!", "");
-          this.router.navigate(['/admin/coach', this.coach.id]);
+          // this.router.navigate(['/admin/coach', this.coach.id]);
+          this.close(this.coach);
         },
         (error) => {
           console.log("Error; add coach data: ", error);
@@ -158,5 +167,8 @@ export class UpdatecoachComponent implements OnInit {
           }
         );
     }
+  }
+  close(data: any) {
+    this.handle.close(data);
   }
 }

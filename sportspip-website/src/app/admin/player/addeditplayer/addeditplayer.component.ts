@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../../service/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { OverlayHandle } from 'src/app/overlay-handle';
 
 @Component({
   selector: 'app-addeditplayer',
   templateUrl: './addeditplayer.component.html',
-  styleUrls: ['./addeditplayer.component.css']
+  styleUrls: ['./addeditplayer.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AddeditplayerComponent implements OnInit {
 
@@ -24,11 +26,17 @@ export class AddeditplayerComponent implements OnInit {
   selectedLevel: string = '';
   updateItem: boolean = true;
 
-  constructor(private route: ActivatedRoute, private router: Router, private apiService: ApiService, private _snackBar: MatSnackBar) {
+  constructor(
+    private route: ActivatedRoute, 
+    private router: Router, 
+    private apiService: ApiService, 
+    private _snackBar: MatSnackBar,
+    private handle: OverlayHandle) {
     this.route.params.subscribe(params => {
+      console.log(handle.data);
       // console.log(params.id);
-      if (params.id !== undefined) {
-        this.playerId = params.id;
+      if (handle.data !== null) {
+        this.playerId = handle.data;
         if (this.playerId.trim() === "0" || this.playerId.trim() === "") {
           this.updateItem = false;
         }
@@ -123,6 +131,7 @@ export class AddeditplayerComponent implements OnInit {
           //console.log(data);
           this.player = data;
           this.MapPlayerToCategories();
+          this.close(this.player);
         },
         (error) => {
           console.log("Error; update player data: ", error);
@@ -140,7 +149,8 @@ export class AddeditplayerComponent implements OnInit {
           this.loadingData = false;
           this.player = data;
           this.openSnackBar("Item added successfully!", "");
-          this.router.navigate(['/admin/player', this.player.id]);
+          // this.router.navigate(['/admin/player', this.player.id]);
+          this.close(this.player);
         },
         (error) => {
           console.log("Error; add player data: ", error);
@@ -166,4 +176,8 @@ export class AddeditplayerComponent implements OnInit {
         );
     }
   }
+  close(data: any) {
+    this.handle.close(data);
+  }
+
 }
