@@ -11,7 +11,7 @@
                     <mat-label>Players List</mat-label>
                 </div>
                 <div class="col-sm-2">
-                    <button mat-raised-button (click)="AddItem()">Add Player</button>
+                    <button mat-raised-button (click)="open(crudPlayer, null)">Add Player</button>
                 </div>
             </div>
             <!-- <div class="alert alert-success" role="alert">
@@ -47,7 +47,7 @@
                 <ng-container matColumnDef="DeleteAction">
                     <th mat-header-cell *matHeaderCellDef></th>
                     <td mat-cell *matCellDef="let element" style="text-align: center;">
-                        <button mat-icon-button color="warn" matTooltip="Edit" (click)="EditItem(element.id)">
+                        <button mat-icon-button color="warn" matTooltip="Edit" (click)="open(crudPlayer, element.id)">
                             <mat-icon>edit</mat-icon>
                         </button>
                         <button mat-icon-button color="warn" matTooltip="Delete" (click)="DeleteItem(element.id)">

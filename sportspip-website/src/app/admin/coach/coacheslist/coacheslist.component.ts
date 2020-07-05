@@ -1,10 +1,14 @@
-import { Component, OnInit, ViewChild, Pipe, PipeTransform, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Pipe, PipeTransform, AfterViewInit, TemplateRef, Type } from '@angular/core';
 import { ApiService } from '../../../service/api.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { ComponentType } from '@angular/cdk/portal';
+import { OverlayService } from 'src/app/overlay.service';
+import { UpdatecoachComponent } from '../updatecoach/updatecoach.component';
+import { Title } from '@angular/platform-browser';
 
 @Pipe({
   name: 'filtercoach'
@@ -36,11 +40,16 @@ export class CoacheslistComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ["FirstName", "LastName", "Title", "createdAt", "DeleteAction"];
   //dataSource: any;
   dataSource = new MatTableDataSource([]);
+  crudComponent: Type<UpdatecoachComponent> = UpdatecoachComponent;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(private apiService: ApiService, private router: Router, private _snackBar: MatSnackBar) { }
+  constructor(
+    private apiService: ApiService, 
+    private router: Router, 
+    private _snackBar: MatSnackBar,
+    private overlayService: OverlayService) { }
 
   ngAfterViewInit(): void {
     // this.dataSource.sort = this.sort;
@@ -83,7 +92,17 @@ export class CoacheslistComponent implements OnInit, AfterViewInit {
     return date;
   }
 
+  swap(swapCoach: any, withCoach: any) {
+    swapCoach.FirstName                 =  withCoach.FirstName
+    swapCoach.LastName                  =  withCoach.LastName
+    swapCoach.ProfileImage              =  withCoach.ProfileImage
+    swapCoach.Title                     =  withCoach.Title
+    swapCoach.levels                    =  withCoach.levels
+    swapCoach.programs                  =  withCoach.programs
+    swapCoach.sports                    =  withCoach.sports
+    swapCoach.years                     =  withCoach.years
 
+  }
   DeleteItem(id: any) {
     console.log(id);
     this.loadingData = true;
@@ -110,7 +129,8 @@ export class CoacheslistComponent implements OnInit, AfterViewInit {
 
   AddItem() {
     //console.log("id:  " + id);
-    this.router.navigate(['/admin/coach/add']);
+    // this.router.navigate(['/admin/coach/add']);
+
   }
 
   updateSportsFilter(emittedValue) {
@@ -127,6 +147,25 @@ export class CoacheslistComponent implements OnInit, AfterViewInit {
 
   updateYearsFilter(emittedValue) {
     this.selectedYear = emittedValue;
+  }
+  open(content: TemplateRef<any> | ComponentType<any> | string, data: any = {}) {
+    const ref = this.overlayService.open(content, data);
+
+    ref.afterClosed$.subscribe(res => {
+      let modData = res.data;
+      console.log(modData);
+      if (modData !== undefined) {
+        let updateElement =
+            this.dataSource.data.find(element => element.id === modData.id);
+        if (updateElement === undefined) {
+          let newData = this.dataSource.data.slice();
+          newData.push(modData);
+          this.dataSource.data = newData;
+        } else {
+          this.swap(updateElement, modData);
+        }
+      }
+    });
   }
 
 }
