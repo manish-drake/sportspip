@@ -66,6 +66,7 @@ export class AddplayerdialogComponent implements OnInit {
         }
       });
     }
+    this.dialogRef.close();
   }
 
   AddItem(roster: any): void {
@@ -74,7 +75,7 @@ export class AddplayerdialogComponent implements OnInit {
       .subscribe(
         (_data) => {
           console.log("success");
-          this.dialogRef.close();
+          
         },
         (error) => {
           console.log("Error; add roster data: ", error);

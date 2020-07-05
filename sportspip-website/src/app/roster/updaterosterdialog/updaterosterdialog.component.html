@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>Update Roster</h1>
+<div mat-dialog-content>
+    <mat-form-field>
+        <mat-label class="">JerseyNumber</mat-label>
+        <input matInput placeholder="Ex. John" [(ngModel)]="roster.JerseyNumber">
+    </mat-form-field>
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-button  [disabled]="!roster.JerseyNumber" (click)="onNoClick()">Update</button>
+</div>
