@@ -2,3 +2,9 @@
     padding:2px;
     margin-left: 7px;
 }
+.navbar-brand {
+    background-color: dimgrey;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 17px;
+}

@@ -1,4 +1,4 @@
-<div class="modal-card">
+<div class="crud-form modal-card">
     <form [formGroup]="frmSubscribe" (submit)="submit()">
       <header class="modal-card-head has-text-weight-bold">
         EVENT
@@ -41,8 +41,8 @@
       </section>
       <footer class="modal-card-foot">
         <div class="buttons">
-          <button type="submit" class="button is-success"> Save </button>
-          <button (click)="cancel()" type="button" class="button is-danger">Cancel</button>
+          <button type="button" (click)="submit()" class="footer-button"> Save </button>
+          <button (click)="cancel()" type="button" class="footer-button">Cancel</button>
         </div>
       </footer>
     </form>
