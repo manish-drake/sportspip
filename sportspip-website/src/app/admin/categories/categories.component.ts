@@ -9,7 +9,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class CategoriesComponent implements OnInit {
 
-  loadingData: Boolean = false;
+  loadingDatalevel: Boolean = false;
+  loadingDatasport: Boolean = false;
+  loadingDataprogram: Boolean = false;
+  loadingDatayear: Boolean = false;
   apiURL: string = '';
   sports: any = [];
   levels: any = [];
@@ -30,7 +33,23 @@ export class CategoriesComponent implements OnInit {
     this.FetchCategory("programs");
   }
 
+  showhideloading(apiName: string, value: boolean): void {
+    if (apiName === "sports") {
+      this.loadingDatasport = value;
+    }
+    if (apiName === "levels") {
+      this.loadingDatalevel = value;
+    }
+    if (apiName === "programs") {
+      this.loadingDataprogram = value;
+    }
+    if (apiName === "years") {
+      this.loadingDatayear = value;
+    }
+  }
+
   FetchCategory(apiName: string): void {
+    this.showhideloading(apiName, true);
     this.apiService.getItems(apiName)
       .subscribe(
         (data) => {
@@ -50,6 +69,7 @@ export class CategoriesComponent implements OnInit {
             this.years = data;
             this.yearName = '';
           }
+          this.showhideloading(apiName, false);
         },
         (error) => {
           console.log("Error; get sports data: ", error);
@@ -58,27 +78,42 @@ export class CategoriesComponent implements OnInit {
   }
 
   AddItem(apiName: string, value: string): void {
-    console.log(apiName + "   " + value);
-    console.log(this.isValid(apiName, value)); 
     if (!this.isValid(apiName, value)) {
       this.openSnackBar(apiName + " name should be unique!", "Error");
-    } 
+    }
     else if (value.trim() !== '') {
-      this.loadingData = true;
+      this.showhideloading(apiName, true);
       let item = { Name: value.trim() };
       this.apiService.addItem(apiName, item)
         .subscribe(
           (data) => {
-            this.loadingData = false;
+            this.showhideloading(apiName, false);
             this.FetchCategory(apiName);
             this.openSnackBar("Item added successfully!", "");
           },
           (error) => {
             console.log("Error; add " + apiName + " data: ", error);
-            this.loadingData = false;
+            this.showhideloading(apiName, false);
           }
         );
     }
+  }
+
+  UpdateItem(apiName: string, item: any): void {
+    this.showhideloading(apiName, true);
+    this.apiService.updateItem(apiName, item)
+      .subscribe(
+        (data) => {
+          this.showhideloading(apiName, false);
+          this.FetchCategory(apiName);
+          this.openSnackBar("Item updated successfully!", "");
+        },
+        (error) => {
+          console.log("Error; update " + apiName + " data: ", error);
+          this.openSnackBar(apiName + " name should be unique!", "Error");
+          this.showhideloading(apiName, false);
+        }
+      );
   }
 
   openSnackBar(message: string, action: string) {

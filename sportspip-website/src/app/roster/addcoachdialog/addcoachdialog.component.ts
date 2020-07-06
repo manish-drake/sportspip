@@ -22,16 +22,19 @@ export class AddcoachdialogComponent implements OnInit {
     this.FetchItems();
   }
 
-  
+
   FetchItems(): void {
     this.loadingData = true;
     this.apiService.getItems('coaches')
       .subscribe(
         (data) => {
           this.coaches = data;
+          console.log(this.data);
           this.data.forEach(key => {
-            this.selectedcoaches.push(key.Coach.id.toString());
-            this.addedcoaches.push({ rosterId: key.id.toString(), coachId: key.Coach.id.toString() });
+            if (key.Coach !== null) {
+              this.selectedcoaches.push(key.Coach.id.toString());
+              this.addedcoaches.push({ rosterId: key.id.toString(), coachId: key.Coach.id.toString() });
+            }
           });
           console.log(this.addedcoaches);
           this.loadingData = false;
@@ -43,7 +46,7 @@ export class AddcoachdialogComponent implements OnInit {
   }
 
   onNoClick(): void {
-   
+
     if (this.addedcoaches.length > 0) {
       this.addedcoaches.forEach(item => {
         if (this.selectedcoaches.indexOf(item.coachId) === -1) {
@@ -57,7 +60,7 @@ export class AddcoachdialogComponent implements OnInit {
         if (idx === -1) {
           let coach = this.coaches.filter(ncoach => { return ncoach.id === item });
           let newItem = {
-            "JerseyNumber":"",
+            "JerseyNumber": "",
             "MemberType": "Coach",
             "Coach": coach.length > 0 ? coach[0] : null,
             "FirstName": coach.length > 0 ? coach[0].FirstName : null,
@@ -76,7 +79,7 @@ export class AddcoachdialogComponent implements OnInit {
       .subscribe(
         (_data) => {
           console.log("success");
-         
+
         },
         (error) => {
           console.log("Error; add roster data: ", error);

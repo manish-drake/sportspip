@@ -3,64 +3,104 @@
         <div class="col-sm-3">
             <h2>Sports</h2>
             <ul class="list-group">
-                <li class="list-group-item" *ngFor="let sport of sports">{{sport.Name}}</li>
+                <div *ngFor="let sport of sports">
+                    <li class="list-group-item" contenteditable="true" style="width: 70%;"
+                     [(textContent)]="sport.Name" (input)="sport.Name=$event.target.textContent"></li>
+                    <button mat-icon-button color="warn" matTooltip="Delete">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="UpdateItem('sports',sport)" matTooltip="Update">
+                        <mat-icon>save</mat-icon>
+                    </button>
+                </div>
                 <li class="list-group-item">
-                    <mat-form-field>
+                    <mat-form-field class="inputformfield">
                         <mat-label class="">Name</mat-label>
                         <input matInput placeholder="Ex. Cricket" [(ngModel)]="sportName">
-                    </mat-form-field>                    
-                </li>
-                <li class="list-group-item">
+                    </mat-form-field>
                     <button mat-raised-button (click)="AddItem('sports',sportName)"
                         [disabled]="sportName.trim()===''">Add</button>
+                </li>
+                <li class="list-group-item">
+                    <mat-spinner *ngIf="loadingDatasport"  style="left: 30%;"></mat-spinner>
                 </li>
             </ul>
         </div>
         <div class="col-sm-3">
             <h2>Levels</h2>
             <ul class="list-group">
-                <li class="list-group-item" *ngFor="let level of levels">{{level.Name}}</li>
+                <div *ngFor="let level of levels">
+                    <li class="list-group-item" contenteditable="true" style="width: 70%;"
+                    [(textContent)]="level.Name" (input)="level.Name=$event.target.textContent"></li>
+                    <button mat-icon-button color="warn" matTooltip="Delete">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="UpdateItem('levels',level)" matTooltip="Update">
+                        <mat-icon>save</mat-icon>
+                    </button>
+                </div>
                 <li class="list-group-item">
-                    <mat-form-field>
+                    <mat-form-field class="inputformfield">
                         <mat-label class="">Name</mat-label>
                         <input matInput placeholder="Ex. Senior" [(ngModel)]="levelName">
                     </mat-form-field>
-                </li>
-                <li class="list-group-item">
                     <button mat-raised-button (click)="AddItem('levels',levelName)"
                         [disabled]="levelName.trim()===''">Add</button>
+                </li>
+                <li class="list-group-item">
+                    <mat-spinner *ngIf="loadingDatalevel"  style="left: 30%;"></mat-spinner>
                 </li>
             </ul>
         </div>
         <div class="col-sm-3">
             <h2>Programs</h2>
             <ul class="list-group">
-                <li class="list-group-item" *ngFor="let program of programs">{{program.Name}}</li>
+                <div *ngFor="let program of programs">
+                    <li class="list-group-item" contenteditable="true" style="width: 70%;"
+                    [(textContent)]="program.Name" (input)="program.Name=$event.target.textContent"></li>
+                    <button mat-icon-button color="warn" matTooltip="Delete">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="UpdateItem('programs',program)" matTooltip="Update">
+                        <mat-icon>save</mat-icon>
+                    </button>
+                </div>
                 <li class="list-group-item">
-                    <mat-form-field>
+                    <mat-form-field class="inputformfield">
                         <mat-label class="">Name</mat-label>
                         <input matInput placeholder="Ex. Men's" [(ngModel)]="programName">
                     </mat-form-field>
-                </li>
-                <li class="list-group-item">
                     <button mat-raised-button (click)="AddItem('programs',programName)"
                         [disabled]="programName.trim()===''">Add</button>
+                </li>
+                <li class="list-group-item">
+                    <mat-spinner *ngIf="loadingDataprogram"  style="left: 30%;"></mat-spinner>
                 </li>
             </ul>
         </div>
         <div class="col-sm-3">
             <h2>Years</h2>
             <ul class="list-group">
-                <li class="list-group-item" *ngFor="let year of years">{{year.Name}}</li>
+                <div *ngFor="let year of years">
+                    <li class="list-group-item" contenteditable="true" style="width: 70%;"
+                    [(textContent)]="year.Name" (input)="year.Name=$event.target.textContent"></li>
+                    <button mat-icon-button color="warn" matTooltip="Delete">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="UpdateItem('years',year)" matTooltip="Update">
+                        <mat-icon>save</mat-icon>
+                    </button>
+                </div>
                 <li class="list-group-item">
-                    <mat-form-field>
+                    <mat-form-field class="inputformfield">
                         <mat-label class="">Name</mat-label>
                         <input matInput placeholder="Ex. 2020" [(ngModel)]="yearName">
                     </mat-form-field>
-                </li>
-                <li class="list-group-item">
                     <button mat-raised-button (click)="AddItem('years',yearName)"
                         [disabled]="yearName.trim()===''">Add</button>
+                </li>
+                <li class="list-group-item">
+                    <mat-spinner *ngIf="loadingDatayear"  style="left: 30%;"></mat-spinner>
                 </li>
             </ul>
         </div>

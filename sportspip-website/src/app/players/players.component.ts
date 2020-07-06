@@ -66,11 +66,11 @@ export class FilterPlayerPipe implements PipeTransform {
 })
 export class SortPlayerPipe implements PipeTransform {
   transform(items: any[], order = ''): any[] {
-    //console.log("order  " + order);
+    console.log("order  " + order);
     if (order.indexOf("_lst") !== -1) {
       if (order.indexOf("_desc") === -1) {
         order = order.slice(0, order.indexOf("_"));
-        console.log(order);
+        //console.log(order);
         return items.slice().sort((a, b) => a[order][0].Name.localeCompare(b[order][0].Name));
       }
       else {
@@ -81,7 +81,7 @@ export class SortPlayerPipe implements PipeTransform {
     else if (order.indexOf("_obj") !== -1) {
       if (order.indexOf("_desc") === -1) {
         order = order.slice(0, order.indexOf("_"));
-        console.log(order);
+       // console.log(order);
         return items.slice().sort((a, b) => a[order].Name.localeCompare(b[order].Name));
       }
       else {
@@ -109,7 +109,8 @@ export class SortPlayerPipe implements PipeTransform {
 @Component({
   selector: 'app-players',
   templateUrl: './players.component.html',
-  styleUrls: ['./players.component.css']
+  styleUrls: ['./players.component.css'],
+  providers: [SortPlayerPipe]
 })
 export class PlayersComponent implements OnInit {
 
@@ -125,16 +126,27 @@ export class PlayersComponent implements OnInit {
   selectedLevel: any = '';
   sortplayerOrder: string = 'LastName';
   loadingData: Boolean = false;
+  isAscending: Boolean = true;
 
-
-  constructor(private apiService: ApiService, private router: Router) { }
+  constructor(private apiService: ApiService, private router: Router, private sortPlayer: SortPlayerPipe) { }
 
   ngOnInit(): void {
     this.FetchItems();
     this.apiURL = this.apiService.getApiUrl();
   }
 
-
+  sortAscDesc(type: string): void {
+    console.log(type);
+    if (type === 'desc') {
+      this.isAscending = true;
+      this.items = this.sortPlayer.transform(this.items, this.sortplayerOrder + "_desc");
+    }
+    else {
+      this.isAscending = false;
+      this.items = this.sortPlayer.transform(this.items, this.sortplayerOrder);
+    }
+  }
+  
   FetchItems(): void {
     this.loadingData = true;
     this.apiService.getItems('players')

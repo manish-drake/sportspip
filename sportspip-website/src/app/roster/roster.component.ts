@@ -21,7 +21,7 @@ export class RosterComponent implements OnInit {
   items: any = [];
   sortcoachOrder: string = 'LastName';
   loadingData: Boolean = false;
-  displayedColumns: string[] = ["JerseyNumber", "MemberType", "FirstName", "LastName", "createdAt", "DeleteAction"];
+  displayedColumns: string[] = ["MemberType", "JerseyNumber", "FirstName", "LastName", "Positions", "DeleteAction"];
   //dataSource: any;
   dataSource = new MatTableDataSource([]);
 
@@ -61,11 +61,9 @@ export class RosterComponent implements OnInit {
       );
   }
 
-  FormatDate(value) {
-    var st = value;
-    let pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
-    let date = new Date(st.replace(pattern, '$1-$2-$3 $4:$5:$6'));
-    return date;
+  FormatPositions(value) {
+    //this.player.sports.map(e => e.Name).join(", ")     
+    return value.map(e => e.Position).join();
   }
 
   openDialog(type: string): void {
@@ -79,7 +77,7 @@ export class RosterComponent implements OnInit {
       rosterdata = this.items.filter(elem => { return elem.MemberType === "Coach" })
       dialogtemplate = AddcoachdialogComponent;
     }
-     
+
 
     const dialogRef = this.dialog.open(dialogtemplate, {
       width: '50%',
@@ -112,17 +110,17 @@ export class RosterComponent implements OnInit {
     //console.log(id);
     this.loadingData = true;
     this.apiService.deleteItem('rosters', id)
-        .subscribe(
-            (data) => {
-              // console.log(data);
-              this.openSnackBar('Item deleted successfully!', '');
-              this.FetchItems();
-              // this.items = data;
-            },
-            (error) => {
-              this.openSnackBar('Error; delete Item!', '');
-              console.log('Error; delete players data: ', error);
-              this.loadingData = false;
-            });
+      .subscribe(
+        (data) => {
+          // console.log(data);
+          this.openSnackBar('Item deleted successfully!', '');
+          this.FetchItems();
+          // this.items = data;
+        },
+        (error) => {
+          this.openSnackBar('Error; delete Item!', '');
+          console.log('Error; delete players data: ', error);
+          this.loadingData = false;
+        });
   }
 }

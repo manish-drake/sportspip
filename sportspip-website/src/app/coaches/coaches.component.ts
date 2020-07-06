@@ -165,7 +165,8 @@ export class SortCoachPipe implements PipeTransform {
 @Component({
   selector: 'app-coaches',
   templateUrl: './coaches.component.html',
-  styleUrls: ['./coaches.component.css']
+  styleUrls: ['./coaches.component.css'],
+  providers: [SortCoachPipe]
 })
 
 export class CoachesComponent implements OnInit {
@@ -178,12 +179,25 @@ export class CoachesComponent implements OnInit {
   selectedLevel: any = '';
   sortcoachOrder: string = 'LastName';
   loadingData: Boolean = false;
+  isAscending: Boolean = true;
 
-  constructor(private apiService: ApiService, private router: Router) { }
+  constructor(private apiService: ApiService, private router: Router, private sortCoach: SortCoachPipe) { }
 
   ngOnInit(): void {
     this.FetchItems();
     this.apiURL = this.apiService.getApiUrl();
+  }
+
+  sortAscDesc(type: string): void {
+    console.log(type);
+    if (type === 'desc') {
+      this.isAscending = true;
+      this.items = this.sortCoach.transform(this.items, this.sortcoachOrder + "_desc");
+    }
+    else {
+      this.isAscending = false;
+      this.items = this.sortCoach.transform(this.items, this.sortcoachOrder);
+    }
   }
 
   FetchItems(): void {
