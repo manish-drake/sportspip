@@ -1,10 +1,29 @@
 <h1 mat-dialog-title>Add Players</h1>
 <div mat-dialog-content>
-    <mat-selection-list #levelList [(ngModel)]="selectedPlayers">
-        <mat-list-option *ngFor="let player of players" [value]="player.id" checkboxPosition="before">
-            {{player.FirstName}}  {{player.LastName}}           
-        </mat-list-option>
-    </mat-selection-list>
+    <div class="row" *ngFor="let roster of rosters"
+        style=" border: 2px solid rgba(0,0,0,.125) !important;text-align: center;">
+        <div class="col-sm-1" style="padding-top: 15px;">
+            <p>
+                <mat-checkbox [(ngModel)]="roster.isSelected"></mat-checkbox>
+            </p>
+        </div>
+        <div class="col-sm-3" style="padding-top: 15px;">
+            <p>{{roster.FirstName}} {{roster.LastName}}</p>
+        </div>
+        <div class="col-sm-2" style="padding-top: 15px;">
+            <p contenteditable="true" [(textContent)]="roster.JerseyNumber"
+                (input)="roster.JerseyNumber=$event.target.textContent"></p>
+        </div>
+        <div class="col-sm-6">
+            <mat-form-field class="widht-full">
+                <mat-label>Positions</mat-label>
+                <mat-select multiple [(value)]="roster.positions">
+                    <mat-option *ngFor="let position of positions" [value]="position.id">{{position.Position}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
     <mat-spinner *ngIf="loadingData" style="left: 45%;"></mat-spinner>
 </div>
 <div mat-dialog-actions align="end">

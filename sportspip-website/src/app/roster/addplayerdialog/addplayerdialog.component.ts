@@ -2,6 +2,17 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ApiService } from '../../service/api.service';
 
+export interface RosterItem {
+  id: string,
+  MemberType: string,
+  positions: any[],
+  FirstName: string,
+  LastName: string,
+  Player: any,
+  JerseyNumber: string,
+  isSelected: boolean
+}
+
 @Component({
   selector: 'app-addplayerdialog',
   templateUrl: './addplayerdialog.component.html',
@@ -9,18 +20,30 @@ import { ApiService } from '../../service/api.service';
 })
 export class AddplayerdialogComponent implements OnInit {
 
-  players: any = [];
-  selectedPlayers: string[] = [];
-  addedPlayers: any[] = [];
+  players: any = [];  
   loadingData: boolean = false;
-  //playersToDelete: string[] = [];
+  rosters: RosterItem[] = [];
+  positions: any = []; 
 
   constructor(public dialogRef: MatDialogRef<AddplayerdialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any[], private apiService: ApiService) { }
 
   ngOnInit(): void {
     //console.log(this.data);
+    this.FetchPositions();
     this.FetchItems();
+  }
+
+  FetchPositions(): void {
+    this.apiService.getItems("positions")
+      .subscribe(
+        (data) => {
+          this.positions = data;
+        },
+        (error) => {
+          console.log("Error; get sports data: ", error);
+        }
+      );
   }
 
   FetchItems(): void {
@@ -30,10 +53,40 @@ export class AddplayerdialogComponent implements OnInit {
         (data) => {
           this.players = data;
           this.data.forEach(key => {
-            this.selectedPlayers.push(key.Player.id.toString());
-            this.addedPlayers.push({ rosterId: key.id.toString(), playerId: key.Player.id.toString() });
+            if (key.Player !== null) {               
+              let sposition = [];
+              if (key.positions.length > 0) {
+                sposition = key.positions.map(e => e.id);
+              }
+              this.rosters.push({
+                id: key.id,
+                MemberType: key.MemberType,
+                positions: sposition,
+                FirstName: key.FirstName,
+                LastName: key.LastName,
+                Player: key.Player,
+                JerseyNumber: key.JerseyNumber,
+                isSelected: true
+              });
+            }
           });
-          console.log(this.addedPlayers);
+          console.log("rosters");
+          console.log(this.rosters);
+          this.players.forEach(player => {
+            let idx = this.rosters.findIndex(r => { return player.id === r.Player.id });
+            if (idx === -1) {
+              this.rosters.push({
+                id: "",
+                MemberType: "Player",
+                positions: [],
+                FirstName: player.FirstName,
+                LastName: player.LastName,
+                Player: player,
+                JerseyNumber: "",
+                isSelected: false
+              });
+            }
+          });
           this.loadingData = false;
         },
         (error) => {
@@ -43,30 +96,21 @@ export class AddplayerdialogComponent implements OnInit {
   }
 
   onNoClick(): void {
-   
-    if (this.addedPlayers.length > 0) {
-      this.addedPlayers.forEach(item => {
-        if (this.selectedPlayers.indexOf(item.playerId) === -1) {
-          this.DeleteItem(item.rosterId);
+    console.log(this.rosters);
+    if (this.rosters.length > 0) {
+      this.rosters.forEach(item => {
+        if (item.id !== "" && !item.isSelected) {
+          this.DeleteItem(item.id);
+        }
+        else if (item.id === "" && item.isSelected) { 
+          this.AddItem(item);
+        }
+        else if (item.id !== "" && item.isSelected) {
+          this.UpdateItem(item);
         }
       });
     }
-    if (this.selectedPlayers.length > 0) {
-      this.selectedPlayers.forEach(item => {
-        let idx = this.addedPlayers.findIndex(roster => { return roster.playerId === item });
-        if (idx === -1) {
-          let player = this.players.filter(nplayer => { return nplayer.id === item });
-          let newItem = {
-            "MemberType": "Player",
-            "Player": player.length > 0 ? player[0] : null,
-            "FirstName": player.length > 0 ? player[0].FirstName : null,
-            "LastName": player.length > 0 ? player[0].LastName : null
-          };
-          this.AddItem(newItem);
-        }
-      });
-    }
-    this.dialogRef.close();
+    this.dialogRef.close();     
   }
 
   AddItem(roster: any): void {
@@ -75,10 +119,22 @@ export class AddplayerdialogComponent implements OnInit {
       .subscribe(
         (_data) => {
           console.log("success");
-          
         },
         (error) => {
           console.log("Error; add roster data: ", error);
+        }
+      );
+  }
+
+  UpdateItem(roster: any): void {
+    //this.roster.positions = this.selectedpositions;
+    this.apiService.updateItem('rosters', roster)
+      .subscribe(
+        (data) => {
+          //console.log("success");
+        },
+        (error) => {
+          console.log("Error; update roster data: ", error);
         }
       );
   }
@@ -87,7 +143,9 @@ export class AddplayerdialogComponent implements OnInit {
     console.log(id);
     this.apiService.deleteItem('rosters', id)
       .subscribe(
-        (_data) => { },
+        (_data) => {
+          //console.log("success");
+        },
         (error) => {
           console.log("Error; delete roster data: ", error);
         }
