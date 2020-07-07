@@ -88,7 +88,7 @@ export class RosterComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       this.dataSource = new MatTableDataSource([]);
-      this.FetchItems();
+      this.ngOnInit();
     });
   }
 

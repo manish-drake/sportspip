@@ -70,8 +70,8 @@ export class AddplayerdialogComponent implements OnInit {
               });
             }
           });
-          console.log("rosters");
-          console.log(this.rosters);
+          // console.log("rosters");
+          // console.log(this.rosters);
           this.players.forEach(player => {
             let idx = this.rosters.findIndex(r => { return player.id === r.Player.id });
             if (idx === -1) {
@@ -103,6 +103,7 @@ export class AddplayerdialogComponent implements OnInit {
           this.DeleteItem(item.id);
         }
         else if (item.id === "" && item.isSelected) { 
+          delete item.id; delete item.isSelected;
           this.AddItem(item);
         }
         else if (item.id !== "" && item.isSelected) {
