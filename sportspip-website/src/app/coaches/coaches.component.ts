@@ -1,6 +1,9 @@
-import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
+import { Component, OnInit, Pipe, PipeTransform, Type, TemplateRef } from '@angular/core';
 import { ApiService } from '../service/api.service';
 import { Router } from '@angular/router';
+import { OverlayService } from '../overlay.service';
+import { ComponentType } from '@angular/cdk/portal';
+import { CoachComponent } from '../coach/coach.component';
 
 @Pipe({
   name: 'filtersport'
@@ -180,8 +183,9 @@ export class CoachesComponent implements OnInit {
   sortcoachOrder: string = 'LastName';
   loadingData: Boolean = false;
   isAscending: Boolean = true;
+  coachComponent: Type<any> = CoachComponent;
 
-  constructor(private apiService: ApiService, private router: Router, private sortCoach: SortCoachPipe) { }
+  constructor(private apiService: ApiService, private router: Router, private sortCoach: SortCoachPipe, private overlayService: OverlayService) { }
 
   ngOnInit(): void {
     this.FetchItems();
@@ -240,5 +244,12 @@ export class CoachesComponent implements OnInit {
 
   updateYearsFilter(emittedValue) {
     this.selectedYear = emittedValue;
+  }
+  open(content: TemplateRef<any>|ComponentType<any>|string, data: any = {}) {
+    const ref = this.overlayService.open(content, data);
+
+    ref.afterClosed$.subscribe(res => {
+      let formData = res.data;
+    });
   }
 }

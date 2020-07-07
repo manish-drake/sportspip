@@ -1,4 +1,7 @@
-<div class="" style="background-color: #fff; height: calc(95vh);">
+<div class="crud-form modal-card" style="background-color: #fff; height: calc(95vh);">
+    <header class="modal-card-head has-text-weight-bold">
+        <h2>{{coach.FirstName}} {{coach.LastName}}</h2>
+      </header>
 <div class="container">
     <div class="row">
         <div class="col-sm-4">
@@ -6,7 +9,6 @@
                 [attr.src]="coach.ProfileImage ? apiURL + coach.ProfileImage.url : ''">
         </div>
         <div class="col-sm-8">
-            <h4>Name : {{coach.FirstName}} {{coach.LastName}}</h4>
             <h4>Title : {{coach.Title}}</h4>
             <h4>Sports : {{sports}} </h4>
             <h4>Levels : {{levels}}</h4>
@@ -20,5 +22,10 @@
         </div>
     </div>
 </div>
+<footer class="modal-card-foot">
+    <div class="buttons">
+        <button (click)="close()" type="button" class="footer-button">Close</button>
+    </div>
+</footer>
 <mat-spinner *ngIf="loadingData" style="left: 45%;"></mat-spinner>
 </div>
