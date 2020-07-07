@@ -20,10 +20,10 @@ export interface RosterItem {
 })
 export class AddplayerdialogComponent implements OnInit {
 
-  players: any = [];  
+  players: any = [];
   loadingData: boolean = false;
   rosters: RosterItem[] = [];
-  positions: any = []; 
+  positions: any = [];
 
   constructor(public dialogRef: MatDialogRef<AddplayerdialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any[], private apiService: ApiService) { }
@@ -53,7 +53,7 @@ export class AddplayerdialogComponent implements OnInit {
         (data) => {
           this.players = data;
           this.data.forEach(key => {
-            if (key.Player !== null) {               
+            if (key.Player !== null) {
               let sposition = [];
               if (key.positions.length > 0) {
                 sposition = key.positions.map(e => e.id);
@@ -94,15 +94,16 @@ export class AddplayerdialogComponent implements OnInit {
         }
       );
   }
+  onNoClick(): void { this.dialogRef.close(); }
 
-  onNoClick(): void {
+  onSaveClick(): void {
     console.log(this.rosters);
     if (this.rosters.length > 0) {
       this.rosters.forEach(item => {
         if (item.id !== "" && !item.isSelected) {
           this.DeleteItem(item.id);
         }
-        else if (item.id === "" && item.isSelected) { 
+        else if (item.id === "" && item.isSelected) {
           delete item.id; delete item.isSelected;
           this.AddItem(item);
         }
@@ -111,7 +112,7 @@ export class AddplayerdialogComponent implements OnInit {
         }
       });
     }
-    this.dialogRef.close();     
+    this.dialogRef.close();
   }
 
   AddItem(roster: any): void {

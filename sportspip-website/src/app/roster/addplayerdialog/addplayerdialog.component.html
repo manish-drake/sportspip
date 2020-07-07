@@ -10,11 +10,16 @@
         <div class="col-sm-3" style="padding-top: 15px;">
             <p>{{roster.FirstName}} {{roster.LastName}}</p>
         </div>
-        <div class="col-sm-2" style="padding-top: 15px;">
-            <p contenteditable="true" [(textContent)]="roster.JerseyNumber"
-                (input)="roster.JerseyNumber=$event.target.textContent"></p>
+        <div class="col-sm-3" >
+            <mat-form-field class="widht-90">
+                <mat-label>Jersey Number</mat-label>
+                <input matInput placeholder="Ex. 1" [(ngModel)]="roster.JerseyNumber">
+            </mat-form-field>
+           
+            <!-- <p contenteditable="true" [(textContent)]="roster.JerseyNumber"
+                (input)="roster.JerseyNumber=$event.target.textContent"></p> -->
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-5">
             <mat-form-field class="widht-full">
                 <mat-label>Positions</mat-label>
                 <mat-select multiple [(value)]="roster.positions">
@@ -27,5 +32,6 @@
     <mat-spinner *ngIf="loadingData" style="left: 45%;"></mat-spinner>
 </div>
 <div mat-dialog-actions align="end">
-    <button mat-button (click)="onNoClick()">Save</button>
+    <button mat-button (click)="onSaveClick()">Save</button>
+    <button mat-button (click)="onNoClick()">Cancel</button>
 </div>

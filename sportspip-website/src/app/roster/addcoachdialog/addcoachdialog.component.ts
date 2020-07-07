@@ -45,7 +45,9 @@ export class AddcoachdialogComponent implements OnInit {
       );
   }
 
-  onNoClick(): void {
+  onNoClick(): void { this.dialogRef.close(); }
+
+  onSaveClick(): void {
 
     if (this.addedcoaches.length > 0) {
       this.addedcoaches.forEach(item => {

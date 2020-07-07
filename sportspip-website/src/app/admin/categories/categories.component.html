@@ -6,12 +6,12 @@
                 <div *ngFor="let sport of sports">
                     <li class="list-group-item" contenteditable="true" style="width: 70%;"
                      [(textContent)]="sport.Name" (input)="sport.Name=$event.target.textContent"></li>
-                    <button mat-icon-button color="warn" matTooltip="Delete">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                    <button mat-icon-button color="warn" (click)="UpdateItem('sports',sport)" matTooltip="Update">
+                     <button mat-icon-button color="warn" (click)="UpdateItem('sports',sport)" matTooltip="Update">
                         <mat-icon>save</mat-icon>
                     </button>
+                     <button mat-icon-button color="warn" (click)="DeleteItem('sports',sport.id)" matTooltip="Delete">
+                        <mat-icon>delete</mat-icon>
+                    </button>                    
                 </div>
                 <li class="list-group-item">
                     <mat-form-field class="inputformfield">
@@ -32,12 +32,12 @@
                 <div *ngFor="let level of levels">
                     <li class="list-group-item" contenteditable="true" style="width: 70%;"
                     [(textContent)]="level.Name" (input)="level.Name=$event.target.textContent"></li>
-                    <button mat-icon-button color="warn" matTooltip="Delete">
-                        <mat-icon>delete</mat-icon>
-                    </button>
                     <button mat-icon-button color="warn" (click)="UpdateItem('levels',level)" matTooltip="Update">
                         <mat-icon>save</mat-icon>
                     </button>
+                    <button mat-icon-button color="warn" (click)="DeleteItem('levels',level.id)" matTooltip="Delete">
+                        <mat-icon>delete</mat-icon>
+                    </button>                    
                 </div>
                 <li class="list-group-item">
                     <mat-form-field class="inputformfield">
@@ -58,12 +58,12 @@
                 <div *ngFor="let program of programs">
                     <li class="list-group-item" contenteditable="true" style="width: 70%;"
                     [(textContent)]="program.Name" (input)="program.Name=$event.target.textContent"></li>
-                    <button mat-icon-button color="warn" matTooltip="Delete">
-                        <mat-icon>delete</mat-icon>
-                    </button>
                     <button mat-icon-button color="warn" (click)="UpdateItem('programs',program)" matTooltip="Update">
                         <mat-icon>save</mat-icon>
                     </button>
+                    <button mat-icon-button color="warn" (click)="DeleteItem('programs',program.id)" matTooltip="Delete">
+                        <mat-icon>delete</mat-icon>
+                    </button>                   
                 </div>
                 <li class="list-group-item">
                     <mat-form-field class="inputformfield">
@@ -84,12 +84,12 @@
                 <div *ngFor="let year of years">
                     <li class="list-group-item" contenteditable="true" style="width: 70%;"
                     [(textContent)]="year.Name" (input)="year.Name=$event.target.textContent"></li>
-                    <button mat-icon-button color="warn" matTooltip="Delete">
-                        <mat-icon>delete</mat-icon>
-                    </button>
                     <button mat-icon-button color="warn" (click)="UpdateItem('years',year)" matTooltip="Update">
                         <mat-icon>save</mat-icon>
                     </button>
+                    <button mat-icon-button color="warn" (click)="DeleteItem('years',year.id)" matTooltip="Delete">
+                        <mat-icon>delete</mat-icon>
+                    </button>                    
                 </div>
                 <li class="list-group-item">
                     <mat-form-field class="inputformfield">

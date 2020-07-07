@@ -116,6 +116,21 @@ export class CategoriesComponent implements OnInit {
       );
   }
 
+  DeleteItem(apiName: string, id: any) {
+    this.showhideloading(apiName, true);
+    this.apiService.deleteItem(apiName, id)
+      .subscribe(
+        (_data) => {
+          this.showhideloading(apiName, false);
+          this.FetchCategory(apiName);
+          this.openSnackBar("Item deleted successfully!", "");
+        },
+        (error) => {
+          console.log("Error; delete roster data: ", error);
+        }
+      );
+  }
+
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
       duration: 2000,
