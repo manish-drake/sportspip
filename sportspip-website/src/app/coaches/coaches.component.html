@@ -35,7 +35,7 @@
         <div
           *ngFor="let item of items | sortcoach: sortcoachOrder | filtersport: selectedGame | filterlevel: selectedLevel | filteryear: selectedYear| filterprogram: selectedProgram ; let idx = index"
           class="item-container">
-          <mat-card (click)="goToCoach(item.id)" style="cursor: pointer !important">
+          <mat-card (click)="open(coachComponent, item.id)" style="cursor: pointer !important">
             <img mat-card-image style="height: 140px; width: 220px; background-color:lightgray;"
               [attr.src]="item.ProfileImage ? apiURL + item.ProfileImage.url : ''">
             <mat-card-content style="margin-bottom: 0px;">

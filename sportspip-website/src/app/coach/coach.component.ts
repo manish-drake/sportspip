@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { ApiService } from '../service/api.service';
+import { OverlayHandle } from '../overlay-handle';
 
 @Component({
   selector: 'app-coach',
@@ -18,8 +19,9 @@ export class CoachComponent implements OnInit {
   programs: string = '';
   years: string = '';
 
-  constructor(private route: ActivatedRoute, private apiService: ApiService) {
-    this.route.params.subscribe(params => this.coachId = params.id);
+  constructor(private route: ActivatedRoute, private apiService: ApiService, private handle: OverlayHandle) {
+    // this.route.params.subscribe(params => this.coachId = params.id);
+    this.coachId = handle.data;
   }
 
   ngOnInit(): void {
@@ -45,5 +47,8 @@ export class CoachComponent implements OnInit {
           this.loadingData = false;
         }
       );
+  }
+  close() {
+    this.handle.close(null);
   }
 }
