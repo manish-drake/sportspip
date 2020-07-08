@@ -1,5 +1,8 @@
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-end">
-  <a class="navbar-brand" href="#">{{title}}</a>
+<nav class="navbar navbar-expand-sm navbar-light justify-content-end sticky-top" style="background-color: #f44336;">
+  <a class="" href="#">
+    <img style="height: 50px; width: 150px; background-color:lightgray;"
+      src="http://3.22.235.152:1337/uploads/567a7be551224a90a037474d9958202f.png">
+  </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -26,13 +29,14 @@
     </ul>
   </div>
   <div class="dropdown ml-auto mr-1">
-    <button class="btn btn-secondary dropdown-toggle btn-success" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+      aria-haspopup="true" aria-expanded="false">
       admin
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
       <a class="dropdown-item" [routerLink]="'/admin/coaches'">Coaches</a>
-      <a class="dropdown-item" [routerLink]="'/admin/players'">Players</a> 
-      <a class="dropdown-item" [routerLink]="'/admin/categories'">Categories</a> 
+      <a class="dropdown-item" [routerLink]="'/admin/players'">Players</a>
+      <a class="dropdown-item" [routerLink]="'/admin/categories'">Categories</a>
     </div>
   </div>
 </nav>

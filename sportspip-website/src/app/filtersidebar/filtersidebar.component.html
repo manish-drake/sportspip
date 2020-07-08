@@ -6,10 +6,10 @@
             </mat-panel-title>
 
         </mat-expansion-panel-header>
-        <mat-checkbox id="sportListAll" (change)="allCheckboxChange($event)" [checked]="sportList.selectedOptions.selected.length==sports.length">All</mat-checkbox>
+        <mat-checkbox color="warn" id="sportListAll" (change)="allCheckboxChange($event)" [checked]="sportList.selectedOptions.selected.length==sports.length">All</mat-checkbox>
         <!-- <mat-label>Sport</mat-label> -->
         <mat-selection-list #sportList [(ngModel)]="selectedGame">
-            <mat-list-option (click)="sportsCheckChange()" *ngFor="let sport of sports" [value]="sport.Name" checkboxPosition="before">
+            <mat-list-option class="mat-primary" (click)="sportsCheckChange()" *ngFor="let sport of sports" [value]="sport.Name" checkboxPosition="before">
                 {{sport.Name}}
             </mat-list-option>
         </mat-selection-list>
@@ -25,7 +25,7 @@
 
         </mat-expansion-panel-header>
         <!-- <mat-label>Level</mat-label> -->
-        <mat-checkbox id="levelListAll" (change)="allCheckboxChange($event)" [checked]="levelList.selectedOptions.selected.length==levels.length">All</mat-checkbox>
+        <mat-checkbox color="warn" id="levelListAll" (change)="allCheckboxChange($event)" [checked]="levelList.selectedOptions.selected.length==levels.length">All</mat-checkbox>
         <mat-selection-list #levelList [(ngModel)]="selectedLevel">
             <mat-list-option (click)="levelsCheckChange()" *ngFor="let level of levels" [value]="level.Name" checkboxPosition="before">
                 {{level.Name}}
@@ -42,7 +42,7 @@
 
         </mat-expansion-panel-header>
         <!-- <mat-label>Program</mat-label> -->
-        <mat-checkbox id="programListAll" (change)="allCheckboxChange($event)" [checked]="programList.selectedOptions.selected.length==programs.length">All</mat-checkbox>
+        <mat-checkbox color="warn" id="programListAll" (change)="allCheckboxChange($event)" [checked]="programList.selectedOptions.selected.length==programs.length">All</mat-checkbox>
         <mat-selection-list #programList [(ngModel)]="selectedProgram">
             <mat-list-option (click)="programsCheckChange()" *ngFor="let program of programs" [value]="program.Name" checkboxPosition="before">
                 {{program.Name}}
@@ -59,7 +59,7 @@
 
         </mat-expansion-panel-header>
         <!-- <mat-label>Year</mat-label> -->
-        <mat-checkbox id="yearListAll" (change)="allCheckboxChange($event)" [checked]="yearList.selectedOptions.selected.length==years.length">All</mat-checkbox>
+        <mat-checkbox color="warn" id="yearListAll" (change)="allCheckboxChange($event)" [checked]="yearList.selectedOptions.selected.length==years.length">All</mat-checkbox>
         <mat-selection-list (click)="yearsCheckChange()" #yearList [(ngModel)]="selectedYear">
             <mat-list-option *ngFor="let year of years" [value]="year.Name" checkboxPosition="before">
                 {{year.Name}}

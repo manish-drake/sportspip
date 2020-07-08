@@ -21,3 +21,6 @@ mat-label{
     margin-bottom: 10px !important;
 }
  
+.mat-pseudo-checkbox-checked, .mat-pseudo-checkbox-indeterminate, .mat-accent .mat-pseudo-checkbox-checked, .mat-accent .mat-pseudo-checkbox-indeterminate {
+    background:black !important;
+}
