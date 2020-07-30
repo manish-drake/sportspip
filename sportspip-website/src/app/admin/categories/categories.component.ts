@@ -50,7 +50,7 @@ export class CategoriesComponent implements OnInit {
 
   FetchCategory(apiName: string): void {
     this.showhideloading(apiName, true);
-    this.apiService.getItems(apiName)
+    this.apiService.getItems(apiName, this.apiURL)
       .subscribe(
         (data) => {
           if (apiName === "sports") {
@@ -84,7 +84,7 @@ export class CategoriesComponent implements OnInit {
     else if (value.trim() !== '') {
       this.showhideloading(apiName, true);
       let item = { Name: value.trim() };
-      this.apiService.addItem(apiName, item)
+      this.apiService.addItem(apiName, item, this.apiURL)
         .subscribe(
           (data) => {
             this.showhideloading(apiName, false);
@@ -101,7 +101,7 @@ export class CategoriesComponent implements OnInit {
 
   UpdateItem(apiName: string, item: any): void {
     this.showhideloading(apiName, true);
-    this.apiService.updateItem(apiName, item)
+    this.apiService.updateItem(apiName, item, this.apiURL)
       .subscribe(
         (data) => {
           this.showhideloading(apiName, false);
@@ -118,7 +118,7 @@ export class CategoriesComponent implements OnInit {
 
   DeleteItem(apiName: string, id: any) {
     this.showhideloading(apiName, true);
-    this.apiService.deleteItem(apiName, id)
+    this.apiService.deleteItem(apiName, id, this.apiURL)
       .subscribe(
         (_data) => {
           this.showhideloading(apiName, false);

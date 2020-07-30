@@ -90,7 +90,7 @@
                         <div class="col-sm-8">
                             <mat-form-field class="widht-90">
                                 <mat-label>Years</mat-label>
-                                <mat-select multiple [(value)]="selectedYear">
+                                <mat-select multiple [(value)]="player.years">
                                     <mat-option *ngFor="let year of years" [value]="year.id">{{year.Name}}</mat-option>
                                 </mat-select>
                             </mat-form-field>

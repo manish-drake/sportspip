@@ -14,6 +14,7 @@ export class AddeditplayerComponent implements OnInit {
 
   loadingData: Boolean = false;
   apiURL: string = '';
+  apiURLOthr: string = '';
   playerId: string = '';
   player: any = {};
   sports: any = [];
@@ -27,28 +28,29 @@ export class AddeditplayerComponent implements OnInit {
   updateItem: boolean = true;
 
   constructor(
-    private route: ActivatedRoute, 
-    private router: Router, 
-    private apiService: ApiService, 
+    private route: ActivatedRoute,
+    private router: Router,
+    private apiService: ApiService,
     private _snackBar: MatSnackBar,
     private handle: OverlayHandle) {
-    this.route.params.subscribe(params => {
-      console.log(handle.data);
-      // console.log(params.id);
-      if (handle.data !== null) {
-        this.playerId = handle.data;
-        if (this.playerId.trim() === "0" || this.playerId.trim() === "") {
-          this.updateItem = false;
-        }
-      }
-      else {
+    // this.route.params.subscribe(params => {
+    console.log(handle.data);
+    // console.log(params.id);
+    if (handle.data !== null) {
+      this.playerId = handle.data;
+      if (this.playerId.trim() === "0" || this.playerId.trim() === "") {
         this.updateItem = false;
       }
-    });
+    }
+    else {
+      this.updateItem = false;
+    }
+    // });
   }
 
   ngOnInit(): void {
-    this.apiURL = this.apiService.getApiUrl();
+    this.apiURL = this.apiService.getPlayerApiUrl();
+    this.apiURLOthr = this.apiService.getApiUrl();
     if (this.updateItem) {
       this.FetchItem();
     }
@@ -66,7 +68,7 @@ export class AddeditplayerComponent implements OnInit {
 
   FetchItem(): void {
     this.loadingData = true;
-    this.apiService.getItemById('players', this.playerId)
+    this.apiService.getItemById('players', this.playerId, this.apiURL)
       .subscribe(
         (data) => {
           this.loadingData = false;
@@ -83,7 +85,7 @@ export class AddeditplayerComponent implements OnInit {
   }
 
   FetchCategory(apiName: string): void {
-    this.apiService.getItems(apiName)
+    this.apiService.getItems(apiName, this.apiURLOthr)
       .subscribe(
         (data) => {
           if (apiName === "sports") {
@@ -109,21 +111,21 @@ export class AddeditplayerComponent implements OnInit {
     this.player.sport = this.sports.find(x => x.id === this.selectedGame);
     this.player.level = this.levels.find(x => x.id === this.selectedLevel);
     this.player.program = this.programs.find(x => x.id === this.selectedProgram);
-    this.player.years = this.selectedYear;
+    // this.player.years = this.selectedYear;
   }
 
-  MapPlayerToCategories(): void { 
+  MapPlayerToCategories(): void {
     this.selectedGame = this.player.sport !== undefined ? this.player.sport.id : '';
     this.selectedLevel = this.player.level !== undefined ? this.player.level.id : '';
     this.selectedProgram = this.player.program !== undefined ? this.player.program.id : '';
-    this.selectedYear = this.player.years.map(e => e.id);
+    // this.selectedYear = this.player.years.map(e => e.id);
   }
 
   UpdateItem(): void {
     this.loadingData = true;
     this.MapCategoriesToPlayer();
     console.log(this.player);
-    this.apiService.updateItem('players', this.player)
+    this.apiService.updateItem('players', this.player, this.apiURL)
       .subscribe(
         (data) => {
           this.loadingData = false;
@@ -143,7 +145,7 @@ export class AddeditplayerComponent implements OnInit {
   AddItem(): void {
     this.loadingData = true;
     this.MapCategoriesToPlayer();
-    this.apiService.addItem('players', this.player)
+    this.apiService.addItem('players', this.player, this.apiURL)
       .subscribe(
         (data) => {
           this.loadingData = false;
@@ -165,7 +167,7 @@ export class AddeditplayerComponent implements OnInit {
     if (e.target.files.length > 0) {
       const file = e.target.files[0];
       uploadFile.append('files', file);
-      this.apiService.addItem('upload/', uploadFile)
+      this.apiService.addItem('upload/', uploadFile, this.apiURL)
         .subscribe(
           (data) => {
             this.player.ProfileImage = data[0];
@@ -181,6 +183,6 @@ export class AddeditplayerComponent implements OnInit {
   }
 
   cancel() {
-    this.handle.close(null);
+    this.handle.close(undefined);
   }
 }

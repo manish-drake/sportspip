@@ -21,12 +21,12 @@ export class PlayerComponent implements OnInit {
 
  constructor(private route: ActivatedRoute, private apiService: ApiService, private handle: OverlayHandle) {
     // this.route.params.subscribe(params => this.playerId = params.id);
-    this.playerId = handle.data;
+    this.player = handle.data;
   }
 
   ngOnInit(): void {
-    this.FetchItem();
-    this.apiURL = this.apiService.getApiUrl();
+    this.apiURL = this.apiService.getPlayerApiUrl();
+    //this.FetchItem();    
   }
 
   FetchItem(): void {

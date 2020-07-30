@@ -5,6 +5,7 @@ import { ComponentType } from '@angular/cdk/portal';
 import { OverlayService } from '../overlay.service';
 import { PlayerComponent } from '../player/player.component';
 
+
 @Pipe({
   name: 'filterplayer'
 })
@@ -17,33 +18,40 @@ export class FilterPlayerPipe implements PipeTransform {
     if (years.length <= 0 && levels.length <= 0 && programs.length <= 0 && sports.length <= 0) {
       return items;
     }
-    //console.log(sports);
+    // console.log(years);
     return items.filter(item => {
       let itemMatched = false;
       if (years.length > 0) {
+        console.log(years);
+        console.log(item.years);
         years.forEach(key => {
           if (item.years.length > 0) {
-            item.years.forEach(year => {
-              if (year.Name.toLowerCase().indexOf(key.toLowerCase()) !== -1) {
-                itemMatched = true;
-              }
-            });
+            if (item.years.indexOf(key) >= 0) {
+              itemMatched = true;
+            }
+            // item.years.forEach(year => {
+            //   if (year.Name.toLowerCase().indexOf(key.toLowerCase()) !== -1) {
+            //     itemMatched = true;
+            //   }
+            // });
           }
         });
       }
       if (levels.length > 0) {
         levels.forEach(key => {
           if (item.level) {
-            if (item.level.Name.toLowerCase().indexOf(key.toLowerCase()) !== -1) {
+            if (item.level.id == key) {
               itemMatched = true;
             }
           }
         });
       }
       if (programs.length > 0) {
+        console.log(programs);
+        console.log(item.program);
         programs.forEach(key => {
           if (item.program) {
-            if (item.program.Name.toLowerCase().indexOf(key.toLowerCase()) !== -1) {
+            if (item.program.id == key) {
               itemMatched = true;
             }
           }
@@ -52,7 +60,7 @@ export class FilterPlayerPipe implements PipeTransform {
       if (sports.length > 0) {
         sports.forEach(key => {
           if (item.sport) {
-            if (item.sport.Name.toLowerCase().indexOf(key.toLowerCase()) !== -1) {
+            if (item.sport.id == key) {
               itemMatched = true;
             }
           }
@@ -68,24 +76,38 @@ export class FilterPlayerPipe implements PipeTransform {
   name: 'sortplayer'
 })
 export class SortPlayerPipe implements PipeTransform {
-  transform(items: any[], order = ''): any[] {
+  constructor(private apiService: ApiService) { }
+  transform(items: any[], order = '', lstItems: any[] = []): any[] {
     console.log("order  " + order);
     if (order.indexOf("_lst") !== -1) {
+
       if (order.indexOf("_desc") === -1) {
         order = order.slice(0, order.indexOf("_"));
-        //console.log(order);
-        return items.slice().sort((a, b) => a[order][0].Name.localeCompare(b[order][0].Name));
+        console.log(order);
+        console.log(items[0][order]);
+        return items.slice().sort((a, b) => {
+          console.log(lstItems.find(element => element.id === a[order][0]));
+          console.log(lstItems.find(element => element.id === b[order][0]));
+          let eleA = lstItems.find(element => element.id === a[order][0]);
+          let eleB = lstItems.find(element => element.id === b[order][0]);
+
+          return eleA.Name.localeCompare(eleB.Name);
+        });
       }
       else {
         order = order.slice(0, order.indexOf("_"));
-        return items.slice().sort((a, b) => a[order][0].Name.localeCompare(b[order][0].Name)).reverse();
+        return items.slice().sort((a, b) => lstItems.find(element => element.id === a[order][0]).Name.localeCompare(lstItems.find(element => element.id === b[order][0]).Name)).reverse();
       }
     }
     else if (order.indexOf("_obj") !== -1) {
       if (order.indexOf("_desc") === -1) {
         order = order.slice(0, order.indexOf("_"));
-       // console.log(order);
-        return items.slice().sort((a, b) => a[order].Name.localeCompare(b[order].Name));
+        console.log(order);
+        return items.slice().sort((a, b) => {
+          console.log(a);
+          console.log(b)
+          return a[order].Name.localeCompare(b[order].Name);
+        });
       }
       else {
         order = order.slice(0, order.indexOf("_"));
@@ -118,6 +140,7 @@ export class SortPlayerPipe implements PipeTransform {
 export class PlayersComponent implements OnInit {
 
   apiURL: string = '';
+  apiURLOthr: string = '';
   items: any = [];
   sports: any = [];
   levels: any = [];
@@ -131,29 +154,30 @@ export class PlayersComponent implements OnInit {
   loadingData: Boolean = false;
   isAscending: Boolean = true;
   playerComponent: Type<any> = PlayerComponent;
-  
+
   constructor(private apiService: ApiService, private router: Router, private sortPlayer: SortPlayerPipe, private overlayService: OverlayService) { }
 
   ngOnInit(): void {
-    this.FetchItems();
-    this.apiURL = this.apiService.getApiUrl();
+    this.apiURL = this.apiService.getPlayerApiUrl();
+    this.apiURLOthr = this.apiService.getApiUrl();
+    this.FetchItems();    
   }
 
   sortAscDesc(type: string): void {
     console.log(type);
     if (type === 'desc') {
       this.isAscending = true;
-      this.items = this.sortPlayer.transform(this.items, this.sortplayerOrder + "_desc");
+      this.items = this.sortPlayer.transform(this.items, this.sortplayerOrder + "_desc", this.years);
     }
     else {
       this.isAscending = false;
-      this.items = this.sortPlayer.transform(this.items, this.sortplayerOrder);
+      this.items = this.sortPlayer.transform(this.items, this.sortplayerOrder, this.years);
     }
   }
-  
+
   FetchItems(): void {
     this.loadingData = true;
-    this.apiService.getItems('players')
+    this.apiService.getItems('players', this.apiURL)
       .subscribe(
         (data) => {
           this.loadingData = false;
@@ -164,50 +188,13 @@ export class PlayersComponent implements OnInit {
           this.loadingData = false;
         }
       );
-    this.apiService.getItems('sports')
+    this.apiService.getItems('years', this.apiURLOthr)
       .subscribe(
         (data) => {
-          this.loadingData = false;
-          this.sports = data;
-        },
-        (error) => {
-          console.log("Error; get sports data: ", error);
-          this.loadingData = false;
-        }
-      );
-    this.apiService.getItems('levels')
-      .subscribe(
-        (data) => {
-          this.loadingData = false;
-          this.levels = data;
-        },
-        (error) => {
-          console.log("Error; get levels data: ", error);
-          this.loadingData = false;
-        }
-      );
-    this.apiService.getItems('years')
-      .subscribe(
-        (data) => {
-          this.loadingData = false;
-          //console.log(data);
           this.years = data;
         },
         (error) => {
           console.log("Error; get years data: ", error);
-          this.loadingData = false;
-        }
-      );
-    this.apiService.getItems('programs')
-      .subscribe(
-        (data) => {
-          this.loadingData = false;
-          //console.log(data);
-          this.programs = data;
-        },
-        (error) => {
-          console.log("Error; get programs data: ", error);
-          this.loadingData = false;
         }
       );
   }
@@ -231,7 +218,7 @@ export class PlayersComponent implements OnInit {
   updateYearsFilter(emittedValue) {
     this.selectedYear = emittedValue;
   }
-  open(content: TemplateRef<any>|ComponentType<any>|string, data: any = {}) {
+  open(content: TemplateRef<any> | ComponentType<any> | string, data: any = {}) {
     const ref = this.overlayService.open(content, data);
 
     ref.afterClosed$.subscribe(res => {

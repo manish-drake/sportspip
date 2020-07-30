@@ -174,8 +174,8 @@ export class SortCoachPipe implements PipeTransform {
 
 export class CoachesComponent implements OnInit {
 
-  apiURL: string = '';
-  items: any = [];  
+  apiURL: string = 'http://localhost:1340';
+  items: any = [];
   selectedProgram: any = '';
   selectedYear: any = '';
   selectedGame: any = '';
@@ -189,7 +189,7 @@ export class CoachesComponent implements OnInit {
 
   ngOnInit(): void {
     this.FetchItems();
-    this.apiURL = this.apiService.getApiUrl();
+    //this.apiURL = this.apiService.getApiUrl();
   }
 
   sortAscDesc(type: string): void {
@@ -206,7 +206,7 @@ export class CoachesComponent implements OnInit {
 
   FetchItems(): void {
     this.loadingData = true;
-    this.apiService.getItems('coaches')
+    this.apiService.getItems('coaches', this.apiURL)
       .subscribe(
         (data) => {
           this.loadingData = false;
@@ -216,7 +216,7 @@ export class CoachesComponent implements OnInit {
           console.log("Error; get coaches data: ", error);
           this.loadingData = false;
         }
-      );   
+      );
   }
 
   FormatDate(value) {
@@ -245,7 +245,7 @@ export class CoachesComponent implements OnInit {
   updateYearsFilter(emittedValue) {
     this.selectedYear = emittedValue;
   }
-  open(content: TemplateRef<any>|ComponentType<any>|string, data: any = {}) {
+  open(content: TemplateRef<any> | ComponentType<any> | string, data: any = {}) {
     const ref = this.overlayService.open(content, data);
 
     ref.afterClosed$.subscribe(res => {

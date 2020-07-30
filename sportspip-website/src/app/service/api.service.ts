@@ -7,19 +7,25 @@ import { HttpClient } from '@angular/common/http';
 
 export class ApiService {
 
-  apiURL: any = 'http://3.22.235.152:1337'//'http://localhost:1339'
-
+  apiURL: any = 'http://localhost:1339'  ;//'http://3.22.235.152:1337'//
+  apiURLPlyr: any = 'http://localhost:1339';
+  apiURLCoch: any = 'http://localhost:1340';
   constructor(private httpClient: HttpClient) {
     let token = localStorage.getItem("mid_token");
     if (token == null) {
-      this.login("admin@mail.com", "sportspip");
+      //this.login("admin@mail.com", "sportspip");
     }
   }
 
   getApiUrl(): any {
     return this.apiURL;
   }
-
+  getPlayerApiUrl(): any {
+    return this.apiURLPlyr;
+  }
+  getCoachApiUrl(): any {
+    return this.apiURLCoch;
+  }
   getHttpOptions() {
     let token = localStorage.getItem("mid_token");
     return {
@@ -44,22 +50,22 @@ export class ApiService {
         });
   }
 
-  public getItems(apiName: any) {
-    return this.httpClient.get(`${this.apiURL}/${apiName}`, this.getHttpOptions());
+  public getItems(apiName: any, apiUrl: any = this.apiURL) {
+    return this.httpClient.get(`${apiUrl}/${apiName}`, this.getHttpOptions());
   }
-  public getItemById(apiName: any, id: any) {
-    return this.httpClient.get(`${this.apiURL}/${apiName}/${id}`, this.getHttpOptions());
+  public getItemById(apiName: any, id: any,apiUrl: any = this.apiURL) {
+    return this.httpClient.get(`${apiUrl}/${apiName}/${id}`, this.getHttpOptions());
   }
-  public addItem(apiName: any, item: any) {
-    return this.httpClient.post(`${this.apiURL}/${apiName}`, item, this.getHttpOptions());
+  public addItem(apiName: any, item: any, apiUrl: any = this.apiURL) {
+    return this.httpClient.post(`${apiUrl}/${apiName}`, item, this.getHttpOptions());
   }
-  public updateItem(apiName: any, item: any) {
+  public updateItem(apiName: any, item: any, apiUrl: any = this.apiURL) {
     //console.log(item);
     //console.log(this.apiURL + "/" + apiName + "/" + item.id);
-    return this.httpClient.put(`${this.apiURL}/${apiName}/${item.id}`, item, this.getHttpOptions());
+    return this.httpClient.put(`${apiUrl}/${apiName}/${item.id}`, item, this.getHttpOptions());
   }
-  public deleteItem(apiName: any, id: any) {
-    return this.httpClient.delete(`${this.apiURL}/${apiName}/${id}`, this.getHttpOptions());
+  public deleteItem(apiName: any, id: any, apiUrl: any = this.apiURL) {
+    return this.httpClient.delete(`${apiUrl}/${apiName}/${id}`, this.getHttpOptions());
   }
 
 }

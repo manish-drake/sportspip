@@ -11,7 +11,7 @@ import { OverlayHandle } from '../overlay-handle';
 export class CoachComponent implements OnInit {
 
   loadingData: Boolean = false;
-  apiURL: string = '';
+  apiURL: string = 'http://localhost:1340';
   coachId: string = '';
   coach: any = {};
   sports: string = '';
@@ -26,12 +26,12 @@ export class CoachComponent implements OnInit {
 
   ngOnInit(): void {
     this.FetchItem();
-    this.apiURL = this.apiService.getApiUrl();
+    // this.apiURL = this.apiService.getApiUrl();
   }
 
   FetchItem(): void {
     this.loadingData = true;
-    this.apiService.getItems('coaches/' + this.coachId)
+    this.apiService.getItemById('coaches', this.coachId, this.apiURL)
       .subscribe(
         (data) => {
           this.loadingData = false;

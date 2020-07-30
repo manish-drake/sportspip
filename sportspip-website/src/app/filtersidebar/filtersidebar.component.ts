@@ -7,12 +7,12 @@ import { ApiService } from '../service/api.service';
   styleUrls: ['./filtersidebar.component.css']
 })
 export class FiltersidebarComponent implements OnInit {
-  @Output() sportsChanged = new EventEmitter<[]>(); 
-  @Output() levelsChanged = new EventEmitter<[]>(); 
-  @Output() programsChanged = new EventEmitter<[]>(); 
-  @Output() yearsChanged = new EventEmitter<[]>(); 
+  @Output() sportsChanged = new EventEmitter<[]>();
+  @Output() levelsChanged = new EventEmitter<[]>();
+  @Output() programsChanged = new EventEmitter<[]>();
+  @Output() yearsChanged = new EventEmitter<[]>();
 
-  typesOfShoes: any[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
+  apiURL: string = 'http://localhost:1339';
   selectedOptions: any = [];
   sports: any = [];
   levels: any = [];
@@ -26,82 +26,70 @@ export class FiltersidebarComponent implements OnInit {
   constructor(private apiService: ApiService) { }
 
   ngOnInit(): void {
-    this.FetchItems();
+    this.FetchItems("sports");
+    this.FetchItems("levels");
+    this.FetchItems("years");
+    this.FetchItems("programs")
   }
 
-  FetchItems(): void {
-    this.apiService.getItems('sports')
+  FetchItems(apiName: string): void {
+    this.apiService.getItems(apiName, this.apiURL)
       .subscribe(
         (data) => {
-          this.sports = data;
+          if (apiName === "sports") {
+            this.sports = data;
+          }
+          if (apiName === "levels") {
+            this.levels = data;
+          }
+          if (apiName === "programs") {
+            this.programs = data;
+          }
+          if (apiName === "years") {
+            this.years = data;
+          }
         },
         (error) => {
           console.log("Error; get sports data: ", error);
         }
       );
-    this.apiService.getItems('levels')
-      .subscribe(
-        (data) => {
-          this.levels = data;
-        },
-        (error) => {
-          console.log("Error; get levels data: ", error);
-        }
-      );
-    this.apiService.getItems('years')
-      .subscribe(
-        (data) => {
-          this.years = data;
-        },
-        (error) => {
-          console.log("Error; get years data: ", error);
-        }
-      );
-    this.apiService.getItems('programs')
-      .subscribe(
-        (data) => {
-          this.programs = data;
-        },
-        (error) => {
-          console.log("Error; get programs data: ", error);
-        }
-      );
+
   }
 
   allCheckboxChange(e) {
-     
+
     if (e.source.id === "sportListAll") {
       this.selectedGame = [];
-      if (e.checked) {        
-        this.sports.forEach(key => { 
-            this.selectedGame.push(key.Name.toString()); 
+      if (e.checked) {
+        this.sports.forEach(key => {
+          this.selectedGame.push(key.id.toString());
         });
-      }      
+      }
       this.sportsChanged.emit(this.selectedGame);
     }
     else if (e.source.id === "levelListAll") {
       this.selectedLevel = [];
-      if (e.checked) {         
-        this.levels.forEach(key => { 
-            this.selectedLevel.push(key.Name.toString()); 
+      if (e.checked) {
+        this.levels.forEach(key => {
+          this.selectedLevel.push(key.id.toString());
         });
       }
       this.levelsChanged.emit(this.selectedLevel);
     }
     else if (e.source.id === "programListAll") {
       this.selectedProgram = [];
-      if (e.checked) {        
-        this.programs.forEach(key => { 
-            this.selectedProgram.push(key.Name.toString()); 
+      if (e.checked) {
+        this.programs.forEach(key => {
+          this.selectedProgram.push(key.id.toString());
         });
       }
       this.programsChanged.emit(this.selectedProgram);
     }
     else if (e.source.id === "yearListAll") {
       this.selectedYear = [];
-      if (e.checked) {         
-        this.years.forEach(key => { 
-            this.selectedYear.push(key.Name.toString()); 
+      if (e.checked) {
+        this.years.forEach(key => {
+          this.selectedYear.push(key.id.toString());
         });
       }
       this.yearsChanged.emit(this.selectedYear);
@@ -109,19 +97,19 @@ export class FiltersidebarComponent implements OnInit {
     //console.log(this.selectedGame);
   }
 
-  sportsCheckChange(){
+  sportsCheckChange() {
     this.sportsChanged.emit(this.selectedGame);
   }
 
-  levelsCheckChange(){
+  levelsCheckChange() {
     this.levelsChanged.emit(this.selectedLevel);
   }
 
-  programsCheckChange(){
+  programsCheckChange() {
     this.programsChanged.emit(this.selectedProgram);
   }
 
-  yearsCheckChange(){
+  yearsCheckChange() {
     this.yearsChanged.emit(this.selectedYear);
   }
 }

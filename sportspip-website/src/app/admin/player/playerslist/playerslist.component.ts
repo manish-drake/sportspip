@@ -40,8 +40,8 @@ export class PlayerslistComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.FetchItems();
-    this.apiURL = this.apiService.getApiUrl();
+    this.apiURL = this.apiService.getPlayerApiUrl();
+    this.FetchItems();    
   }
 
   openSnackBar(message: string, action: string) {
@@ -52,7 +52,7 @@ export class PlayerslistComponent implements OnInit {
 
   FetchItems(): void {
     this.loadingData = true;
-    this.apiService.getItems('players').subscribe(
+    this.apiService.getItems('players',this.apiURL).subscribe(
         (data) => {
           this.loadingData = false;
           this.items = data;
@@ -91,7 +91,7 @@ export class PlayerslistComponent implements OnInit {
   DeleteItem(id: any) {
     console.log(id);
     this.loadingData = true;
-    this.apiService.deleteItem('players', id)
+    this.apiService.deleteItem('players', id,this.apiURL)
         .subscribe(
             (data) => {
               // console.log(data);
