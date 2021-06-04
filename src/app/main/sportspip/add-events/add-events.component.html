@@ -1,0 +1,165 @@
+
+
+<div class="card mb-4">
+  <div class="card-body p-5">
+    <div class="position-relative">
+<form  >
+    <div class="form-group row" >
+        <label class="required" type="label" for="colFormLabel" class="col-sm-2 col-form-label" >Title</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="colFormLabel" name="title" ngModel placeholder="Project Title" required>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label type="label" for="colFormLabel" class="col-sm-2 col-form-label">Project Code</label>
+        <div class="col-sm-4">
+          <input type="email" class="form-control" id="colFormLabel" name="projectCode" ngModel>
+        </div>
+        <label type="label" for="colFormLabel" class="col-sm-2 col-form-label">Project Type</label>
+        <div class="col-sm-4">
+          <select type="select" class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="projectType" ngModel>
+            <option selected >-- Select Project Type --</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label type="label" for="colFormLabel" class="col-sm-2 col-form-label">Project Requester</label>
+        <div class="col-sm-4">
+          <select type="select" class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="projectRequester" ngModel>
+            <option selected>-- Select Project Requester --</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>        </div>
+        <label type="label" for="colFormLabel" class="col-sm-2 col-form-label">Department</label>
+        <div class="col-sm-4">
+          <select type="select" class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="department" ngModel>
+            <option selected>-- Select Department --</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>        </div>
+      </div>
+
+      <div class="form-group row">
+        <label type="label" for="colFormLabel" class="col-sm-2 col-form-label">Schedule Start</label>
+        <div class="col-sm-4">
+          <input type="datetime-local" class="form-control" id="colFormLabel">
+        </div>
+        <label type="label" for="colFormLabel" class="col-sm-2 col-form-label">Schedule End</label>
+        <div class="col-sm-4">
+          <input type="datetime-local" class="form-control" id="colFormLabel">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label type="label" for="colFormLabel" class="col-sm-2 col-form-label">Actual Start</label>
+        <div class="col-sm-4">
+          <input type="datetime-local" class="form-control" id="colFormLabel">
+        </div>
+        <label type="label" for="colFormLabel" class="col-sm-2 col-form-label">Actual End</label>
+        <div class="col-sm-4">
+          <input type="datetime-local" class="form-control" id="colFormLabel">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label  type="label" for="colFormLabel" class="col-sm-2 col-form-label">Projected End</label>
+        <div class="col-sm-4">
+          <input type="datetime-local" class="form-control" id="colFormLabel">
+        </div>
+        <label type="label" for="colFormLabel" class="col-sm-2 col-form-label">Status</label>
+        <div class="col-sm-4">
+          <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+            <option selected>-- Select Status --</option>
+            <option value="1">Open</option>
+            <option value="2">Close</option>
+          </select>         
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label type="label" for="colFormLabel" class="col-sm-2 col-form-label">Owner</label>
+        <div class="col-sm-4">
+          <select type="select" class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="owner" ngModel>
+            <option selected>-- Select Owner --</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>        </div>
+        <label type="label" for="colFormLabel" class="col-sm-2 col-form-label">Priority</label>
+        <div class="col-sm-4">
+          <select type="select" class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="priority" ngModel>
+            <option selected>-- Select Priority --</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>        
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label type="label" for="colFormLabel" class="col-sm-2 col-form-label">Estimated Cost ($)</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="colFormLabel" name="estimatedCost" ngModel>
+        </div>
+        <label type="label" for="colFormLabel" class="col-sm-2 col-form-label">Estimated Hours</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="colFormLabel" name="estimatedHours" ngModel>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label type="label" for="colFormLabel" class="col-sm-2 col-form-label">Actual Cost ($)</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="colFormLabel" name="actualCost" ngModel>
+        </div>
+        <label type="label" for="colFormLabel" class="col-sm-2 col-form-label">Actual Hours</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="colFormLabel" name="actualHours" ngModel>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label type="label"  for="colFormLabel" class="col-sm-2 col-form-label">% Completed</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="colFormLabel" name="completed" ngModel>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label type="label"  for="colFormLabel" class="col-sm-2 col-form-label">Description</label>
+        <div class="col-sm-10">
+          <textarea type="text" class="form-control" rows="5" id="comment" name="description" ngModel></textarea>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label type="label"  for="colFormLabel" class="col-sm-2 col-form-label">Attachments</label>
+        <div class="col-sm-10">
+          <div class="form-group files">
+           <input type="file" class="form-control" multiple="" name="attachment" ngModel>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">        
+          <div class="text-center">
+            <button class="btn btn-primary btn-sx" type="submit" >
+                Add Project
+            </button>
+            &nbsp;
+            <button class="btn btn-light btn-sx" type="clear">
+              Cancel
+            </button>
+        </div> 
+      </div>
+  </form>
+    </div>
+    </div>
+    </div>

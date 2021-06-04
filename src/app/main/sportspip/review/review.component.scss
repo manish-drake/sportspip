@@ -1,0 +1,29 @@
+a.clickable {
+    cursor: pointer;
+}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;   
+  }
+  
+  tr,td,th {
+    border: 2px solid #dddddd;
+    text-align: center;
+    padding: 4px;
+    font-size: small;
+    //font-weight: 100;
+    color: black;
+
+   
+  }
+  .secondTable{
+      
+  }
+  .secondTable:hover
+  {
+      background-color: rgb(90, 175, 231);
+      
+  }
+  
+
+
