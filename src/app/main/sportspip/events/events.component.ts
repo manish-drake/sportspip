@@ -7,14 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./events.component.scss']
 })
 export class EventsComponent implements OnInit {
-  constructor() { 
-    
+  constructor() {
+
   }
   ngOnInit(): void {
-    
+
   }
 
- 
+
   }
 
 

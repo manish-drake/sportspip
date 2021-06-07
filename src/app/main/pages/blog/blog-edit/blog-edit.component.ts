@@ -39,7 +39,7 @@ export class BlogEditComponent implements OnInit {
    */
   uploadImage(event: any) {
     if (event.target.files && event.target.files[0]) {
-      let reader = new FileReader();
+      const reader = new FileReader();
 
       reader.onload = (event: any) => {
         this.featuredImage = event.target.result;

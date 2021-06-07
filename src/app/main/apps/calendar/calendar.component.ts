@@ -69,11 +69,11 @@ export class CalendarComponent implements OnInit, AfterViewInit {
    */
   eventClass(s) {
     const calendarsColor = {
-      Football: 'primary',
-      Basketball: 'success',
-      Tennis: 'danger',
-      Golf: 'warning',
-      Hockey: 'info'
+      Business: 'primary',
+      Holiday: 'success',
+      Personal: 'danger',
+      Family: 'warning',
+      ETC: 'info'
     };
 
     const colorName = calendarsColor[s.event._def.extendedProps.calendar];
@@ -148,7 +148,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
    */
   ngAfterViewInit() {
     // Store this to _this as we need it on click event to call toggleSidebar
-    let _this = this;
+    const _this = this;
     this.calendarOptions.customButtons = {
       sidebarToggle: {
         text: '',

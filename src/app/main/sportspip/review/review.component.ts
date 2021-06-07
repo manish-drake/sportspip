@@ -1,6 +1,6 @@
   import { Component, OnInit } from '@angular/core';
   import { ActivatedRoute } from '@angular/router';
-  
+
 
   @Component({
     selector: 'app-review',
@@ -9,9 +9,9 @@
   })
   export class ReviewComponent implements OnInit {
 
-    
 
-    constructor() { 
+
+    constructor() {
     }
     ngOnInit(): void {
     }

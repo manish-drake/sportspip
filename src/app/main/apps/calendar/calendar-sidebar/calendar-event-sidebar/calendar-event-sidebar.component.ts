@@ -19,11 +19,11 @@ export class CalendarEventSidebarComponent implements OnInit {
   public event: EventRef;
   public isDataEmpty;
   public selectLabel = [
-    { label: 'Football', bullet: 'primary' },
-    { label: 'Basketball', bullet: 'success' },
-    { label: 'Tennis', bullet: 'danger' },
-    { label: 'Golf', bullet: 'warning' },
-    { label: 'Hockey', bullet: 'info' }
+    { label: 'Business', bullet: 'primary' },
+    { label: 'Personal', bullet: 'danger' },
+    { label: 'Family', bullet: 'warning' },
+    { label: 'Holiday', bullet: 'success' },
+    { label: 'ETC', bullet: 'info' }
   ];
   public selectGuest = [
     { name: 'Jane Foster', avatar: 'assets/images/avatars/1-small.png' },
@@ -70,7 +70,7 @@ export class CalendarEventSidebarComponent implements OnInit {
    */
   addEvent(eventForm) {
     if (eventForm.valid) {
-      //! Fix: Temp fix till ng2-flatpicker support ng-modal (Getting NG0100: Expression has changed after it was checked error if we use ng-model with ng2-flatpicker)
+      // ! Fix: Temp fix till ng2-flatpicker support ng-modal (Getting NG0100: Expression has changed after it was checked error if we use ng-model with ng2-flatpicker)
       eventForm.form.value.start = this.startDatePicker.flatpickrElement.nativeElement.children[0].value;
       eventForm.form.value.end = this.endDatePicker.flatpickrElement.nativeElement.children[0].value;
 
@@ -84,7 +84,7 @@ export class CalendarEventSidebarComponent implements OnInit {
    */
   updateEvent() {
     this.toggleEventSidebar();
-    //! Fix: Temp fix till ng2-flatpicker support ng-modal
+    // ! Fix: Temp fix till ng2-flatpicker support ng-modal
     this.event.start = this.startDatePicker.flatpickrElement.nativeElement.children[0].value;
     this.event.end = this.endDatePicker.flatpickrElement.nativeElement.children[0].value;
     this._calendarService.postUpdatedEvent(this.event);
@@ -116,9 +116,7 @@ export class CalendarEventSidebarComponent implements OnInit {
         if (response.id === undefined) {
           this.isDataEmpty = true;
         }
-      }
-      // else Create New Event
-      else {
+      } else {
         this.event = new EventRef();
 
         // Clear Flatpicker Values

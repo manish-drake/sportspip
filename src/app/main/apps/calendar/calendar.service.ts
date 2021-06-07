@@ -92,12 +92,12 @@ export class CalendarService implements Resolve<any> {
       return calendar.checked === true;
     });
 
-    let calendarRef = [];
+    const calendarRef = [];
     calendarsChecked.map(res => {
       calendarRef.push(res.filter);
     });
 
-    let filteredCalendar = this.tempEvents.filter(event => calendarRef.includes(event.calendar));
+    const filteredCalendar = this.tempEvents.filter(event => calendarRef.includes(event.calendar));
     this.events = filteredCalendar;
     this.onEventChange.next(this.events);
   }

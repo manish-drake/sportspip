@@ -15,7 +15,7 @@ export const locale = {
         TODO: 'À faire',
         CALENDAR: 'Calendrier',
         INVOICE: {
-          COLLAPSIBLE: "Facture d'achat",
+          COLLAPSIBLE: 'Facture d\'achat',
           LIST: 'Lister',
           PREVIEW: 'Aperçu',
           EDIT: 'Éditer',
@@ -42,7 +42,7 @@ export const locale = {
           LOGIN1: 'Connexion V1',
           LOGIN2: 'Connexion V2',
           REGISTER1: 'Enregistrer V1',
-          REGISTER2: "S'inscrire V2",
+          REGISTER2: 'S\'inscrire V2',
           FORGOTPASSWORD1: 'Mot de passe oublié V1',
           FORGOTPASSWORD2: 'Mot de passe oublié V2',
           RESETPASSWORD1: 'Réinitialiser le mot de passe V1',
@@ -65,7 +65,7 @@ export const locale = {
           RESET: 'réinitialiser le mot de passe',
           VERIFY: 'Vérifier',
           DEACTIVATE: 'Désactiver',
-          INVOICE: "Facture d'achat",
+          INVOICE: 'Facture d\'achat',
           PROMOTIONAL: 'Promotionnel'
         },
         MISC: {
@@ -98,7 +98,7 @@ export const locale = {
           BREADCRUMBS: 'Chapelure',
           BUTTONS: 'Boutons',
           CAROUSEL: 'Carrousel',
-          COLLAPSE: "S'effondrer",
+          COLLAPSE: 'S\'effondrer',
           DIVIDER: 'Diviseur',
           DROPDOWNS: 'Listes déroulantes',
           GROUP: 'Groupe de listes',
@@ -146,7 +146,7 @@ export const locale = {
         ELEMENT: {
           COLLAPSIBLE: 'Éléments de formulaire',
           INPUT: 'Saisir',
-          INPUTGROUPS: "Groupes d'entrée",
+          INPUTGROUPS: 'Groupes d\'entrée',
           INPUTMASK: 'Masque de saisie',
           TEXTAREA: 'Textarea',
           CHECKBOX: 'Case à cocher',
@@ -157,7 +157,7 @@ export const locale = {
           FILEUPLOADER: 'Téléchargeur de fichiers',
           QUILLEDITOR: 'Éditeur de plumes',
           FLATPICKER: 'Flatpicker',
-          DATETIMEPICKER: "Sélecteur de date et d'heure"
+          DATETIMEPICKER: 'Sélecteur de date et d\'heure'
         },
         LAYOUTS: 'Dispositions de formulaire',
         WIZARD: 'Assistant de formulaire',

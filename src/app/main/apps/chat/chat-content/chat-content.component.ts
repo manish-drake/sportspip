@@ -52,9 +52,7 @@ export class ChatContentComponent implements OnInit {
           this.scrolltop = this.scrollMe?.nativeElement.scrollHeight;
         }, 0);
       }
-    }
-    // Else create new chat
-    else {
+    } else {
       this._chatService.createNewChat(this.chatUser.id, this.newChat);
     }
   }

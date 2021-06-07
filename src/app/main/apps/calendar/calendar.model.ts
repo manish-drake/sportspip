@@ -1,7 +1,7 @@
 export class EventRef {
-  id? = undefined;
+  id ? = undefined;
   url: string;
-  title: string = '';
+  title = '';
   start: string;
   end: string;
   allDay = false;

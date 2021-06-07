@@ -7,13 +7,13 @@ import { MediaPlayerModule } from 'app/main/extensions/media-player/media-player
 
 
 const routes: Routes = [
-  
-  { path: 'review',component: ReviewComponent},
+
+  { path: 'review', component: ReviewComponent},
 ];
 @NgModule({
   declarations: [ReviewComponent],
   imports: [
-    CommonModule,RouterModule.forChild(routes),MediaPlayerModule
+    CommonModule, RouterModule.forChild(routes), MediaPlayerModule
   ]
 })
 export class ReviewModule { }

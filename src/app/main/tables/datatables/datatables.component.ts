@@ -31,7 +31,7 @@ export class DatatablesComponent implements OnInit {
   public rows: any;
   public selected = [];
   public kitchenSinkRows: any;
-  public basicSelectedOption: number = 10;
+  public basicSelectedOption = 10;
   public ColumnMode = ColumnMode;
   public expanded = {};
   public editingName = {};

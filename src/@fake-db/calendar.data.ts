@@ -124,10 +124,10 @@ export class CalendarFakeData {
     }
   ];
   public static calendar = [
-    { id: 1, filter: 'Football', color: 'primary', checked: true },
-    { id: 2, filter: 'Basketball', color: 'success', checked: true },
-    { id: 3, filter: 'Tennis', color: 'danger', checked: true },
-    { id: 4, filter: 'Golf', color: 'warning', checked: true },
-    { id: 5, filter: 'Hockey', color: 'info', checked: true }
+    { id: 1, filter: 'Business', color: 'primary', checked: true },
+    { id: 2, filter: 'Holiday', color: 'success', checked: true },
+    { id: 3, filter: 'Personal', color: 'danger', checked: true },
+    { id: 4, filter: 'Family', color: 'warning', checked: true },
+    { id: 5, filter: 'ETC', color: 'info', checked: true }
   ];
 }

@@ -1,39 +1,41 @@
 <div class="content-wrapper">
-  <div class="content-body">
-    <div class="app-schedule overflow-hidden border">
-      <div class="row no-gutters">
-        <!-- schedule main sidebar -->
-        <core-sidebar
-          class="col app-schedule-sidebar flex-grow-0 overflow-hidden d-flex flex-column"
-          name="schedule-main-sidebar"
-          overlayClass="body-content-overlay"
-          collapsibleSidebar="bs-gt-lg"
-        >
-          <app-schedule-main-sidebar></app-schedule-main-sidebar>
-        </core-sidebar>
-        <!--/ schedule main sidebar -->
-
-        <!-- schedule -->
-        <div class="col position-relative">
-          <div class="card shadow-none border-0 mb-0 rounded-0">
-            <div class="card-body pb-0">
-              <full-calendar [options]="calendarOptions"></full-calendar>
+    <div class="content-body">
+      <div class="app-calendar overflow-hidden border">
+        <div class="row no-gutters">
+          <!-- calendar main sidebar -->
+          <core-sidebar
+            class="col app-calendar-sidebar flex-grow-0 overflow-hidden d-flex flex-column"
+            name="calendar-main-sidebar"
+            overlayClass="body-content-overlay"
+            collapsibleSidebar="bs-gt-lg"
+          >
+            <app-schedule-main-sidebar></app-schedule-main-sidebar>
+          </core-sidebar>
+          <!--/ calendar main sidebar -->
+  
+          <!-- calendar -->
+          <div class="col position-relative">
+            <div class="card shadow-none border-0 mb-0 rounded-0">
+              <div class="card-body pb-0">
+                <full-calendar [options]="calendarOptions"></full-calendar>
+              </div>
             </div>
           </div>
+          <!-- calendar -->
         </div>
-        <!-- schedule -->
       </div>
+  
+      <!-- calendar event sidebar -->
+      <core-sidebar
+        class="modal modal-slide-in fade event-sidebar"
+        name="calendar-event-sidebar"
+        overlayClass="modal-backdrop"
+        hideOnEsc="true"
+      >
+        <app-schedule-event-sidebar></app-schedule-event-sidebar>
+        
+      </core-sidebar>
+      <!--/ calendar event sidebar -->
     </div>
-
-    <!-- schedule event sidebar -->
-    <core-sidebar
-      class="modal modal-slide-in fade event-sidebar"
-      name="schedule-event-sidebar"
-      overlayClass="modal-backdrop"
-      hideOnEsc="true"
-    >
-      <app-schedule-event-sidebar></app-schedule-event-sidebar>
-    </core-sidebar>
-    <!--/ schedule event sidebar -->
   </div>
-</div>
+  

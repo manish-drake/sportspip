@@ -133,11 +133,11 @@ export class ApexComponent implements OnInit {
 
   // Heatmap data generate
   public generateHeatmapData(count, yrange) {
-    var i = 0;
-    var series = [];
+    let i = 0;
+    let series = [];
     while (i < count) {
-      var x = 'w' + (i + 1).toString();
-      var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+      let x = 'w' + (i + 1).toString();
+      let y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
 
       series.push({
         x: x,

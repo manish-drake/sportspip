@@ -24,23 +24,23 @@ import { CalendarService } from 'app/main/apps/calendar/calendar.service';
 FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]);
 
 // routing
-const routes: Routes = [
-  {
-    path: '**',
-    component: CalendarComponent,
-    resolve: {
-      data: CalendarService
-    },
-    data: { animation: 'calendar' }
-  }
-];
+// const routes: Routes = [
+//   {
+//     path: '**',
+//     component: CalendarComponent,
+//     resolve: {
+//       data: CalendarService
+//     },
+//     data: { animation: 'calendar' }
+//   }
+// ];
 
 @NgModule({
   declarations: [CalendarComponent, CalendarEventSidebarComponent, CalendarMainSidebarComponent],
   imports: [
     CommonModule,
     FullCalendarModule,
-    RouterModule.forChild(routes),
+   // RouterModule.forChild(routes),
     CoreCommonModule,
     CoreSidebarModule,
     FormsModule,
@@ -48,6 +48,7 @@ const routes: Routes = [
     NgSelectModule,
     NgbModule
   ],
+  exports: [CalendarComponent],
   providers: [CalendarService]
 })
 export class CalendarModule {}

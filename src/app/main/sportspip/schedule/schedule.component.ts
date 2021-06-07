@@ -7,6 +7,9 @@ import { CalendarOptions, EventClickArg } from '@fullcalendar/angular';
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
 import { CoreConfigService } from '@core/services/config.service';
 
+// import { CalendarService } from 'app/main/apps/calendar/calendar.service';
+// import { EventRef } from 'app/main/apps/calendar/calendar.model';
+
 import { ScheduleService } from 'app/main/sportspip/schedule/schedule.service';
 import { EventRef } from 'app/main/sportspip/schedule/schedule.model';
 
@@ -16,7 +19,8 @@ import { EventRef } from 'app/main/sportspip/schedule/schedule.model';
   styleUrls: ['./schedule.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ScheduleComponent implements OnInit, AfterViewInit {
+export class ScheduleComponent implements OnInit,AfterViewInit {
+
   // Public
   public slideoutShow = false;
   public events = [];
@@ -40,7 +44,6 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
     eventClassNames: this.eventClass.bind(this),
     select: this.handleDateSelect.bind(this)
   };
-
   // Private
   private _unsubscribeAll: Subject<any>;
 
@@ -48,12 +51,12 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
    * Constructor
    *
    * @param {CoreSidebarService} _coreSidebarService
-   * @param {ScheduleService} _scheduleService
+   * @param {ScheduleService} _calendarService
    * @param {CoreConfigService} _coreConfigService
    */
   constructor(
     private _coreSidebarService: CoreSidebarService,
-    private _scheduleService: ScheduleService,
+    private _calendarService: ScheduleService,
     private _coreConfigService: CoreConfigService
   ) {
     this._unsubscribeAll = new Subject();
@@ -67,16 +70,16 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
    *
    * @param s
    */
-  eventClass(s) {
-    const schedulesColor = {
-      Football: 'primary',
-      Basketball: 'success',
-      Tennis: 'danger',
-      Golf: 'warning',
-      Hockey: 'info'
+   eventClass(s) {
+    const calendarsColor = {
+      Business: 'primary',
+      Holiday: 'success',
+      Personal: 'danger',
+      Family: 'warning',
+      ETC: 'info'
     };
 
-    const colorName = schedulesColor[s.event._def.extendedProps.schedule];
+    const colorName = calendarsColor[s.event._def.extendedProps.calendar];
     return `bg-light-${colorName}`;
   }
 
@@ -86,8 +89,8 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
    * @param eventRef
    */
   handleUpdateEventClick(eventRef: EventClickArg) {
-    this._coreSidebarService.getSidebarRegistry('schedule-event-sidebar').toggleOpen();
-    this._scheduleService.updateCurrentEvent(eventRef);
+    this._coreSidebarService.getSidebarRegistry('calendar-event-sidebar').toggleOpen();
+    this._calendarService.updateCurrentEvent(eventRef);
   }
 
   /**
@@ -107,8 +110,8 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
   handleDateSelect(eventRef) {
     const newEvent = new EventRef();
     newEvent.start = eventRef.start;
-    this._coreSidebarService.getSidebarRegistry('schedule-event-sidebar').toggleOpen();
-    this._scheduleService.onCurrentEventChange.next(newEvent);
+    this._coreSidebarService.getSidebarRegistry('calendar-event-sidebar').toggleOpen();
+    this._calendarService.onCurrentEventChange.next(newEvent);
   }
 
   // Lifecycle Hooks
@@ -124,21 +127,21 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
       if (config.layout.animation === 'zoomIn') {
         setTimeout(() => {
           // Subscribe to Event Change
-          this._scheduleService.onEventChange.subscribe(res => {
+          this._calendarService.onEventChange.subscribe(res => {
             this.events = res;
             this.calendarOptions.events = res;
           });
         }, 450);
       } else {
         // Subscribe to Event Change
-        this._scheduleService.onEventChange.subscribe(res => {
+        this._calendarService.onEventChange.subscribe(res => {
           this.events = res;
           this.calendarOptions.events = res;
         });
       }
     });
 
-    this._scheduleService.onCurrentEventChange.subscribe(res => {
+    this._calendarService.onCurrentEventChange.subscribe(res => {
       this.event = res;
     });
   }
@@ -148,14 +151,18 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
    */
   ngAfterViewInit() {
     // Store this to _this as we need it on click event to call toggleSidebar
-    let _this = this;
+    const _this = this;
     this.calendarOptions.customButtons = {
       sidebarToggle: {
         text: '',
         click() {
-          _this.toggleSidebar('schedule-main-sidebar');
+          _this.toggleSidebar('calendar-main-sidebar');
         }
       }
     };
   }
 }
+
+ 
+
+

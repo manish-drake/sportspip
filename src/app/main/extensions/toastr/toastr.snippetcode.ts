@@ -298,7 +298,7 @@ export const snippetCodeCustomToastr: snippetCode = {
 `,
   ts: `
   import { CustomToastrComponent } from 'app/main/extensions/toastr/custom-toastr/custom-toastr.component';
-  
+
   // Custom Success
   toastrCustomSuccess() {
     const customToastrRef = cloneDeep(this.options);

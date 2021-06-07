@@ -37,10 +37,7 @@ export class TodoService implements Resolve<any> {
       fieldA = new Date(a[key]);
       fieldB = new Date(b[key]);
       // eslint-disable-next-line brace-style
-    }
-
-    // If sorting is by assignee => Use `fullName` of assignee
-    else if (key === 'assignee') {
+    } else if (key === 'assignee') {
       fieldA = a.assignee ? a.assignee.fullName : null;
       fieldB = b.assignee ? b.assignee.fullName : null;
     } else {
@@ -63,7 +60,7 @@ export class TodoService implements Resolve<any> {
     }
 
     return comparison;
-  };
+  }
 
   /**
    * Constructor
@@ -290,7 +287,7 @@ export class TodoService implements Resolve<any> {
         sortDesc = false;
         return 'title';
       }
-      if (sortByParam === 'title-desc') return 'title';
+      if (sortByParam === 'title-desc') { return 'title'; }
       if (sortByParam === 'assignee') {
         sortDesc = false;
         return 'assignee';
@@ -304,7 +301,7 @@ export class TodoService implements Resolve<any> {
 
     if (sortByParam !== null) {
       this.todos = this.todos.sort(this.sortTodoRef(sortBy));
-      if (sortDesc) this.todos.reverse();
+      if (sortDesc) { this.todos.reverse(); }
 
       this.onTodoDataChange.next(this.todos);
     }

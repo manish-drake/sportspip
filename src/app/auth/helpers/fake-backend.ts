@@ -81,7 +81,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     function authenticate() {
       const { email, password } = body;
       const user = users.find(x => x.email === email && x.password === password);
-      if (!user) return error('Username or password is incorrect');
+      if (!user) { return error('Username or password is incorrect'); }
       return ok({
         id: user.id,
         email: user.email,
@@ -94,15 +94,15 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     }
 
     function getUsers() {
-      if (!isAdmin()) return unauthorized();
+      if (!isAdmin()) { return unauthorized(); }
       return ok(users);
     }
 
     function getUserById() {
-      if (!isLoggedIn()) return unauthorized();
+      if (!isLoggedIn()) { return unauthorized(); }
 
       // only admins can access other user records
-      if (!isAdmin() && currentUser().id !== idFromUrl()) return unauthorized();
+      if (!isAdmin() && currentUser().id !== idFromUrl()) { return unauthorized(); }
 
       const user = users.find(x => x.id === idFromUrl());
       return ok(user);
@@ -132,7 +132,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     }
 
     function currentUser() {
-      if (!isLoggedIn()) return;
+      if (!isLoggedIn()) { return; }
       const id = parseInt(headers.get('Authorization').split('.')[1]);
       return users.find(x => x.id === id);
     }

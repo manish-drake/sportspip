@@ -9,8 +9,8 @@ import * as snippet from 'app/main/components/alerts/alerts.snippetcode';
 export class AlertsComponent implements OnInit {
   // public
   public contentHeader: object;
-  public alertClose: boolean = false;
-  public alertCustomClose: boolean = false;
+  public alertClose = false;
+  public alertCustomClose = false;
 
   // snippet code variables
   public _snippetCodeDefault = snippet.snippetCodeDefault;

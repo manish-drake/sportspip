@@ -371,7 +371,7 @@ export class ChartjsComponent implements OnInit {
       tooltips: {
         enabled: false,
         custom: function (tooltip) {
-          var tooltipEl = document.getElementById('tooltip');
+          let tooltipEl = document.getElementById('tooltip');
           if (tooltip.body) {
             tooltipEl.style.display = 'block';
             if (tooltip.body[0].lines && tooltip.body[0].lines[0]) {
@@ -813,9 +813,9 @@ export class ChartjsComponent implements OnInit {
       tooltips: {
         callbacks: {
           label: function (tooltipItem, data) {
-            var label = data.datasets[0].labels[tooltipItem.index] || '',
+            let label = data.datasets[0].labels[tooltipItem.index] || '',
               value = data.datasets[0].data[tooltipItem.index];
-            var output = ' ' + label + ' : ' + value + ' %';
+            let output = ' ' + label + ' : ' + value + ' %';
             return output;
           }
         },
@@ -1251,7 +1251,7 @@ export class ChartjsComponent implements OnInit {
     ]
   };
 
-  //** To add spacing between legends and chart
+  // ** To add spacing between legends and chart
   public plugins = [
     {
       beforeInit(chart) {

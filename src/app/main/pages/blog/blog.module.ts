@@ -48,7 +48,7 @@ const routes: Routes = [
   },
   {
     path: 'blog-details',
-    redirectTo: '/pages/blog-details/2' //Redirection
+    redirectTo: '/pages/blog-details/2' // Redirection
   }
 ];
 

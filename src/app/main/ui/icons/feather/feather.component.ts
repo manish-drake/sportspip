@@ -15,7 +15,7 @@ export class FeatherComponent implements OnInit {
   // Public
   public contentHeader: object;
   public json = require('feather-icons/dist/icons.json');
-  public copyCodeStatus: boolean = false;
+  public copyCodeStatus = false;
   public searchText;
   public data;
 

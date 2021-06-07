@@ -9,7 +9,7 @@ export const menu: CoreMenu[] = [
     translate: 'MENU.HOME.HOMEROOT',
     type: 'item',
     icon: 'home',
-    url: 'home/home-root'
+    //url: 'home/home-root'
   },
   // ----Home end-------  //
   //----------sportsPip---------//
@@ -73,7 +73,7 @@ export const menu: CoreMenu[] = [
             title: 'Players',
             translate: 'MENU.SPORTSPIP.PLAYERS',
             type: 'item',
-            icon: 'users',
+            icon: 'running',
             url: '#'
           },
           {

@@ -23,44 +23,6 @@ import { Router } from '@angular/router';
   encapsulation: ViewEncapsulation.None
 })
 export class NavbarComponent implements OnInit, OnDestroy {
-  public horizontalMenu: boolean;
-  public hiddenMenu: boolean;
-
-  public coreConfig: any;
-  public currentSkin: string;
-  public prevSkin: string;
-
-  public currentUser: User;
-
-  public languageOptions: any;
-  public navigation: any;
-  public selectedLanguage: any;
-
-  @HostBinding('class.fixed-top')
-  public isFixed = false;
-
-  @HostBinding('class.navbar-static-style-on-scroll')
-  public windowScrolled = false;
-
-  // Add .navbar-static-style-on-scroll on scroll using HostListener & HostBinding
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
-    if (
-      (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop > 100) &&
-      this.coreConfig.layout.navbar.type == 'navbar-static-top'
-    ) {
-      this.windowScrolled = true;
-    } else if (
-      (this.windowScrolled && window.pageYOffset) ||
-      document.documentElement.scrollTop ||
-      document.body.scrollTop < 10
-    ) {
-      this.windowScrolled = false;
-    }
-  }
-
-  // Private
-  private _unsubscribeAll: Subject<any>;
 
   /**
    * Constructor
@@ -105,6 +67,44 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     // Set the private defaults
     this._unsubscribeAll = new Subject();
+  }
+  public horizontalMenu: boolean;
+  public hiddenMenu: boolean;
+
+  public coreConfig: any;
+  public currentSkin: string;
+  public prevSkin: string;
+
+  public currentUser: User;
+
+  public languageOptions: any;
+  public navigation: any;
+  public selectedLanguage: any;
+
+  @HostBinding('class.fixed-top')
+  public isFixed = false;
+
+  @HostBinding('class.navbar-static-style-on-scroll')
+  public windowScrolled = false;
+
+  // Private
+  private _unsubscribeAll: Subject<any>;
+
+  // Add .navbar-static-style-on-scroll on scroll using HostListener & HostBinding
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    if (
+      (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop > 100) &&
+      this.coreConfig.layout.navbar.type == 'navbar-static-top'
+    ) {
+      this.windowScrolled = true;
+    } else if (
+      (this.windowScrolled && window.pageYOffset) ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop < 10
+    ) {
+      this.windowScrolled = false;
+    }
   }
 
   // Public Methods

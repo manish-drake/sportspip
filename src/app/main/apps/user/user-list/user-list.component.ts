@@ -50,10 +50,10 @@ export class UserListComponent implements OnInit {
   {name : 'Inactive', value: 'Inactive'}
   ];
 
-  public selectedRole = []
-  public selectedPlan = []
-  public selectedStatus = []
-  public searchValue = ""
+  public selectedRole = [];
+  public selectedPlan = [];
+  public selectedStatus = [];
+  public searchValue = '';
 
   // Decorator
   @ViewChild(DatatableComponent) table: DatatableComponent;
@@ -159,7 +159,7 @@ export class UserListComponent implements OnInit {
    */
   filterRows(roleFilter, planFilter, statusFilter): any[] {
     // Reset search on select change
-    this.searchValue = ''
+    this.searchValue = '';
 
     roleFilter = roleFilter.toLowerCase();
     planFilter = planFilter.toLowerCase();
@@ -181,7 +181,7 @@ export class UserListComponent implements OnInit {
   ngOnInit(): void {
     // Subscribe config change
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
-      //! If we have zoomIn route Transition then load datatable after 450ms(Transition will finish in 400ms)
+      // ! If we have zoomIn route Transition then load datatable after 450ms(Transition will finish in 400ms)
       if (config.layout.animation === 'zoomIn') {
         setTimeout(() => {
           this._userListService.onDatatablessChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {

@@ -88,7 +88,7 @@ export class NavbarSearchComponent implements OnInit {
     if (13 === event.keyCode) {
       // Navigate to activeIndex
       // ! Todo: Improve this code
-      let current_item = this._pageListElement.nativeElement.getElementsByClassName('current_item');
+      const current_item = this._pageListElement.nativeElement.getElementsByClassName('current_item');
       current_item[0]?.children[0].click();
     }
   }

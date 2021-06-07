@@ -11,11 +11,11 @@ export class CoreTouchspinComponent implements OnInit {
 
   @Input('iconChevron') iconChevron = false;
   @Input('disable') disabledValue = false;
-  @Input('size') size: string = '';
-  @Input('color') color: string = '';
+  @Input('size') size = '';
+  @Input('color') color = '';
   @Input('stepValue') stepValue: number;
-  @Input('maxValue') maxValue: number = 9999;
-  @Input('minValue') minValue: number = 0;
+  @Input('maxValue') maxValue = 9999;
+  @Input('minValue') minValue = 0;
 
   public disabledValueIncrement = false;
   public disabledValueDecrement = false;

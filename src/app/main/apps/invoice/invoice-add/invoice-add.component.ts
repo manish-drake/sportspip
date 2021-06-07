@@ -112,7 +112,7 @@ export class InvoiceAddComponent implements OnInit {
    */
   ngOnInit(): void {
     this._invoiceAddService.onDataChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
-      let responseData = response;
+      const responseData = response;
       this.apiData = responseData.slice(5, 10);
     });
     this.invoiceSelect = this.apiData;

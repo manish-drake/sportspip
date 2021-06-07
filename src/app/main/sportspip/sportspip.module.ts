@@ -7,24 +7,51 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { TaggingModule } from './tagging/tagging.module';
 import { ReviewModule } from './review/review.module';
 import { EventModule } from './events/event.module';
-import { AddEventModule } from './add-events/add-event.module';
+
 import { MediaPlayerModule} from '../extensions/media-player/media-player.module';
-import { Routes } from '@angular/router';
+import { CalendarModule } from '../apps/calendar/calendar.module';
+import { RouterModule, Routes } from '@angular/router';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { TeamsModule } from './teams/teams.module';
-import {TeamsComponent} from './teams/teams.component';
-import { ScheduleModule } from './schedule/schedule.module'
+import { AddeventModule } from './add-events/addevent.module';
+import { ScheduleComponent } from './schedule/schedule.component';
+import { ScheduleModule } from './schedule/schedule.module';
 
 
+// routing
+// const routes: Routes = [
+//   {
+//     path: 'addevents',
+//     loadChildren: () => import('./add-events/add-event.module').then(m => m.AddEventModule)
+//   },
+  
+  
+//   {
+//     path: 'event',
+//     loadChildren: () => import('./events/event.module').then(m => m.EventModule)
+//   },
+ 
+ 
+//   {
+//     path: 'tagging',
+//     loadChildren: () => import('./tagging/tagging.module').then(m => m.TaggingModule)
+//   },
+//   {
+//     path: 'review',
+//     loadChildren: () => import('./review/review.module').then(m => m.ReviewModule)
+//   },
+// ];
+// const routes: Routes = [
+//   {path: 'events', component: EventModule}
+// ];
 
 FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]);
 
 @NgModule({
-  declarations: [TeamsComponent],
+  declarations: [],
   imports: [
     CommonModule,
     CoreCommonModule,
@@ -33,11 +60,11 @@ FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, i
     TaggingModule,
     ReviewModule,
     EventModule,
-    EventModule,
-    AddEventModule,
+    CalendarModule,
     MediaPlayerModule,
-    ScheduleModule
-    
+   // RouterModule.forRoot(routes)
+   AddeventModule,
+   ScheduleModule
    
   ],
   exports:[]

@@ -11,7 +11,7 @@ import * as snippet from 'app/main/components/accordion/accordion.snippetcode';
 export class AccordionComponent implements OnInit {
   // private
   private lastPanelId: string = null;
-  private defaultPanelId: string = 'panelShadow2';
+  private defaultPanelId = 'panelShadow2';
 
   // public
   public contentHeader: object;
@@ -43,13 +43,14 @@ export class AccordionComponent implements OnInit {
       activePanelElem.parentElement.classList.add('open');
     }
 
-    if (!this.lastPanelId) this.lastPanelId = this.defaultPanelId;
+    if (!this.lastPanelId) { this.lastPanelId = this.defaultPanelId; }
 
     if (this.lastPanelId) {
       const lastPanelElem = document.getElementById(this.lastPanelId);
 
-      if (this.lastPanelId === activePanelId && $event.nextState === false)
+      if (this.lastPanelId === activePanelId && $event.nextState === false) {
         activePanelElem.parentElement.classList.remove('open');
+      }
       else if (this.lastPanelId !== activePanelId && $event.nextState === true) {
         lastPanelElem.parentElement.classList.remove('open');
       }

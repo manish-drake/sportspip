@@ -66,7 +66,7 @@ export class AccountSettingsComponent implements OnInit {
    */
   uploadImage(event: any) {
     if (event.target.files && event.target.files[0]) {
-      let reader = new FileReader();
+      const reader = new FileReader();
 
       reader.onload = (event: any) => {
         this.avatarImage = event.target.result;

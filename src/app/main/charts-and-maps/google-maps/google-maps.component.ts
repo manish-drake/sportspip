@@ -135,11 +135,11 @@ export class GoogleMapsComponent implements OnInit {
    * Advance Component
    */
   zoomIn() {
-    if (this.advanceZoom < this.advanceOptions.maxZoom) this.advanceZoom++;
+    if (this.advanceZoom < this.advanceOptions.maxZoom) { this.advanceZoom++; }
   }
 
   zoomOut() {
-    if (this.advanceZoom > this.advanceOptions.minZoom) this.advanceZoom--;
+    if (this.advanceZoom > this.advanceOptions.minZoom) { this.advanceZoom--; }
   }
 
   /**

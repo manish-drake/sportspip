@@ -35,7 +35,7 @@ export class EcommerceService implements Resolve<any> {
       comparison = -1;
     }
     return comparison;
-  };
+  }
 
   /**
    * Constructor
@@ -154,7 +154,7 @@ export class EcommerceService implements Resolve<any> {
     })();
 
     const sortedData = this.productList.sort(this.sortRef(sortByKey));
-    if (sortDesc) sortedData.reverse();
+    if (sortDesc) { sortedData.reverse(); }
     this.productList = sortedData;
     this.onProductListChange.next(this.productList);
   }
@@ -201,7 +201,7 @@ export class EcommerceService implements Resolve<any> {
     return new Promise<void>((resolve, reject) => {
       const maxValueId = Math.max(...this.cartList.map(cart => cart.id), 0) + 1;
       const cartRef = { id: maxValueId, productId: id, qty: 1 };
-      var cartId: any = '';
+      let cartId: any = '';
 
       // If cart is not Empty
       if (maxValueId !== 1) {

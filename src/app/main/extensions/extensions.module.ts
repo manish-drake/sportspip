@@ -29,6 +29,6 @@ import { TreeViewModule } from 'app/main/extensions/tree-view/tree-view.module';
     ContextMenusModule,
     BlockuiModule
   ],
-  exports:[]
+  exports: []
 })
 export class ExtensionsModule {}

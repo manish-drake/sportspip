@@ -15,32 +15,32 @@ import { Ng2FlatpickrModule } from 'ng2-flatpickr';
 import { CoreCommonModule } from '@core/common.module';
 import { CoreSidebarModule } from '@core/components';
 
-import { ScheduleEventSidebarComponent } from 'app/main/sportspip/schedule/schedule-sidebar/schedule-event-sidebar/schedule-event-sidebar.component';
-import { ScheduleMainSidebarComponent } from 'app/main/sportspip/schedule/schedule-sidebar/schedule-main-sidebar/schedule-main-sidebar.component';
-
-import { ScheduleComponent } from 'app/main/sportspip/schedule/schedule.component';
-import { ScheduleService } from 'app/main/sportspip/schedule/schedule.service';
+import { ScheduleComponent } from  './schedule.component';//'./schedule.component';
+import { ScheduleEventSidebarComponent } from './schedule-sidebar/schedule-event-sidebar/schedule-event-sidebar.component';
+import { ScheduleMainSidebarComponent } from './schedule-sidebar/schedule-main-sidebar/schedule-main-sidebar.component';
+import {ScheduleService} from './schedule.service';
 
 FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]);
-
-// routing
 const routes: Routes = [
-  {
-    path: '**',
-    component: ScheduleComponent,
-    resolve: {
-      data: ScheduleService
-    },
-    data: { animation: 'schedule' }
-  }
-];
+  
+  { path: 'schedule',component: ScheduleComponent,
 
+  resolve: {
+          data: ScheduleService
+        },
+        data: { animation: 'schedule' }
+      }
+
+
+];
 @NgModule({
-  declarations: [ScheduleComponent, ScheduleEventSidebarComponent, ScheduleMainSidebarComponent],
+  declarations: [ScheduleComponent,ScheduleEventSidebarComponent, ScheduleMainSidebarComponent],
   imports: [
     CommonModule,
+  
+    CommonModule,
     FullCalendarModule,
-    RouterModule.forChild(routes),
+   
     CoreCommonModule,
     CoreSidebarModule,
     FormsModule,
@@ -48,6 +48,6 @@ const routes: Routes = [
     NgSelectModule,
     NgbModule
   ],
-  providers: [ScheduleService]
+  providers:[ScheduleService]
 })
-export class ScheduleModule {}
+export class ScheduleModule { }

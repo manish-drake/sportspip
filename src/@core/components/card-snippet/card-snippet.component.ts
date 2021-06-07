@@ -17,7 +17,7 @@ export interface snippetCode {
 })
 export class CoreCardSnippetComponent implements OnInit {
   // public
-  public copyCodeStatus: boolean = false;
+  public copyCodeStatus = false;
 
   // private
   private _defaultSnippetCode: snippetCode = {

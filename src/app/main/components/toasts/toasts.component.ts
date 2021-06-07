@@ -11,7 +11,7 @@ import * as snippet from 'app/main/components/toasts/toasts.snippetcode';
 export class ToastsComponent implements OnInit {
   // public
   public contentHeader: object;
-  public hideValue: boolean = true;
+  public hideValue = true;
   public toastStyle: object = {};
 
   // snippet code variables
