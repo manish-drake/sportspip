@@ -90,7 +90,7 @@ const appRoutes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/sportspip/tagging',
+    redirectTo: '/dashboard/analytics',
     pathMatch: 'full'
   },
   {
