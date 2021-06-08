@@ -19,7 +19,7 @@ export class VerticalMenuComponent implements OnInit, OnDestroy {
   coreConfig: any;
   menu: any;
   isCollapsed: boolean;
-  isScrolled = false;
+  isScrolled: boolean = false;
 
   // Private
   private _unsubscribeAll: Subject<any>;

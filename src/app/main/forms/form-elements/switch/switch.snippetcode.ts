@@ -20,7 +20,7 @@ export const snippetCodeColors: snippetCode = {
     <input type="checkbox" checked class="custom-control-input" id="customSwitch3" />
     <label class="custom-control-label" for="customSwitch3"></label>
   </div>
-
+  
   <div class="custom-control custom-control-secondary custom-switch">
     <p class="mb-50">Secondary</p>
     <input type="checkbox" checked class="custom-control-input" id="customSwitch44" />

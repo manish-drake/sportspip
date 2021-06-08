@@ -27,7 +27,7 @@ export class InvoicePreviewService implements Resolve<any> {
    * @returns {Observable<any> | Promise<any> | any}
    */
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
-    const currentId = Number(route.paramMap.get('id'));
+    let currentId = Number(route.paramMap.get('id'));
     return new Promise<void>((resolve, reject) => {
       Promise.all([this.getApiData(currentId)]).then(() => {
         resolve();

@@ -20,6 +20,6 @@ const routes: Routes = [
 @NgModule({
   declarations: [MediaPlayerComponent],
   imports: [RouterModule.forChild(routes), ContentHeaderModule, CardSnippetModule, PlyrModule],
-  exports: [MediaPlayerComponent]
+  exports:[MediaPlayerComponent]
 })
 export class MediaPlayerModule {}

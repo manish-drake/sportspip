@@ -9,15 +9,6 @@ import { CoreBlockUiComponent } from '@core/components/core-card/core-block-ui/c
   templateUrl: './core-card.component.html'
 })
 export class CoreCardComponent implements OnInit {
-
-  /**
-   * Constructor
-   *
-   * @param {BlockUIService} blockUIService
-   */
-  constructor(private blockUIService: BlockUIService) {
-    this.events = new EventEmitter<any>();
-  }
   // public
   // Generate random string  assign to specific core-card to only block that specific card
   public coreCardId: string = Math.random().toString(36).substring(2);
@@ -43,17 +34,26 @@ export class CoreCardComponent implements OnInit {
 
   @Input() actions: string[];
   @Input() isReload = false;
-  @Input() reloadTime = 2500;
+  @Input() reloadTime: number = 2500;
   @Output() events: EventEmitter<any>;
-
-  // private
-  @ViewChild('coreCard') private coreCard: ElementRef;
-  @ViewChild('cardHeader') private cardHeader: ElementRef;
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     // on press of esc card will return to normal from full screen
     if (this.onclickEvent.expandStatus) {
       this.onclickEvent.expandStatus = false;
     }
+  }
+
+  // private
+  @ViewChild('coreCard') private coreCard: ElementRef;
+  @ViewChild('cardHeader') private cardHeader: ElementRef;
+
+  /**
+   * Constructor
+   *
+   * @param {BlockUIService} blockUIService
+   */
+  constructor(private blockUIService: BlockUIService) {
+    this.events = new EventEmitter<any>();
   }
 
   // Lifecycle Hooks

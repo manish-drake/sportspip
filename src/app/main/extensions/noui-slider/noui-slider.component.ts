@@ -9,8 +9,6 @@ import * as snippet from './noui-slider.snippetcode';
   encapsulation: ViewEncapsulation.None
 })
 export class NouiSliderComponent implements OnInit {
-
-  constructor() {}
   // public
   public contentHeader: object;
 
@@ -22,7 +20,7 @@ export class NouiSliderComponent implements OnInit {
   public sliderTapValue: number[] = [15, 65];
   public sliderLimitValue: number[] = [10, 20];
 
-  public sliderWithNgModel = 15;
+  public sliderWithNgModel: number = 15;
   // noUiSlider Scale / Pipes
   public sliderScalePipesValue: number[] = [40, 60];
   public configSliderScalePipes: object = {
@@ -132,11 +130,30 @@ export class NouiSliderComponent implements OnInit {
   SelectValueFinal: number;
 
   // disable
-  public disabled = false;
+  public disabled: boolean = false;
 
   // slider input
   public sliderInputValue: number[] = [5, 15];
   public sliderSelectValues: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+
+  /**
+   * Slider Input Change
+   *
+   * @param index
+   * @param value
+   */
+  sliderInputChange(index: number, value: number) {
+    let newRange = [this.sliderInputValue[0], this.sliderInputValue[1]];
+    newRange[index] = newRange[index] + value;
+    this.sliderInputValue = newRange;
+  }
+
+  /**
+   * on Select Change
+   */
+  onSelectChange() {
+    this.sliderInputValue = [this.SelectValueInitial, this.SelectValueFinal];
+  }
 
   // noUiSlider Color / Default Handle / Circle Filled Handle / Square Handle
   public sliderDefault0 = [45, 55];
@@ -150,7 +167,7 @@ export class NouiSliderComponent implements OnInit {
   public sliderDanger0 = [28, 72];
 
   // vertical Single Handle
-  public verticalSingleHandleValue0 = 40;
+  public verticalSingleHandleValue0: number = 40;
 
   public configVerticalSingleHandle: object = {
     orientation: 'vertical',
@@ -161,7 +178,7 @@ export class NouiSliderComponent implements OnInit {
   };
 
   // vertical upper
-  public verticalUpperValue0 = 60;
+  public verticalUpperValue0: number = 60;
 
   public configVerticalUpper: object = {
     orientation: 'vertical',
@@ -208,24 +225,7 @@ export class NouiSliderComponent implements OnInit {
   public _snippetCodeVerticalTooltip = snippet.snippetCodeVerticalTooltip;
   public _snippetCodeVerticalLimit = snippet.snippetCodeVerticalLimit;
 
-  /**
-   * Slider Input Change
-   *
-   * @param index
-   * @param value
-   */
-  sliderInputChange(index: number, value: number) {
-    const newRange = [this.sliderInputValue[0], this.sliderInputValue[1]];
-    newRange[index] = newRange[index] + value;
-    this.sliderInputValue = newRange;
-  }
-
-  /**
-   * on Select Change
-   */
-  onSelectChange() {
-    this.sliderInputValue = [this.SelectValueInitial, this.SelectValueFinal];
-  }
+  constructor() {}
 
   // Lifecycle Hooks
   // -----------------------------------------------------------------------------------------------------

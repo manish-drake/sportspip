@@ -48,4 +48,4 @@ export const coreConfig: CoreConfig = {
     scrollTop   : true,                       // Boolean: true, false (Enable scroll to top button)
     buyNow      : true                        // Boolean: true, false (Set false in real project, For demo purpose only)
   }
-};
+}

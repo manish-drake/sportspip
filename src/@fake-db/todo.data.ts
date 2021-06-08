@@ -182,7 +182,7 @@ export class TodoFakeData {
     },
     {
       id: 13,
-      title: 'Submit quotation for Abid\'s ecommerce website and admin project',
+      title: "Submit quotation for Abid's ecommerce website and admin project",
       dueDate: '2020-12-01',
       description:
         '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',

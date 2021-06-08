@@ -3,21 +3,19 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 
 import { BehaviorSubject, Observable } from 'rxjs';
-import {CalendarFakeData} from '@fake-db/calendar.data';
 
 import { EventRef } from 'app/main/sportspip/schedule/schedule.model';
-
 @Injectable()
 export class ScheduleService implements Resolve<any> {
   // Public
   public events;
-  public calendar;
+  public schedule;
   public currentEvent;
   public tempEvents;
 
   public onEventChange: BehaviorSubject<any>;
   public onCurrentEventChange: BehaviorSubject<any>;
-  public onCalendarChange: BehaviorSubject<any>;
+  public onScheduleChange: BehaviorSubject<any>;
 
   /**
    * Constructor
@@ -27,8 +25,9 @@ export class ScheduleService implements Resolve<any> {
   constructor(private _httpClient: HttpClient) {
     this.onEventChange = new BehaviorSubject({});
     this.onCurrentEventChange = new BehaviorSubject({});
-    this.onCalendarChange = new BehaviorSubject({});
+    this.onScheduleChange = new BehaviorSubject({});
   }
+
   /**
    * Resolver
    *
@@ -36,18 +35,19 @@ export class ScheduleService implements Resolve<any> {
    * @param {RouterStateSnapshot} state
    * @returns {Observable<any> | Promise<any> | any}
    */
-   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
     return new Promise((resolve, reject) => {
-      Promise.all([this.getEvents(), this.getCalendar()]).then(res => {
+      Promise.all([this.getEvents(), this.getSchedule()]).then(res => {
         resolve(res);
       }, reject);
     });
   }
- /**
+
+  /**
    * Get Events
    */
   getEvents(): Promise<any[]> {
-    const url = `api/calendar-events`;
+    const url = `api/schedule-events`;
 
     return new Promise((resolve, reject) => {
       this._httpClient.get(url).subscribe((response: any) => {
@@ -58,82 +58,86 @@ export class ScheduleService implements Resolve<any> {
       }, reject);
     });
   }
-   /**
-   * Get Calendar
+
+  /**
+   * Get Schedule
    */
-    getCalendar(): Promise<any[]> {
-      const url = `api/calendar-filter`;
-  
-      return new Promise((resolve, reject) => {
-        this._httpClient.get(url).subscribe((response: any) => {
-          this.calendar = response;
-          this.onCalendarChange.next(this.calendar);
-          resolve(this.calendar);
-        }, reject);
-      });
-    }
-    /**
+  getSchedule(): Promise<any[]> {
+    const url = `api/schedule-filter`;
+
+    return new Promise((resolve, reject) => {
+      this._httpClient.get(url).subscribe((response: any) => {
+        this.schedule = response;
+        this.onScheduleChange.next(this.schedule);
+        resolve(this.schedule);
+      }, reject);
+    });
+  }
+
+  /**
    * Create New Event
    */
   createNewEvent() {
     this.currentEvent = {};
     this.onCurrentEventChange.next(this.currentEvent);
   }
-/**
-   * Calendar Update
+
+  /**
+   * Schedule Update
    *
-   * @param calendars
+   * @param schedules
    */
- calendarUpdate(calendars) {
-  const calendarsChecked = calendars.filter(calendar => {
-    return calendar.checked === true;
-  });
+  scheduleUpdate(schedules) {
+    const schedulesChecked = schedules.filter(schedule => {
+      return schedule.checked === true;
+    });
 
-  let calendarRef = [];
-  calendarsChecked.map(res => {
-    calendarRef.push(res.filter);
-  });
+    let scheduleRef = [];
+    schedulesChecked.map(res => {
+      scheduleRef.push(res.filter);
+    });
 
-  let filteredCalendar = this.tempEvents.filter(event => calendarRef.includes(event.calendar));
-  this.events = filteredCalendar;
-  this.onEventChange.next(this.events);
-}
- /**
+    let filteredSchedule = this.tempEvents.filter(event => scheduleRef.includes(event.schedule));
+    this.events = filteredSchedule;
+    this.onEventChange.next(this.events);
+  }
+
+  /**
    * Delete Event
    *
    * @param event
    */
   deleteEvent(event) {
     return new Promise((resolve, reject) => {
-      this._httpClient.delete('api/calendar-events/' + event.id).subscribe(response => {
+      this._httpClient.delete('api/schedule-events/' + event.id).subscribe(response => {
         this.getEvents();
         resolve(response);
       }, reject);
     });
   }
 
-   /**
+  /**
    * Add Event
    *
    * @param eventForm
    */
-    addEvent(eventForm) {
-      const newEvent = new EventRef();
-      newEvent.url = eventForm.url;
-      newEvent.title = eventForm.title;
-      newEvent.start = eventForm.start;
-      newEvent.end = eventForm.end;
-      newEvent.allDay = eventForm.allDay;
-      newEvent.calendar = eventForm.selectlabel;
-      newEvent.extendedProps.location = eventForm.location;
-      newEvent.extendedProps.description = eventForm.description;
-      newEvent.extendedProps.addGuest = eventForm.addGuest;
-      this.currentEvent = newEvent;
-      this.onCurrentEventChange.next(this.currentEvent);
-      this.postNewEvent();
-    }
+  addEvent(eventForm) {
+    const newEvent = new EventRef();
+    newEvent.url = eventForm.url;
+    newEvent.title = eventForm.title;
+    newEvent.start = eventForm.start;
+    newEvent.end = eventForm.end;
+    newEvent.allDay = eventForm.allDay;
+    newEvent.schedule = eventForm.selectlabel;
+    newEvent.extendedProps.location = eventForm.location;
+    newEvent.extendedProps.description = eventForm.description;
+    newEvent.extendedProps.addGuest = eventForm.addGuest;
+    this.currentEvent = newEvent;
+    this.onCurrentEventChange.next(this.currentEvent);
+    this.postNewEvent();
+  }
 
-     /**
+  /**
    * Update Event
    *
    * @param eventRef
@@ -146,40 +150,37 @@ export class ScheduleService implements Resolve<any> {
     newEvent.title = eventRef.event.title;
     newEvent.start = eventRef.event.start;
     newEvent.end = eventRef.event.end;
-    newEvent.calendar = eventRef.event.extendedProps.calendar;
+    newEvent.schedule = eventRef.event.extendedProps.schedule;
     newEvent.extendedProps.location = eventRef.event.extendedProps.location;
     newEvent.extendedProps.description = eventRef.event.extendedProps.description;
     newEvent.extendedProps.addGuest = eventRef.event.extendedProps.addGuest;
     this.currentEvent = newEvent;
     this.onCurrentEventChange.next(this.currentEvent);
   }
- /**
+
+  /**
    * Post New Event
    */
   postNewEvent() {
     return new Promise((resolve, reject) => {
-      this._httpClient.post('api/calendar-events/', this.currentEvent).subscribe(response => {
+      this._httpClient.post('api/schedule-events/', this.currentEvent).subscribe(response => {
         this.getEvents();
         resolve(response);
       }, reject);
     });
   }
 
-   /**
+  /**
    * Post Updated Event
    *
    * @param event
    */
-    postUpdatedEvent(event) {
-      return new Promise((resolve, reject) => {
-        this._httpClient.post('api/calendar-events/' + event.id, { ...event }).subscribe(response => {
-          this.getEvents();
-          resolve(response);
-        }, reject);
-      });
-    }
-
-  
+  postUpdatedEvent(event) {
+    return new Promise((resolve, reject) => {
+      this._httpClient.post('api/schedule-events/' + event.id, { ...event }).subscribe(response => {
+        this.getEvents();
+        resolve(response);
+      }, reject);
+    });
+  }
 }
-
-

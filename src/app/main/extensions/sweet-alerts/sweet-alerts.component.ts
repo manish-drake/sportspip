@@ -42,7 +42,7 @@ export class SweetAlertsComponent implements OnInit {
     Swal.showLoading();
 
     this.timerInterval = setInterval(function () {
-      const timeLeft: HTMLElement = event.modalElement.querySelector('strong');
+      let timeLeft: HTMLElement = event.modalElement.querySelector('strong');
       timeLeft.textContent = <any>Swal.getTimerLeft();
     }, 100);
   }
@@ -123,7 +123,7 @@ export class SweetAlertsComponent implements OnInit {
     }).then(function (result) {
       if (result.value) {
         Swal.fire({
-          title: '' + result.value.login + '\'s avatar',
+          title: '' + result.value.login + "'s avatar",
           imageUrl: result.value.avatar_url,
           customClass: { confirmButton: 'btn btn-primary' }
         });
@@ -137,7 +137,7 @@ export class SweetAlertsComponent implements OnInit {
   ConfirmTextOpen() {
     Swal.fire({
       title: 'Are you sure?',
-      text: 'You won\'t be able to revert this!',
+      text: "You won't be able to revert this!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#7367F0',
@@ -167,7 +167,7 @@ export class SweetAlertsComponent implements OnInit {
   ConfirmColorOpen() {
     Swal.fire({
       title: 'Are you sure?',
-      text: 'You won\'t be able to revert this!',
+      text: "You won't be able to revert this!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, delete it!',

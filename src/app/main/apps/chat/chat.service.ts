@@ -150,7 +150,9 @@ export class ChatService {
 
       this.onSelectedChatChange.next(this.selectedChat);
       this.getSelectedChatUser(id);
-    } else {
+    }
+    // Else Create New Chat
+    else {
       const newChat = {
         userId: id,
         unseenMsgs: 0

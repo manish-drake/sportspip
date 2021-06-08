@@ -11,13 +11,9 @@ import { EmailService } from 'app/main/apps/email/email.service';
   encapsulation: ViewEncapsulation.None
 })
 export class EmailComposeComponent implements OnInit {
-
-  /**
-   *
-   * @param {EmailService} _emailService
-   */
-  constructor(private _emailService: EmailService) {
-    this._unsubscribeAll = new Subject();
+  // Decorator
+  @HostListener('keydown.escape') fn() {
+    this.closeCompose();
   }
   @ViewChild('selectRef') private _selectRef: any;
 
@@ -49,13 +45,17 @@ export class EmailComposeComponent implements OnInit {
   public isOpenCC = false;
   public isOpenBCC = false;
 
-  public isComposeOpen = false;
+  public isComposeOpen: boolean = false;
 
   // Private
   private _unsubscribeAll: Subject<any>;
-  // Decorator
-  @HostListener('keydown.escape') fn() {
-    this.closeCompose();
+
+  /**
+   *
+   * @param {EmailService} _emailService
+   */
+  constructor(private _emailService: EmailService) {
+    this._unsubscribeAll = new Subject();
   }
 
   // Public Methods

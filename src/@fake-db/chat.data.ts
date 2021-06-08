@@ -146,7 +146,7 @@ export class ChatFakeData {
       unseenMsgs: 0,
       chat: [
         {
-          message: 'How can we help? We\'re here for you!',
+          message: "How can we help? We're here for you!",
           time: 'Mon Dec 10 2018 07:45:00 GMT+0000 (GMT)',
           senderId: 11
         },
@@ -176,7 +176,7 @@ export class ChatFakeData {
           senderId: 1
         },
         {
-          message: 'It\'s perfect for my next project.',
+          message: "It's perfect for my next project.",
           time: 'Mon Dec 10 2018 07:46:33 GMT+0000 (GMT)',
           senderId: 1
         },

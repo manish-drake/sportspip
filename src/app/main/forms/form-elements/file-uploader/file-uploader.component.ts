@@ -13,8 +13,8 @@ const URL = 'https://your-url.com';
 export class FileUploaderComponent implements OnInit {
   // public
   public contentHeader: object;
-  public hasAnotherDropZoneOver = false;
-  public hasBaseDropZoneOver = false;
+  public hasAnotherDropZoneOver: boolean = false;
+  public hasBaseDropZoneOver: boolean = false;
   public uploader: FileUploader = new FileUploader({
     url: URL,
     isHTML5: true

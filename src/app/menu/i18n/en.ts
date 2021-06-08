@@ -216,7 +216,7 @@ export const locale = {
         DISABLED: 'Disabled Menu',
         DOCUMENTATION: 'Documentation',
         SUPPORT: 'Raise Support'
-      },
+      }
     }
   }
 };

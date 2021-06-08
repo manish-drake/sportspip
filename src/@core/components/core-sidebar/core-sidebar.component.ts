@@ -31,6 +31,63 @@ import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.s
   encapsulation: ViewEncapsulation.None
 })
 export class CoreSidebarComponent implements OnInit, OnDestroy {
+  // Sidebar name (Component input)
+  @Input()
+  name: string;
+
+  // Class name for the overlay (Component input)
+  @Input()
+  overlayClass: string;
+
+  // Sidebar Opened
+  isOpened: boolean;
+
+  // Collapsible sidebar (Component input)
+  @Input()
+  collapsibleSidebar: string;
+
+  // iscollapsibleSidebar
+  iscollapsibleSidebar: boolean;
+
+  // Collapsible Sidebar expanded
+  @HostBinding('class.expanded')
+  expanded: boolean;
+
+  // Collapsed changed event
+  @Output()
+  collapsedChangedEvent: EventEmitter<boolean>;
+
+  // Opened changed event
+  @Output()
+  openedChangedEvent: EventEmitter<boolean>;
+
+  // Set overlay visibility
+  @Input()
+  overlayVisibility: boolean;
+
+  // Hide sidebar on esc key press
+  @Input()
+  hideOnEsc: boolean;
+
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    if (this.hideOnEsc) {
+      this.close();
+    }
+  }
+
+  // Set menu class for current menu type
+  menuClass: string;
+
+  rootElement: any;
+
+  // Private
+  private _coreConfig: any;
+  private _collapsed: boolean;
+  private _wasCollapsible: boolean;
+  private _wasCollapsed: boolean;
+  private _animationPlayer: AnimationPlayer;
+  private _overlay: HTMLElement | null = null;
+  private _unsubscribeAll: Subject<any>;
 
   /**
    * Constructor
@@ -100,7 +157,9 @@ export class CoreSidebarComponent implements OnInit, OnDestroy {
       // Add menu-collapsed in body and remove menu-expanded
       this.rootElement.classList.add('menu-collapsed');
       this.rootElement.classList.remove('menu-expanded');
-    } else {
+    }
+    // If Expanded
+    else {
       // Expanded the sidebar
       this.expand();
 
@@ -115,63 +174,6 @@ export class CoreSidebarComponent implements OnInit, OnDestroy {
 
   get collapsed(): boolean {
     return this._collapsed;
-  }
-  // Sidebar name (Component input)
-  @Input()
-  name: string;
-
-  // Class name for the overlay (Component input)
-  @Input()
-  overlayClass: string;
-
-  // Sidebar Opened
-  isOpened: boolean;
-
-  // Collapsible sidebar (Component input)
-  @Input()
-  collapsibleSidebar: string;
-
-  // iscollapsibleSidebar
-  iscollapsibleSidebar: boolean;
-
-  // Collapsible Sidebar expanded
-  @HostBinding('class.expanded')
-  expanded: boolean;
-
-  // Collapsed changed event
-  @Output()
-  collapsedChangedEvent: EventEmitter<boolean>;
-
-  // Opened changed event
-  @Output()
-  openedChangedEvent: EventEmitter<boolean>;
-
-  // Set overlay visibility
-  @Input()
-  overlayVisibility: boolean;
-
-  // Hide sidebar on esc key press
-  @Input()
-  hideOnEsc: boolean;
-
-  // Set menu class for current menu type
-  menuClass: string;
-
-  rootElement: any;
-
-  // Private
-  private _coreConfig: any;
-  private _collapsed: boolean;
-  private _wasCollapsible: boolean;
-  private _wasCollapsed: boolean;
-  private _animationPlayer: AnimationPlayer;
-  private _overlay: HTMLElement | null = null;
-  private _unsubscribeAll: Subject<any>;
-
-  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
-    if (this.hideOnEsc) {
-      this.close();
-    }
   }
 
   // Lifecycle Hooks
@@ -242,7 +244,7 @@ export class CoreSidebarComponent implements OnInit, OnDestroy {
     this._coreMediaService.onMediaUpdate.pipe(takeUntil(this._unsubscribeAll)).subscribe(() => {
       // Get the collapsible status
       const isCollapsible = this._mediaObserver.isActive(this.collapsibleSidebar);
-      // ! On screen resize set the config collapsed state if we have else this.collapsed
+      //! On screen resize set the config collapsed state if we have else this.collapsed
       this._wasCollapsed = this._coreConfig.layout.menu.collapsed || this.collapsed;
 
       // If sidebar is not collapsible, switch to overlay menu (On page load without resize the window)
@@ -288,7 +290,9 @@ export class CoreSidebarComponent implements OnInit, OnDestroy {
 
         // Hide the overlay if any exists
         this._hideOverlay();
-      } else {
+      }
+      // Else use overlay sidebar
+      else {
         // Set the collapsibleSidebar status
         this.iscollapsibleSidebar = false;
 
@@ -414,7 +418,9 @@ export class CoreSidebarComponent implements OnInit, OnDestroy {
       // Open overlay menu
       this.rootElement.classList.add('menu-open');
       this.rootElement.classList.remove('menu-hide');
-    } else {
+    }
+    // For default sidebar add show class to make it visible
+    else {
       this._renderer.addClass(this._elementRef.nativeElement, 'show');
       // Add .modal-open from body to remove browser scroll
       if (this.overlayClass === 'modal-backdrop') {
@@ -437,7 +443,9 @@ export class CoreSidebarComponent implements OnInit, OnDestroy {
       // Hide overlay menu
       this.rootElement.classList.remove('menu-open');
       this.rootElement.classList.add('menu-hide');
-    } else {
+    }
+    // For default sidebar remove show class to make it visible
+    else {
       this._renderer.removeClass(this._elementRef.nativeElement, 'show');
 
       // Remove .modal-open from body

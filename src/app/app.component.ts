@@ -131,7 +131,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.coreConfig = config;
 
       // Layout
-      // --------
+      //--------
 
       // Remove default classes first
       this._elementRef.nativeElement.classList.remove(
@@ -148,7 +148,7 @@ export class AppComponent implements OnInit, OnDestroy {
       }
 
       // Navbar
-      // --------
+      //--------
 
       // Remove default classes first
       this._elementRef.nativeElement.classList.remove(
@@ -170,7 +170,7 @@ export class AppComponent implements OnInit, OnDestroy {
       }
 
       // Footer
-      // --------
+      //--------
 
       // Remove default classes first
       this._elementRef.nativeElement.classList.remove('footer-fixed', 'footer-static', 'footer-hidden');

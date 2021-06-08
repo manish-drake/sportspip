@@ -123,7 +123,7 @@ export class CoreMenuHorizontalCollapsibleComponent implements OnInit, OnDestroy
    */
   setSubMenuProp(): void {
     setTimeout(() => {
-      const nativeElement = this.el.nativeElement,
+      let nativeElement = this.el.nativeElement,
         nativeElementChildren = this.el.nativeElement.children[1];
       // If element has sub menu
       if (nativeElement.classList.contains('dropdown-submenu')) {
@@ -133,9 +133,9 @@ export class CoreMenuHorizontalCollapsibleComponent implements OnInit, OnDestroy
           dropdownHeight = nativeElementChildren.scrollHeight,
           dropdownWidth = nativeElementChildren.scrollWidth;
 
-        // Set sub-menu height
+        //Set sub-menu height
         if (innerHeight - dropdownTop - dropdownHeight - 28 < 1) {
-          const maxHeight = innerHeight - dropdownTop - 25;
+          let maxHeight = innerHeight - dropdownTop - 25;
           nativeElementChildren.setAttribute(
             'style',
             'overflow-y: auto; overflow-x: hidden; max-height : ' + maxHeight + 'px'

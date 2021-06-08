@@ -4,15 +4,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { EventsComponent } from './events.component';
 
 
-const routes: Routes = [
+const routes:Routes = [
 
-  { path: 'event', component: EventsComponent}
-];
+  { path:'event', component:EventsComponent}
+]
 
 @NgModule({
   declarations: [EventsComponent],
   imports: [
-    CommonModule, RouterModule.forChild(routes)
+    CommonModule,RouterModule.forChild(routes)
   ]
 })
 export class EventModule { }

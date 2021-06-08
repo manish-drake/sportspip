@@ -98,7 +98,7 @@ export class CoreConfigService {
       this.localConfig = JSON.parse(localStorage.getItem('config'));
 
       // Set localDefault to localConfig if we have else defaultConfig
-      const localDefault = this.localConfig ? this.localConfig : this._defaultConfig;
+      let localDefault = this.localConfig ? this.localConfig : this._defaultConfig;
 
       // If localDefault is different form the provided config (page config)
       if (!_.isEqual(this._configSubject.getValue().layout, localDefault.layout)) {

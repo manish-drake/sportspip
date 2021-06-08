@@ -9,10 +9,10 @@ import { ToastrService } from 'ngx-toastr';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-  // public
+  //public
   public currentUser: Observable<User>;
 
-  // private
+  //private
   private currentUserSubject: BehaviorSubject<User>;
 
   /**

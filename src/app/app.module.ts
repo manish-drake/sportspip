@@ -31,8 +31,16 @@ import { AnimatedCustomContextMenuComponent } from './main/extensions/context-me
 import { BasicCustomContextMenuComponent } from './main/extensions/context-menu/custom-context-menu/basic-custom-context-menu/basic-custom-context-menu.component';
 import { SubMenuCustomContextMenuComponent } from './main/extensions/context-menu/custom-context-menu/sub-menu-custom-context-menu/sub-menu-custom-context-menu.component';
 
-const appRoutes: Routes = [
 
+const appRoutes: Routes = [
+  {
+    path: 'home',
+    loadChildren: () => import('./main/home/home.module').then(m => m.HomeModule)
+  }, 
+  {
+    path: 'schedule',
+    loadChildren: () => import('./main/sportspip/schedule/schedule.module').then(m => m.ScheduleModule)
+  }, 
   {
     path: 'sportspip',
     loadChildren: () => import('./main/sportspip/sportspip.module').then(m => m.SportspipModule)
@@ -82,12 +90,12 @@ const appRoutes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/dashboard/ecommerce',
+    redirectTo: '/sportspip/tagging',
     pathMatch: 'full'
   },
   {
     path: '**',
-    redirectTo: '/pages/miscellaneous/error' // Error 404 - Page not found
+    redirectTo: '/pages/miscellaneous/error' //Error 404 - Page not found
   }
 ];
 

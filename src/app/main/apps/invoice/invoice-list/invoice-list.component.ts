@@ -30,7 +30,7 @@ export class InvoiceListComponent implements OnInit {
     ];
 
   public selectedStatus = [];
-  public searchValue = '';
+  public searchValue = ""
 
   // decorator
   @ViewChild(DatatableComponent) table: DatatableComponent;
@@ -97,8 +97,8 @@ export class InvoiceListComponent implements OnInit {
    */
   filterRows(statusFilter): any[] {
     // Reset search on select change
-    this.searchValue = '';
-
+    this.searchValue = ''
+    
     statusFilter = statusFilter.toLowerCase();
 
     return this.tempData.filter(row => {
