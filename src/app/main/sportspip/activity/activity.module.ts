@@ -2,23 +2,21 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { TaggingComponent } from 'app/main/sportspip/tagging/tagging.component';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
-import { MediaPlayerModule } from '../../extensions/media-player/media-player.module';
-
+import {MediaPlayerModule} from '../../extensions/media-player/media-player.module';
+import {ActivityComponent} from 'app/main/sportspip/activity/activity.component';
 
 
 const routes: Routes = [
   
-  { path: 'tagging',component: TaggingComponent},
+  { path: 'activity',component: ActivityComponent},
 ];
 
 @NgModule({
-  declarations: [TaggingComponent],
+  declarations: [],
   imports: [
     CommonModule, RouterModule.forChild(routes), NgbModule, CoreCommonModule, ContentHeaderModule,MediaPlayerModule
-  ],
-  
+  ]
 })
-export class TaggingModule { }
+export class ActivityModule { }

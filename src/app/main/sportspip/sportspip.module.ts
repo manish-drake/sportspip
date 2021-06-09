@@ -9,7 +9,7 @@ import { ReviewModule } from './review/review.module';
 import { EventModule } from './events/event.module';
 import { AddEventModule } from './add-events/add-event.module';
 import { MediaPlayerModule} from '../extensions/media-player/media-player.module';
-import { Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -17,14 +17,16 @@ import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { TeamsModule } from './teams/teams.module';
 import {TeamsComponent} from './teams/teams.component';
-import { ScheduleModule } from './schedule/schedule.module'
+import { CoachesComponent } from './coaches/coaches.component';
+import { ActivityComponent } from './activity/activity.component';
+import { ActivityModule } from './activity/activity.module';
 
 
 
 FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]);
 
 @NgModule({
-  declarations: [TeamsComponent],
+  declarations: [CoachesComponent, ActivityComponent, ],
   imports: [
     CommonModule,
     CoreCommonModule,
@@ -36,10 +38,15 @@ FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, i
     EventModule,
     AddEventModule,
     MediaPlayerModule,
-    ScheduleModule
+    TeamsModule,
+    ActivityModule,
     
    
   ],
   exports:[]
 })
 export class SportspipModule { }
+function routes(routes: any): any[] | import("@angular/core").Type<any> | import("@angular/core").ModuleWithProviders<{}> {
+  throw new Error('Function not implemented.');
+}
+

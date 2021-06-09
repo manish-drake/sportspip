@@ -37,10 +37,7 @@ const appRoutes: Routes = [
     path: 'home',
     loadChildren: () => import('./main/home/home.module').then(m => m.HomeModule)
   }, 
-  {
-    path: 'schedule',
-    loadChildren: () => import('./main/sportspip/schedule/schedule.module').then(m => m.ScheduleModule)
-  }, 
+
   {
     path: 'sportspip',
     loadChildren: () => import('./main/sportspip/sportspip.module').then(m => m.SportspipModule)
