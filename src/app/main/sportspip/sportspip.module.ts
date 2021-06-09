@@ -20,13 +20,21 @@ import {TeamsComponent} from './teams/teams.component';
 import { CoachesComponent } from './coaches/coaches.component';
 import { ActivityComponent } from './activity/activity.component';
 import { ActivityModule } from './activity/activity.module';
+import { MediaComponent } from './media/media.component';
+import { MediaModule } from './media/media.module';
+import { AnalysisComponent } from './analysis/analysis.component';
+import { AnalysisModule } from './analysis/analysis.module';
+import { SetupComponent } from './setup/setup.component';
+import { SetupModule } from './setup/setup.module';
+import { SupportComponent } from './support/support.component';
+import { SupportModule } from './support/support.module';
 
 
 
 FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]);
 
 @NgModule({
-  declarations: [CoachesComponent, ActivityComponent, ],
+  declarations: [CoachesComponent, ActivityComponent, MediaComponent, AnalysisComponent, SetupComponent, SupportComponent, ],
   imports: [
     CommonModule,
     CoreCommonModule,
@@ -40,6 +48,10 @@ FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, i
     MediaPlayerModule,
     TeamsModule,
     ActivityModule,
+    MediaModule,
+    AnalysisModule,
+    SetupModule,
+    SupportModule
     
    
   ],
