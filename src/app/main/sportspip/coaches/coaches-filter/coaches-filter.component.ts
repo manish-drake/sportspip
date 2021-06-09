@@ -1,10 +1,15 @@
+<<<<<<< HEAD
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
 import { CoachesService } from '../coaches.service';
+=======
+import { Component, OnInit } from '@angular/core';
+>>>>>>> d8a3d7043a986104be2afc65f022a98b20c96c71
 
 @Component({
   selector: 'app-coaches-filter',
   templateUrl: './coaches-filter.component.html',
+<<<<<<< HEAD
   styleUrls: ['./coaches-filter.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
@@ -68,4 +73,15 @@ export class CoachesFilterComponent implements OnInit {
       this.coachesRef = res;
     });
   }
+=======
+  styleUrls: ['./coaches-filter.component.scss']
+})
+export class CoachesFilterComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+>>>>>>> d8a3d7043a986104be2afc65f022a98b20c96c71
 }

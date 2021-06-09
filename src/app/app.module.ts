@@ -34,6 +34,14 @@ import { SubMenuCustomContextMenuComponent } from './main/extensions/context-men
 
 const appRoutes: Routes = [
   {
+<<<<<<< HEAD
+=======
+    path: 'home',
+    loadChildren: () => import('./main/home/home.module').then(m => m.HomeModule)
+  }, 
+
+  {
+>>>>>>> d8a3d7043a986104be2afc65f022a98b20c96c71
     path: 'sportspip',
     loadChildren: () => import('./main/sportspip/sportspip.module').then(m => m.SportspipModule)
   },

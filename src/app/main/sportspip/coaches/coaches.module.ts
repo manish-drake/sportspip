@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+<<<<<<< HEAD
 import { RouterModule, Routes } from '@angular/router';
 import { CoachesComponent } from 'app/main/sportspip/coaches/coaches.component';
 import { CoachesFilterComponent } from './coaches-filter/coaches-filter.component';
@@ -29,5 +30,16 @@ const routes:Routes = [
 
   ],
   providers: [CoachesService]
+=======
+import { CoachesFilterComponent } from './coaches-filter/coaches-filter.component';
+
+
+
+@NgModule({
+  declarations: [CoachesFilterComponent],
+  imports: [
+    CommonModule
+  ]
+>>>>>>> d8a3d7043a986104be2afc65f022a98b20c96c71
 })
 export class CoachesModule { }

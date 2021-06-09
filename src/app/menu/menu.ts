@@ -107,7 +107,7 @@ export const menu: CoreMenu[] = [
             translate: 'MENU.SPORTSPIP.ACTIVITY',
             type: 'item',
             icon: 'activity',
-            url: '#'
+            url: 'sportspip/activity'
           },
           {
             id: 'Setup',
