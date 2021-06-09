@@ -22,6 +22,14 @@ import { CoachesModule } from './coaches/coaches.module';
 import { TeamsModule } from './teams/teams.module';
 import { PlayersModule } from './players/players.module';
 import { ActivityModule } from './activity/activity.module';
+import { MediaComponent } from './media/media.component';
+import { MediaModule } from './media/media.module';
+import { AnalysisComponent } from './analysis/analysis.component';
+import { AnalysisModule } from './analysis/analysis.module';
+import { SetupComponent } from './setup/setup.component';
+import { SetupModule } from './setup/setup.module';
+import { SupportComponent } from './support/support.component';
+import { SupportModule } from './support/support.module';
 
 
 
@@ -47,6 +55,10 @@ FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, i
     TeamsModule,
     PlayersModule,
     ActivityModule,
+    MediaModule,
+    AnalysisModule,
+    SetupModule,
+    SupportModule
     
    
   ],

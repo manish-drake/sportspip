@@ -8,5 +8,6 @@ export class CoachesFakeData {
       { id: 5, filter: 'Hockey', color: 'info', checked: true }
       
     ];
+    
   }
   

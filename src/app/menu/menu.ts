@@ -91,7 +91,7 @@ export const menu: CoreMenu[] = [
             translate: 'MENU.SPORTSPIP.MEDIA',
             type: 'item',
             icon: 'film',
-            url: '#'
+            url: 'sportspip/media'
           },
           {
             id: 'Analysis',
@@ -99,7 +99,7 @@ export const menu: CoreMenu[] = [
             translate: 'MENU.SPORTSPIP.ANALYSIS',
             type: 'item',
             icon: 'pie-chart',
-            url: '#'
+            url: 'sportspip/analysis'
           },
           {
             id: 'Activity',
@@ -115,7 +115,7 @@ export const menu: CoreMenu[] = [
             translate: 'MENU.SPORTSPIP.SETUP',
             type: 'item',
             icon: 'tool',
-            url: '#'
+            url: 'sportspip/setup'
           },
           {
             id: 'Support',
@@ -123,7 +123,7 @@ export const menu: CoreMenu[] = [
             translate: 'MENU.SPORTSPIP.SUPPORT',
             type: 'item',
             icon: 'info',
-            url: '#'
+            url: 'sportspip/support'
           },
       ]
   },  
