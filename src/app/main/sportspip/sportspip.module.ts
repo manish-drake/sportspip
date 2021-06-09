@@ -9,22 +9,25 @@ import { ReviewModule } from './review/review.module';
 import { EventModule } from './events/event.module';
 import { AddEventModule } from './add-events/add-event.module';
 import { MediaPlayerModule} from '../extensions/media-player/media-player.module';
-import { Routes } from '@angular/router';
+
 import { FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
+
+//import { ScheduleModule } from './schedule/schedule.module'
+import { CoachesModule } from './coaches/coaches.module';
 import { TeamsModule } from './teams/teams.module';
-import {TeamsComponent} from './teams/teams.component';
-import { ScheduleModule } from './schedule/schedule.module'
+import { PlayersModule } from './players/players.module';
+
 
 
 
 FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]);
 
 @NgModule({
-  declarations: [TeamsComponent],
+  declarations: [],
   imports: [
     CommonModule,
     CoreCommonModule,
@@ -33,10 +36,14 @@ FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, i
     TaggingModule,
     ReviewModule,
     EventModule,
-    EventModule,
+    
     AddEventModule,
+   
+    //ScheduleModule,
+    CoachesModule,
     MediaPlayerModule,
-    ScheduleModule
+    TeamsModule,
+    PlayersModule
     
    
   ],

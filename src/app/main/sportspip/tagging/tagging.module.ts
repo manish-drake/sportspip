@@ -17,7 +17,9 @@ const routes: Routes = [
 @NgModule({
   declarations: [TaggingComponent],
   imports: [
-    CommonModule, RouterModule.forChild(routes), NgbModule, CoreCommonModule, ContentHeaderModule,MediaPlayerModule
+    CommonModule, RouterModule.forChild(routes),
+     NgbModule, CoreCommonModule, 
+     ContentHeaderModule,MediaPlayerModule
   ],
   
 })

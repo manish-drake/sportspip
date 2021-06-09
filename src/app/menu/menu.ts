@@ -58,7 +58,7 @@ export const menu: CoreMenu[] = [
             translate: 'MENU.SPORTSPIP.TEAMS',
             type: 'item',
             icon: 'dribbble',
-            url: '#'
+            url: 'sportspip/teams'
           },
           {
             id: 'Coaches',
@@ -66,15 +66,16 @@ export const menu: CoreMenu[] = [
             translate: 'MENU.SPORTSPIP.COACHES',
             type: 'item',
             icon: 'users',
-            url: '#'
+            url: 'sportspip/coaches'
           },
+          
           {
             id: 'Players',
             title: 'Players',
             translate: 'MENU.SPORTSPIP.PLAYERS',
             type: 'item',
             icon: 'users',
-            url: '#'
+            url: 'sportspip/players'
           },
           {
             id: 'Schedule',
