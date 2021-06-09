@@ -6,6 +6,7 @@ export class CoachesFakeData {
       { id: 3, filter: 'Tennis', color: 'danger', checked: true },
       { id: 4, filter: 'Golf', color: 'warning', checked: true },
       { id: 5, filter: 'Hockey', color: 'info', checked: true }
+      
     ];
   }
   

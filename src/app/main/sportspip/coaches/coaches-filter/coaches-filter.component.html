@@ -1,47 +1,29 @@
-<p>coaches-filter works!</p>
-<<<<<<< HEAD
 <!-- Main Sidebar -->
 <div class="sidebar-wrapper">
-    <!-- <div class="card-body d-flex justify-content-center">
-      <button class="btn btn-primary btn-toggle-sidebar btn-block" (click)="AddEvent()" rippleEffect>
-        <span class="align-middle">Add Event</span>
-      </button>
-    </div> -->
-    <div class="card-body pb-0">
-      <h5 class="section-label mb-1">
-        <span class="align-middle">Filter</span>
-      </h5>
-      <div class="custom-control custom-checkbox mb-1">
-        <input
-          type="checkbox"
-          class="custom-control-input select-all"
-          id="select-all"
-          [checked]="checkAll"
-          (change)="toggleCheckboxAll($event)"
-        />
-        <label class="custom-control-label" for="select-all">View All</label>
-      </div>
-      <div class="calendar-events-filter">
-        <div
-          class="custom-control  custom-checkbox mb-1 custom-control-{{ calendar.color }}"
-          *ngFor="let coaches of coachesRef"
-        >
-          <input
-            type="checkbox"
-            (change)="checkboxChange($event, coaches.id)"
-            class="custom-control-input input-filter"
-            id="coaches-{{ coaches.id }}"
-            [checked]="coaches.checked"
-          />
-          <label class="custom-control-label" for="coaches-{{ coaches.id }}">{{ coaches.filter }}</label>
-        </div>
+
+  <div class="card-body pb-0">
+    <h5 class="section-label mb-1">
+      <span class="align-middle">Filter</span>
+    </h5>
+    <div class="custom-control custom-checkbox mb-1">
+      <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+        (change)="toggleCheckboxAll($event)" />
+      <label class="custom-control-label" for="select-all">View All</label>
+    </div>
+    <div class="coaches-filter">
+     
+      <div class="custom-control  custom-checkbox mb-1 custom-control-{{ coaches.color }}"
+        *ngFor="let coaches of coachesRef">
+        <input type="checkbox" (change)="checkboxChange($event, coaches.id)" class="custom-control-input input-filter"
+          id="coaches-{{ coaches.id }}" [checked]="coaches.checked" />
+        <label class="custom-control-label" for="coaches-{{ coaches.id }}">{{ coaches.filter }}</label>
       </div>
     </div>
   </div>
-  <div class="mt-auto">
-    <img src="assets/images/pages/calendar-illustration.png" alt="Calendar illustration" class="img-fluid" />
-  </div>
+</div>
+
+<div class="mt-auto">
+  <img src="assets/images/pages/calendar-illustration.png" alt="Calendar illustration" class="img-fluid" />
+</div>
 <!-- </div>
 </div> -->
-=======
->>>>>>> d8a3d7043a986104be2afc65f022a98b20c96c71
