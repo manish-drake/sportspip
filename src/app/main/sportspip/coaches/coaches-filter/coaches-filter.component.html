@@ -1,6 +1,6 @@
 <!-- Main Sidebar -->
 <div class="sidebar-wrapper">
-
+  
   <div class="card-body pb-0">
     <h5 class="section-label mb-1">
       <span class="align-middle">Filter</span>
@@ -11,17 +11,25 @@
       <label class="custom-control-label" for="select-all">View All</label>
     </div>
     <div class="coaches-filter">
-     
-      <div class="custom-control  custom-checkbox mb-1 custom-control-{{ coaches.color }}"
-        *ngFor="let coaches of coachesRef">
-        <input type="checkbox" (change)="checkboxChange($event, coaches.id)" class="custom-control-input input-filter"
-          id="coaches-{{ coaches.id }}" [checked]="coaches.checked" />
-        <label class="custom-control-label" for="coaches-{{ coaches.id }}">{{ coaches.filter }}</label>
+      <!-- <div class="btn-group">
+        <div ngbDropdown>
+          <button ngbDropdownToggle class="btn btn-flat-dark" type="button" id="dropdownMenuButton700" rippleEffect>
+            SPORTS
+          </button>
+          <div ngbDropdownMenu aria-labelledby="dropdownMenuButton700"> -->
+            <div class="custom-control  custom-checkbox mb-1 custom-control-{{ coaches.color }}"
+              *ngFor="let coaches of coachesRef">
+              <input type="checkbox" (change)="checkboxChange($event, coaches.id)"
+                class="custom-control-input input-filter" id="coaches-{{ coaches.id }}" [checked]="coaches.checked" />
+              <label class="custom-control-label" for="coaches-{{ coaches.id }}">{{ coaches.filter }}</label>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
 
+    <!-- </div>
+  </div>
+</div> -->
 <div class="mt-auto">
   <img src="assets/images/pages/calendar-illustration.png" alt="Calendar illustration" class="img-fluid" />
 </div>

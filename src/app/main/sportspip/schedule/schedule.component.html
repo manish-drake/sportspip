@@ -1,0 +1,43 @@
+
+
+<div class="content-wrapper">
+    <div class="content-body">
+      <div class="app-schedule overflow-hidden border">
+        <div class="row no-gutters">
+          <!-- calendar main sidebar -->
+          <core-sidebar
+            class="col app-schedule-sidebar flex-grow-0 overflow-hidden d-flex flex-column"
+            name="schedule-filter"
+            overlayClass="body-content-overlay"
+            collapsibleSidebar="bs-gt-lg"
+          >
+          <app-schedule-filter></app-schedule-filter>
+          </core-sidebar>
+          
+          <!--/ calendar main sidebar -->
+  
+          <!-- calendar -->
+          <div class="col position-relative">
+            <div class="card shadow-none border-0 mb-0 rounded-0">
+              <div class="card-body pb-0">
+                <full-calendar [options]="calendarOptions"></full-calendar>
+              </div>
+            </div>
+          </div> 
+           <!-- calendar -->
+        </div>
+      </div>
+  
+      <!-- calendar event sidebar -->
+      <core-sidebar
+        class="modal modal-slide-in fade event-sidebar"
+        name="schedule-event-sidebar"
+        overlayClass="modal-backdrop"
+        hideOnEsc="true"
+      >
+      <app-schedule-event></app-schedule-event>
+      </core-sidebar>
+      <!--/ calendar event sidebar -->
+    </div>
+  </div>
+  

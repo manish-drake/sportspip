@@ -22,6 +22,7 @@ import { TodoFakeData } from '@fake-db/todo.data';
 import { UsersFakeData } from '@fake-db/users.data';
 
 import {CoachesFakeData} from '@fake-db/coaches.data';
+import { ScheduleFakeData } from './schedule.data';
 
 export class FakeDbService implements InMemoryDbService {
   createDb(): any {
@@ -87,6 +88,10 @@ export class FakeDbService implements InMemoryDbService {
       // Calendar
       'calendar-events': CalendarFakeData.events,
       'calendar-filter': CalendarFakeData.calendar,
+
+      //Schedule
+      'schedule-events':ScheduleFakeData.events,
+      'schedule-filter':ScheduleFakeData.schedule,
 
       //coaches
       'coaches-filter':CoachesFakeData.coaches,

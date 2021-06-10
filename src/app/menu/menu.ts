@@ -83,7 +83,7 @@ export const menu: CoreMenu[] = [
             translate: 'MENU.SPORTSPIP.SCHEDULE',
             type: 'item',
             icon: 'calendar',
-            url: 'apps/calendar'
+            url: 'sportspip/schedule'
           },
           {
             id: 'Media',
