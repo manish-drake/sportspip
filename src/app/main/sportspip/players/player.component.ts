@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { IPlayer } from '../interfaces';
+import { PlayerService } from './player.service';
 
 @Component({
   selector: 'app-player',
@@ -7,9 +9,43 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PlayerComponent implements OnInit {
 
-  constructor() { }
+  serverUri:string = "http://115.246.85.186:1337";
+
+  public contentHeader: object;
+
+  constructor(private _playerService : PlayerService) { }
+
+  player:IPlayer[];
 
   ngOnInit(): void {
+
+    this._playerService.getPlayer().subscribe(data=> this.player = data)
+
+     // content header
+     this.contentHeader = {
+      headerTitle: 'Players',
+      actionButton: true,
+      breadcrumb: {
+        type: '',
+        links: [
+          {
+            name: 'Home',
+            isLink: true,
+            link: '/'
+          },
+          // {
+          //   name: '',
+          //   isLink: true,
+          //   link: '/'
+          // },
+          {
+            name: 'Players',
+            isLink: false
+          }
+        ]
+      }
+    };
+    
   }
 
 }

@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { Ng2FlatpickrModule } from 'ng2-flatpickr';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 
 const routes:Routes = [
 
@@ -29,7 +30,8 @@ const routes:Routes = [
     FormsModule,
     Ng2FlatpickrModule,
     NgSelectModule,
-    NgbModule
+    NgbModule,
+    ContentHeaderModule
     
 
   ],

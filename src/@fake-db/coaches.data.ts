@@ -8,6 +8,11 @@ export class CoachesFakeData {
       { id: 5, filter: 'Hockey', color: 'info', checked: true }
       
     ];
+    public static levels = [
+      { id: 1, level: 'Freshman', color: 'primary', checked: true },
+      { id: 2, level: 'Junior Varsity', color: 'success', checked: true },
+      { id: 3, level: 'Varsity', color: 'danger', checked: true }
+    ];
     
   }
   

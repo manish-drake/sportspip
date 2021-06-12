@@ -1,0 +1,5 @@
+[
+    { "id": "1", "program": "Men's", "color": "primary", "checked": "true" },
+    { "id": "2", "program": "Women's", "color": "success", "checked": "true" }
+    
+]

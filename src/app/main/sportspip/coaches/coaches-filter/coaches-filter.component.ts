@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
+import { ILevel, IProgram } from '../../interfaces';
 import { CoachesService } from '../coaches.service';
 
 @Component({
@@ -14,6 +15,7 @@ export class CoachesFilterComponent implements OnInit {
    public coachesRef = [];
    public tempRef = [];
    public checkAll = true;
+   public levelsRef=[];
 
   constructor(private _coreSidebarService: CoreSidebarService,private _coachesService: CoachesService) { }
 
@@ -22,6 +24,7 @@ export class CoachesFilterComponent implements OnInit {
    */
    allChecked() {
     return this.coachesRef.every(v => v.checked === true);
+   
   }
    /**
    * Checkbox Change
@@ -62,10 +65,16 @@ export class CoachesFilterComponent implements OnInit {
  /**
    * On init
    */
+  levelRef: ILevel[];
+  programRef: IProgram[];
   ngOnInit(): void {
     // Subscribe to Coaches changes
     this._coachesService.onCoachesChange.subscribe(res => {
-      this.coachesRef = res;
+      this.coachesRef = res; 
     });
+
+    this._coachesService.getLevel().subscribe(data=> this.levelRef =data)
+    this._coachesService.getProgram().subscribe(data=> this.programRef =data)
   }
+  
 }

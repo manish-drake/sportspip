@@ -1,7 +1,70 @@
-<div class="row">
+<!-- <div class="row">
     <div class="col-lg-4 col-md-6 col-12">
         <div class="card card-developer-meetup">
             <app-coaches-filter></app-coaches-filter>
         </div>
     </div>
+</div> -->
+
+
+<div class="content-wrapper">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    <div class="app-calendar overflow-hidden border">
+      <div class="row no-gutters">
+        <!-- calendar main sidebar -->
+        <core-sidebar class="col app-calendar-sidebar flex-grow-0 overflow-hidden d-flex flex-column"
+          name="coaches-filter" overlayClass="body-content-overlay" collapsibleSidebar="bs-gt-lg">
+          <app-coaches-filter></app-coaches-filter>
+        </core-sidebar>
+
+        <!-- <div class="col position-relative">
+          <div class="card shadow-none border-0 mb-0 rounded-0">
+            <div class="card-body pb-0"> -->
+        <!------------------------------------------------------------------------->
+        <div class="row ">
+
+          <div class="col-lg-4 col-md-6 col-12" *ngFor="let coach of coaches">
+            <div class="card card-developer-meetup">
+              <div class="bg-light-primary rounded-top text-center coachesDetails">
+                <img src="{{ serverUri + coach.CoachImage[0].formats.thumbnail.url}}" ng-click="cochesDetail()" alt="Logo" />
+
+              </div>
+              <div class="card-body">
+                <div class="meetup-header d-flex align-items-center">
+                  <div class="my-auto">
+                    <h4 class="card-title mb-25">{{coach.CoachTitle}}</h4>
+                  </div>
+                </div>
+                <div class="media">
+                  <div class="avatar bg-light-primary rounded mr-1">
+                    <div class="avatar-content">
+                      <i data-feather="calendar" class="avatar-icon font-medium-3"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="media">
+                  <div class="avatar bg-light-primary rounded mr-1">
+                    <div class="avatar-content">
+                      <i data-feather="map-pin" class="avatar-icon font-medium-3"></i>
+                    </div>
+                  </div>
+                  <div class="media-body">
+                    <h6 class="mb-0">{{coach.CoachName}}</h6>
+                    <!-- <small>Manhattan, New york City</small> -->
+                  </div>
+                </div>
+              </div>
+              <!-- </div> -->
+              <!-- </div> -->
+              <!-- </div> -->
+
+              <!------------------------------------------------------------------------------------------>
+            </div>
+          </div>
+        </div>
+        <!-- calendar -->
+      </div>
+    </div>
+  </div>
 </div>

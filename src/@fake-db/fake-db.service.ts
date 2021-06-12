@@ -95,6 +95,7 @@ export class FakeDbService implements InMemoryDbService {
 
       //coaches
       'coaches-filter':CoachesFakeData.coaches,
+      'coaches-levels':CoachesFakeData.levels,
 
       // Search
       'search-data': SearchFakeData.search,
