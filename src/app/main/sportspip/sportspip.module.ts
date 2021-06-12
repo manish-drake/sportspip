@@ -31,6 +31,8 @@ import { SetupModule } from './setup/setup.module';
 import { SupportComponent } from './support/support.component';
 import { SupportModule } from './support/support.module';
 import { ScheduleModule } from './schedule/schedule.module';
+import { TeamDetailsModule } from './team-details/team-details.module';
+import { TeamDetailsComponent } from './team-details/team-details.component';
 
 
 
@@ -60,7 +62,8 @@ FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, i
     AnalysisModule,
     SetupModule,
     SupportModule,
-    ScheduleModule
+    ScheduleModule,
+    TeamDetailsModule
     
    
   ],
