@@ -94,10 +94,10 @@ const appRoutes: Routes = [
     redirectTo: '/dashboard/analytics',
     pathMatch: 'full'
   },
-  {
-    path: '**',
-    redirectTo: '/pages/miscellaneous/error' //Error 404 - Page not found
-  }
+  // {
+  //   path: '**',
+  //   redirectTo: '/pages/miscellaneous/error' //Error 404 - Page not found
+  // }
 ];
 
 @NgModule({

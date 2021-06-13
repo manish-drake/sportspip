@@ -1,0 +1,40 @@
+<div class="row">
+
+    <div class="col-lg-3 col-md-6 col-12" >
+      <div class="card card-developer-meetup">
+        <div class="bg-light-primary rounded-top text-center">
+  
+          <img src="{{ 'http://115.246.85.186:1337' + teamsCollection.TeamThumbnail[0].url}}" alt="Logo" />
+  
+  
+        </div>
+        <div class="card-body">
+          <div class="meetup-header d-flex align-items-center">
+            <div class="my-auto">
+              
+                <h4 class="card-title mb-25">{{teamsCollection.TeamName}}</h4>
+            
+            </div>
+          </div>
+          <div class="media">
+            <div class="avatar bg-light-primary rounded mr-1">
+              <div class="avatar-content">
+                <i data-feather="calendar" class="avatar-icon font-medium-3"></i>
+              </div>
+            </div>
+          </div>
+          <div class="media">
+            <div class="avatar bg-light-primary rounded mr-1">
+              <div class="avatar-content">
+                <i data-feather="map-pin" class="avatar-icon font-medium-3"></i>
+              </div>
+            </div>
+            <div class="media-body">
+              <h6 class="mb-0">{{teamsCollection.Date}}</h6>
+  
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

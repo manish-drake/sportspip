@@ -10,7 +10,7 @@ import { CoreConfigService } from '@core/services/config.service';
 import { CalendarService } from 'app/main/apps/calendar/calendar.service';
 import { EventRef } from 'app/main/apps/calendar/calendar.model';
 import { TeamsService } from './teams.service';
-import { IFootball } from '../interfaces';
+import { IFootball, ITeams } from '../interfaces';
 
 @Component({
   selector: 'app-teams',
@@ -19,31 +19,16 @@ import { IFootball } from '../interfaces';
 })
 export class TeamsComponent implements OnInit {
   serverUri:string = "http://115.246.85.186:1337";
-  
- 
- 
+
+  teamsCollection:ITeams[];
   constructor(
     private _coreSidebarService: CoreSidebarService,
     
     private _coreConfigService: CoreConfigService,
     private _teamsService:TeamsService
   ) {}
- 
-  
-
-  
-   teamsCollection:IFootball[];
   ngOnInit(): void {
-
-    
-    
-
-    this._teamsService.getFootballs().subscribe(data=> this.teamsCollection =data)
-  }
-
-  
-  ngAfterViewInit() {
-    
+    this._teamsService.getTeams().subscribe(data=> this.teamsCollection =data)
   }
 }
 

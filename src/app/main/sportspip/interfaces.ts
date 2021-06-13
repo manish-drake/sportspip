@@ -16,6 +16,18 @@ export interface IFootball{
     EventName: string,
     EventThumbnail: any,
 }
+export interface ITeams{
+    id:string,
+    Date: string,
+    TeamName: string,
+    TeamThumbnail: any,
+    Contact:string,
+    Status:string,
+    Country:string,
+    Role:string,
+    SchoolName: string,
+    UserName:string,
+}
 export interface ICoaches{
     id:string,
     CoachName:string,

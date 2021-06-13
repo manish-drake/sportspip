@@ -13,11 +13,14 @@ import { TeamsComponent } from './teams.component';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 import { MediaPlayerModule } from 'app/main/extensions/media-player/media-player.module';
 import { TeamsService } from './teams.service';
+import { CoachesFilterComponent } from '../coaches/coaches-filter/coaches-filter.component';
+import { TeamDetailsComponent } from '../team-details/team-details.component';
 
 
 // routing
 const routes: Routes = [
-  { path: 'teams', component : TeamsComponent }
+  { path: 'teams', component : TeamsComponent },
+ 
 
 ];
 
@@ -28,8 +31,10 @@ const routes: Routes = [
   imports: [
     CommonModule, RouterModule.forChild(routes),
     NgbModule, CoreCommonModule,
-    ContentHeaderModule, MediaPlayerModule
+    ContentHeaderModule, MediaPlayerModule,
+    
   ],
-  providers: [TeamsService]
+  providers: [TeamsService],
+  exports: [RouterModule]
 })
 export class TeamsModule { }
