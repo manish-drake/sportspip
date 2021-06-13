@@ -33,6 +33,9 @@ export interface ICoaches{
     CoachName:string,
     CoachTitle:string,
     CoachImage:any,
+    College:string,
+    Dates: string,
+    AboutCoach:string,
 }
 export interface IPlayer{
     id:string,

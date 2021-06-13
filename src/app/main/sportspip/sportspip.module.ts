@@ -32,8 +32,10 @@ import { SupportComponent } from './support/support.component';
 import { SupportModule } from './support/support.module';
 import { ScheduleModule } from './schedule/schedule.module';
 import { TeamDetailsModule } from './team-details/team-details.module';
-import { TeamDetailsComponent } from './team-details/team-details.component';
-import { CoachesDetailsModule } from './coaches-details/coaches-details.module';
+
+
+import { CoachDetailsModule } from './coach-details/coach-details.module';
+
 
 
 
@@ -67,7 +69,8 @@ FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, i
     TeamDetailsModule,
     RouterModule,
     TeamDetailsModule,
-    CoachesDetailsModule
+   
+    CoachDetailsModule
     
    
   ],

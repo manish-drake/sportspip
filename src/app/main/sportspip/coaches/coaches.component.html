@@ -23,7 +23,7 @@
           <div class="col-lg-4 col-md-6 col-12" *ngFor="let coach of coaches">
             <div class="card card-developer-meetup">
               <div class="bg-light-primary rounded-top text-center coachesDetails">
-                <a href="sportspip/coaches-details?coachId={{coach.id}}">
+                <a href="sportspip/coach-details?coachId={{coach.id}}">
                 <img 
                 src="{{ serverUri + coach.CoachImage[0].formats.thumbnail.url}}" 
                 ng-click="cochesDetail()" alt="Logo" />

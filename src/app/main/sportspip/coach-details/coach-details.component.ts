@@ -1,17 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CoachesService } from '../coaches/coaches.service';
 import { ICoaches } from '../interfaces';
 
+
 @Component({
-  selector: 'app-coaches-details',
-  templateUrl: './coaches-details.component.html',
-  styleUrls: ['./coaches-details.component.scss']
+  selector: 'app-coach-details',
+  templateUrl: './coach-details.component.html',
+  styleUrls: ['./coach-details.component.scss'],
+  encapsulation: ViewEncapsulation.None
+
 })
-export class CoachesDetailsComponent implements OnInit {
+export class CoachDetailsComponent implements OnInit {
 
   coachId:string ="";
   coachCollection: ICoaches;
+  
   constructor(private activatedRoute: ActivatedRoute, private _coachesService:CoachesService) { }
 
   ngOnInit(): void {
