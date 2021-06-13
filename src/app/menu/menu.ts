@@ -82,7 +82,7 @@ export const menu: CoreMenu[] = [
             title: 'Roster',
             translate: 'MENU.SPORTSPIP.ROSTER',
             type: 'item',
-            icon: 'users',
+            icon: 'clipboard',
             url: 'sportspip/roster'
           },
           {
