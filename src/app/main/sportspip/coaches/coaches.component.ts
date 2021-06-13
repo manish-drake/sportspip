@@ -17,11 +17,11 @@ export class CoachesComponent implements OnInit {
   
   constructor(private _coachesService: CoachesService) { }
 
-  lavel: ILevel[];
+  level: ILevel[];
   program: IProgram[];
   coaches:ICoaches[];
   ngOnInit() {
-    this._coachesService.getLevel().subscribe(data=> this.lavel =data)
+    this._coachesService.getLevel().subscribe(data=> this.level =data)
 
     this._coachesService.getProgram().subscribe(data=> this.program =data)
     

@@ -1,6 +1,6 @@
 <!-- Main Sidebar -->
 <div class="sidebar-wrapper">
-  
+
   <div class="card-body pb-0">
     <h5 class="section-label mb-1">
       <span class="align-middle">Filter</span>
@@ -11,47 +11,45 @@
       <label class="custom-control-label" for="select-all">View All</label>
     </div>
     <div class="coaches-filter">
-     
-            <div class="custom-control  custom-checkbox mb-1 custom-control-{{ coaches.color }}"
-              *ngFor="let coaches of coachesRef">
-              <input type="checkbox" (change)="checkboxChange($event, coaches.id)"
-                class="custom-control-input input-filter" id="coaches-{{ coaches.id }}" [checked]="coaches.checked" />
-              <label class="custom-control-label" for="coaches-{{ coaches.id }}">{{ coaches.filter }}</label>
-              
-            </div>
-          </div>
-           <!-- level -->
-          <h5 class="section-label mb-1">
-            <span class="align-middle">Level</span>
-          </h5>
-           <div class="level-filter"> 
-     
-            <div class="custom-control  custom-checkbox mb-1 "
-              *ngFor="let level of levelRef">
-              <input type="checkbox" (change)="checkboxChange($event, level.id)"
-                class="custom-control-input input-filter" id="level-{{ level.id }}" [checked]="level.checked" />
-              <label class="custom-control-label" for="level-{{ level.id }}">{{ level.level }}</label>
-             </div> 
-          </div>
-            <!-- Program -->
-          <h5 class="section-label mb-1">
-            <span class="align-middle">Program</span>
-          </h5>
-           <div class="level-filter"> 
-     
-            <div class="custom-control  custom-checkbox mb-1 "
-              *ngFor="let program of programRef">
-              <input type="checkbox" (change)="checkboxChange($event, program.id)"
-                class="custom-control-input input-filter" id="program-{{ program.id }}" [checked]="program.checked" />
-              <label class="custom-control-label" for="level-{{ program.id }}">{{ program.program }}</label>
-             </div> 
-          </div>
 
+      <div class="custom-control  custom-checkbox mb-1 custom-control-{{ coaches.color }}"
+        *ngFor="let coaches of coachesRef">
+        <input type="checkbox" (change)="checkboxChange($event, coaches.id)" class="custom-control-input input-filter"
+          id="coaches-{{ coaches.id }}" [checked]="coaches.checked" />
+        <label class="custom-control-label" for="coaches-{{ coaches.id }}">{{ coaches.filter }}</label>
 
-        </div>
       </div>
+    </div>
+    <!-- level -->
+    <h5 class="section-label mb-1">
+      <span class="align-middle">Level</span>
+    </h5>
+    <div class="level-filter">
 
-    <!-- </div>
+      <div class="custom-control  custom-checkbox mb-1 " *ngFor="let level of levelRef">
+        <input type="checkbox" (change)="checkboxChange($event, level.id)" class="custom-control-input input-filter"
+          id="level-{{ level.id }}" [checked]="level.checked" />
+        <label class="custom-control-label" for="level-{{ level.id }}">{{ level.level }}</label>
+      </div>
+    </div>
+    <!-- Program -->
+    <h5 class="section-label mb-1">
+      <span class="align-middle">Program</span>
+    </h5>
+    <div class="level-filter">
+
+      <div class="custom-control  custom-checkbox mb-1 " *ngFor="let program of programRef">
+        <input type="checkbox" (change)="checkboxChange($event, program.id)" class="custom-control-input input-filter"
+          id="program-{{ program.id }}" [checked]="program.checked" />
+        <label class="custom-control-label" for="level-{{ program.id }}">{{ program.program }}</label>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+<!-- </div>
   </div>
 </div> -->
 <div class="mt-auto">

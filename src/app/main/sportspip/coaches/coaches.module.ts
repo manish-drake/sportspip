@@ -36,5 +36,6 @@ const routes:Routes = [
 
   ],
   providers: [CoachesService]
+  
 })
 export class CoachesModule { }

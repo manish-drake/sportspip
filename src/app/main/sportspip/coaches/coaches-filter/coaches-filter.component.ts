@@ -35,7 +35,9 @@ export class CoachesFilterComponent implements OnInit {
     checkboxChange(event, id) {
       const index = this.coachesRef.findIndex(r => {
         if (r.id === id) {
+          console.log("rakesh" + r.id + r)
           return id;
+          
         }
       });
       this.coachesRef[index].checked = event.target.checked;
