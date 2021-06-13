@@ -3,7 +3,9 @@
     <div class="col-lg-4 col-md-6 col-12" *ngFor= "let players of player">
         <div class="card card-developer-meetup">
             <div class="bg-light-primary rounded-top text-center">
+                <a href="sportspip/player-details?playerId={{players.id}}">
                 <img src="{{ serverUri + players.PlayerImage[0].formats.thumbnail.url}}" alt="Meeting Pic" height="170" />
+                </a>
             </div>
           
             <div class="card-body">

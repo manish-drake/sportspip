@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { IPlayer } from '../interfaces';
+import { PlayerService } from '../players/player.service';
 
 @Component({
   selector: 'app-player-details',
@@ -14,9 +16,24 @@ import { takeUntil } from 'rxjs/operators';
 
 export class PlayerDetailsComponent implements OnInit {
 
-  constructor() { }
+  playerId:string ="";
+  playerDetails: IPlayer;
+
+  constructor(private activatedRoute: ActivatedRoute,private _playerService : PlayerService) { }
 
   ngOnInit(): void {
+
+    this.activatedRoute.params.subscribe(params => {
+      this.playerId = this.activatedRoute.snapshot.queryParamMap.get('playerId');
+      console.log('Url Id: ', this.playerId);
+
+      this._playerService.getPlayerX(this.playerId).subscribe(
+        data=> {
+          this.playerDetails = data[0] as IPlayer;
+          console.log(this.playerDetails);
+        }
+      );
+    });
   }
 
 }

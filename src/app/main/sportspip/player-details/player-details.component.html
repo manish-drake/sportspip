@@ -12,6 +12,8 @@
                                     class="col-xl-6 col-lg-12 d-flex flex-column justify-content-between border-container-lg">
                                     <div class="user-avatar-section">
                                         <div class="d-flex justify-content-start">
+                                            <img src="{{ 'http://115.246.85.186:1337' + playerDetails.PlayerImage[0].url}}"
+                                            height="104" width="104" alt="Logo" />
                                             <!-- <div *ngIf="data.avatar.length > 0; else customAvatar">
                                                 <img class="img-fluid rounded" [src]="data.avatar" height="104"
                                                     width="104" alt="User avatar" />
@@ -55,35 +57,35 @@
                                             <div class="user-info-title">
                                                 <span class="card-text user-info-title font-weight-bold mb-0">Name:</span>
                                             </div>
-                                            <p class="card-text mb-0">Calbert Cheaney</p>
+                                            <p class="card-text mb-0">{{playerDetails.PlayerName}}</p>
                                         </div>
                                         <div class="d-flex flex-wrap my-50">
                                             <div class="user-info-title">
                                                 <span
                                                     class="card-text user-info-title font-weight-bold mb-0">Height:</span>
                                             </div>
-                                            <p class="card-text mb-0">6'6"</p>
+                                            <p class="card-text mb-0">{{playerDetails.PlayerHeight}}</p>
                                         </div>
                                         <div class="d-flex flex-wrap my-50">
                                             <div class="user-info-title">
                                                 <span
                                                     class="card-text user-info-title font-weight-bold mb-0">Weight:</span>
                                             </div>
-                                            <p class="card-text mb-0">210</p>
+                                            <p class="card-text mb-0">{{playerDetails.PlayerWeight}}</p>
                                         </div>
                                         <div class="d-flex flex-wrap my-50">
                                             <div class="user-info-title">
                                                 <span
                                                     class="card-text user-info-title font-weight-bold mb-0">Class:</span>
                                             </div>
-                                            <p class="card-text mb-0">Senior</p>
+                                            <p class="card-text mb-0">{{playerDetails.PlayerClass}}</p>
                                         </div>
                                         <div class="d-flex flex-wrap my-50">
                                             <div class="user-info-title">
                                                 <span
                                                     class="card-text user-info-title font-weight-bold mb-0">Hometown:</span>
                                             </div>
-                                            <p class="card-text mb-0">Evansville, IL</p>
+                                            <p class="card-text mb-0">{{playerDetails.PlayerHometown}}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -130,13 +132,8 @@
                             <h4 class="card-title mb-2">About Player</h4>
                         </div>
                         <div class="card-body">
-                            <p>Lorem  ipsum  dolor sit amet, consectetur  adipiscing elit, sed do eiusmod tempor 
-                                incididunt  ut  labore  et  dolore  magna  aliqua. Ut  enim  ad  minim  veniam, 
-                                quis nostrud  exercitation  ullamco  laboris  nisi  ut  aliquip  ex  ea  commodo  
-                                consequat. Duis  aute  irure  dolor  in  reprehenderit  in  voluptate  velit  esse  
-                                illum  dolore  eu fugiat  nulla  pariatur. Excepteur  sint  occaecat  cupidatat  non  
-                                proident, sunt  in culpa qui officia deserunt mollit anim id est laborum.
-                            </p>
+                            <p>{{playerDetails.AboutPlayer}}</p>
+                            
                         </div>
                     </div>
                 </div>

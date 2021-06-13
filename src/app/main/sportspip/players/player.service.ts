@@ -9,9 +9,16 @@ import { IPlayer } from '../interfaces';
 export class PlayerService {
 
   private _urlplayer : string = "http://115.246.85.186:1337/players";
+
   constructor(private _httpClient:HttpClient) { }
 
   getPlayer(): Observable<IPlayer[]> {
     return this._httpClient.get<IPlayer[]>(this._urlplayer);
+  }
+ 
+  getPlayerX(id: string): Observable<IPlayer> {
+    var uri: string = `${this._urlplayer}?id=${ id }`;
+    console.log(uri);
+    return this._httpClient.get<IPlayer>(uri);
   }
 }

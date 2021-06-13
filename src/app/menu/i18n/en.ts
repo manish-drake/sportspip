@@ -24,7 +24,8 @@ export const locale = {
         ANALYSIS: 'Analysis',
         ACTIVITY: 'Activity',
         SETUP: 'Setup',
-        SUPPORT: 'Support'
+        SUPPORT: 'Support',
+        ROSTER: 'Roster'
       },
 
       DASHBOARD: {

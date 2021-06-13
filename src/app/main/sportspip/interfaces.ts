@@ -42,4 +42,9 @@ export interface IPlayer{
     PlayerName:string,
     PlayerRole:string,
     PlayerImage:any,
+    PlayerHeight:string,
+    PlayerWeight:string,
+    PlayerClass:string,
+    PlayerHometown:string,
+    AboutPlayer:string
 }
