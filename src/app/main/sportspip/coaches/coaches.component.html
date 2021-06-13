@@ -1,36 +1,33 @@
-<!-- <div class="row">
-    <div class="col-lg-4 col-md-6 col-12">
-        <div class="card card-developer-meetup">
-            <app-coaches-filter></app-coaches-filter>
-        </div>
-    </div>
-</div> -->
-
-
 <div class="content-wrapper">
-  <div class="content-body">
-    <app-content-header [contentHeader]="contentHeader"></app-content-header>
-    <div class="app-calendar overflow-hidden border">
-      <div class="row no-gutters">
-        <!-- calendar main sidebar -->
-        <core-sidebar class="col app-calendar-sidebar flex-grow-0 overflow-hidden d-flex flex-column"
-          name="coaches-filter" overlayClass="body-content-overlay" collapsibleSidebar="bs-gt-lg">
-          <app-coaches-filter></app-coaches-filter>
-        </core-sidebar>
+  <app-content-header [contentHeader]="contentHeader"></app-content-header>
+  <!-- Sidebar filters  -->
+  <div class="app-calendar">
+    <div class="row no-gutters">
+      <core-sidebar
+        class="col app-calendar-sidebar flex-grow-0 overflow-hidden d-flex flex-column"
+        id="coaches-sidebar-toggler"
+        name="coaches-filter"
+        collapsibleSidebar="bs-gt-lg"
+        overlayClass="body-content-overlay"
+      >
+      <app-coaches-filter></app-coaches-filter>
+    </core-sidebar>
+ 
+  <!--/ Sidebar filters -->
 
-        <!-- <div class="col position-relative">
-          <div class="card shadow-none border-0 mb-0 rounded-0">
-            <div class="card-body pb-0"> -->
-        <!------------------------------------------------------------------------->
+  <div class="content-detached content-right">
+    <div class="content-body">
+      <!-- Coaches Head Section Starts -->
+      <section id="coaches-header">
         <div class="row ">
-
           <div class="col-lg-4 col-md-6 col-12" *ngFor="let coach of coaches">
             <div class="card card-developer-meetup">
               <div class="bg-light-primary rounded-top text-center coachesDetails">
+                <a href="sportspip/coaches-details?coachId={{coach.id}}">
                 <img 
                 src="{{ serverUri + coach.CoachImage[0].formats.thumbnail.url}}" 
                 ng-click="cochesDetail()" alt="Logo" />
-
+              </a>
               </div>
               <div class="card-body">
                 <div class="meetup-header d-flex align-items-center">
@@ -57,16 +54,12 @@
                   </div>
                 </div>
               </div>
-              <!-- </div> -->
-              <!-- </div> -->
-              <!-- </div> -->
-
-              <!------------------------------------------------------------------------------------------>
             </div>
           </div>
         </div>
-        <!-- calendar -->
-      </div>
+      </section>
     </div>
   </div>
+</div>
+</div>
 </div>

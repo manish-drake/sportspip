@@ -3,17 +3,17 @@
   <div class="col-lg-3 col-md-6 col-12" *ngFor="let team of teamsCollection">
     <div class="card card-developer-meetup">
       <div class="bg-light-primary rounded-top text-center">
-
+        <a href="sportspip/teamsdetails?teamId={{team.id}}">
         <img src="{{ serverUri + team.TeamThumbnail[0].url}}" alt="Logo" />
-
+      </a>
 
       </div>
       <div class="card-body">
         <div class="meetup-header d-flex align-items-center">
           <div class="my-auto">
-            <a href="sportspip/teamsdetails?teamId={{team.id}}">
+            
               <h4 class="card-title mb-25">{{team.TeamName}}</h4>
-            </a>
+            
           </div>
         </div>
         <div class="media">
@@ -38,3 +38,6 @@
     </div>
   </div>
 </div>
+  
+  
+  

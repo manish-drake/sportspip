@@ -13,6 +13,8 @@ export class CoachesService implements Resolve<any> {
   public tempEvents;
   public events;
   public levels;
+
+  
  
   public onCoachesChange: BehaviorSubject<any>;
 
@@ -28,7 +30,7 @@ export class CoachesService implements Resolve<any> {
 
   private _urlLevel: string = "/assets/data/level.json";
   private _urlProgram : string = "/assets/data/program.json";
-  private _urlcoaches : string = "http://115.246.85.186:1337/coaches";
+  private _urlCoaches : string = "http://115.246.85.186:1337/coaches";
 
    /**
    * Resolver
@@ -99,6 +101,11 @@ export class CoachesService implements Resolve<any> {
       return this._httpClient.get<IProgram[]>(this._urlProgram);
     }
     getCoache(): Observable<ICoaches[]> {
-      return this._httpClient.get<ICoaches[]>(this._urlcoaches);
+      return this._httpClient.get<ICoaches[]>(this._urlCoaches);
+    }
+    getCoachX(id: string): Observable<ICoaches> {
+      var uri: string = `${this._urlCoaches}?id=${ id }`;
+      console.log(uri);
+      return this._httpClient.get<ICoaches>(uri);
     }
 }

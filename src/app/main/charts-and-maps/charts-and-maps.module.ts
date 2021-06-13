@@ -6,6 +6,7 @@ import { GoogleMapModule } from 'app/main/charts-and-maps/google-maps/google-map
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule, ChartModule, GoogleMapModule]
+  imports: [CommonModule, ChartModule, GoogleMapModule], 
+  exports: []
 })
 export class ChartsAndMapsModule {}
