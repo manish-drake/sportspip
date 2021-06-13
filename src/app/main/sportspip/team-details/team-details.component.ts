@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { UserViewService } from 'app/main/apps/user/user-view/user-view.service';
 
 @Component({
   selector: 'app-team-details',
