@@ -71,3 +71,38 @@ export interface ISchedule{
     calendar:string
 
 }
+export class Delivery {
+    Session: string;
+    DeliveryTime: number;
+    LeadTime: number;
+    LagTime: number;
+    DeliveryCounter: number;
+    BowlerNumber: number;
+    BatsmanNumber: number;
+    Runs: number;
+
+}
+
+export class Runs
+{
+    Runs_0: string[];
+    Runs_1: string[];
+    Runs_2: string[];
+    Runs_4: string[];
+    Runs_6: string[];
+}
+export class pivoteT
+{   
+    Batsman_18: Runs;
+    Batsman_45: Runs;
+    Bowler_15: Runs;
+    Bowler_22: Runs;    
+} 
+export class events
+{
+    id : number;
+    EventName : string;
+    EventDate:string;
+    EventThumbnail : any;
+    State:string;
+}

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TaggingComponent } from 'app/main/sportspip/tagging/tagging.component';
@@ -20,6 +20,10 @@ const routes: Routes = [
     CommonModule, RouterModule.forChild(routes),
      NgbModule, CoreCommonModule, 
      ContentHeaderModule,MediaPlayerModule
+  ],
+  providers: [
+    DatePipe
+  
   ],
   
 })
