@@ -13,6 +13,8 @@ export class RosterComponent implements OnInit {
   roster:IRoster[];
   constructor(private _roster:RosterService) { }
 
+  
+
   ngOnInit(): void {
 
     this._roster.getRoster().subscribe(data=> this.roster = data);

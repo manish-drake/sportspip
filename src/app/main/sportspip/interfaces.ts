@@ -61,3 +61,13 @@ export interface IRoster{
     School:string
 
 }
+export interface ISchedule{
+    id:string,
+    url:string,
+    title:string,
+    start:string,
+    end:string,
+    allDay:boolean,
+    calendar:string
+
+}
