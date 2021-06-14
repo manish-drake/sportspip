@@ -43,6 +43,8 @@ import { RosterModule } from './roster/roster.module';
 
 
 
+
+
 FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]);
 
 @NgModule({
@@ -56,10 +58,7 @@ FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, i
     TaggingModule,
     ReviewModule,
     EventModule,
-
     AddEventModule,
-
-    //ScheduleModule,
     CoachesModule,
     MediaPlayerModule,
     TeamsModule,
@@ -75,10 +74,7 @@ FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, i
     TeamDetailsModule,
     PlayerDetailsModule,
     CoachDetailsModule,
-
-
     CoachDetailsModule,
-   
     RosterModule
     
    
