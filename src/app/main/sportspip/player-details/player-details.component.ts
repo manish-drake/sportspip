@@ -1,8 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { IPlayer } from '../interfaces';
 import { PlayerService } from '../players/player.service';
 

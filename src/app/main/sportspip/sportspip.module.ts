@@ -45,6 +45,8 @@ import { ScheduleListModule } from './schedule-list/schedule-list.module';
 
 
 
+
+
 FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]);
 
 @NgModule({
@@ -58,10 +60,7 @@ FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, i
     TaggingModule,
     ReviewModule,
     EventModule,
-
     AddEventModule,
-
-    //ScheduleModule,
     CoachesModule,
     MediaPlayerModule,
     TeamsModule,

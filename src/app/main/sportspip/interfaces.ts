@@ -48,3 +48,16 @@ export interface IPlayer{
     PlayerHometown:string,
     AboutPlayer:string
 }
+export interface IRoster{
+    id:string,
+    Sport:string,
+    Level:string,
+    Program:string,
+    Year:string,
+    Name:string,
+    PlayerNumber:string,
+    PlayerLevel:string,
+    Address:string,
+    School:string
+
+}

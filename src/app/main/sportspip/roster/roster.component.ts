@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { IRoster } from '../interfaces';
+import { RosterService } from './roster.service';
 
 @Component({
   selector: 'app-roster',
@@ -8,9 +10,13 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class RosterComponent implements OnInit {
 
-  constructor() { }
+  roster:IRoster[];
+  constructor(private _roster:RosterService) { }
 
   ngOnInit(): void {
+
+    this._roster.getRoster().subscribe(data=> this.roster = data);
+    
   }
 
 }

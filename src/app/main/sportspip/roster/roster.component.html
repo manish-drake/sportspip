@@ -105,9 +105,9 @@
                         <table class="table table-hover-animation">
                             <thead>
                                 <tr>
-                                    <th>Players</th>
+                                    
                                     <th>Name</th>
-                                    <th> Jersey Number</th>
+                                    <th>Jersey Number</th>
                                     <th>Level</th>
                                     <th>Address</th>
                                     <th>School</th>
@@ -115,25 +115,36 @@
 
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Jordan Genmark</td>
-                                    <td> <span class="badge badge-pill badge-light-primary mr-1">228</span></td>
-                                    <td>Junior</td>
-                                    <td>San Diego, CA </td>
-                                    <td>Cathedral Catholic</td>
+                         
+                            <tbody  >
+                                <tr *ngFor= "let rosters of roster"  > 
+                                    
+                                   
+                                    <td>{{rosters.Name}}</td>
+                                   
+                                    <td> <span class="badge badge-pill badge-light-primary mr-1">{{rosters.PlayerNumber}}</span></td>
+                                    <td>{{roster.Level}}</td>
+                                    <td>{{rosters.Address}} </td>
+                                    <td>{{rosters.School}}</td>
                                     <td class="overflow-hidden">
                                         <div ngbDropdown container="body">
+                                            <button type="button" class="btn btn-sm hide-arrow" ngbDropdownToggle
+                                                data-toggle="dropdown">
+                                                <i data-feather="more-vertical"></i>
+                                            </button>
                                             <div ngbDropdownMenu>
-                                                <a ngbDropdownItem href="javascript:void(0);"><span>Edit</span></a> |
-                                                <a ngbDropdownItem href="javascript:void(0);"><span>Delete</span></a>
+                                                <a ngbDropdownItem href="javascript:void(0);"><i data-feather="edit-2"
+                                                        class="mr-50"></i><span>Edit</span></a><a ngbDropdownItem
+                                                    href="javascript:void(0);"><i data-feather="trash"
+                                                        class="mr-50"></i><span>Delete</span></a>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
                             </tbody>
+                      
                         </table>
+                    
                     </div>
                 </div>
             </div>
