@@ -31,10 +31,19 @@
           </div>
           <div class="media-body">
             <h6 class="mb-0">{{team.Date}}</h6>
-
           </div>
-        </div>
+        </div>        
       </div>
+      <a
+      *ngIf="isWishlistOpen === true"
+      href="javascript:void(0)"
+      class="btn btn-light btn-wishlist"
+      (click)="toggleWishlist(product)"
+      rippleEffect
+    >
+      <i data-feather="x"></i>
+      <span>Remove</span>
+    </a>
     </div>
   </div>
 </div>

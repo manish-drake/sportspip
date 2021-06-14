@@ -38,6 +38,8 @@ import { CoachDetailsModule } from './coach-details/coach-details.module';
 import { PlayerDetailsModule } from './player-details/player-details.module';
 
 import { RosterModule } from './roster/roster.module';
+import { ScheduleListComponent } from './schedule-list/schedule-list.component';
+import { ScheduleListModule } from './schedule-list/schedule-list.module';
 
 
 
@@ -47,7 +49,7 @@ FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, i
 
 @NgModule({
   
-  declarations: [ ],
+  declarations: [ ScheduleListComponent],
   imports: [
     CommonModule,
     CoreCommonModule,
@@ -75,11 +77,9 @@ FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, i
     TeamDetailsModule,
     PlayerDetailsModule,
     CoachDetailsModule,
-
-
     CoachDetailsModule,
-   
-    RosterModule
+    RosterModule,
+    ScheduleListModule
     
    
   ],
