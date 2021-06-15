@@ -1,4 +1,4 @@
-  import { DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { Delivery } from '../interfaces';
@@ -8,6 +8,7 @@ import { TaggingService } from './tagging.service';
     selector: 'app-tagging',
     templateUrl: './tagging.component.html',
     styleUrls: ['./tagging.component.scss'],
+    providers: [DatePipe],
     encapsulation: ViewEncapsulation.None
     
   })
@@ -26,7 +27,7 @@ import { TaggingService } from './tagging.service';
       preload: 'auto',
       controls: false,
       poster: '',
-      sources: [{src: '/assets/Cricket.mp4',
+      sources: [{src: '',
       type: 'video/mp4'}]}
 
     constructor(private taggingService: TaggingService, private datePipe: DatePipe, private router: Router){
@@ -57,14 +58,16 @@ import { TaggingService } from './tagging.service';
       this.deliveryTime = video1.currentTime;
       console.log(video1.currentTime);
       let newDelivery: Delivery = new Delivery;
-      newDelivery.Session = this.session;
-      newDelivery.BatsmanNumber = +this.batsmanModel;
-      newDelivery.BowlerNumber = +this.bowlerModel;
-      newDelivery.DeliveryCounter = this.deliveryCount;
-      newDelivery.DeliveryTime = this.deliveryTime
-      newDelivery.LagTime = 5;
-      newDelivery.LeadTime = 5;
-      newDelivery.Runs = +this.runsModel;
+      newDelivery.session = this.session;
+      newDelivery.batsmanNumber = +this.batsmanModel;
+      console.log(this.batsmanModel);
+      newDelivery.bowlerNumber = +this.bowlerModel;
+      console.log(this.bowlerModel);
+      newDelivery.deliveryCounter = this.deliveryCount;
+      newDelivery.deliveryTime = this.deliveryTime
+      newDelivery.lagTime = 5;
+      newDelivery.leadTime = 5;
+      newDelivery.runs = +this.runsModel;
       
       this.taggingService.addDelivery(newDelivery)
         .subscribe(delivery => this.deliveries.push(delivery));
@@ -72,7 +75,7 @@ import { TaggingService } from './tagging.service';
     }
 
     review(){
-      this.router.navigate(['app/sportspip/review', this.session]);
+      this.router.navigate(['app/main/sportspip/review', this.session]);
     }
     onNgModelChange(e) { // here e is a boolean, true if checked, otherwise false
       if(e){

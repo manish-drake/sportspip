@@ -12,7 +12,7 @@
                                     class="col-xl-6 col-lg-12 d-flex flex-column justify-content-between border-container-lg">
                                     <div class="user-avatar-section">
                                         <div class="d-flex justify-content-start">
-                                            <img src="{{ 'http://115.246.85.186:1337' + playerDetails.PlayerImage[0].url}}"
+                                            <img src="{{ 'http://115.246.85.186:1337' + playerDetails.playerImage[0].url}}"
                                             height="104" width="104" alt="Logo" />
                                             <!-- <div *ngIf="data.avatar.length > 0; else customAvatar">
                                                 <img class="img-fluid rounded" [src]="data.avatar" height="104"
@@ -57,35 +57,35 @@
                                             <div class="user-info-title">
                                                 <span class="card-text user-info-title font-weight-bold mb-0">Name:</span>
                                             </div>
-                                            <p class="card-text mb-0">{{playerDetails.PlayerName}}</p>
+                                            <p class="card-text mb-0">{{playerDetails.playerName}}</p>
                                         </div>
                                         <div class="d-flex flex-wrap my-50">
                                             <div class="user-info-title">
                                                 <span
                                                     class="card-text user-info-title font-weight-bold mb-0">Height:</span>
                                             </div>
-                                            <p class="card-text mb-0">{{playerDetails.PlayerHeight}}</p>
+                                            <p class="card-text mb-0">{{playerDetails.playerHeight}}</p>
                                         </div>
                                         <div class="d-flex flex-wrap my-50">
                                             <div class="user-info-title">
                                                 <span
                                                     class="card-text user-info-title font-weight-bold mb-0">Weight:</span>
                                             </div>
-                                            <p class="card-text mb-0">{{playerDetails.PlayerWeight}}</p>
+                                            <p class="card-text mb-0">{{playerDetails.playerWeight}}</p>
                                         </div>
                                         <div class="d-flex flex-wrap my-50">
                                             <div class="user-info-title">
                                                 <span
                                                     class="card-text user-info-title font-weight-bold mb-0">Class:</span>
                                             </div>
-                                            <p class="card-text mb-0">{{playerDetails.PlayerClass}}</p>
+                                            <p class="card-text mb-0">{{playerDetails.playerClass}}</p>
                                         </div>
                                         <div class="d-flex flex-wrap my-50">
                                             <div class="user-info-title">
                                                 <span
                                                     class="card-text user-info-title font-weight-bold mb-0">Hometown:</span>
                                             </div>
-                                            <p class="card-text mb-0">{{playerDetails.PlayerHometown}}</p>
+                                            <p class="card-text mb-0">{{playerDetails.playerHometown}}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -132,7 +132,7 @@
                             <h4 class="card-title mb-2">About Player</h4>
                         </div>
                         <div class="card-body">
-                            <p>{{playerDetails.AboutPlayer}}</p>
+                            <p>{{playerDetails.aboutPlayer}}</p>
                             
                         </div>
                     </div>

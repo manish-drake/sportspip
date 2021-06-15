@@ -4,7 +4,7 @@
     <div class="card card-developer-meetup">
       <div class="bg-light-primary rounded-top text-center">
         <a href="sportspip/teamsdetails?teamId={{team.id}}">
-        <img src="{{ serverUri + team.TeamThumbnail[0].url}}" alt="Logo" />
+        <img src="{{ serverUri + team.teamThumbnail[0].url}}" alt="Logo" />
       </a>
 
       </div>
@@ -12,7 +12,7 @@
         <div class="meetup-header d-flex align-items-center">
           <div class="my-auto">
             
-              <h4 class="card-title mb-25">{{team.TeamName}}</h4>
+              <h4 class="card-title mb-25">{{team.teamName}}</h4>
             
           </div>
         </div>
@@ -30,7 +30,7 @@
             </div>
           </div>
           <div class="media-body">
-            <h6 class="mb-0">{{team.Date}}</h6>
+            <h6 class="mb-0">{{team.date}}</h6>
           </div>
         </div>        
       </div>

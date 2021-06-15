@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 
 import { PlyrComponent } from 'ngx-plyr';
 
@@ -21,6 +21,8 @@ export class MediaPlayerComponent implements OnInit {
   public plyr: PlyrComponent;
   public player: Plyr;
   public plyrOptions = { tooltips: { controls: true } };
+  @Input() options = {};
+  // @Output() currentTime: any;
 
   // snippet code variables
   public _snippetCodeVideo = snippet.snippetCodeVideo;

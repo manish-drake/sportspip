@@ -4,14 +4,14 @@
         <div class="card card-developer-meetup">
             <div class="bg-light-primary rounded-top text-center">
                 <a href="sportspip/player-details?playerId={{players.id}}">
-                <img src="{{ serverUri + players.PlayerImage[0].formats.thumbnail.url}}" alt="Meeting Pic" height="170" />
+                <img src="{{ serverUri + players.playerImage[0].formats.thumbnail.url}}" alt="Meeting Pic" height="170" />
                 </a>
             </div>
           
             <div class="card-body">
                 <div class="meetup-header d-flex align-items-center">
                     <div class="my-auto">
-                        <h4 class="card-title mb-25">{{players.PlayerName}}</h4>
+                        <h4 class="card-title mb-25">{{players.playerName}}</h4>
                     </div>
                 </div>
                 <div class="media">
@@ -28,7 +28,7 @@
                         </div>
                     </div>
                     <div class="media-body">
-                        <h6 class="mb-0">{{players.PlayerRole}}</h6>
+                        <h6 class="mb-0">{{players.playerRole}}</h6>
                         <small>Manhattan, New york City</small>
                     </div>
                 </div>

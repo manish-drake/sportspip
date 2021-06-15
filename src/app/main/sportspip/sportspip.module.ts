@@ -40,6 +40,8 @@ import { PlayerDetailsModule } from './player-details/player-details.module';
 import { RosterModule } from './roster/roster.module';
 import { ScheduleListComponent } from './schedule-list/schedule-list.component';
 import { ScheduleListModule } from './schedule-list/schedule-list.module';
+import { FormsModule } from '@angular/forms';
+
 
 
 
@@ -51,7 +53,7 @@ FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, i
 
 @NgModule({
   
-  declarations: [ ScheduleListComponent],
+  declarations: [ ScheduleListComponent ],
   imports: [
     CommonModule,
     CoreCommonModule,
@@ -78,7 +80,9 @@ FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, i
     CoachDetailsModule,
     CoachDetailsModule,
     RosterModule,
-    ScheduleListModule
+    ScheduleListModule,
+    FormsModule
+    
     
    
   ],

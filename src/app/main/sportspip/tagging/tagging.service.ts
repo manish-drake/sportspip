@@ -9,6 +9,7 @@ import { catchError } from 'rxjs/operators';
 import { Delivery } from '../interfaces';
 import { GatewayService } from '../gateway.service';
 
+
 @Injectable({
   providedIn: 'root'
 })

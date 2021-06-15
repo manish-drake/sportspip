@@ -3,9 +3,8 @@
     <div class="card mb-4">
       <div class="card-body p-2">
         <div class="position-relative">
-          <app-media-player (options)="playerOptions"></app-media-player>
-          <!-- <app-player class="video-js side-bar-video card-img-top vjs-16-9"  [options]="playerOptions">
-      </app-player> -->
+          <app-media-player [options]="playerOptions">
+          </app-media-player>
         </div>
       </div>
 
@@ -32,8 +31,8 @@
             </tr>
             <tr>
               <td colspan="7">
-                <div class="btn-group" name="runs">
-                  <label class="btn btn-outline-primary" [(ngModel)]="runsModel" btnRadio="0" tabindex="0" role="button"
+                <div class="btn-group" name="runs" >
+                  <label class="btn btn-outline-primary" [(ngModel)]="runsModel" btnRadio="0" tabindex="0" role="button" 
                     (ngModelChange)="onNgModelChange($event)">0</label>
                   <label class="btn btn-outline-primary" [(ngModel)]="runsModel" btnRadio="1" tabindex="0"
                     role="button">1</label>
@@ -43,15 +42,14 @@
                     (ngModelChange)="onNgModelChange($event)">4</label>
                   <label class="btn btn-outline-primary" [(ngModel)]="runsModel" btnRadio="6" tabindex="0"
                     role="button">6</label>
-                </div>
-
+              </div>
             </tr>
             <tr>
               <th colspan="7">Bowler</th>
             </tr>
             <tr>
               <td colspan="7">
-                <div class="btn-group" name="bowler">
+                <div class="btn-group" name="BowlerNumber">
                   <label class="btn btn-outline-primary" [(ngModel)]="bowlerModel" btnRadio="22" tabindex="0"
                     role="button" (ngModelChange)="onNgModelChange($event)">22</label>
                   <label class="btn btn-outline-primary" [(ngModel)]="bowlerModel" btnRadio="15" tabindex="0"
@@ -64,8 +62,8 @@
             </tr>
             <tr>
               <td colspan="7">
-                <div class="btn-group" name="batsman">
-                  <label class="btn btn-outline-primary" [(ngModel)]="batsmanModel" btnRadio="18" tabindex="0"
+                <div class="btn-group" name="BatsmanNumber">
+                  <label class="btn btn-outline-primary" [(ngModel)]="batsmanModel" btnRadio="18" tabindex="0" 
                     role="button" (ngModelChange)="onNgModelChange($event)">18</label>
                   <label class="btn btn-outline-primary" [(ngModel)]="batsmanModel" btnRadio="27" tabindex="0"
                     role="button">27</label>
@@ -104,13 +102,13 @@
               <th> Runs</th>
             </tr>
             <tr *ngFor="let com of deliveries">
-              <th>{{com.DeliveryTime}}</th>
-              <th>{{com.LeadTime}}</th>
-              <th>{{com.LagTime}}</th>
-              <th>{{com.DeliveryCounter}}</th>
-              <th>{{com.BowlerNumber}}</th>
-              <th>{{com.BatsmanNumber}}</th>
-              <th>{{com.Runs}}</th>
+              <th>{{com.deliveryTime}}</th>
+              <th>{{com.leadTime}}</th>
+              <th>{{com.lagTime}}</th>
+              <th>{{com.deliveryCounter}}</th>
+              <th>{{com.bowlerNumber}}</th>
+              <th>{{com.batsmanNumber}}</th>
+              <th>{{com.runs}}</th>
             </tr>
           </table>
         </div>

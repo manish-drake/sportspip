@@ -6,6 +6,14 @@ import { TaggingComponent } from 'app/main/sportspip/tagging/tagging.component';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 import { MediaPlayerModule } from '../../extensions/media-player/media-player.module';
+import { TaggingPipe } from '../tagging.pipe';
+
+
+import { FormsModule} from '@angular/forms';
+
+
+
+
 
 
 
@@ -15,16 +23,16 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [TaggingComponent],
+  declarations: [TaggingComponent,TaggingPipe],
   imports: [
     CommonModule, RouterModule.forChild(routes),
      NgbModule, CoreCommonModule, 
-     ContentHeaderModule,MediaPlayerModule
+     ContentHeaderModule,MediaPlayerModule,
+     FormsModule
+     
   ],
-  providers: [
-    DatePipe
   
-  ],
+ 
   
 })
 export class TaggingModule { }

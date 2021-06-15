@@ -12,7 +12,7 @@
                                     class="col-xl-6 col-lg-12 d-flex flex-column justify-content-between border-container-lg">
                                     <div class="user-avatar-section">
                                         <div class="d-flex justify-content-start">
-                                            <img src="{{ 'http://115.246.85.186:1337' + coachCollection.CoachImage[0].url}}" 
+                                            <img src="{{ 'http://115.246.85.186:1337' + coachCollection.coachImage[0].url}}" 
                                             height="104" width="104"alt="Logo" />
                                            
                                             <ng-template #customAvatar>
@@ -54,28 +54,28 @@
                                             <div class="user-info-title">
                                                 <span class="card-text user-info-title font-weight-bold mb-0">Name:</span>
                                             </div>
-                                            <p class="card-text mb-0">{{coachCollection.CoachName}}</p>
+                                            <p class="card-text mb-0">{{coachCollection.coachName}}</p>
                                         </div>
                                         <div class="d-flex flex-wrap my-50">
                                             <div class="user-info-title">
                                                 <span
                                                     class="card-text user-info-title font-weight-bold mb-0">Title:</span>
                                             </div>
-                                            <p class="card-text mb-0">{{coachCollection.CoachTitle}}</p>
+                                            <p class="card-text mb-0">{{coachCollection.coachTitle}}</p>
                                         </div>
                                         <div class="d-flex flex-wrap my-50">
                                             <div class="user-info-title">
                                                 <span
                                                     class="card-text user-info-title font-weight-bold mb-0">College:</span>
                                             </div>
-                                            <p class="card-text mb-0">{{coachCollection.College}}</p>
+                                            <p class="card-text mb-0">{{coachCollection.college}}</p>
                                         </div>
                                         <div class="d-flex flex-wrap my-50">
                                             <div class="user-info-title">
                                                 <span
                                                     class="card-text user-info-title font-weight-bold mb-0">Dates:</span>
                                             </div>
-                                            <p class="card-text mb-0">{{coachCollection.Dates}}</p>
+                                            <p class="card-text mb-0">{{coachCollection.dates}}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -122,7 +122,7 @@
                             <h4 class="card-title mb-2">About Coach</h4>
                         </div>
                         <div class="card-body">
-                            <p>{{coachCollection.AboutCoach}}
+                            <p>{{coachCollection.aboutCoach}}
                             </p>
                         </div>
                     </div>

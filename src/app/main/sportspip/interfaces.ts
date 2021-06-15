@@ -18,47 +18,47 @@ export interface IFootball{
 }
 export interface ITeams{
     id:string,
-    Date: string,
-    TeamName: string,
-    TeamThumbnail: any,
-    Contact:string,
-    Status:string,
-    Country:string,
-    Role:string,
-    SchoolName: string,
-    UserName:string,
+    date: string,
+    teamName: string,
+    teamThumbnail: any,
+    contact:string,
+    status:string,
+    country:string,
+    role:string,
+    schoolName: string,
+    userName:string,
 }
 export interface ICoaches{
     id:string,
-    CoachName:string,
-    CoachTitle:string,
-    CoachImage:any,
-    College:string,
-    Dates: string,
-    AboutCoach:string,
+    coachName:string,
+    coachTitle:string,
+    coachImage:any,
+    college:string,
+    dates: string,
+    aboutCoach:string,
 }
 export interface IPlayer{
     id:string,
-    PlayerName:string,
-    PlayerRole:string,
-    PlayerImage:any,
-    PlayerHeight:string,
-    PlayerWeight:string,
-    PlayerClass:string,
-    PlayerHometown:string,
-    AboutPlayer:string
+    playerName:string,
+    playerRole:string,
+    playerImage:any,
+    playerHeight:string,
+    playerWeight:string,
+    playerClass:string,
+    playerHometown:string,
+    aboutPlayer:string
 }
 export interface IRoster{
     id:string,
-    Sport:string,
-    Level:string,
-    Program:string,
-    Year:string,
-    Name:string,
-    PlayerNumber:string,
-    PlayerLevel:string,
-    Address:string,
-    School:string
+    sport:string,
+    level:string,
+    program:string,
+    year:string,
+    name:string,
+    playerNumber:string,
+    playerLevel:string,
+    address:string,
+    school:string
 
 }
 export interface ISchedule{
@@ -72,14 +72,14 @@ export interface ISchedule{
 
 }
 export class Delivery {
-    Session: string;
-    DeliveryTime: number;
-    LeadTime: number;
-    LagTime: number;
-    DeliveryCounter: number;
-    BowlerNumber: number;
-    BatsmanNumber: number;
-    Runs: number;
+    session: string;
+    deliveryTime: number;
+    leadTime: number;
+    lagTime: number;
+    deliveryCounter: number;
+    bowlerNumber: number;
+    batsmanNumber: number;
+    runs: number;
 
 }
 
@@ -101,8 +101,8 @@ export class pivoteT
 export class events
 {
     id : number;
-    EventName : string;
-    EventDate:string;
-    EventThumbnail : any;
-    State:string;
+    eventName : string;
+    eventDate:string;
+    eventThumbnail : any;
+    state:string;
 }
