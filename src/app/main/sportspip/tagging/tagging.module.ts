@@ -7,8 +7,6 @@ import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 import { MediaPlayerModule } from '../../extensions/media-player/media-player.module';
 import { TaggingPipe } from '../tagging.pipe';
-
-
 import { FormsModule} from '@angular/forms';
 
 

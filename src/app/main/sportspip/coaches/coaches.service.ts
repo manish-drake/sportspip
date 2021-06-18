@@ -30,7 +30,7 @@ export class CoachesService implements Resolve<any> {
 
   private _urlLevel: string = "/assets/data/level.json";
   private _urlProgram : string = "/assets/data/program.json";
-  private _urlCoaches : string = "http://115.246.85.186:1337/coaches";
+  private _urlCoaches : string = "http://drake.in:1337/coaches";
 
    /**
    * Resolver

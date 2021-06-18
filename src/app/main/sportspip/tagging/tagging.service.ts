@@ -1,14 +1,12 @@
 
-
 import { Injectable } from '@angular/core';
 import { Observable, ObservableInput, throwError } from 'rxjs';
-
+import { Delivery } from '../interfaces';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
-
-import { Delivery } from '../interfaces';
 import { GatewayService } from '../gateway.service';
 
+                                          
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +26,7 @@ export class TaggingService {
   }
 
   getDeliveriesBySession(session:string):Observable<Delivery[]> {
-    const uri = this.gatewayService.strapiUri("/deliveries?Session=" + session);
+    const uri = this.gatewayService.strapiUri("/deliveries?session=" + session);
     const encoded = encodeURI(uri)
     console.log(encoded);
     return this.http.get(encoded) as Observable<Delivery[]>

@@ -52,7 +52,7 @@ export class ScheduleService implements Resolve<any>  {
   * Get Events
   */
  getEvents(): Promise<any[]> {
-   const url = `http://115.246.85.186:1337/Schedules`;
+   const url = `http://drake.in:1337/Schedules`;
 
    return new Promise((resolve, reject) => {
      this._httpClient.get(url).subscribe((response: any) => {
@@ -69,7 +69,7 @@ export class ScheduleService implements Resolve<any>  {
   * Get Calendar
   */
  getSchedule(): Promise<any[]> {
-   const url = `api/schedule-filter`; //`http://115.246.85.186:1337/Event-Filters`;
+   const url = `api/schedule-filter`; //`http://drake.in:1337/Event-Filters`;
 
    return new Promise((resolve, reject) => {
      this._httpClient.get(url).subscribe((response: any) => {
@@ -115,7 +115,7 @@ export class ScheduleService implements Resolve<any>  {
   */
  deleteEvent(event) {
    return new Promise((resolve, reject) => {
-     this._httpClient.delete('http://115.246.85.186:1337/Schedules' + event.id).subscribe(response => {
+     this._httpClient.delete('http://drake.in:1337/Schedules' + event.id).subscribe(response => {
        this.getEvents();
        resolve(response);
      }, reject);
@@ -169,7 +169,7 @@ export class ScheduleService implements Resolve<any>  {
   */
  postNewEvent() {
    return new Promise((resolve, reject) => {
-     this._httpClient.post('http://115.246.85.186:1337/Schedules', this.currentEvent).subscribe(response => {
+     this._httpClient.post('http://drake.in:1337/Schedules', this.currentEvent).subscribe(response => {
        this.getEvents();
        resolve(response);
      }, reject);
@@ -183,7 +183,7 @@ export class ScheduleService implements Resolve<any>  {
   */
  postUpdatedEvent(event) {
    return new Promise((resolve, reject) => {
-     this._httpClient.post('http://115.246.85.186:1337/Schedules' + event.id, { ...event }).subscribe(response => {
+     this._httpClient.post('http://drake.in:1337/Schedules' + event.id, { ...event }).subscribe(response => {
        this.getEvents();
        resolve(response);
      }, reject);

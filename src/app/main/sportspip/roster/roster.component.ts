@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 import { IRoster } from '../interfaces';
 import { RosterService } from './roster.service';
 
@@ -11,14 +13,20 @@ import { RosterService } from './roster.service';
 export class RosterComponent implements OnInit {
 
   roster:IRoster[];
-  constructor(private _roster:RosterService) { }
-
+  rosters: any;
   
+  constructor(private activatedRoute: ActivatedRoute,private _roster:RosterService) { }
+
+ rosterId=0;
 
   ngOnInit(): void {
 
     this._roster.getRoster().subscribe(data=> this.roster = data);
+
+    
     
   }
+ 
+  
 
 }

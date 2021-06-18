@@ -6,14 +6,14 @@ import { Injectable } from '@angular/core';
 export class GatewayService {
 
   constructor() { }
-  private _serverUri: string = "http://115.246.85.186";
+  private _serverUri: string = "http://drake.in";
 
   serverUri(relativeUri: string = ""): string {
     return this._serverUri + relativeUri;
   }
 
   flaskUri(relativeUri: string) {
-    return `http://115.246.85.186/:1337${relativeUri}`;
+    return `http://drake.in/:5002${relativeUri}`;
   }
 
   strapiUri(relativeUri: string): string {

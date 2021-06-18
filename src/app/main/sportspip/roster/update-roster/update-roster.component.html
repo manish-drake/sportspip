@@ -1,0 +1,76 @@
+<div class="card mb-4">
+    <div class="card-body p-5">
+        <div class="position-relative">
+            <h2 class="bg-light mb-2 text-center">Update Roster</h2>
+            <form (submit)="updateRoster(updatRosterForm)" #updatRosterForm="ngForm">
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <label for="validationServer01"> Name</label>
+                        <input type="text" class="form-control" required name="name" [(ngModel)]="rosterDetails.name"
+                            ngModel>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="validationServer02">JERSEY NAME</label>
+                        <input type="text" class="form-control" [(ngModel)]="rosterDetails.playerNumber" required
+                            name="playerNumber" ngModel>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <label for="validationServer03">LEVEL</label>
+                        <input type="text" class="form-control" [(ngModel)]="rosterDetails.level"
+                            placeholder="Enter Level" required name="level" ngModel>
+
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="validationServer03">SCHOOL</label>
+                        <input type="text" class="form-control" [(ngModel)]="rosterDetails.school"
+                            placeholder="Enter school name" required name="school" ngModel>
+
+                    </div>
+
+                </div>
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <label for="validationServer01">rostertId</label>
+                        <input type="text" class="form-control" [(ngModel)]="rosterDetails.rosterId"
+                            value="Enter player ID" required name="rosterId" ngModel>
+                    </div>
+                    <!-- <div class="col-md-6 mb-3">
+            <label for="validationServer01">playerNumber</label>
+            <input type="text" class="form-control" [(ngModel)]="rosterDetails.color" value="Enter Product Name" required name="product_color" ngModel>
+          </div> -->
+
+                </div>
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <label for="validationServer01">sport</label>
+                        <input type="text" class="form-control" [(ngModel)]="rosterDetails.sport"
+                            value="Enter Sport name" required name="sport" ngModel>
+                    </div>
+                    <!-- <div class="col-md-6 mb-3">
+            <label for="validationServer01">program</label>
+            <input type="text" class="form-control" [(ngModel)]="rosterDetails.color" value="Enter Product Name" required name="product_color" ngModel>
+          </div> -->
+
+                </div>
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <label for="validationServer01">year</label>
+                        <input type="text" class="form-control" [(ngModel)]="rosterDetails.year" value="Enter year"
+                            required name="year" ngModel>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="validationServer01">ADDRESS</label>
+                        <input type="text" class="form-control" [(ngModel)]="rosterDetails.address"
+                            value="Enter Product Name" required name="address" ngModel>
+                    </div>
+
+                </div>
+
+                <button class="btn btn-primary" type="submit" >Update
+                    ROSTER</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -16,6 +16,9 @@ import { ContentHeaderModule } from 'app/layout/components/content-header/conten
 import { MediaPlayerModule } from 'app/main/extensions/media-player/media-player.module';
 import { CardSnippetModule } from '@core/components/card-snippet/card-snippet.module';
 import { RosterService } from './roster.service';
+import { DeleteRosterComponent } from './deleteRoster/delete-roster.component';
+import { UpdateRosterComponent } from './update-roster/update-roster.component';
+
 //import { BrowserModule } from '@angular/platform-browser';
 
 
@@ -26,11 +29,13 @@ const routes: Routes = [
     path: 'roster',
     component: RosterComponent,
     data: { animation: 'roster' }
-  }
+  },
+  {path:"delete-roster/:id", component:DeleteRosterComponent},
+  {path:"update-roster/:id", component:UpdateRosterComponent}
 ];
 
 @NgModule({
-  declarations: [RosterComponent],
+  declarations: [RosterComponent, UpdateRosterComponent],
   imports: [
    
     CommonModule, RouterModule.forChild(routes),

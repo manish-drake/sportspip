@@ -9,7 +9,7 @@ import { PlayerService } from './player.service';
 })
 export class PlayerComponent implements OnInit {
 
-  serverUri:string = "http://115.246.85.186:1337";
+  serverUri:string = "http://drake.in:1337";
 
   public contentHeader: object;
 

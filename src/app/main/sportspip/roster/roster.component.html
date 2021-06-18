@@ -133,10 +133,15 @@
                                                 <i data-feather="more-vertical"></i>
                                             </button>
                                             <div ngbDropdownMenu>
-                                                <a ngbDropdownItem href="javascript:void(0);"><i data-feather="edit-2"
-                                                        class="mr-50"></i><span>Edit</span></a><a ngbDropdownItem
-                                                    href="javascript:void(0);"><i data-feather="trash"
-                                                        class="mr-50"></i><span>Delete</span></a>
+                                                <a ngbDropdownItem href="javascript:void(0);" href="/sportspip/update-roster/{{rosters.id}}">
+
+                                                    <i data-feather="edit-2"class="mr-50"></i>
+                                                        <span>Edit</span></a>
+                                                        
+                                                <a ngbDropdownItem href="javascript:void(0);" href="/sportspip/delete-roster/{{rosters.id}}">
+                                                            
+                                                    <i data-feather="trash" class="mr-50" ></i>
+                                                        <span>Delete</span></a>
                                             </div>
                                         </div>
                                     </td>

@@ -9,7 +9,7 @@ import { IFootball, ITeams } from '../interfaces';
   providedIn: 'root'
 })
 export class TeamsService {
-  private _urlTeams: string = "http://115.246.85.186:1337/teams";
+  private _urlTeams: string = "http://drake.in:1337/teams";
   
 
 

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReviewComponent } from './review.component';
 import { RouterModule, Routes } from '@angular/router';
 import { MediaPlayerModule } from 'app/main/extensions/media-player/media-player.module';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -13,7 +14,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [ReviewComponent],
   imports: [
-    CommonModule,RouterModule.forChild(routes),MediaPlayerModule
+    CommonModule,RouterModule.forChild(routes),MediaPlayerModule,
+    FormsModule
   ]
 })
 export class ReviewModule { }

@@ -1,5 +1,7 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation ,Input} from '@angular/core';
+import { FormControl } from '@angular/forms';
+
 import { Router } from '@angular/router';
 import { Delivery } from '../interfaces';
 import { TaggingService } from './tagging.service';
@@ -9,11 +11,12 @@ import { TaggingService } from './tagging.service';
     templateUrl: './tagging.component.html',
     styleUrls: ['./tagging.component.scss'],
     providers: [DatePipe],
-    encapsulation: ViewEncapsulation.None
+    
     
   })
   export class TaggingComponent implements OnInit {
   
+    @Input()control:FormControl;
     today = new Date();
     session: string = '05-03-2021 12:00:00';
     runsModel: string = '0';
@@ -51,8 +54,8 @@ import { TaggingService } from './tagging.service';
     }
     
     deliveries : Delivery[] = [];
-
-    addDelivery(): void{
+    
+    addDelivery(){
       this.deliveryCount += 1;
       var video1 = document.querySelector('video');
       this.deliveryTime = video1.currentTime;
@@ -60,9 +63,9 @@ import { TaggingService } from './tagging.service';
       let newDelivery: Delivery = new Delivery;
       newDelivery.session = this.session;
       newDelivery.batsmanNumber = +this.batsmanModel;
-      console.log(this.batsmanModel);
+      
       newDelivery.bowlerNumber = +this.bowlerModel;
-      console.log(this.bowlerModel);
+      
       newDelivery.deliveryCounter = this.deliveryCount;
       newDelivery.deliveryTime = this.deliveryTime
       newDelivery.lagTime = 5;
@@ -72,8 +75,11 @@ import { TaggingService } from './tagging.service';
       this.taggingService.addDelivery(newDelivery)
         .subscribe(delivery => this.deliveries.push(delivery));
       this.taggingInProgress = !(this.deliveryCount >= 12);
+      console.log(this.bowlerModel);
+      console.log(this.batsmanModel);
+      
     }
-
+    
     review(){
       this.router.navigate(['app/main/sportspip/review', this.session]);
     }
@@ -81,7 +87,9 @@ import { TaggingService } from './tagging.service';
       if(e){
         console.log(e);
       }
+      
     }
+    
   }
     
   
