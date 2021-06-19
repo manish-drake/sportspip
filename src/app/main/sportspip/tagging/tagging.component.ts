@@ -55,7 +55,7 @@ import { TaggingService } from './tagging.service';
     
     deliveries : Delivery[] = [];
     
-    addDelivery(){
+    addDelivery(): void{
       this.deliveryCount += 1;
       var video1 = document.querySelector('video');
       this.deliveryTime = video1.currentTime;
@@ -63,9 +63,7 @@ import { TaggingService } from './tagging.service';
       let newDelivery: Delivery = new Delivery;
       newDelivery.session = this.session;
       newDelivery.batsmanNumber = +this.batsmanModel;
-      
       newDelivery.bowlerNumber = +this.bowlerModel;
-      
       newDelivery.deliveryCounter = this.deliveryCount;
       newDelivery.deliveryTime = this.deliveryTime
       newDelivery.lagTime = 5;
@@ -75,9 +73,6 @@ import { TaggingService } from './tagging.service';
       this.taggingService.addDelivery(newDelivery)
         .subscribe(delivery => this.deliveries.push(delivery));
       this.taggingInProgress = !(this.deliveryCount >= 12);
-      console.log(this.bowlerModel);
-      console.log(this.batsmanModel);
-      
     }
     
     review(){
