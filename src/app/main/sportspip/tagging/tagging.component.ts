@@ -21,11 +21,10 @@ export class TaggingComponent implements OnInit {
 
   today = new Date();
   session: string = '05-03-2021 12:00:00';
-  taggingValue !: FormGroup;
-
-  runsModel: string = '0';
-  bowlerModel: string = '0';
-  batsmanModel: string = '0';
+  
+  runsModel: string = '1';
+  bowlerModel: string = '22';
+  batsmanModel: string = '45';
   deliveryCount: number = 0;
   deliveryTime: number = 0;
   taggingInProgress: boolean = true;
@@ -48,14 +47,7 @@ export class TaggingComponent implements OnInit {
   }
   ngOnInit() {
 
-    this.taggingValue = this.formbuilder.group({
-
-      runsModel: [''],
-      bowlerModel: [''],
-      batsmanModel: [''],
-      // deliveryCount: ['']
-
-    })
+    
   }
 
   Play(): void {
@@ -76,7 +68,9 @@ export class TaggingComponent implements OnInit {
     var video1 = document.querySelector('video');
     this.deliveryTime = video1.currentTime;
     console.log(video1.currentTime);
+
     let newDelivery: Delivery = new Delivery;
+
     newDelivery.session = this.session;
     newDelivery.batsmanNumber = +this.batsmanModel;
 
@@ -88,11 +82,12 @@ export class TaggingComponent implements OnInit {
     newDelivery.leadTime = 5;
     newDelivery.runs = +this.runsModel;
 
+    console.log(this.bowlerModel);
+    console.log(this.batsmanModel);
     this.taggingService.addDelivery(newDelivery)
       .subscribe(delivery => this.deliveries.push(delivery));
     this.taggingInProgress = !(this.deliveryCount >= 12);
-    console.log(this.bowlerModel);
-    console.log(this.batsmanModel);
+   
 
   }
 

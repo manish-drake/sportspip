@@ -19,3 +19,11 @@ tr:nth-child(even) {
 
 
 body {background-color: rgb(163, 213, 219);}
+
+label,.unselected {
+  background-color: lightblue ;
+}
+
+label,.selected {
+  background-color: lightgreen ;
+}

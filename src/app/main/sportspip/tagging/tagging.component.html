@@ -18,7 +18,7 @@
     </div>
   </div>
 
-  <div class="col-md-4" >
+  <div class="col-md-4">
     <div class="card mb-4">
       <div class="card-body p-2">
         <div class="position-relative; table-responsive">
@@ -29,33 +29,58 @@
             <tr>
               <th colspan="7">Runs</th>
             </tr>
-           
+
             <tr>
-              
+
               <td colspan="7">
-                <div class="btn-group" class="form-group" name="runs"  >
-                  <label class="btn btn-outline-primary" [(ngModel)]="runsModel" btnRadio="0" tabindex="0" role="button" 
-                    (ngModelChange)="onNgModelChange($event)">0</label>
-                  <label class="btn btn-outline-primary" [(ngModel)]="runsModel" btnRadio="1" tabindex="1"
-                    role="button">1</label>
-                  <label class="btn btn-outline-primary" [(ngModel)]="runsModel" btnRadio="2" tabindex="2"
-                    role="button">2</label>
-                  <label class="btn btn-outline-primary" [(ngModel)]="runsModel" btnRadio="4" tabindex="3" role="button"
-                    (ngModelChange)="onNgModelChange($event)">4</label>
-                  <label class="btn btn-outline-primary" [(ngModel)]="runsModel" btnRadio="6" tabindex="4"
-                    role="button">6</label>
-              </div>
+                <div class="btn-group" name="runs">
+                  <!-- <label class="btn btn-outline-primary" ngDefaultControl [(ngModel)]="runsModel" btnRadio="0"
+                    tabindex="0" role="button" (ngModelChange)="onNgModelChange($event)">0</label>
+
+                  <label class="btn btn-outline-primary" ngDefaultControl [(ngModel)]="runsModel" btnRadio="1"
+                    tabindex="0" role="button"(ngModelChange)="onNgModelChange($event)">1</label>
+
+                  <label class="btn btn-outline-primary" ngDefaultControl [(ngModel)]="runsModel" btnRadio="2"
+                    tabindex="0" role="button"(ngModelChange)="onNgModelChange($event)">2</label>
+
+                  <label class="btn btn-outline-primary" ngDefaultControl [(ngModel)]="runsModel" btnRadio="4"
+                    tabindex="0" role="button" (ngModelChange)="onNgModelChange($event)">4</label>
+
+                  <label class="btn btn-outline-primary" ngDefaultControl [(ngModel)]="runsModel" btnRadio="6"
+                    tabindex="0" role="button"(ngModelChange)="onNgModelChange($event)">6</label> -->
+
+
+                  <label ngbButtonLabel class="btn-outline-primary" rippleEffect [(ngModel)]="runsModel" btnRadio="0"
+                    tabindex="0" role="button" (ngModelChange)="onNgModelChange($event)"><input ngbButton type="radio"
+                      [value]="1" />0 </label>
+                  <label ngbButtonLabel class="btn-outline-primary" rippleEffect [(ngModel)]="runsModel" btnRadio="0"
+                    tabindex="0" role="button" (ngModelChange)="onNgModelChange($event)"><input ngbButton type="radio"
+                      value="middle" />1 </label>
+                  <label ngbButtonLabel class="btn-outline-primary" rippleEffect [(ngModel)]="runsModel" btnRadio="0"
+                    tabindex="0" role="button" (ngModelChange)="onNgModelChange($event)"><input ngbButton type="radio"
+                      [value]="false" />Radio
+                  </label>
+
+
+
+                </div>
+
+
+
+
+
+
             </tr>
             <tr>
               <th colspan="7">Bowler</th>
             </tr>
             <tr>
               <td colspan="7">
-                <div class="btn-group" name="bowlerNumber" class="form-group ">
-                  <label class="btn btn-outline-primary" [(ngModel)]="bowlerModel" btnRadio="22" tabindex="0"
-                    role="button" (ngModelChange)="onNgModelChange($event)">22</label>
-                  <label class="btn btn-outline-primary" [(ngModel)]="bowlerModel" btnRadio="15" tabindex="1"
-                    role="button">15</label>
+                <div class="btn-group" name="bowlerNumber">
+                  <label class="btn btn-outline-primary" ngDefaultControl [(ngModel)]="bowlerModel" btnRadio="22"
+                    tabindex="0" role="button" (ngModelChange)="onNgModelChange($event)">22</label>
+                  <label class="btn btn-outline-primary" ngDefaultControl [(ngModel)]="bowlerModel" btnRadio="15"
+                    tabindex="0" role="button" (ngModelChange)="onNgModelChange($event)">15</label>
                 </div>
               </td>
             </tr>
@@ -64,21 +89,21 @@
             </tr>
             <tr>
               <td colspan="7">
-                <div class="btn-group" name="batsmanNumber" class="form-group">
-                  <label class="btn btn-outline-primary" [(ngModel)]="batsmanModel" btnRadio="18" tabindex="0" 
-                    role="button" (ngModelChange)="onNgModelChange($event)">18</label>
-                  <label class="btn btn-outline-primary" [(ngModel)]="batsmanModel" btnRadio="27" tabindex="1"
-                    role="button">27</label>
+                <div class="btn-group" name="batsmanNumber">
+                  <label class="btn btn-outline-primary" ngDefaultControl [(ngModel)]="batsmanModel" btnRadio="18"
+                    tabindex="0" role="button" (ngModelChange)="onNgModelChange($event)">18</label>
+                  <label class="btn btn-outline-primary" ngDefaultControl [(ngModel)]="batsmanModel" btnRadio="27"
+                    tabindex="1" role="button">27</label>
                 </div>
               </td>
             </tr>
             <tr>
               <td [hidden]="taggingInProgress" colspan="7" style="background-color: #FFFFFF;"><button type="button"
-                  class="btn btn-info btn-block" (click)="review()" > Review </button></td>
+                  class="btn btn-info btn-block" (click)="review()"> Review </button></td>
               <td [hidden]="!taggingInProgress" colspan="7" style="background-color: #FFFFFF;"><button type="button"
-                  class="btn btn-info btn-block" (click)="addDelivery()" > Delivery </button></td>
+                  class="btn btn-info btn-block" (click)="addDelivery()"> Delivery </button></td>
             </tr>
-          
+
           </table>
         </div>
       </div>
