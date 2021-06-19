@@ -33,7 +33,7 @@
             <tr>
               
               <td colspan="7">
-                <div class="btn-group" name="runs"   >
+                <div class="btn-group" class="form-group" name="runs"  >
                   <label class="btn btn-outline-primary" [(ngModel)]="runsModel" btnRadio="0" tabindex="0" role="button" 
                     (ngModelChange)="onNgModelChange($event)">0</label>
                   <label class="btn btn-outline-primary" [(ngModel)]="runsModel" btnRadio="1" tabindex="1"
@@ -51,7 +51,7 @@
             </tr>
             <tr>
               <td colspan="7">
-                <div class="btn-group" name="bowlerNumber">
+                <div class="btn-group" name="bowlerNumber" class="form-group ">
                   <label class="btn btn-outline-primary" [(ngModel)]="bowlerModel" btnRadio="22" tabindex="0"
                     role="button" (ngModelChange)="onNgModelChange($event)">22</label>
                   <label class="btn btn-outline-primary" [(ngModel)]="bowlerModel" btnRadio="15" tabindex="1"
@@ -64,7 +64,7 @@
             </tr>
             <tr>
               <td colspan="7">
-                <div class="btn-group" name="batsmanNumber">
+                <div class="btn-group" name="batsmanNumber" class="form-group">
                   <label class="btn btn-outline-primary" [(ngModel)]="batsmanModel" btnRadio="18" tabindex="0" 
                     role="button" (ngModelChange)="onNgModelChange($event)">18</label>
                   <label class="btn btn-outline-primary" [(ngModel)]="batsmanModel" btnRadio="27" tabindex="1"
@@ -76,7 +76,7 @@
               <td [hidden]="taggingInProgress" colspan="7" style="background-color: #FFFFFF;"><button type="button"
                   class="btn btn-info btn-block" (click)="review()" > Review </button></td>
               <td [hidden]="!taggingInProgress" colspan="7" style="background-color: #FFFFFF;"><button type="button"
-                  class="btn btn-info btn-block" (click)="addDelivery()" ngDefaultControl > Delivery </button></td>
+                  class="btn btn-info btn-block" (click)="addDelivery()" > Delivery </button></td>
             </tr>
           
           </table>

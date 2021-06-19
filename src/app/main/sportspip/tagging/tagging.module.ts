@@ -26,7 +26,8 @@ const routes: Routes = [
     CommonModule, RouterModule.forChild(routes),
      NgbModule, CoreCommonModule, 
      ContentHeaderModule,MediaPlayerModule,
-     FormsModule
+     FormsModule,
+     NgbModule
      
   ],
   
