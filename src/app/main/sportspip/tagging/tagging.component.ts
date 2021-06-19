@@ -47,6 +47,41 @@ export class TaggingComponent implements OnInit {
   }
   ngOnInit() {
 
+<<<<<<< HEAD
+=======
+    Play(): void{
+      var video1 = document.querySelector('video');
+      video1.play();
+    }
+    Pause(): void{
+      var video1 = document.querySelector('video');
+      this.deliveryTime = video1.currentTime;
+      console.log(video1.currentTime);
+      video1.pause();
+    }
+    
+    deliveries : Delivery[] = [];
+    
+    addDelivery(): void{
+      this.deliveryCount += 1;
+      var video1 = document.querySelector('video');
+      this.deliveryTime = video1.currentTime;
+      console.log(video1.currentTime);
+      let newDelivery: Delivery = new Delivery;
+      newDelivery.session = this.session;
+      newDelivery.batsmanNumber = +this.batsmanModel;
+      newDelivery.bowlerNumber = +this.bowlerModel;
+      newDelivery.deliveryCounter = this.deliveryCount;
+      newDelivery.deliveryTime = this.deliveryTime
+      newDelivery.lagTime = 5;
+      newDelivery.leadTime = 5;
+      newDelivery.runs = +this.runsModel;
+      
+      this.taggingService.addDelivery(newDelivery)
+        .subscribe(delivery => this.deliveries.push(delivery));
+      this.taggingInProgress = !(this.deliveryCount >= 12);
+    }
+>>>>>>> 095630b5ec3701163f3deda8e27333a1734c1fb6
     
   }
 
