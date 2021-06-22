@@ -105,7 +105,7 @@
                         <table class="table table-hover-animation">
                             <thead>
                                 <tr>
-                                    
+
                                     <th>Name</th>
                                     <th>Jersey Number</th>
                                     <th>Level</th>
@@ -115,14 +115,16 @@
 
                                 </tr>
                             </thead>
-                         
-                            <tbody  >
-                                <tr *ngFor= "let rosters of roster"  > 
-                                    
-                                   
+
+                            <tbody>
+                                <tr *ngFor="let rosters of roster">
+
+
                                     <td>{{rosters.name}}</td>
-                                   
-                                    <td> <span class="badge badge-pill badge-light-primary mr-1">{{rosters.playerNumber}}</span></td>
+
+                                    <td> <span
+                                            class="badge badge-pill badge-light-primary mr-1">{{rosters.playerNumber}}</span>
+                                    </td>
                                     <td>{{rosters.level}}</td>
                                     <td>{{rosters.address}} </td>
                                     <td>{{rosters.school}}</td>
@@ -133,21 +135,32 @@
                                                 <i data-feather="more-vertical"></i>
                                             </button>
                                             <div ngbDropdownMenu>
-                                                <a ngbDropdownItem href="javascript:void(0);" href="/sportspip/update-roster/{{rosters.id}}">
+                                                <a ngbDropdownItem href="javascript:void(0);"
+                                                    href="/sportspip/update-roster/{{rosters.id}}">
 
-                                                    <i data-feather="edit-2"class="mr-50"></i>
-                                                        <span>Edit</span></a>
-                                                        
-                                                <a ngbDropdownItem href="javascript:void(0);" href="/sportspip/delete-roster/{{rosters.id}}">
-                                                            
-                                                    <i data-feather="trash" class="mr-50" ></i>
-                                                        <span>Delete</span></a>
+                                                    <i data-feather="edit-2" class="mr-50"></i>
+                                                    <span>Edit</span></a>
+
+                                                <a ngbDropdownItem  href="javascript:void(0);"
+                                                     [swal]="SweetAlertConfirmColor">
+                                                    <i data-feather="trash" class="mr-50"></i>
+                                                    <span>Delete</span></a>
+                                                    <swal #SweetAlertConfirmColor (open)="ConfirmColorOpen()"></swal>
+
+                                                <!-- Sweet Alert ConfirmColor -->
+                                                <!-- <button class="btn btn-outline-primary mr-1"
+                                                    [swal]="SweetAlertConfirmColor" rippleEffect>
+                                                    Confirm Button Color
+                                                </button> -->
+                                                <!-- Swal of Sweet Alert ConfirmColor -->
+                                                <!-- <swal #SweetAlertConfirmColor (open)="ConfirmColorOpen()"></swal> -->
+                                                <!-- Swal of Sweet Alert ConfirmColor -->
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
                             </tbody>
-                        </table>                  
+                        </table>
                     </div>
                 </div>
             </div>
@@ -156,3 +169,79 @@
 
     </div>
 </div>
+
+
+<!-- <div *ngIf="displayForm" class="card card-body">
+    <form #quoteForm="ngForm" (ngSubmit)="submitQuote(quoteForm)">
+        <div class="form-group">
+            <label>First Name</label>
+            <input [(ngModel)]="selectedInterpretation.firstName" #quoteFirstName="ngModel" [ngClass]="{
+            'is-invalid': quoteFirstName.errors && quoteFirstName.touched
+          }" type="text" class="form-control" name="firstName" required minlength="2" maxlength="20" #firstName />
+            <div [hidden]="!quoteFirstName.errors?.required" class="invalid-feedback">
+                Please enter a first name.
+            </div>
+            <div [hidden]="!quoteFirstName.errors?.minlength" class="invalid-feedback">
+                Must be at least 2 characters.
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Last Name</label>
+            <input [(ngModel)]="selectedInterpretation.lastName" #quoteLastName="ngModel" [ngClass]="{
+            'is-invalid': quoteLastName.errors && quoteLastName.touched
+          }" type="text" class="form-control" name="lastName" required minlength="2" maxlength="20" #lastName />
+            <div [hidden]="!quoteLastName.errors?.required" class="invalid-feedback">
+                Please enter a last name.
+            </div>
+            <div [hidden]="!quoteLastName.errors?.minlength" class="invalid-feedback">
+                Must be at least 2 characters.
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Quote</label>
+            <input [(ngModel)]="selectedInterpretation.quote" #quoteQuote="ngModel" [ngClass]="{
+            'is-invalid': quoteQuote.errors && quoteQuote.touched
+          }" type="text" class="form-control" name="favQuote" required minlength="10" maxlength="200" #quote />
+            <div [hidden]="!quoteQuote.errors?.required" class="invalid-feedback">
+                Please enter the quote.
+            </div>
+            <div [hidden]="!quoteQuote.errors?.minlength" class="invalid-feedback">
+                Must be at least 10 characters.
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Interpretation</label>
+            <input [(ngModel)]="selectedInterpretation.interpretation" #quoteInterpretation="ngModel" [ngClass]="{
+            'is-invalid':
+              quoteInterpretation.errors && quoteInterpretation.touched
+          }" type="text" class="form-control" name="interpretation" required minlength="10" maxlength="200"
+                #interpretation />
+            <div [hidden]="!quoteInterpretation.errors?.required" class="invalid-feedback">
+                Please enter the interpretation of the quote.
+            </div>
+            <div [hidden]="!quoteInterpretation.errors?.minlength" class="invalid-feedback">
+                Must be at least 10 characters.
+            </div>
+        </div>
+        <button *ngIf="!editState" (click)="
+          addQuote(
+            firstName.value,
+            lastName.value,
+            quote.value,
+            interpretation.value
+          )
+        " [disabled]="!quoteForm.form.valid" class="btn btn-warning btn-block">
+            Post
+        </button>
+        <button *ngIf="editState" (click)="
+          updateQuote(
+            firstName.value,
+            lastName.value,
+            quote.value,
+            interpretation.value
+          )
+        " [disabled]="!quoteForm.form.valid" class="btn btn-danger btn-block">
+            Update
+        </button>
+    </form>
+</div> -->

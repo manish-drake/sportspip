@@ -9,7 +9,9 @@ import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
   
-  { path: 'review',component: ReviewComponent},
+  { path: 'review/:session', component: ReviewComponent},
+  // { path: 'review/session',component: ReviewComponent}
+
 ];
 @NgModule({
   declarations: [ReviewComponent],

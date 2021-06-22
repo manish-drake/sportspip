@@ -26,7 +26,7 @@ export class TaggingService {
   }
 
   getDeliveriesBySession(session:string):Observable<Delivery[]> {
-    const uri = this.gatewayService.strapiUri("/deliveries?session=" + session);
+    const uri = this.gatewayService.strapiUri("/deliveries?Session=" + session);
     const encoded = encodeURI(uri)
     console.log(encoded);
     return this.http.get(encoded) as Observable<Delivery[]>
@@ -35,10 +35,10 @@ export class TaggingService {
     
     const uri = this.gatewayService.flaskUri("/postjson");
    
-    return this.http.post<Delivery>(uri, deliveries)
-    .pipe(
-      catchError(this.handleError)
-    );
+    return this.http.post<Delivery>(uri, deliveries);
+    // .pipe(
+    //   catchError(this.handleError)
+    // );
   }
   getDeliveries(): Observable<Delivery>{
     return this.http.get(this.gatewayService.strapiUri("/deliveries")) as Observable<Delivery>;

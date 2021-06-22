@@ -3,8 +3,12 @@
     <div class="card mb-4">
       <div class="card-body p-2">
         <div class="position-relative">
-          <app-media-player [options]="playerOptions">
-          </app-media-player>
+          <div plyr plyrTitle="Video" [plyrPlaysInline]="true"  
+          [plyrPoster]="poster" [plyrSources]="videoSources" 
+          [plyrTracks]="tracks" [plyrOptions]="plyrOptions"></div>
+          <!-- <app-media-player [options]="playerOptions" >
+           
+          </app-media-player> -->
         </div>
       </div>
 
@@ -31,49 +35,48 @@
             </tr>
             <tr>
               <td colspan="7">
-                <div class="btn-group" name="runs" >
-                  <label class="btn btn-outline-primary" [(ngModel)]="runsModel" btnRadio="0" tabindex="0" role="button" 
-                    (ngModelChange)="onNgModelChange($event)">0</label>
-                  <label class="btn btn-outline-primary" [(ngModel)]="runsModel" btnRadio="1" tabindex="0"
-                    role="button">1</label>
-                  <label class="btn btn-outline-primary" [(ngModel)]="runsModel" btnRadio="2" tabindex="0"
-                    role="button">2</label>
-                  <label class="btn btn-outline-primary" [(ngModel)]="runsModel" btnRadio="4" tabindex="0" role="button"
-                    (ngModelChange)="onNgModelChange($event)">4</label>
-                  <label class="btn btn-outline-primary" [(ngModel)]="runsModel" btnRadio="6" tabindex="0"
-                    role="button">6</label>
-              </div>
-              
+                <div class="btn-group btn-group-toggle" ngbRadioGroup name="runs">
+                  
+                  <label ngbButtonLabel class="btn-outline-primary" ngDefaultControl rippleEffect
+                    [(ngModel)]="runsModel"(ngModelChange)="onNgModelChange($event)">
+                    <input ngbButton type="radio" [value]="0"/>0 </label>
 
-      <div class="btn-group btn-group-toggle" ngbRadioGroup name="runs" [(ngModel)]="runsModel">
-        <label ngbButtonLabel class="btn-outline-primary" rippleEffect [(ngModel)]="runsModel"
-          ><input ngbButton type="radio" [value]="0" />0 </label>
-        <label ngbButtonLabel class="btn-outline-primary" rippleEffect [(ngModel)]="runsModel"
-          ><input ngbButton type="radio" value="1" />1 </label>
-        <label ngbButtonLabel class="btn-outline-primary" rippleEffect [(ngModel)]="runsModel"
-          ><input ngbButton type="radio" [value]="2" />2
-        </label>
-        <label ngbButtonLabel class="btn-outline-primary" rippleEffect [(ngModel)]="runsModel"
-        ><input ngbButton type="radio" value="4" />4 </label>
-      <label ngbButtonLabel class="btn-outline-primary" rippleEffect [(ngModel)]="runsModel"
-        ><input ngbButton type="radio" [value]="6" />6
-      </label>
-        
-      </div>
-    <
-            </td>
+                  <label ngbButtonLabel class="btn-outline-primary" ngDefaultControl rippleEffect
+                    [(ngModel)]="runsModel"(ngModelChange)="onNgModelChange($event)">
+                    <input ngbButton type="radio" [value]="1"/>1 </label>
+
+                  <label ngbButtonLabel class="btn-outline-primary" ngDefaultControl rippleEffect
+                    [(ngModel)]="runsModel"(ngModelChange)="onNgModelChange($event)">
+                    <input ngbButton type="radio" [value]="2" />2
+                  </label>
+
+                  <label ngbButtonLabel class="btn-outline-primary" ngDefaultControl rippleEffect
+                    [(ngModel)]="runsModel"(ngModelChange)="onNgModelChange($event)">
+                    <input ngbButton type="radio" value="4"/>4 </label>
+
+                  <label ngbButtonLabel class="btn-outline-primary" ngDefaultControl rippleEffect
+                    [(ngModel)]="runsModel"(ngModelChange)="onNgModelChange($event)">
+                    <input ngbButton type="radio" [value]="6" />6
+                  </label>
+
+                </div>
+
+              </td>
             </tr>
             <tr>
               <th colspan="7">Bowler</th>
             </tr>
             <tr>
               <td colspan="7">
+                <div class="btn-group btn-group-toggle"  ngbRadioGroup name="BowlerNumber">
 
-                <div class="btn-group btn-group-toggle" ngbRadioGroup name="BowlerNumber" >
-                  <label ngbButtonLabel class="btn-outline-primary" rippleEffect [(ngModel)]="bowlerModel" 
-                    ><input ngbButton type="radio" value="22" />22 </label>
-                  <label ngbButtonLabel class="btn-outline-primary" rippleEffect [(ngModel)]="bowlerModel" 
-                    ><input ngbButton type="radio" value="15" />15 </label>
+                  <label ngbButtonLabel class="btn-outline-primary" ngDefaultControl rippleEffect [(ngModel)]="bowlerModel"
+                   (ngModelChange)="onNgModelChange($event)" >
+                   <input ngbButton type="radio" [value]="22" />22 </label>
+
+                  <label ngbButtonLabel class="btn-outline-primary" ngDefaultControl rippleEffect
+                    [(ngModel)]="bowlerModel" (ngModelChange)="onNgModelChange($event)">
+                    <input ngbButton type="radio" [value]="15" />15 </label>
                 </div>
               </td>
             </tr>
@@ -82,11 +85,15 @@
             </tr>
             <tr>
               <td colspan="7">
-                <div class="btn-group" name="BatsmanNumber">
-                  <label class="btn btn-outline-primary" [(ngModel)]="batsmanModel" btnRadio="18" tabindex="0" 
-                    role="button" (ngModelChange)="onNgModelChange($event)">18</label>
-                  <label class="btn btn-outline-primary" [(ngModel)]="batsmanModel" btnRadio="27" tabindex="0"
-                    role="button">27</label>
+                <div class="btn-group btn-group-toggle"  ngbRadioGroup name="BowlerNumber">
+
+                  <label ngbButtonLabel class="btn-outline-primary" ngDefaultControl rippleEffect
+                   [(ngModel)]="batsmanModel" (ngModelChange)="onNgModelChange($event)">
+                    <input ngbButton type="radio" [value]="18"  />18 </label>
+
+                  <label ngbButtonLabel class="btn-outline-primary" ngDefaultControl rippleEffect
+                    [(ngModel)]="batsmanModel" (ngModelChange)="onNgModelChange($event)">
+                    <input ngbButton type="radio" [value]="27" />27 </label>
                 </div>
               </td>
             </tr>
@@ -122,13 +129,13 @@
               <th> Runs</th>
             </tr>
             <tr *ngFor="let com of deliveries">
-              <th>{{com.deliveryTime}}</th>
-              <th>{{com.leadTime}}</th>
-              <th>{{com.lagTime}}</th>
-              <th>{{com.deliveryCounter}}</th>
-              <th>{{com.bowlerNumber}}</th>
-              <th>{{com.batsmanNumber}}</th>
-              <th>{{com.runs}}</th>
+              <th>{{com.DeliveryTime}}</th>
+              <th>{{com.LeadTime}}</th>
+              <th>{{com.LagTime}}</th>
+              <th>{{com.DeliveryCounter}}</th>
+              <th>{{com.BowlerNumber}}</th>
+              <th>{{com.BatsmanNumber}}</th>
+              <th>{{com.Runs}}</th>
             </tr>
           </table>
         </div>
@@ -136,4 +143,3 @@
     </div>
   </div>
 </div>
-<div></div>
