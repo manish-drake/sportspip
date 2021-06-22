@@ -105,7 +105,7 @@
                         <table class="table table-hover-animation">
                             <thead>
                                 <tr>
-                                    
+
                                     <th>Name</th>
                                     <th>Jersey Number</th>
                                     <th>Level</th>
@@ -115,14 +115,16 @@
 
                                 </tr>
                             </thead>
-                         
-                            <tbody  >
-                                <tr *ngFor= "let rosters of roster"  > 
-                                    
-                                   
+
+                            <tbody>
+                                <tr *ngFor="let rosters of roster">
+
+
                                     <td>{{rosters.name}}</td>
-                                   
-                                    <td> <span class="badge badge-pill badge-light-primary mr-1">{{rosters.playerNumber}}</span></td>
+
+                                    <td> <span
+                                            class="badge badge-pill badge-light-primary mr-1">{{rosters.playerNumber}}</span>
+                                    </td>
                                     <td>{{rosters.level}}</td>
                                     <td>{{rosters.address}} </td>
                                     <td>{{rosters.school}}</td>
@@ -132,7 +134,7 @@
                                                 data-toggle="dropdown">
                                                 <i data-feather="more-vertical"></i>
                                             </button>
-                                            <div ngbDropdownMenu>
+                                            <!-- <div ngbDropdownMenu>
                                                 <a ngbDropdownItem href="javascript:void(0);" href="/sportspip/update-roster/{{rosters.id}}">
 
                                                     <i data-feather="edit-2"class="mr-50"></i>
@@ -142,17 +144,30 @@
                                                             
                                                     <i data-feather="trash" class="mr-50" ></i>
                                                         <span>Delete</span></a>
+                                            </div> -->
+
+                                            <div ngbDropdownMenu>
+                                                <a ngbDropdownItem href="javascript:void(0);"
+                                                    href="/sportspip/update-roster/{{rosters.id}}">
+
+                                                    <i data-feather="edit-2" class="mr-50"></i>
+                                                    <span>Edit</span></a>
+
+                                                <a ngbDropdownItem href="javascript:void(0);" [swal]="SweetAlertConfirmColor" ng-click="remove(roster.id)">
+
+                                                    <i data-feather="trash" class="mr-50"></i>
+                                                    <span>Delete</span></a>
+                                                    <swal #SweetAlertConfirmColor (open)="ConfirmColorOpen()"></swal>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
                             </tbody>
-                        </table>                  
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
         <!--/ Roaster Table  -->
-
     </div>
 </div>

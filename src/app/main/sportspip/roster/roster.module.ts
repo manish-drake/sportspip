@@ -18,6 +18,7 @@ import { CardSnippetModule } from '@core/components/card-snippet/card-snippet.mo
 import { RosterService } from './roster.service';
 import { DeleteRosterComponent } from './deleteRoster/delete-roster.component';
 import { UpdateRosterComponent } from './update-roster/update-roster.component';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 //import { BrowserModule } from '@angular/platform-browser';
 
@@ -40,7 +41,8 @@ const routes: Routes = [
    
     CommonModule, RouterModule.forChild(routes),
     NgbModule, CoreCommonModule,
-    ContentHeaderModule, MediaPlayerModule, CardSnippetModule
+    ContentHeaderModule, MediaPlayerModule,  SweetAlert2Module.forRoot()
+
   ],
   providers:[RosterService]
 })
