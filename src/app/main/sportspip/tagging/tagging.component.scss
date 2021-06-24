@@ -1,3 +1,4 @@
+@import '@core/scss/angular/libs/media-player.component.scss';
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
@@ -23,3 +24,11 @@ border-radius: 80em;
 }
 
 body {background-color: rgb(163, 213, 219);}
+
+// label,.unselected {
+//   background-color: lightblue ;
+// }
+
+// label,.selected {
+//   background-color: lightgreen ;
+// }

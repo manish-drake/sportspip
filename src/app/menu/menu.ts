@@ -34,7 +34,9 @@ export const menu: CoreMenu[] = [
             translate: 'MENU.SPORTSPIP.REVIEW',
             type: 'item',
             icon: 'eye',
-            url: 'sportspip/review'
+            url:  `sportspip/review/2021-05-03 21:26:52`
+            //'sportspip/review'
+            //to: `${adminRoot}/sportspip/review/2021-05-03 21:26:52`,
           },
           {
             id: 'Events',

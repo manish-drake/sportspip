@@ -3,8 +3,12 @@
     <div class="card mb-4">
       <div class="card-body p-2">
         <div class="position-relative">
-          <app-media-player [options]="playerOptions">
-          </app-media-player>
+          <div plyr plyrTitle="Video" [plyrPlaysInline]="true"  
+          [plyrPoster]="poster" [plyrSources]="videoSources" 
+          [plyrTracks]="tracks" [plyrOptions]="plyrOptions"></div>
+          <!-- <app-media-player [options]="playerOptions" >
+           
+          </app-media-player> -->
         </div>
       </div>
 
@@ -107,13 +111,13 @@
               <th> Runs</th>
             </tr>
             <tr *ngFor="let com of deliveries">
-              <th>{{com.deliveryTime}}</th>
-              <th>{{com.leadTime}}</th>
-              <th>{{com.lagTime}}</th>
-              <th>{{com.deliveryCounter}}</th>
-              <th>{{com.bowlerNumber}}</th>
-              <th>{{com.batsmanNumber}}</th>
-              <th>{{com.runs}}</th>
+              <th>{{com.DeliveryTime}}</th>
+              <th>{{com.LeadTime}}</th>
+              <th>{{com.LagTime}}</th>
+              <th>{{com.DeliveryCounter}}</th>
+              <th>{{com.BowlerNumber}}</th>
+              <th>{{com.BatsmanNumber}}</th>
+              <th>{{com.Runs}}</th>
             </tr>
           </table>
         </div>

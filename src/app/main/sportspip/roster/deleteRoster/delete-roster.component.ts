@@ -9,16 +9,16 @@ import { RosterService } from '../roster.service';
 })
 export class DeleteRosterComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute,private _roster:RosterService) { }
- 
+  constructor(private activatedRoute: ActivatedRoute, private _roster: RosterService) { }
+
 
   rosterId = 0;
   ngOnInit(): void {
 
     this.activatedRoute.params.subscribe(data => {
       this.rosterId = data.id; // Capture the ID which i want delete product
-console.log(this.rosterId);
-      this._roster.deleteRoster(this.rosterId).subscribe(deleteddata=>{
+      console.log(this.rosterId);
+      this._roster.deleteRoster(this.rosterId).subscribe(deleteddata => {
         console.log("Roster has been Deleted") //delete Data  selected id
       })
     });

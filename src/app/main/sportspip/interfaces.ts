@@ -73,14 +73,15 @@ export interface ISchedule {
 
 }
 export class Delivery {
-    session: string;
-    deliveryTime: number;
-    leadTime: number;
-    lagTime: number;
-    deliveryCounter: number;
-    bowlerNumber: number;
-    batsmanNumber: number;
-    runs: number;
+    
+    Session: string;
+    DeliveryTime: number;
+    LeadTime: number;
+    LagTime: number;
+    DeliveryCounter: number;
+    BowlerNumber: number;
+    BatsmanNumber: number;
+    Runs: number;
 
 }
 
@@ -104,3 +105,22 @@ export class events {
     eventThumbnail: any;
     state: string;
 }
+
+export interface Interpretation {
+    firstName: string;
+    lastName: string;
+    quote: string;
+    interpretation: string;
+  }
+
+  export interface Character {
+    firstName: string;
+    lastName: string;
+    favQuote: string;
+    job?: string;
+    age?: number;
+    address?: any;
+    isHidden?: boolean;
+    interpretation?: string;
+  }
+  

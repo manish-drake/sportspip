@@ -19,6 +19,7 @@ import { RosterService } from './roster.service';
 import { DeleteRosterComponent } from './deleteRoster/delete-roster.component';
 import { UpdateRosterComponent } from './update-roster/update-roster.component';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { HttpClientModule } from '@angular/common/http';
 
 //import { BrowserModule } from '@angular/platform-browser';
 
@@ -41,7 +42,8 @@ const routes: Routes = [
    
     CommonModule, RouterModule.forChild(routes),
     NgbModule, CoreCommonModule,
-    ContentHeaderModule, MediaPlayerModule,  SweetAlert2Module.forRoot()
+    ContentHeaderModule, MediaPlayerModule, HttpClientModule,
+    SweetAlert2Module.forRoot()
 
   ],
   providers:[RosterService]

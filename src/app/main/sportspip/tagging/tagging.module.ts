@@ -8,6 +8,9 @@ import { ContentHeaderModule } from 'app/layout/components/content-header/conten
 import { MediaPlayerModule } from '../../extensions/media-player/media-player.module';
 import { TaggingPipe } from '../tagging.pipe';
 import { FormsModule} from '@angular/forms';
+import { ReviewComponent } from '../review/review.component';
+import { ReviewModule } from '../review/review.module';
+import { PlyrModule } from 'ngx-plyr';
 
 
 
@@ -17,7 +20,8 @@ import { FormsModule} from '@angular/forms';
 
 const routes: Routes = [
   
-  { path: 'tagging',component: TaggingComponent},
+  { path: 'tagging',component: TaggingComponent}
+  
 ];
 
 @NgModule({
@@ -26,7 +30,10 @@ const routes: Routes = [
     CommonModule, RouterModule.forChild(routes),
      NgbModule, CoreCommonModule, 
      ContentHeaderModule,MediaPlayerModule,
-     FormsModule
+     FormsModule,
+     NgbModule,
+     ReviewModule,
+     PlyrModule
      
   ],
   

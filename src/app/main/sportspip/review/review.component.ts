@@ -29,16 +29,17 @@ export class ReviewComponent implements OnInit {
   constructor(private taggingService: TaggingService, private route: ActivatedRoute) {
     this.playerOptions.sources[0].src = this.taggingService.mediaUri;
 
+    
     this.forSession = this.route.snapshot.paramMap.get('session');
     console.log("param: " + this.forSession);
 
     this.taggingService.getDeliveriesBySession(this.forSession).subscribe(dl => {
       this.deliveries = dl;
-      console.log(this.deliveries);
+      console.log( "abc"+this.deliveries);
 
       this.taggingService.getPivot(this.deliveries).subscribe(piv => {
         this.pivotData = piv;
-        console.log(this.pivotData);
+        console.log('ABC'+this.pivotData);
       });
 
     })

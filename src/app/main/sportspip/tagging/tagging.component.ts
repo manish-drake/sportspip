@@ -1,94 +1,172 @@
-import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation ,Input} from '@angular/core';
-import { FormControl } from '@angular/forms';
+
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+
 
 import { Router } from '@angular/router';
 import { Delivery } from '../interfaces';
+import { DatePipe } from '@angular/common';
 import { TaggingService } from './tagging.service';
- 
-  @Component({
-    selector: 'app-tagging',
-    templateUrl: './tagging.component.html',
-    styleUrls: ['./tagging.component.scss'],
-    providers: [DatePipe],
-    
-    
-  })
-  export class TaggingComponent implements OnInit {
+import { PlyrComponent } from 'ngx-plyr';
+
+
+
+@Component({
+  selector: 'app-tagging',
+  templateUrl: './tagging.component.html',
+  styleUrls: ['./tagging.component.scss'],
+  providers: [DatePipe],
+  encapsulation: ViewEncapsulation.None
+
+
+})
+export class TaggingComponent implements OnInit {
+
+
+  today = new Date();
+  session: string = '05-03-2021 12:00:00';
   
-    @Input()control:FormControl;
-    today = new Date();
-    session: string = '05-03-2021 12:00:00';
-    runsModel: string = '0';
-    bowlerModel:string = '0';
-    batsmanModel:string = '0';
-    deliveryCount: number = 0;
-    deliveryTime:number = 0;
-    taggingInProgress:boolean =true;
+  runsModel: string = '0';
+  bowlerModel: string = '0';
+  batsmanModel: string = '0';
+  deliveryCount: number = 0;
+  deliveryTime: number = 0;
+  taggingInProgress: boolean = true;
 
-    playerOptions: any = {
-      preload: 'auto',
-      controls: false,
-      poster: '',
-      sources: [{src: '',
-      type: 'video/mp4'}]}
+  playerOptions: any = {
+    preload: 'auto',
+    controls: false,
+    poster: '',
+    sources: [{
+      src: '',
+      type: 'video/mp4'
+    }]
+  }
 
-    constructor(private taggingService: TaggingService, private datePipe: DatePipe, private router: Router){
+  
+  // get the component instance to have access to plyr instance
+  @ViewChild(PlyrComponent)
 
-      this.playerOptions.sources[0].src = this.taggingService.mediaUri;
-      this.session = this.datePipe.transform(this.today, 'yyyy-MM-dd HH:mm:ss');
-     
-    }
-    ngOnInit(){
-    }
+  // or get it from plyrInit event
+  public plyr: PlyrComponent;
+  public player: Plyr;
+  public plyrOptions = { tooltips: { controls: true } };
 
-    Play(): void{
-      var video1 = document.querySelector('video');
-      video1.play();
+  // video Sources
+  public videoSources: Plyr.Source[] = [
+    {
+      src:
+        'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4',
+      type: 'video/mp4',
+      size: 576
+    },
+    {
+      src:
+        'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4',
+      type: 'video/mp4',
+      size: 720
+    },
+    {
+      src:
+        'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-1080p.mp4',
+      type: 'video/mp4',
+      size: 1080
+    },
+    {
+      src:
+        'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-1440p.mp4',
+      type: 'video/mp4',
+      size: 1440
     }
-    Pause(): void{
-      var video1 = document.querySelector('video');
-      this.deliveryTime = video1.currentTime;
-      console.log(video1.currentTime);
-      video1.pause();
+  ];
+
+  public tracks = [
+    {
+      kind: 'captions',
+      label: 'English',
+      srclang: 'en',
+      src:
+        'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt',
+      default: true
+    },
+    {
+      kind: 'captions',
+      label: 'French',
+      srclang: 'fr',
+      src:
+        'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt'
     }
-    
-    deliveries : Delivery[] = [];
-    
-    addDelivery(): void{
-      this.deliveryCount += 1;
-      var video1 = document.querySelector('video');
-      this.deliveryTime = video1.currentTime;
-      console.log(video1.currentTime);
-      let newDelivery: Delivery = new Delivery;
-      newDelivery.session = this.session;
-      newDelivery.batsmanNumber = +this.batsmanModel;
-      newDelivery.bowlerNumber = +this.bowlerModel;
-      newDelivery.deliveryCounter = this.deliveryCount;
-      newDelivery.deliveryTime = this.deliveryTime
-      newDelivery.lagTime = 5;
-      newDelivery.leadTime = 5;
-      newDelivery.runs = +this.runsModel;
-      
-      this.taggingService.addDelivery(newDelivery)
-        .subscribe(delivery => this.deliveries.push(delivery));
-      this.taggingInProgress = !(this.deliveryCount >= 12);
-    }
-    
-    review(){
-      this.router.navigate(['app/main/sportspip/review', this.session]);
-    }
-    onNgModelChange(e) { // here e is a boolean, true if checked, otherwise false
-      if(e){
-        console.log(e);
-      }
-      
-    }
+  ];
+
+  public poster =
+    'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg';
+  
+
+  constructor( private taggingService: TaggingService, private datePipe: DatePipe, private router: Router) {
+
+    this.playerOptions.sources[0].src = this.taggingService.mediaUri;
+    this.session = this.datePipe.transform(this.today, 'yyyy-MM-dd HH:mm:ss');
+
+  }
+  ngOnInit() {
+
     
   }
-    
-  
 
-    
+  Play(): void {
+    var video1 = document.querySelector('video');
+    video1.play();
+  }
+  Pause(): void {
+    var video1 = document.querySelector('video');
+    this.deliveryTime = video1.currentTime;
+   // console.log(video1.currentTime);
+    video1.pause();
+  }
+
+  deliveries: Delivery[] = [];
+
+  addDelivery() {
+    this.deliveryCount += 1;
+    var video1 = document.querySelector('video');
+    this.deliveryTime = video1.currentTime;
+   // console.log(video1.currentTime);
+
+    let newDelivery: Delivery = new Delivery;
+
+    newDelivery.Session = this.session;
+    newDelivery.BatsmanNumber = +this.batsmanModel;
+
+    newDelivery.BowlerNumber = +this.bowlerModel;
+
+    newDelivery.DeliveryCounter = this.deliveryCount;
+    newDelivery.DeliveryTime = this.deliveryTime
+    newDelivery.LagTime = 5;
+    newDelivery.LeadTime = 5;
+    newDelivery.Runs = +this.runsModel;
+
+   
+    this.taggingService.addDelivery(newDelivery)
+      .subscribe(delivery => this.deliveries.push(delivery));
+    this.taggingInProgress = !(this.deliveryCount >= 12);
+   console.log("rakesh"+this.deliveries)
+
+  }
+
+
+  review() {
+    this.router.navigate(['/sportspip/review', this.session ]);
+  }
+  onNgModelChange(e) { // here e is a boolean, true if checked, otherwise false
+    if (e) {
+      console.log(e);
+    }
+
+  }
+
+}
+
+
+
+
 
 

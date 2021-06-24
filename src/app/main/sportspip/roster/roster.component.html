@@ -153,7 +153,8 @@
                                                     <i data-feather="edit-2" class="mr-50"></i>
                                                     <span>Edit</span></a>
 
-                                                <a ngbDropdownItem href="javascript:void(0);" [swal]="SweetAlertConfirmColor" ng-click="remove(roster.id)">
+                                                <a ngbDropdownItem href="javascript:void(0);" [swal]="SweetAlertConfirmColor" 
+                                                (click)="deleteRoster(roster)">
 
                                                     <i data-feather="trash" class="mr-50"></i>
                                                     <span>Delete</span></a>

@@ -58,21 +58,29 @@ export class RosterComponent implements OnInit {
 
  rosterId=0;
 
-  ngOnInit(): void {
-
-    this._roster.getRoster().subscribe(data=> this.roster = data);
-    this.activatedRoute.params.subscribe(data => {
-      this.rosterId = data.id; // Capture the ID which i want delete product
-      console.log(this.rosterId);
-      this._roster.deleteRoster(this.rosterId).subscribe(deleteddata=>{
-        console.log("Roster has been Deleted") //delete Data  selected id
-      })
-    });
-
-    
-    
+  ngOnInit(){
+    this.getLatestRoster();
   }
+      this.roster_roster.getRoster().subscribe(data=> this.roster = data);
+
+    deleteRoster(roster:any){
+      this._roster.deleteRoster(roster).subscribe(()=>{
+        this.getLatestRoster();
+      })
+    }
+
+    // this.activatedRoute.params.subscribe(data => {
+    //   this.rosterId = data.id; // Capture the ID which i want delete product
+    //   console.log(this.rosterId);
+    //   this._roster.deleteRoster(this.rosterId).subscribe(deleteddata=>{
+    //     console.log("Roster has been Deleted") //delete Data  selected id
+    //   })
+    // });
+
+    
+    
+  
  
   
 
-}
+
