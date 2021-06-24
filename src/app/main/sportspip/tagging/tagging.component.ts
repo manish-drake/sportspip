@@ -32,7 +32,7 @@ export class TaggingComponent implements OnInit {
   deliveryTime: number = 0;
   taggingInProgress: boolean = true;
 
-  playerOptions: any = {
+  plyrOptions: any = {
     preload: 'auto',
     controls: false,
     poster: '',
@@ -49,7 +49,7 @@ export class TaggingComponent implements OnInit {
   // or get it from plyrInit event
   public plyr: PlyrComponent;
   public player: Plyr;
-  public plyrOptions = { tooltips: { controls: true } };
+ // public plyrOptions = { tooltips: { controls: true } };
 
   // video Sources
   public videoSources: Plyr.Source[] = [
@@ -103,7 +103,7 @@ export class TaggingComponent implements OnInit {
 
   constructor( private taggingService: TaggingService, private datePipe: DatePipe, private router: Router) {
 
-    this.playerOptions.sources[0].src = this.taggingService.mediaUri;
+    this.plyrOptions.sources[0].src = this.taggingService.mediaUri;
     this.session = this.datePipe.transform(this.today, 'yyyy-MM-dd HH:mm:ss');
 
   }
@@ -122,7 +122,7 @@ export class TaggingComponent implements OnInit {
    // console.log(video1.currentTime);
     video1.pause();
   }
-
+  
   deliveries: Delivery[] = [];
 
   addDelivery() {
@@ -148,7 +148,10 @@ export class TaggingComponent implements OnInit {
     this.taggingService.addDelivery(newDelivery)
       .subscribe(delivery => this.deliveries.push(delivery));
     this.taggingInProgress = !(this.deliveryCount >= 12);
-   console.log("rakesh"+this.deliveries)
+
+    let myJSON = JSON.stringify(this.taggingInProgress);
+    console.log('adddelivery'+myJSON);
+  // console.log("rakesh"+this.deliveries)
 
   }
 

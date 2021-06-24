@@ -1,31 +1,31 @@
+<div class="card mb-4">
+    <div class="card-body p-0">
+        <div class="position-relative">
+            <div plyr plyrTitle="Video" [plyrPlaysInline]="true" [plyrPoster]="poster" [plyrSources]="videoSources"
+                [plyrTracks]="tracks" [plyrOptions]="plyrOptions"></div>
+            <!-- <app-media-player [options]="playerOptions" ></app-media-player> -->
 
-            <div class="card mb-4">
-                <div class="card-body p-0">
-                    <div class="position-relative">
-                        <app-media-player ></app-media-player>
-                        <!-- [options]="playerOptions" -->
-                    <!-- <app-player class="video-js side-bar-video card-img-top  vjs-16-9"  >
-                    </app-player> -->
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="position-relative">
-                    <button class="btn" (click)=" Play()" class="btn btn-primary">Play</button>
-                    <button clas="btn" (click)=" Pause()" class="btn btn-primary">Pause</button>
-                </div>
-                </div>
-                </div>
-                <div class="row">
+
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="position-relative">
+            <button class="btn" (click)=" Play()" class="btn btn-primary">Play</button>
+            <button clas="btn" (click)=" Pause()" class="btn btn-primary">Pause</button>
+        </div>
+    </div>
+</div>
+<!-- <div class="row">
                 <div class="col-md-12">
                     <div class="card mb-4">
                     <div class="card-body p-2">
                         <div class="position-relative; table-responsive">
-                            <table class="table">
+                            <table class="table" id="firstTable">
                                 <tr class="trHead" *ngFor="let runs of pivotData | keyvalue">
                                     <b>{{runs.key}}</b>
                                      <td class="playerKey" *ngFor="let players of runs.value | keyvalue">
                                         <b>{{formatHeader(players.key, runs.key)}}</b>
-                                          <table class="table"> 
+                                          <table class="table; table-responsive"> 
                                         <tr *ngFor="let timestamp of players.value | keyvalue">
                                             <td class="secondTable">
                                                 <a class="clickable" (click)="move(timestamp.value)" >
@@ -42,4 +42,43 @@
                     </div>
                 </div>
                    
+                </div> -->
+
+<!-- teble test table-responsive -->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card mb-4">
+            <div class="card-body p-2">
+                <div class=" table-responsive"> 
+                    <!-- position-relative; -->
+
+                    <table class="table" id="firstTable">
+                        <tr>
+                            <th> </th>
+                            <th> <b>Batsman_18</b></th>
+                            <th><b>Batsman_27</b></th>
+                            <th><b>Bowler_15</b></th>
+                            <th><b>Bowler_22</b></th>
+                        </tr>
+                        <tr class="trHead" *ngFor="let runs of pivotData | keyvalue">
+                            <b>{{runs.key}}</b>
+                            <td class="playerKey" *ngFor="let players of runs.value | keyvalue">
+                                <!-- <b>{{formatHeader(players.key, runs.key)}}</b> -->
+                                <table class="table">
+                                    <tr *ngFor="let timestamp of players.value | keyvalue">
+                                        <td class="secondTable">
+                                            <a class="clickable" (click)="move(timestamp.value)">
+                                                {{timestamp.value | number:'2.2-2'}}
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
