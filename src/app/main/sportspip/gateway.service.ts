@@ -13,7 +13,7 @@ export class GatewayService {
   }
 
   flaskUri(relativeUri: string) {
-    return `http://192.168.10.50:5002${relativeUri}`;
+    return this.serverUri(`:5002${relativeUri}`);
   }
 
   strapiUri(relativeUri: string): string {

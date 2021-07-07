@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, ObservableInput, throwError } from 'rxjs';
 import { Delivery } from '../interfaces';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpClientModule, HttpErrorResponse} from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { GatewayService } from '../gateway.service';
 
@@ -12,6 +12,8 @@ import { GatewayService } from '../gateway.service';
   providedIn: 'root'
 })
 export class TaggingService {
+
+  
 
   constructor(private http:HttpClient, private gatewayService: GatewayService) { }
 
@@ -31,14 +33,15 @@ export class TaggingService {
     console.log(encoded);
     return this.http.get(encoded) as Observable<Delivery[]>
   }
+  
   getPivot(deliveries:Delivery[]): Observable<any>{
     
     const uri = this.gatewayService.flaskUri("/postjson");
-   
-    return this.http.post<Delivery>(uri, deliveries);
-    // .pipe(
-    //   catchError(this.handleError)
-    // );
+   //debugger
+    return this.http.post<Delivery>(uri, deliveries)
+    .pipe(
+      catchError(this.handleError)
+    );
   }
   getDeliveries(): Observable<Delivery>{
     return this.http.get(this.gatewayService.strapiUri("/deliveries")) as Observable<Delivery>;

@@ -4,6 +4,7 @@ import { ReviewComponent } from './review.component';
 import { RouterModule, Routes } from '@angular/router';
 import { MediaPlayerModule } from 'app/main/extensions/media-player/media-player.module';
 import { FormsModule } from '@angular/forms';
+import { PlyrModule } from 'ngx-plyr';
 
 
 
@@ -17,7 +18,8 @@ const routes: Routes = [
   declarations: [ReviewComponent],
   imports: [
     CommonModule,RouterModule.forChild(routes),MediaPlayerModule,
-    FormsModule
+    FormsModule,
+    PlyrModule
   ]
 })
 export class ReviewModule { }
