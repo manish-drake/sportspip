@@ -26,10 +26,10 @@
     </h5>
     <div class="level-filter">
 
-      <div class="custom-control  custom-checkbox mb-1 " *ngFor="let level of levelRef">
+      <div class="custom-control  custom-checkbox mb-1 " *ngFor="let levels of levelRef">
         <input type="checkbox" (change)="checkboxChange($event, level.id)" class="custom-control-input input-filter"
           id="level-{{ level.id }}" [checked]="level.checked" />
-        <label class="custom-control-label" for="level-{{ level.id }}">{{ level.level }}</label>
+        <label class="custom-control-label" for="level-{{ level.id }}">{{ levels.level }}</label>
       </div>
     </div>
     <!-- Program -->

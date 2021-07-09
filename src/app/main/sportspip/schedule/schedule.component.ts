@@ -26,7 +26,7 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
   public calendarOptions: CalendarOptions = {
     headerToolbar: {
       start: 'sidebarToggle, prev,next, title',
-      end: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+      end: 'listMonth,dayGridMonth,timeGridWeek,timeGridDay'
     },
     initialView: 'dayGridMonth',
     initialEvents: this.events,

@@ -213,6 +213,14 @@ export const menu: CoreMenu[] = [
         url: 'apps/todo'
       },
       {
+        id: 'calendar',
+        title: 'Calendar',
+        translate: 'MENU.APPS.CALENDAR',
+        type: 'item',
+        icon: 'calendar',
+        url: 'apps/calendar'
+      },
+      {
         id: 'pages',
         title: 'Pages',
         translate: 'MENU.PAGES.SECTION',

@@ -31,7 +31,7 @@ export class CoachesService implements Resolve<any> {
   private _urlLevel: string = "/assets/data/level.json";
   private _urlProgram : string = "/assets/data/program.json";
   private _urlCoaches : string = "http://drake.in:1337/coaches";
-
+  private url = `api/coaches-filter`;
    /**
    * Resolver
    *
@@ -42,8 +42,8 @@ export class CoachesService implements Resolve<any> {
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
       return new Promise((resolve, reject) => {
         Promise.all([ this.getCoache()]).then(res => {
-          resolve(res);
-        }, reject);
+         resolve(res);
+       }, reject);
       });
     }
     
@@ -71,18 +71,19 @@ export class CoachesService implements Resolve<any> {
    /**
    * Get Coaches
    */
-    getCoaches(): Promise<any[]> {
-      const url = `api/coaches-filter`;
+      getCoaches(): Promise<any[]> {
+    //   // const url = `api/coaches-filter`;
+    
   
       return new Promise((resolve, reject) => {
-        this._httpClient.get(url).subscribe((response: any) => {
+        this._httpClient.get(this.url).subscribe((response: any) => {
           this.coaches = response;
           this.onCoachesChange.next(this.coaches);
           resolve(this.coaches);
         }, reject);
       });
-    }
-    // getLevel(): Promise<any[]> {
+     }
+    // // getLevel(): Promise<any[]> {
     //   const url = `api/coaches-levels`;
   
     //   return new Promise((resolve, reject) => {

@@ -41,7 +41,7 @@ export class CoachesFilterComponent implements OnInit {
         }
       });
       this.coachesRef[index].checked = event.target.checked;
-      //this._coachesService.coachesUpdate(this.coachesRef);
+      this._coachesService.coachesUpdate(this.coachesRef);
       this.checkAll = this.allChecked();
     }
 
@@ -61,7 +61,7 @@ export class CoachesFilterComponent implements OnInit {
         res.checked = false;
       });
     }
-    //this._coachesService.coachesUpdate(this.coachesRef);
+    this._coachesService.coachesUpdate(this.coachesRef);
   }
 
  /**
@@ -75,7 +75,9 @@ export class CoachesFilterComponent implements OnInit {
       this.coachesRef = res; 
     });
 
-    this._coachesService.getLevel().subscribe(data=> this.levelRef =data)
+    this._coachesService.getLevel().subscribe(data=> this.levelRef = data);
+    console.log(this.levelRef);
+    
     this._coachesService.getProgram().subscribe(data=> this.programRef =data)
   }
   
