@@ -20,32 +20,7 @@
 
       </div>
     </div>
-    <!-- level -->
-    <h5 class="section-label mb-1">
-      <span class="align-middle">Level</span>
-    </h5>
-    <div class="level-filter">
-
-      <div class="custom-control  custom-checkbox mb-1 " *ngFor="let levels of levelRef">
-        <input type="checkbox" (change)="checkboxChange($event, level.id)" class="custom-control-input input-filter"
-          id="level-{{ level.id }}" [checked]="level.checked" />
-        <label class="custom-control-label" for="level-{{ level.id }}">{{ levels.level }}</label>
-      </div>
-    </div>
-    <!-- Program -->
-    <h5 class="section-label mb-1">
-      <span class="align-middle">Program</span>
-    </h5>
-    <div class="level-filter">
-
-      <div class="custom-control  custom-checkbox mb-1 " *ngFor="let program of programRef">
-        <input type="checkbox" (change)="checkboxChange($event, program.id)" class="custom-control-input input-filter"
-          id="program-{{ program.id }}" [checked]="program.checked" />
-        <label class="custom-control-label" for="level-{{ program.id }}">{{ program.program }}</label>
-      </div>
-    </div>
-
-
+    
   </div>
 </div>
 

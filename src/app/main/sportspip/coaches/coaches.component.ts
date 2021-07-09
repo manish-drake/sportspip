@@ -21,9 +21,7 @@ export class CoachesComponent implements OnInit {
   program: IProgram[];
   coaches:ICoaches[];
   ngOnInit() {
-    this._coachesService.getLevel().subscribe(data=> this.level =data)
-
-    this._coachesService.getProgram().subscribe(data=> this.program =data)
+   
     
     this._coachesService.getCoache().subscribe(data=> this.coaches = data)
 
