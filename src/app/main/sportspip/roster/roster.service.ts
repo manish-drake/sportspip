@@ -28,6 +28,12 @@ export class RosterService {
     const rosterUrl = 'http://drake.in:1337/rosters/' + rosterId;
     return this._httpClient.put<IRoster>(rosterUrl, rosterBody); // return an observable
   }
+
+  addRoster(rosterId, rosterBody): Observable<IRoster> {
+    const rosterUrl = 'http://drake.in:1337/rosters/';
+    return this._httpClient.post<IRoster>(rosterUrl, rosterBody); // return an observable
+  }
+  
   viewRoster(productId): Observable<IRoster> {
     const rosterUrl = 'http://drake.in:1337/rosters/' + productId;
     return this._httpClient.get<IRoster>(rosterUrl); // return an observable

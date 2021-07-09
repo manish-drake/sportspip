@@ -126,10 +126,10 @@ export interface Interpretation {
 
   export class School {
     name: string;
-    checked: boolean;
+    checked: boolean; 
     district: string
     subCategory: Subcategory[];
-}
+} 
 
 export class Subcategory {
     id: number;
