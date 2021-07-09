@@ -123,4 +123,17 @@ export interface Interpretation {
     isHidden?: boolean;
     interpretation?: string;
   }
+
+  export class School {
+    name: string;
+    checked: boolean;
+    district: string
+    subCategory: Subcategory[];
+}
+
+export class Subcategory {
+    id: number;
+    name: string;
+    checked: boolean;
+}
   
