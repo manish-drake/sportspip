@@ -18,6 +18,7 @@ export const locale = {
         ADDEVENT: 'Add-Event',
         TEAMS: 'Teams',
         COACHES: 'Coaches',
+        COACHESFILTER: 'Coachesfilter',
         PLAYERS: 'Players',
         SCHEDULE: 'Schedule',
         MEDIA: 'Media',

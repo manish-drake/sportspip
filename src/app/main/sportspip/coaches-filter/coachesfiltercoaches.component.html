@@ -1,38 +1,41 @@
-<div class="content-wrapper">
-  <app-content-header [contentHeader]="contentHeader"></app-content-header>
-  <!-- Sidebar filters  -->
-  <div class="app-calendar">
-    <div class="row no-gutters">
-      <core-sidebar
-        class="col app-calendar-sidebar flex-grow-0 overflow-hidden d-flex flex-column"
-        id="coaches-sidebar-toggler"
-        name="coaches-filter"
-        collapsibleSidebar="bs-gt-lg"
-        overlayClass="body-content-overlay"
-      >
-      <app-coaches-filter></app-coaches-filter>
-    </core-sidebar>
- 
-  <!--/ Sidebar filters -->
+<p>coachesfiltercoaches works!</p>
+<!-- Main Sidebar -->
+<div class="container">
+  <div class="_ul_checkbox">
+      <ul>
+          <li *ngFor="let checkboxarrays of gameFilter">
+              <input type="{{checkboxarrays.type}}" value={{checkboxarrays.id}}
+                  (change)="onChange($event)">{{checkboxarrays.filter}}
+          </li>
+      </ul>
+  </div>
+  <div class="_ul_product">
+      <ul>
+          <li *ngFor="let productArrays of coachesArray">
+              {{productArrays.coachName}}
+          </li>
+      </ul>
+  </div>
 
   <div class="content-detached content-right">
     <div class="content-body">
       <!-- Coaches Head Section Starts -->
       <section id="coaches-header">
         <div class="row ">
-          <div class="col-lg-4 col-md-6 col-12" *ngFor="let coach of coaches">
+          <div class="col-lg-4 col-md-6 col-12" *ngFor="let productArrays of coachesArray">
+            <!-- *ngFor="let coach of coaches" -->
             <div class="card card-developer-meetup">
               <div class="bg-light-primary rounded-top text-center coachesDetails">
-                <a href="sportspip/coach-details?coachId={{coach.id}}">
+                <a >
                 <img 
-                src="{{ serverUri + coach.coachImage[0].formats.thumbnail.url}}" 
+                src="{{ serverUri + productArrays.coachImage[0].formats.thumbnail.url}}" 
                 ng-click="cochesDetail()" alt="Logo" />
               </a>
               </div>
               <div class="card-body">
                 <div class="meetup-header d-flex align-items-center">
                   <div class="my-auto">
-                    <h4 class="card-title mb-25">{{coach.coachTitle}}</h4>
+                    <h4 class="card-title mb-25">{{productArrays.coachTitle}}</h4>
                   </div>
                 </div>
                 <div class="media">
@@ -49,7 +52,7 @@
                     </div>
                   </div>
                   <div class="media-body">
-                    <h6 class="mb-0">{{coach.coachName}}</h6>
+                    <h6 class="mb-0">{{productArrays.coachName}}</h6>
                     <!-- <small>Manhattan, New york City</small> -->
                   </div>
                 </div>
@@ -60,13 +63,4 @@
       </section>
     </div>
   </div>
-</div>
-</div>
-</div>
-<div class="_ul_product">
-  <ul>
-      <li *ngFor="let coachesArrays of coaches">
-          {{coachesArrays.coachName}}
-      </li>
-  </ul>
 </div>

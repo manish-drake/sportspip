@@ -7,7 +7,7 @@
     </h5>
     <div class="custom-control custom-checkbox mb-1">
       <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
-        (change)="toggleCheckboxAll($event)" />
+        (change)="toggleCheckboxAll($event)" (change)="onChange($event)" />
       <label class="custom-control-label" for="select-all">View All</label>
     </div>
     <div class="coaches-filter">
@@ -19,6 +19,7 @@
         <label class="custom-control-label" for="coaches-{{ coaches.id }}">{{ coaches.filter }}</label>
 
       </div>
+      
     </div>
     
   </div>
