@@ -1,52 +1,76 @@
 <div class="row">
-
-  <div class="col-lg-3 col-md-6 col-12" *ngFor="let team of teamsCollection">
+  <div class="col-lg-4 col-md-6 col-12" *ngFor="let team of teamsCollection">
     <div class="card card-developer-meetup">
       <div class="bg-light-primary rounded-top text-center">
         <a href="sportspip/teamsdetails?teamId={{team.id}}">
         <img src="{{ serverUri + team.teamThumbnail[0].url}}" alt="Logo" />
       </a>
-
       </div>
+    <div class="card card-transaction">
+      <div class="card-header">
+        <h4 class="card-title mb-25">{{team.teamName}}</h4> 
+      <div ngbDropdown>
+        <button
+          rippleEffect
+          class="btn btn-sm border-0 p-0 hide-arrow"
+          ngbDropdownToggle
+          type="button"
+          id="dropdownItem4"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <i data-feather="more-vertical" class="font-medium-3 cursor-pointer"></i>
+        </button>
+        <div ngbDropdownMenu class="dropdown-menu-right" aria-labelledby="dropdownItem4">
+          
+          <a [routerLink]="['/sportspip/update-team']" [routerLinkActive]="'is-active'" ngbDropdownItem href="javascript:void(0);"> 
+            <i data-feather="edit-2" class="mr-50"></i>
+            Edit 
+          </a>
+          <a ngbDropdownItem href="javascript:void(0);" [swal]="SweetAlertConfirmColor" 
+          (click)="delete(obj.id)"> 
+            <i data-feather="trash" class="mr-50"></i>
+            Delete 
+          </a>
+          <swal #SweetAlertConfirmColor (open)="ConfirmColorOpen()"></swal>
+        </div>
+      </div>
+    </div>
       <div class="card-body">
-        <div class="meetup-header d-flex align-items-center">
-          <div class="my-auto">
-            
-              <h4 class="card-title mb-25">{{team.teamName}}</h4>
-            
+      <div class="media">
+        <div class="avatar bg-light-primary rounded mr-1">
+          <div class="avatar-content">
+            <i data-feather="calendar" class="avatar-icon font-medium-3 overflow-hidden"></i>
           </div>
         </div>
-        <div class="media">
-          <div class="avatar bg-light-primary rounded mr-1">
-            <div class="avatar-content">
-              <i data-feather="calendar" class="avatar-icon font-medium-3"></i>
-            </div>
-          </div>
-        </div>
-        <div class="media">
-          <div class="avatar bg-light-primary rounded mr-1">
-            <div class="avatar-content">
-              <i data-feather="map-pin" class="avatar-icon font-medium-3"></i>
-            </div>
-          </div>
-          <div class="media-body">
-            <h6 class="mb-0">{{team.date}}</h6>
-          </div>
-        </div>        
       </div>
-      <a
-      *ngIf="isWishlistOpen === true"
-      href="javascript:void(0)"
-      class="btn btn-light btn-wishlist"
-      (click)="toggleWishlist(product)"
-      rippleEffect
-    >
-      <i data-feather="x"></i>
-      <span>Remove</span>
-    </a>
+      <div class="media">
+        <div class="avatar bg-light-primary rounded mr-1">
+          <div class="avatar-content">
+            <i data-feather="map-pin" class="avatar-icon font-medium-3"></i>
+          </div>
+        </div>
+        <div class="media-body">
+          <h6 class="mb-0">{{team.date}}</h6>
+        </div>
+      </div>        
+    </div>
+    <a
+    *ngIf="isWishlistOpen === true"
+    href="javascript:void(0)"
+    class="btn btn-light btn-wishlist"
+    (click)="toggleWishlist(product)"
+    rippleEffect
+  >
+    <i data-feather="x"></i>
+    <span>Remove</span>
+  </a>
+  </div>
+    </div>
     </div>
   </div>
-</div>
+  
   
   
   
