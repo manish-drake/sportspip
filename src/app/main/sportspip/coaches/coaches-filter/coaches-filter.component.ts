@@ -23,8 +23,13 @@ export class CoachesFilterComponent implements OnInit {
    * If all checkbox are checked : returns TRUE
    */
    allChecked() {
+     //if(e.target.checked==true){
     return this.coachesRef.every(v => v.checked === true);
-   
+
+    // }
+  // else{
+  //  return this.coachesRef.every(v => v.checked === false);
+  // }
   }
    /**
    * Checkbox Change
@@ -41,7 +46,9 @@ export class CoachesFilterComponent implements OnInit {
         }
       });
       this.coachesRef[index].checked = event.target.checked;
-      //this._coachesService.coachesUpdate(this.coachesRef);
+      this._coachesService.coachesUpdate(this.coachesRef);
+
+     
       this.checkAll = this.allChecked();
     }
 
@@ -61,7 +68,7 @@ export class CoachesFilterComponent implements OnInit {
         res.checked = false;
       });
     }
-    //this._coachesService.coachesUpdate(this.coachesRef);
+    this._coachesService.coachesUpdate(this.coachesRef);
   }
 
  /**
