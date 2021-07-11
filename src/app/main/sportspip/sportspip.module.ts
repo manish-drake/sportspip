@@ -41,6 +41,8 @@ import { RosterModule } from './roster/roster.module';
 import { ScheduleListComponent } from './schedule-list/schedule-list.component';
 import { ScheduleListModule } from './schedule-list/schedule-list.module';
 import { FormsModule } from '@angular/forms';
+import { CoachesmoduleModule } from './coaches-filter/coachesmodule.module';
+
 
 
 
@@ -81,7 +83,8 @@ FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, i
     CoachDetailsModule,
     RosterModule,
     ScheduleListModule,
-    FormsModule
+    FormsModule,
+    CoachesmoduleModule
     
     
    

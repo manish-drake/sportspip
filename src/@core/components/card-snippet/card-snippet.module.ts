@@ -20,4 +20,6 @@ import { CoreCardSnippetComponent } from '@core/components/card-snippet/card-sni
   ],
   exports: [CoreCardSnippetComponent]
 })
-export class CardSnippetModule {}
+export class CardSnippetModule {
+  static SweetAlert2Module: any;
+}

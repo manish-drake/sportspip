@@ -7,7 +7,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { CoreSidebarModule } from '@core/components';
 import { RouterModule, Routes } from '@angular/router';
 
-import { FormsModule } from 'app/main/forms/forms.module';
+import { FormsModule  } from 'app/main/forms/forms.module';
 import { Ng2FlatpickrModule } from 'ng2-flatpickr';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -19,6 +19,8 @@ import { RosterService } from './roster.service';
 import { DeleteRosterComponent } from './deleteRoster/delete-roster.component';
 import { UpdateRosterComponent } from './update-roster/update-roster.component';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { HttpClientModule } from '@angular/common/http';
+import { AddRosterComponent } from './add-roster/add-roster.component';
 
 //import { BrowserModule } from '@angular/platform-browser';
 
@@ -31,19 +33,20 @@ const routes: Routes = [
     component: RosterComponent,
     data: { animation: 'roster' }
   },
+  {path:"add-roster", component:AddRosterComponent},
   {path:"delete-roster/:id", component:DeleteRosterComponent},
   {path:"update-roster/:id", component:UpdateRosterComponent}
 ];
 
 @NgModule({
-  declarations: [RosterComponent, UpdateRosterComponent],
-  imports: [
+  declarations: [RosterComponent, UpdateRosterComponent, AddRosterComponent],
+  imports: [ 
    
     CommonModule, RouterModule.forChild(routes),
     NgbModule, CoreCommonModule,
-    ContentHeaderModule, MediaPlayerModule, CardSnippetModule,
-    FormsModule,
+    ContentHeaderModule, MediaPlayerModule, HttpClientModule, FormsModule,
     SweetAlert2Module.forRoot()
+
   ],
   providers:[RosterService]
 })

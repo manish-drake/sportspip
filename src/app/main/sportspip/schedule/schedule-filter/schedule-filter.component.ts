@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
+import { ILevel } from '../../interfaces';
 
 
 import {ScheduleService} from '../schedule.service';
@@ -17,6 +18,7 @@ export class ScheduleFilterComponent implements OnInit {
    public scheduleRef = [];
    public tempRef = [];
    public checkAll = true;
+   levels:ILevel[];
  
    /**
     * Constructor
@@ -87,6 +89,8 @@ export class ScheduleFilterComponent implements OnInit {
      }
      this._scheduleService.scheduleUpdate(this.scheduleRef);
    }
+
+   
  
    // Lifecycle Hooks
    // -----------------------------------------------------------------------------------------------------
@@ -95,10 +99,14 @@ export class ScheduleFilterComponent implements OnInit {
     * On init
     */
    ngOnInit(): void {
+
+    this._scheduleService.getLevel().subscribe(data=> this.levels = data)
+    console.log(this.levels);
      // Subscribe to Calendar changes
      this._scheduleService.onCalendarChange.subscribe(res => {
        this.scheduleRef = res;
      });
    }
+
  }
  

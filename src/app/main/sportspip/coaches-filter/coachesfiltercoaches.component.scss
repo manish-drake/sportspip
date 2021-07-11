@@ -1,0 +1,28 @@
+._ul_checkbox ul{
+    padding: 0;
+    margin: 0;
+}
+
+._ul_checkbox ul li{
+    list-style-type: none;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+._ul_checkbox ul input{
+     margin-right: 3px;
+}
+._ul_product ul li input{
+    margin-right: 4px;
+}
+._ul_product ul{
+    padding: 0;
+    margin: 0;
+}
+._ul_product ul li{
+    list-style-type: none;
+    display: block;
+    font-size: 30px;
+    font-weight: 600;
+    margin-top: 10px;
+}

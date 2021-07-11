@@ -2,12 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot,Resolve, RouterStateSnapshot } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
-import {ICoaches, ILevel, IProgram} from '../interfaces';
+import {CFilter, ICoaches, ILevel, IProgram} from '../interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CoachesService implements Resolve<any> {
+
+//implements Resolve<any>
+export class CoachesService  {
 
   public coaches;
   public tempEvents;
@@ -17,6 +19,7 @@ export class CoachesService implements Resolve<any> {
   
  
   public onCoachesChange: BehaviorSubject<any>;
+  onEventChange: any;
 
    /**
    * Constructor
@@ -31,7 +34,8 @@ export class CoachesService implements Resolve<any> {
   private _urlLevel: string = "/assets/data/level.json";
   private _urlProgram : string = "/assets/data/program.json";
   private _urlCoaches : string = "http://drake.in:1337/coaches";
-
+ // private url = `http://drake.in:1337/Game-Filters`;//`api/coaches-filter`;
+  private _urlCFilter = `http://drake.in:1337/Game-Filters`;
    /**
    * Resolver
    *
@@ -41,9 +45,9 @@ export class CoachesService implements Resolve<any> {
    */
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
       return new Promise((resolve, reject) => {
-        Promise.all([ this.getCoaches()]).then(res => {
-          resolve(res);
-        }, reject);
+        Promise.all([ this. getCoaches()]).then(res => {
+         resolve(res);
+       }, reject);
       });
     }
     
@@ -65,41 +69,29 @@ export class CoachesService implements Resolve<any> {
 
     let filteredCoaches = this.tempEvents.filter(event => coachesRef.includes(event.coaches));
     this.events = filteredCoaches;
-   // this.onEventChange.next(this.events);
+    this.onEventChange.next(this.events);
   }
 
    /**
    * Get Coaches
    */
-    getCoaches(): Promise<any[]> {
-      const url = `api/coaches-filter`;
+     getCoaches(): Promise<any[]> {
+      // const url = `api/coaches-filter`;
+    
   
       return new Promise((resolve, reject) => {
-        this._httpClient.get(url).subscribe((response: any) => {
+        this._httpClient.get(this._urlCFilter).subscribe((response: any) => {
           this.coaches = response;
           this.onCoachesChange.next(this.coaches);
           resolve(this.coaches);
         }, reject);
       });
-    }
-    // getLevel(): Promise<any[]> {
-    //   const url = `api/coaches-levels`;
-  
-    //   return new Promise((resolve, reject) => {
-    //     this._httpClient.get(url).subscribe((response: any) => {
-    //       this.levels = response;
-          
-    //       this.onCoachesChange.next(this.levels);
-    //       resolve(this.levels);
-    //     },reject );
-    //   });
+     }
+   
+    // getCoachesFilter()
+    // {
+    //   return this._httpClient.get<CFilter[]>(this._urlCFilter);
     // }
-    getLevel(): Observable<ILevel[]> {
-      return this._httpClient.get<ILevel[]>(this._urlLevel);
-    }
-    getProgram(): Observable<IProgram[]> {
-      return this._httpClient.get<IProgram[]>(this._urlProgram);
-    }
     getCoache(): Observable<ICoaches[]> {
       return this._httpClient.get<ICoaches[]>(this._urlCoaches);
     }

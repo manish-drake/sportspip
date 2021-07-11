@@ -1,13 +1,10 @@
-import { Component, OnInit, ViewEncapsulation , 
-  ViewChild,
-  EventEmitter,
-  Output,
-  Input} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
-import { Character, Interpretation, IRoster } from '../interfaces';
+import { IRoster } from '../interfaces';
 import { RosterService } from './roster.service';
+
 
 @Component({
   selector: 'app-roster',
@@ -20,86 +17,8 @@ export class RosterComponent implements OnInit {
   roster:IRoster[];
   rosters: any;
 
-  //-------ROSTER EDIT--------------------//
-
-  @Input() selectedInterpretation: Interpretation;
-  @Input() editState: boolean;
-  @Output() quoteInterpretation: EventEmitter<
-    Interpretation
-  > = new EventEmitter();
-  @Output() editQuoteInterpretation: EventEmitter<
-    Interpretation
-  > = new EventEmitter();
-  @ViewChild('quoteForm') form: any;
-  characterQuote: Character = {
-    firstName: '',
-    lastName: '',
-    favQuote: '',
-    interpretation: ''
-  };
-
-  displayForm: boolean = false;
-  
-
-  rosterId = 0;
- 
-  //-------ROSTER EDIT--------------------//
-
-  constructor(private activatedRoute: ActivatedRoute,private _roster:RosterService) { }
-
- 
-
-  ngOnInit(): void {
-
-
-    
-
-    this._roster.getRoster().subscribe(data=> this.roster = data);
-
-    
-    
-  }
-  //-------ROSTER EDIT--------------------//
-
-  submitQuote({ value, valid }: { value: Character; valid: boolean }) {
-    if (!valid) {
-      console.log('Not valid');
-    } else {
-      // console.log('Valid');
-      this.form.reset();
-    }
-  }
-  addQuote(firstName, lastName, quote, interpretation) {
-    if (!firstName || !lastName || !quote || !interpretation) {
-      alert('Please enter all fields.');
-    } else {
-      let thePost: Interpretation = {
-        firstName,
-        lastName,
-        quote,
-        interpretation
-      };
-      this.quoteInterpretation.emit(thePost);
-    }
-  }
-  updateQuote(firstName, lastName, quote, interpretation) {
-    let thePost: Interpretation = {
-      firstName,
-      lastName,
-      quote,
-      interpretation
-    };
-    // console.log('updated');
-    this.editState = false;
-    this.editQuoteInterpretation.emit(thePost);
-    this.form.reset();
-  }
-  //-------ROSTER EDIT--------------------//
-  
-  
 
   ConfirmColorOpen() {
-    console.log("ranjan"+ this.rosterId)
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -110,8 +29,6 @@ export class RosterComponent implements OnInit {
         confirmButton: 'btn btn-primary',
         cancelButton: 'btn btn-danger ml-1'
       }
-      
-      
     }).then(function (result) {
       if (result.value) {
         Swal.fire({
@@ -134,7 +51,28 @@ export class RosterComponent implements OnInit {
       }
     });
   }
+  
 
 
+  constructor(private activatedRoute: ActivatedRoute,private _roster:RosterService) { }
+
+ rosterId=0;
+
+  ngOnInit(): void {
+
+    this._roster.getRoster().subscribe(data=> this.roster = data);
+    this.activatedRoute.params.subscribe(data => {
+      this.rosterId = data.id; // Capture the ID which i want delete product
+      console.log(this.rosterId);
+      this._roster.deleteRoster(this.rosterId).subscribe(deleteddata=>{
+        console.log("Roster has been Deleted") //delete Data  selected id
+      })
+    });
+
+    
+    
+  }
+ 
+  
 
 }

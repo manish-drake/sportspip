@@ -70,6 +70,14 @@ export const menu: CoreMenu[] = [
             icon: 'users',
             url: 'sportspip/coaches'
           },
+          {
+            id: 'Coachesfilter',
+            title: 'Coaches',
+            translate: 'MENU.SPORTSPIP.COACHESFILTER',
+            type: 'item',
+            icon: 'users',
+            url: 'sportspip/coachesfilter'
+          },
           
           {
             id: 'Players',
@@ -214,7 +222,11 @@ export const menu: CoreMenu[] = [
       },
       {
         id: 'calendar',
+<<<<<<< HEAD
         title: 'calendar',
+=======
+        title: 'Calendar',
+>>>>>>> 3553f0985d89dfa145c72f2ddeaabb48d6a3a65f
         translate: 'MENU.APPS.CALENDAR',
         type: 'item',
         icon: 'calendar',

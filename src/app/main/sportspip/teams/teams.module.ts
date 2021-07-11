@@ -15,19 +15,21 @@ import { MediaPlayerModule } from 'app/main/extensions/media-player/media-player
 import { TeamsService } from './teams.service';
 import { CoachesFilterComponent } from '../coaches/coaches-filter/coaches-filter.component';
 import { TeamDetailsComponent } from '../team-details/team-details.component';
+import { UpdateTeamComponent } from './update-team/update-team.component';
+import { DeleteTeamComponent } from './delete-team/delete-team.component';
 
 
 // routing
 const routes: Routes = [
   { path: 'teams', component : TeamsComponent },
- 
-
+  {path:"delete-team", component:DeleteTeamComponent},
+  {path:"update-team", component:UpdateTeamComponent} 
 ];
 
 
 
 @NgModule({
-  declarations: [TeamsComponent],
+  declarations: [TeamsComponent, UpdateTeamComponent, DeleteTeamComponent],
   imports: [
     CommonModule, RouterModule.forChild(routes),
     NgbModule, CoreCommonModule,

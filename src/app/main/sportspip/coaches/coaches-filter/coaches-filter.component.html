@@ -7,7 +7,7 @@
     </h5>
     <div class="custom-control custom-checkbox mb-1">
       <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
-        (change)="toggleCheckboxAll($event)" />
+        (change)="toggleCheckboxAll($event)" (change)="onChange($event)" />
       <label class="custom-control-label" for="select-all">View All</label>
     </div>
     <div class="coaches-filter">
@@ -19,7 +19,9 @@
         <label class="custom-control-label" for="coaches-{{ coaches.id }}">{{ coaches.filter }}</label>
 
       </div>
+      
     </div>
+<<<<<<< HEAD
     <!-- level -->
     <!-- <h5 class="section-label mb-1">
       <span class="align-middle">Level</span>
@@ -46,6 +48,9 @@
     </div> -->
 
 
+=======
+    
+>>>>>>> 3553f0985d89dfa145c72f2ddeaabb48d6a3a65f
   </div>
 </div>
 
