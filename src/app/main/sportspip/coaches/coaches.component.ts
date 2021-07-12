@@ -63,48 +63,8 @@ export class CoachesComponent implements OnInit {
     // this.stringifiedData = JSON.stringify(this.coaches);  
     // console.log("With Stringify :" + this.stringifiedData); 
   }
-  coachTempArray:any =[];
-  coachNewArray:any =[];
-
-  onChange(event:any){
-
-    if(event.target.checked)
-    {
-        this.coachTempArray = this.coachNewArray.filter((e:any)=>e.id == event.target.value);
-        this.coaches=[];
  
-        this.coachNewArray.push(this.coachTempArray);
 
-        for(let i=0; i<this.coachNewArray.length; i++)
-        {
-          var firstArray = this.coachNewArray[i];
-          console.log(firstArray)
-          for(let i=0; i<firstArray.length; i++)
-          {
-            var obj = firstArray[i];
-            this.coaches.push(obj);
-            console.log(this.coaches)
-          }
-        }
-    }
-    else
-    {
-      this.coachTempArray = this.coaches.filter((e:any)=>e.id != event.target.value);
-      this.coachNewArray=[];
-      this.coaches=[];
-      this.coachNewArray.push(this.coachTempArray);
-      for(let i=0; i<this.coachNewArray.length; i++)
-      {
-        var firstArray = this.coachNewArray[i];
-        console.log(firstArray)
-        for(let i=0; i<firstArray.length; i++)
-        {
-          var obj = firstArray[i];
-          this.coaches.push(obj);
-          console.log(this.coaches);
-        }
-      }
-    }
-  }
+  
 
 }
