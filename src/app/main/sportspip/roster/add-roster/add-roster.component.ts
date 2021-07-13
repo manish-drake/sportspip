@@ -26,20 +26,11 @@ export class AddRosterComponent {
 
     addRoster(data)
     {
-      this._http.post<IRoster>('http://drake.in:1337/rosters',data)
+      this._http.post<IRoster>('http://drake.in:1337/rosters/',data)
       .subscribe((result)=>{
         console.log("result",result)
   
       })
-      console.warn(data);
-    }
-    onSubmit(data: any)
-    {
-      this._http.post('http://drake.in:1337/Rosterdata',data)
-      .subscribe((result)=>{
-        console.log("result",result)
-  
-      });
       console.warn(data);
     }
    
