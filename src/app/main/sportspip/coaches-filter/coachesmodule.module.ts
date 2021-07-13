@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CoachesfiltercoachesComponent } from './coachesfiltercoaches.component';
 import { RouterModule, Routes } from '@angular/router';
 import { CoreSidebarModule } from '@core/components';
+import { FormsModule } from '@angular/forms';
 
 const routes:Routes = [
 
@@ -14,7 +15,8 @@ const routes:Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    CoreSidebarModule
+    CoreSidebarModule,
+    FormsModule
   ]
 })
 export class CoachesmoduleModule { }

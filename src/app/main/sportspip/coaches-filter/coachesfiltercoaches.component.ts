@@ -14,14 +14,18 @@ export class CoachesfiltercoachesComponent implements OnInit {
   masterSelected:boolean;
   gameFilter: any = [];
   public checkAll = true;
+  
+  constructor(private _coachesApiService: CoachesapiService, private _coreSidebarService: CoreSidebarService) {
 
-  constructor(private _coachesApiService: CoachesapiService, private _coreSidebarService: CoreSidebarService) { }
+    this.masterSelected = false;
+   }
 
+ 
 
   toggleCheckboxAll(){
     this.checkAll = true;
     for (var i = 0; i < this.coachesArray.length; i++) {
-      this.coachesArray[i].checked = this.checkAll;
+      this.coachesArray[i].checked = this.masterSelected;
     }
     this. getCheckedItemList()
   }
@@ -29,10 +33,16 @@ export class CoachesfiltercoachesComponent implements OnInit {
   getCheckedItemList(){
     this.coachesArray = [];
     for (var i = 0; i < this.coachesArray.length; i++) {
-      if(this.coachesArray[i].isSelected)
+      if(this.coachesArray[i].checked)
       this.coachesArray.push(this.coachesArray[i]);
     }
     // this.coachesArray = JSON.stringify(this.coachesArray);
+  }
+  isAllSelected() {
+    this.masterSelected = this.coachesArray.every(function(item:any) {
+        return item.checked == true;
+      })
+    this.getCheckedItemList();
   }
   ngOnInit() {
     this.dataFilter();
