@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
+import { filter } from 'rxjs/operators';
 import { CoachesapiService } from './coachesapi.service';
 
 @Component({
@@ -22,28 +23,28 @@ export class CoachesfiltercoachesComponent implements OnInit {
 
  
 
-  toggleCheckboxAll(){
-    this.checkAll = true;
-    for (var i = 0; i < this.coachesArray.length; i++) {
-      this.coachesArray[i].checked = this.masterSelected;
-    }
-    this. getCheckedItemList()
-  }
+  // toggleCheckboxAll(){
+  //   this.checkAll = true;
+  //   for (var i = 0; i < this.coachesArray.length; i++) {
+  //     this.coachesArray[i].checked = this.masterSelected;
+  //   }
+  //   this. getCheckedItemList()
+  // }
 
-  getCheckedItemList(){
-    this.coachesArray = [];
-    for (var i = 0; i < this.coachesArray.length; i++) {
-      if(this.coachesArray[i].checked)
-      this.coachesArray.push(this.coachesArray[i]);
-    }
+  // getCheckedItemList(){
+  //   this.coachesArray = [];
+  //   for (var i = 0; i < this.coachesArray.length; i++) {
+  //     if(this.coachesArray[i].checked)
+  //     this.coachesArray.push(this.coachesArray[i]);
+  //   }
     // this.coachesArray = JSON.stringify(this.coachesArray);
-  }
-  isAllSelected() {
-    this.masterSelected = this.coachesArray.every(function(item:any) {
-        return item.checked == true;
-      })
-    this.getCheckedItemList();
-  }
+  //}
+  // isAllSelected() {
+  //   this.masterSelected = this.coachesArray.every(function(item:any) {
+  //       return item.checked == true;
+  //     })
+  //   this.getCheckedItemList();
+  // }
   ngOnInit() {
     this.dataFilter();
     this.filterCoach();
@@ -73,6 +74,55 @@ export class CoachesfiltercoachesComponent implements OnInit {
 
     });
   }
+  /**
+   * If all checkbox are checked : returns TRUE
+   */
+  //  allChecked() {
+  //   return this.coachesArray.every(v => v.checked === true);
+  // }
+
+  /**
+   * Checkbox Change
+   *
+   * @param event
+   * @param id
+   */
+  // checkboxChange(event, id) {
+  //   const index = this.coachesArray.findIndex(r => {
+  //     if (r.id === id) {
+  //       return id;
+  //     }
+  //   });
+  //   this.coachesArray[index].checked = event.target.checked;
+  //   this._coachesApiService.coachUpdate(this.coachesArray);
+  //   this.checkAll = this.allChecked();
+  // }
+
+  /**
+   * Toggle All Checkbox
+   *
+   * @param event
+   */
+  // toggleCheckboxAll(event) {
+  //   this.checkAll = event.target.checked;
+  //   if (this.checkAll) {
+  //     this.coachesArray.map(res => {
+  //       res.checked = true;
+  //     });
+  //   } else {
+  //     this.coachesArray.map(res => {
+  //       res.checked = false;
+  //     });
+  //   }
+  //   this._coachesApiService.coachUpdate(this.coachesArray);
+  // }
+
+  checkUncheckAll(event: any) {
+    for (var i = 0; i < this.coachesArray.length; i++) {
+      this.coachesArray[i].isSelected = this.masterSelected;
+    }
+    this.onChange(this.coachesArray);
+  }
 
   tempArray: any = [];
   newArray: any = [];
@@ -80,7 +130,7 @@ export class CoachesfiltercoachesComponent implements OnInit {
   onChange(event: any) {
 
     if (event.target.checked) {
-      this.tempArray = this.arrays.filter((e: any) => e.id == event.target.value);
+      this.tempArray = this.arrays.filter((e: any) => e.filter == event.target.value);
       this.coachesArray = [];
 
       this.newArray.push(this.tempArray);
@@ -96,7 +146,7 @@ export class CoachesfiltercoachesComponent implements OnInit {
       }
     }
     else {
-      this.tempArray = this.coachesArray.filter((e: any) => e.id != event.target.value);
+      this.tempArray = this.coachesArray.filter((e: any) => e.filter != event.target.value);
       this.newArray = [];
       this.coachesArray = [];
       this.newArray.push(this.tempArray);
@@ -110,5 +160,8 @@ export class CoachesfiltercoachesComponent implements OnInit {
         }
       }
     }
+    // this.coachesArray.checked = event.target.checked;
+    //    this._coachesApiService.coachUpdate(this.coachesArray);
+    //    this.checkAll = this.allChecked();
   }
 }

@@ -76,8 +76,14 @@
       <span class="align-middle">Filter</span>
     </h5>
     <div class="custom-control custom-checkbox mb-1">
-      <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
-        (change)="toggleCheckboxAll()"[(ngModel)]="masterSelected" name="list_name"  />
+      <input 
+      type="checkbox"
+      class="custom-control-input select-all"
+      id="select-all"
+      [checked]="checkAll"
+      
+      (change)="checkUncheckAll($event)" />
+      <!-- (change)="toggleCheckboxAll($event)"  -->
       <label class="custom-control-label" for="select-all">View All</label>
     </div>
     <div class="coaches-filter">
@@ -87,14 +93,14 @@
         <!-- *ngFor="let coaches of gameFilter"  -->
         <!-- (change)="checkboxChange($event, coaches.id)" -->
         <!-- (change)="onChange($event)"  -->
-        <input (change)="isAllSelected()" class="custom-control-input input-filter"
-          
-        [checked]="checkboxarrays.checked" type= "{{checkboxarrays.type}}"   id="checkboxarrays-{{ checkboxarrays.id }}" value={{checkboxarrays.id}} />
+        <input (change)="onChange($event)" class="custom-control-input input-filter"
+        
+        [checked]="checkboxarrays.checked" type= "{{checkboxarrays.type}}"   id="checkboxarrays-{{ checkboxarrays.id }}" value={{checkboxarrays.filter}} />
              <!-- -->
              <!-- type="checkbox" -->
              <!--  -->
         <label class="custom-control-label" for="checkboxarrays-{{ checkboxarrays.id }}"
-        [(ngModel)]="checkboxarrays.checkAll" name="list_name" >{{ checkboxarrays.filter }}</label>
+       >{{ checkboxarrays.filter }}</label>
         <!--  -->
       </div>
       

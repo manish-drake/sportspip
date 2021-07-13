@@ -33,6 +33,19 @@ export class CoachesapiService {
    filterData(){
     return this._httpClient.get(this._urlFilter);
   }
+  coachUpdate(coaches) {
+    const coachesChecked = coaches.filter(coach => {
+      return coach.checked === true;
+    });
 
+    let coachesArray = [];
+    coachesChecked.map(res => {
+      coachesArray.push(res.filter);
+    });
+
+    let filteredCoach = this.tempEvents.filter(event => coachesArray.includes(event.coach));
+    this.events = filteredCoach;
+    this.onEventChange.next(this.events);
+  }
   
 }
