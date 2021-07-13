@@ -136,4 +136,12 @@ export class Subcategory {
     name: string;
     checked: boolean;
 }
+export class CFilter{
+    id:number;
+    filter: string;
+    color: string;
+    checked: boolean;
+
+
+}
   

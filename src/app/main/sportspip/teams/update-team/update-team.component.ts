@@ -1,5 +1,6 @@
 import { LocationStrategy } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+
 import { ActivatedRoute } from '@angular/router';
 import { IRoster } from '../../interfaces';
 import { TeamsService } from '../teams.service';
@@ -32,5 +33,4 @@ export class UpdateTeamComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

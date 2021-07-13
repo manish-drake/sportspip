@@ -20,12 +20,12 @@ export class CoachesComponent implements OnInit {
   level: ILevel[];
   program: IProgram[];
   coaches:ICoaches[];
+  stringifiedData: any;
+  coachArrays:any=[];
   ngOnInit() {
-    this._coachesService.getLevel().subscribe(data=> this.level =data)
-
-    this._coachesService.getProgram().subscribe(data=> this.program =data)
+   
     
-    this._coachesService.getCoache().subscribe(data=> this.coaches = data)
+    this.coachesData();
 
 
     // content header
@@ -53,5 +53,18 @@ export class CoachesComponent implements OnInit {
       }
     };
   }
+  coachesData(){
+    this._coachesService.getCoache().subscribe(data=> this.coaches = data)
+    console.log(this.coaches);
+    this.coachArrays=this._coachesService.getCoache().subscribe()
+    console.log(this.coachArrays);
+    
+
+    // this.stringifiedData = JSON.stringify(this.coaches);  
+    // console.log("With Stringify :" + this.stringifiedData); 
+  }
+ 
+
+  
 
 }

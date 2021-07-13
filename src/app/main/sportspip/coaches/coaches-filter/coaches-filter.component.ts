@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
-import { ILevel, IProgram } from '../../interfaces';
+import {  ICoaches, ILevel, IProgram } from '../../interfaces';
 import { CoachesService } from '../coaches.service';
 
 @Component({
@@ -19,6 +19,7 @@ export class CoachesFilterComponent implements OnInit {
 
   constructor(private _coreSidebarService: CoreSidebarService,private _coachesService: CoachesService) { }
 
+
   /**
    * If all checkbox are checked : returns TRUE
    */
@@ -35,7 +36,7 @@ export class CoachesFilterComponent implements OnInit {
     checkboxChange(event, id) {
       const index = this.coachesRef.findIndex(r => {
         if (r.id === id) {
-          console.log("rakesh" + r.id + r)
+          
           return id;
           
         }
@@ -67,18 +68,64 @@ export class CoachesFilterComponent implements OnInit {
  /**
    * On init
    */
-  levelRef: ILevel[];
-  programRef: IProgram[];
+  
   ngOnInit(): void {
     // Subscribe to Coaches changes
     this._coachesService.onCoachesChange.subscribe(res => {
       this.coachesRef = res; 
     });
+   
+   
+   }
+  //  coachesData(){
+  //   this._coachesService.getCoache().subscribe(data=> this.coaches = data)
+  //   console.log(this.coachesRef);
+  //   this.coachArrays=this._coachesService.getCoache().subscribe()
+  //   console.log(this.coachArrays);
+  //  }
+  //  coachArrays:any=[];
+  //  coaches:ICoaches[];
+  //  coachTempArray:any =[];
+  //  coachNewArray:any =[];
+  //  onChange(event:any){
 
-    this._coachesService.getLevel().subscribe(data=> this.levelRef = data);
-    console.log(this.levelRef);
-    
-    this._coachesService.getProgram().subscribe(data=> this.programRef =data)
-  }
+  //   if(event.target.checked)
+  //   {
+  //       this.coachTempArray = this.coachNewArray.filter((e:any)=>e.id == event.target.value);
+  //       this.coaches=[];
+ 
+  //       this.coachNewArray.push(this.coachTempArray);
+
+  //       for(let i=0; i<this.coachNewArray.length; i++)
+  //       {
+  //         var firstArray = this.coachNewArray[i];
+  //         console.log(firstArray)
+  //         for(let i=0; i<firstArray.length; i++)
+  //         {
+  //           var obj = firstArray[i];
+  //           this.coaches.push(obj);
+  //           console.log(this.coaches)
+  //         }
+  //       }
+  //   }
+  //   else
+  //   {
+  //     this.coachTempArray = this.coaches.filter((e:any)=>e.id != event.target.value);
+  //     this.coachNewArray=[];
+  //     this.coaches=[];
+  //     this.coachNewArray.push(this.coachTempArray);
+  //     for(let i=0; i<this.coachNewArray.length; i++)
+  //     {
+  //       var firstArray = this.coachNewArray[i];
+  //       console.log(firstArray)
+  //       for(let i=0; i<firstArray.length; i++)
+  //       {
+  //         var obj = firstArray[i];
+  //         this.coaches.push(obj);
+  //         console.log(this.coaches);
+  //       }
+  //     }
+  //   }
+  // }
   
 }

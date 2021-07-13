@@ -70,6 +70,14 @@ export const menu: CoreMenu[] = [
             icon: 'users',
             url: 'sportspip/coaches'
           },
+          {
+            id: 'Coachesfilter',
+            title: 'Coaches',
+            translate: 'MENU.SPORTSPIP.COACHESFILTER',
+            type: 'item',
+            icon: 'users',
+            url: 'sportspip/coachesfilter'
+          },
           
           {
             id: 'Players',
