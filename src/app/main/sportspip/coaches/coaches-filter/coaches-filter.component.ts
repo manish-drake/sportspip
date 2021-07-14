@@ -48,11 +48,8 @@ export class CoachesFilterComponent implements OnInit {
       });
       this.coachesRef[index].checked = event.target.checked;
       this._coachesService.coachesUpdate(this.coachesRef);
-<<<<<<< HEAD
 
      
-=======
->>>>>>> 3553f0985d89dfa145c72f2ddeaabb48d6a3a65f
       this.checkAll = this.allChecked();
     }
 

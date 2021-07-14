@@ -222,11 +222,7 @@ export const menu: CoreMenu[] = [
       },
       {
         id: 'calendar',
-<<<<<<< HEAD
-        title: 'calendar',
-=======
         title: 'Calendar',
->>>>>>> 3553f0985d89dfa145c72f2ddeaabb48d6a3a65f
         translate: 'MENU.APPS.CALENDAR',
         type: 'item',
         icon: 'calendar',

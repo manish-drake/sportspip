@@ -7,11 +7,11 @@ import { ICoaches } from '../interfaces';
   providedIn: 'root'
 })
 export class CoachesapiService {
-  // private _urlCoaches : string = "http://drake.in:1337/coaches";
-  // private _urlFilter : string = "http://drake.in:1337/Game-Filters";
+  private _urlCoaches : string = "http://drake.in:1337/coaches";
+  private _urlFilter : string = "http://drake.in:1337/Game-Filters";
 
-  private _urlFilter : string ="http://192.168.10.50:1337/Game-Filters";
-  private _urlCoaches : string = "http://192.168.10.50:1337/coaches";
+  // private _urlFilter : string ="http://192.168.10.50:1337/Game-Filters";
+  // private _urlCoaches : string = "http://192.168.10.50:1337/coaches";
 
   public tempEvents;
   public events;
