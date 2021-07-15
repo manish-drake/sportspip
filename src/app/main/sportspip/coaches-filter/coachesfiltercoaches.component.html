@@ -65,7 +65,7 @@
     </div>
   </div>
 </div> -->
-<!----------------------------------------------------------------------------------------------->
+<!--------------------------------------------             --------------------------------------------------->
 
 
 <!-- Main Sidebar -->
@@ -76,21 +76,32 @@
       <span class="align-middle">Filter</span>
     </h5>
     <div class="custom-control custom-checkbox mb-1">
-      <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll" value="filter"
-        (change)="toggleCheckboxAll($event)" />
-      <!-- (change)="checkUncheckAll($event)"  -->
+      <input 
+      type="checkbox"
+      class="custom-control-input select-all"
+      id="select-all"
+      [checked]="checkAll"
+      
+      (change)="toggleCheckboxAll($event)" />
+      
       <label class="custom-control-label" for="select-all">View All</label>
     </div>
     <div class="coaches-filter">
 
       <div class="custom-control  custom-checkbox mb-1 custom-control-{{ checkboxarrays.color }}"
         *ngFor="let checkboxarrays of gameFilter">
-      
-        <input (change)="onChange($event)" class="custom-control-input input-filter" [checked]="checkboxarrays.filter"
-          type="{{checkboxarrays.type}}" id="checkboxarrays-{{ checkboxarrays.id }}" value={{checkboxarrays.filter}} />
-   
-        <label class="custom-control-label" for="checkboxarrays-{{ checkboxarrays.id }}">{{ checkboxarrays.filter
-          }}</label>
+     
+        <input (change)="onChange($event,checkboxarrays.id)" 
+        class="custom-control-input input-filter"
+        
+        [checked]="checkboxarrays.checked" 
+        type= "checkbox" 
+         id="checkboxarrays-{{ checkboxarrays.id }}" 
+         value={{checkboxarrays.filter}} />
+           
+        <label class="custom-control-label" 
+        for="checkboxarrays-{{ checkboxarrays.id }}"
+       >{{ checkboxarrays.filter }}</label>
         <!--  -->
       </div>
 
