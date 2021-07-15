@@ -11,6 +11,8 @@ import { CalendarService } from 'app/main/apps/calendar/calendar.service';
 import { EventRef } from 'app/main/apps/calendar/calendar.model';
 import { TeamsService } from './teams.service';
 import { IFootball, ITeams } from '../interfaces';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { id } from '@swimlane/ngx-datatable';
 
 @Component({
   selector: 'app-teams',
@@ -37,14 +39,11 @@ export class TeamsComponent implements OnInit {
   }
   constructor(
     private _coreSidebarService: CoreSidebarService,
-    
+    private _httpClient: HttpClient,
     private _coreConfigService: CoreConfigService,
     private _teamsService:TeamsService
   ) {}
-  editTeam(team:any){
-    this.isEdit = true;
-    this.teamObj = team;
-  }
+  
   ngOnInit(): void {
     this._teamsService.getTeams().subscribe(data=> this.teamsCollection =data);
 

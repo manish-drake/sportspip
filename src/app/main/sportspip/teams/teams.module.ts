@@ -37,6 +37,8 @@ const routes: Routes = [
     FormsModule
   ],
   providers: [TeamsService],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  bootstrap: [UpdateTeamComponent]
+
 })
 export class TeamsModule { }
