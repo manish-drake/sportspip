@@ -17,19 +17,22 @@ import { CoachesFilterComponent } from '../coaches/coaches-filter/coaches-filter
 import { TeamDetailsComponent } from '../team-details/team-details.component';
 import { UpdateTeamComponent } from './update-team/update-team.component';
 import { DeleteTeamComponent } from './delete-team/delete-team.component';
+import { AddTeamComponent } from './add-team/add-team.component';
 
 
 // routing
 const routes: Routes = [
   { path: 'teams', component : TeamsComponent },
   {path:"delete-team", component:DeleteTeamComponent},
-  {path:"update-team", component:UpdateTeamComponent} 
+  {path:"update-team", component:UpdateTeamComponent},
+  {path:"add-team", component:AddTeamComponent} 
+ 
 ];
 
 
 
 @NgModule({
-  declarations: [TeamsComponent, UpdateTeamComponent],
+  declarations: [TeamsComponent, UpdateTeamComponent, AddTeamComponent],
   imports: [
     CommonModule, RouterModule.forChild(routes),
     NgbModule, CoreCommonModule,

@@ -47,14 +47,6 @@ export const menu: CoreMenu[] = [
             url: 'sportspip/event'
           },
           {
-            id: 'Add-Event',
-            title: 'Add-Event',
-            translate: 'MENU.SPORTSPIP.ADDEVENT',
-            type: 'item',
-            icon: 'clipboard',
-            url: 'sportspip/addevents'
-          },
-          {
             id: 'Teams',
             title: 'Teams',
             translate: 'MENU.SPORTSPIP.TEAMS',

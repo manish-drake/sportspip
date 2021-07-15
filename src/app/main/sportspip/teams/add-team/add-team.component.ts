@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-
 
 @Component({
-  selector: 'app-add-events',
-  templateUrl: './add-events.component.html',
-  styleUrls: ['./add-events.component.scss']
+  selector: 'app-add-team',
+  templateUrl: './add-team.component.html',
+  styleUrls: ['./add-team.component.scss']
 })
-export class AddEventsComponent implements OnInit {
+export class AddTeamComponent implements OnInit {
+
 
   public avatarImage: string;
 
@@ -24,7 +23,7 @@ export class AddEventsComponent implements OnInit {
     sport:'',
     about: ''
   }
-  editTeam(team:any){
+  addTeam(team:any){
     this.isEdit = true;
     this.teamObj = team;
   }
@@ -42,4 +41,5 @@ export class AddEventsComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
 }
