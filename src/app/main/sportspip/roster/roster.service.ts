@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IRoster } from '../interfaces';
+import { IRoster } from 'app/main/sportspip/interfaces';
+
 
 
 @Injectable({

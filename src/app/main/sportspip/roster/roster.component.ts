@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { Title } from '@angular/platform-browser';
+
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
-import { IRoster } from '../interfaces';
+import { IRoster } from 'app/main/sportspip/interfaces';
 import { RosterService } from './roster.service';
 
 

@@ -37,7 +37,7 @@ import { TeamDetailsModule } from './team-details/team-details.module';
 import { CoachDetailsModule } from './coach-details/coach-details.module';
 import { PlayerDetailsModule } from './player-details/player-details.module';
 
-import { RosterModule } from './roster/roster.module';
+import { RosterModule } from '../../main/sportspip/roster/roster.module';
 import { ScheduleListComponent } from './schedule-list/schedule-list.component';
 import { ScheduleListModule } from './schedule-list/schedule-list.module';
 import { FormsModule } from '@angular/forms';
