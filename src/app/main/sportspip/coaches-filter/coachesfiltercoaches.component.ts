@@ -51,10 +51,8 @@ export class CoachesfiltercoachesComponent implements OnInit {
     });
   }
 
-
+//--------------------------toggle checkbox logic--------------------------------//
   toggleCheckboxAll(event) {
-
-  
 
     if (event.target.checked) {
       
@@ -87,15 +85,11 @@ export class CoachesfiltercoachesComponent implements OnInit {
           this.coachesArray.push(obj);
           console.log(this.coachesArray);
         }
-      }
-      
-
-     
-    
+      } 
     }
-    ///toggle-----
 
-    
+
+    ///-----------------toggle checkbox------------//
 
     this.checkAll = event.target.checked;
     
@@ -114,7 +108,7 @@ export class CoachesfiltercoachesComponent implements OnInit {
   }
 
 
-  //logic for filter coach 
+  //---------------------logic for filter coach --------------------------//
   tempArray: any = [];
   newArray: any = [];
 
@@ -162,9 +156,9 @@ export class CoachesfiltercoachesComponent implements OnInit {
 
     this.checkAll = this.allChecked();
   }
+
+  //-----------------checkbox select all------------------------//
   allChecked() {
-  
-    
     return this.gameFilter.every(v => v.checked === true);
    
   }

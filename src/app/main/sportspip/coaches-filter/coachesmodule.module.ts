@@ -14,8 +14,9 @@ const routes:Routes = [
   declarations: [CoachesfiltercoachesComponent],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes),
     CoreSidebarModule,
+    RouterModule.forChild(routes),
+    
     FormsModule
   ]
 })

@@ -15,10 +15,10 @@ import { ContentHeaderModule } from 'app/layout/components/content-header/conten
 const routes:Routes = [
 
   { path:'coaches', component:CoachesComponent,
-  resolve: {
-    data: CoachesService
-  },
-  data: { animation: 'coaches' },
+  // resolve: {
+  //   data: CoachesService
+  // },
+  // data: { animation: 'coaches' },
 }
 ]
 @NgModule({
