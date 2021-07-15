@@ -24,8 +24,11 @@ export class TeamsService {
     console.log(uri);
     return this._httpClient.get<ITeams>(uri);
   }
-  deleteUser(user:any){
-    return this._httpClient.delete("http://drake.in:1337/teams" +user.id)
+  updateTeams(user:any){
+    return this._httpClient.put(this._urlTeams +user.id, user)
+  }
+  deleteTeams(user:any){
+    return this._httpClient.delete(this._urlTeams +user.id)
   }
  
 }

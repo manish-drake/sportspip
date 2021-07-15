@@ -1,7 +1,7 @@
 import { LocationStrategy } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IRoster } from '../../interfaces';
+import { IRoster } from 'app/main/sportspip/interfaces';
 import { RosterService } from '../roster.service';
 import { Router } from '@angular/router';
 

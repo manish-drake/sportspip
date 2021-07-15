@@ -29,12 +29,12 @@ const routes: Routes = [
 
 
 @NgModule({
-  declarations: [TeamsComponent, UpdateTeamComponent, DeleteTeamComponent],
+  declarations: [TeamsComponent, UpdateTeamComponent],
   imports: [
     CommonModule, RouterModule.forChild(routes),
     NgbModule, CoreCommonModule,
     ContentHeaderModule, MediaPlayerModule,
-    
+    FormsModule
   ],
   providers: [TeamsService],
   exports: [RouterModule]

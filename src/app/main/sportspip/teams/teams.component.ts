@@ -23,12 +23,28 @@ export class TeamsComponent implements OnInit {
   serverUri:string = "http://192.168.10.50:1337";
 
   teamsCollection:ITeams[];
+  allTeam:any;
+  isEdit=false;
+  teamObj={
+    name:'',
+    role:'',
+    school:'',
+    country:'',
+    status:'',
+    sport:'',
+    about: '',
+    id:''
+  }
   constructor(
     private _coreSidebarService: CoreSidebarService,
     
     private _coreConfigService: CoreConfigService,
     private _teamsService:TeamsService
   ) {}
+  editTeam(team:any){
+    this.isEdit = true;
+    this.teamObj = team;
+  }
   ngOnInit(): void {
     this._teamsService.getTeams().subscribe(data=> this.teamsCollection =data);
 

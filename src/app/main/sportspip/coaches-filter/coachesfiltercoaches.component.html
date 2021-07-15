@@ -19,12 +19,12 @@
 
   <div class="content-detached content-right">
     <div class="content-body"> -->
-      <!-- Coaches Head Section Starts -->
-      <!-- <section id="coaches-header">
+<!-- Coaches Head Section Starts -->
+<!-- <section id="coaches-header">
         <div class="row ">
           <div class="col-lg-4 col-md-6 col-12" *ngFor="let productArrays of coachesArray"> -->
 
-            <!-- *ngFor="let coach of coaches" -->
+<!-- *ngFor="let coach of coaches" -->
 <!--             
             <div class="card card-developer-meetup">
               <div class="bg-light-primary rounded-top text-center coachesDetails">
@@ -54,8 +54,8 @@
                   </div>
                   <div class="media-body">
                     <h6 class="mb-0">{{productArrays.coachName}}</h6> -->
-                    <!-- <small>Manhattan, New york City</small> -->
-                  <!-- </div>
+<!-- <small>Manhattan, New york City</small> -->
+<!-- </div>
                 </div>
               </div>
             </div>
@@ -76,36 +76,26 @@
       <span class="align-middle">Filter</span>
     </h5>
     <div class="custom-control custom-checkbox mb-1">
-      <input 
-      type="checkbox"
-      class="custom-control-input select-all"
-      id="select-all"
-      [checked]="checkAll"
-      
-      (change)="checkUncheckAll($event)" />
-      <!-- (change)="toggleCheckboxAll($event)"  -->
+      <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll" value="filter"
+        (change)="toggleCheckboxAll($event)" />
+      <!-- (change)="checkUncheckAll($event)"  -->
       <label class="custom-control-label" for="select-all">View All</label>
     </div>
     <div class="coaches-filter">
 
       <div class="custom-control  custom-checkbox mb-1 custom-control-{{ checkboxarrays.color }}"
         *ngFor="let checkboxarrays of gameFilter">
-        <!-- *ngFor="let coaches of gameFilter"  -->
-        <!-- (change)="checkboxChange($event, coaches.id)" -->
-        <!-- (change)="onChange($event)"  -->
-        <input (change)="onChange($event)" class="custom-control-input input-filter"
-        
-        [checked]="checkboxarrays.checked" type= "{{checkboxarrays.type}}"   id="checkboxarrays-{{ checkboxarrays.id }}" value={{checkboxarrays.filter}} />
-             <!-- -->
-             <!-- type="checkbox" -->
-             <!--  -->
-        <label class="custom-control-label" for="checkboxarrays-{{ checkboxarrays.id }}"
-       >{{ checkboxarrays.filter }}</label>
+      
+        <input (change)="onChange($event)" class="custom-control-input input-filter" [checked]="checkboxarrays.filter"
+          type="{{checkboxarrays.type}}" id="checkboxarrays-{{ checkboxarrays.id }}" value={{checkboxarrays.filter}} />
+   
+        <label class="custom-control-label" for="checkboxarrays-{{ checkboxarrays.id }}">{{ checkboxarrays.filter
+          }}</label>
         <!--  -->
       </div>
-      
+
     </div>
-    
+
   </div>
   <div class="content-detached content-right">
     <div class="content-body">

@@ -12,16 +12,16 @@ export class CoachesfiltercoachesComponent implements OnInit {
 
   // serverUri:string = "http://drake.in:1337";
   serverUri: string = "http://192.168.10.50:1337";
-  masterSelected:boolean;
+  masterSelected: boolean;
   gameFilter: any = [];
   public checkAll = true;
-  
+
   constructor(private _coachesApiService: CoachesapiService, private _coreSidebarService: CoreSidebarService) {
 
     this.masterSelected = false;
-   }
+  }
 
- 
+
 
   // toggleCheckboxAll(){
   //   this.checkAll = true;
@@ -37,7 +37,7 @@ export class CoachesfiltercoachesComponent implements OnInit {
   //     if(this.coachesArray[i].checked)
   //     this.coachesArray.push(this.coachesArray[i]);
   //   }
-    // this.coachesArray = JSON.stringify(this.coachesArray);
+  // this.coachesArray = JSON.stringify(this.coachesArray);
   //}
   // isAllSelected() {
   //   this.masterSelected = this.coachesArray.every(function(item:any) {
@@ -77,9 +77,9 @@ export class CoachesfiltercoachesComponent implements OnInit {
   /**
    * If all checkbox are checked : returns TRUE
    */
-  //  allChecked() {
-  //   return this.coachesArray.every(v => v.checked === true);
-  // }
+  allChecked() {
+    return this.coachesArray.every(v => v.checked === true);
+  }
 
   /**
    * Checkbox Change
@@ -103,19 +103,19 @@ export class CoachesfiltercoachesComponent implements OnInit {
    *
    * @param event
    */
-  // toggleCheckboxAll(event) {
-  //   this.checkAll = event.target.checked;
-  //   if (this.checkAll) {
-  //     this.coachesArray.map(res => {
-  //       res.checked = true;
-  //     });
-  //   } else {
-  //     this.coachesArray.map(res => {
-  //       res.checked = false;
-  //     });
-  //   }
-  //   this._coachesApiService.coachUpdate(this.coachesArray);
-  // }
+  toggleCheckboxAll(event) {
+    this.checkAll = event.target.value;
+    if (this.checkAll) {
+      this.coachesArray.map(res => {
+        res.value = true;
+      });
+    } else {
+      this.coachesArray.map(res => {
+        res.value = false;
+      });
+    }
+    this._coachesApiService.coachUpdate(this.coachesArray);
+  }
 
   checkUncheckAll(event: any) {
     for (var i = 0; i < this.coachesArray.length; i++) {

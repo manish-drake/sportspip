@@ -80,37 +80,37 @@
                   <div class="form-row">
                       <div class="col-md-6 mb-3">
                           <label for="validationServer01">Team Name</label>
-                          <input type="text" class="form-control" ngModel>
+                          <input type="text" class="form-control" [(ngModel)]="teamObj.name">
                       </div>
                       <div class="col-md-6 mb-3">
                           <label for="validationServer02">Role</label>
-                          <input type="text" class="form-control" ngModel>
+                          <input type="text" class="form-control" [(ngModel)]="teamObj.role">
                       </div>
                   </div>
                   <div class="form-row">
                       <div class="col-md-6 mb-3">
                           <label for="validationServer03">School/University Name</label>
-                          <input type="text" class="form-control" ngModel>
+                          <input type="text" class="form-control" [(ngModel)]="teamObj.school">
                       </div>
                       <div class="col-md-6 mb-3">
                           <label for="validationServer03">Country</label>
-                          <input type="text" class="form-control" ngModel>
+                          <input type="text" class="form-control" [(ngModel)]="teamObj.country">
                       </div>
                   </div>
                   <div class="form-row">
                       <div class="col-md-6 mb-3">
                           <label for="validationServer01">Status</label>
-                          <input type="text" class="form-control" ngModel>
+                          <input type="text" class="form-control" [(ngModel)]="teamObj.status">
                       </div>
                       <div class="col-md-6 mb-3">
                           <label for="validationServer01">Sport</label>
-                          <input type="text" class="form-control" ngModel>
+                          <input type="text" class="form-control" [(ngModel)]="teamObj.sport">
                       </div>
                   </div>
                   <div class="form-row">
                       <div class="col-md-12 mb-3">
                           <label for="validationServer01">About Team</label>
-                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" [(ngModel)]="teamObj.about"></textarea>
                         </div>
                   </div>
                   <button class="btn btn-primary" type="submit">Save</button>

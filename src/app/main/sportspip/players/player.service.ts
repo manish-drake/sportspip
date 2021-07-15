@@ -8,7 +8,7 @@ import { IPlayer } from '../interfaces';
 })
 export class PlayerService {
 
-  private _urlplayer : string = "http://drake.in:1337/players";
+  private _urlplayer : string = "http://192.168.10.50:1337/players";
 
   constructor(private _httpClient:HttpClient) { }
 

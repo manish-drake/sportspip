@@ -33,9 +33,9 @@ export class CoachesService  {
 
   private _urlLevel: string = "/assets/data/level.json";
   private _urlProgram : string = "/assets/data/program.json";
-  private _urlCoaches : string = "http://drake.in:1337/coaches";
- // private url = `http://drake.in:1337/Game-Filters`;//`api/coaches-filter`;
-  private _urlCFilter = `http://drake.in:1337/Game-Filters`;
+  private _urlCoaches : string = "http://192.168.10.50:1337/coaches";
+ // private url = `http://192.168.10.50:1337/Game-Filters`;//`api/coaches-filter`;
+  private _urlCFilter = `http://192.168.10.50:1337/Game-Filters`;
    /**
    * Resolver
    *

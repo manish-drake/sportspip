@@ -11,7 +11,7 @@ import { CoachesService } from './coaches.service';
 })
 export class CoachesComponent implements OnInit {
 
-  serverUri:string = "http://drake.in:1337";
+  serverUri:string = "http://192.168.10.50:1337";
 
   public contentHeader: object;
   

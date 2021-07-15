@@ -135,12 +135,13 @@
                                                     <i data-feather="edit-2" class="mr-50"></i>
                                                     <span>Edit</span></a>
 
-                                                <a ngbDropdownItem href="javascript:void(0);" [swal]="SweetAlertConfirmColor" 
-                                                (click)="deleteRoster(roster)">
+                                                <a ngbDropdownItem href="javascript:void(0);" 
+                                                
+                                                (click)="deleteRoster(roster.id)">
 
                                                     <i data-feather="trash" class="mr-50"></i>
                                                     <span>Delete</span></a>
-                                                    <swal #SweetAlertConfirmColor (open)="ConfirmColorOpen()"></swal>
+                                                    <!-- <swal #SweetAlertConfirmColor (open)="ConfirmColorOpen()"></swal> -->
                                             </div>
                                         </div>
                                     </td>
