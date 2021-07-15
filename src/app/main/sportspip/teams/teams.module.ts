@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BrowserModule } from "@angular/platform-browser";
 
 import { CoreCommonModule } from '@core/common.module';
 import { CoreSidebarModule } from '@core/components';
@@ -33,7 +32,7 @@ const routes: Routes = [
   declarations: [TeamsComponent, UpdateTeamComponent, DeleteTeamComponent],
   imports: [
     CommonModule, RouterModule.forChild(routes),
-    NgbModule, CoreCommonModule, BrowserModule,
+    NgbModule, CoreCommonModule,
     ContentHeaderModule, MediaPlayerModule,
     
   ],
