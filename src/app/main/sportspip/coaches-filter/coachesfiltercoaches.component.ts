@@ -53,11 +53,9 @@ export class CoachesfiltercoachesComponent implements OnInit {
 
 
   toggleCheckboxAll(event) {
-
-
-
     if (event.target.checked) {
       this.tempArray = this.arrays;
+
       this.coachesArray = [];
 
       this.newArray.push(this.tempArray);
@@ -65,6 +63,7 @@ export class CoachesfiltercoachesComponent implements OnInit {
       for (let i = 0; i < this.newArray.length; i++) {
         var firstArray = this.newArray[i];
         console.log(firstArray)
+        
         for (let i = 0; i < firstArray.length; i++) {
           var obj = firstArray[i];
           this.coachesArray.push(obj);
