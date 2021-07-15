@@ -23,7 +23,11 @@ export class CoachesapiService {
 
   constructor(private _httpClient: HttpClient) { }
 
-  
+  getCoachX(id: string): Observable<ICoaches> {
+    var uri: string = `${this._urlCoaches}?id=${ id }`;
+    console.log(uri);
+    return this._httpClient.get<ICoaches>(uri);
+  }
    coachesData(){
     return this._httpClient.get(this._urlCoaches);
   }
