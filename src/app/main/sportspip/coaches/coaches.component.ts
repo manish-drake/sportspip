@@ -7,6 +7,7 @@ import { CoachesService } from './coaches.service';
   selector: 'app-coaches',
   templateUrl: './coaches.component.html',
   styleUrls: ['./coaches.component.scss'],
+  encapsulation: ViewEncapsulation.None
   
 })
 export class CoachesComponent implements OnInit {
@@ -25,7 +26,7 @@ export class CoachesComponent implements OnInit {
   ngOnInit() {
    
     
-    this.coachesData();
+    //this.coachesData();
 
 
     // content header
@@ -53,18 +54,26 @@ export class CoachesComponent implements OnInit {
       }
     };
   }
-  coachesData(){
-    this._coachesService.getCoache().subscribe(data=> this.coaches = data)
-    console.log(this.coaches);
-    this.coachArrays=this._coachesService.getCoache().subscribe()
-    console.log(this.coachArrays);
+  // coachesData(){
+  //   this._coachesService.getCoache().subscribe(data=> this.coaches = data)
+  //   console.log(this.coaches);
+  //   this.coachArrays=this._coachesService.getCoache().subscribe()
+  //   console.log(this.coachArrays);
     
 
-    // this.stringifiedData = JSON.stringify(this.coaches);  
-    // console.log("With Stringify :" + this.stringifiedData); 
-  }
- 
+  //   // this.stringifiedData = JSON.stringify(this.coaches);  
+  //   // console.log("With Stringify :" + this.stringifiedData); 
+  // }
+  coachesArray: any = [];
+  arrays: any = [];
 
-  
+  filterCoach() {
+    this._coachesService.coachesData().subscribe((data: any[]) => {
+      console.log(data);
+      this.coachesArray = data;
+      this.arrays = this.coachesArray;
+      console.log(this.coachesArray)
+    });
+  }
 
 }

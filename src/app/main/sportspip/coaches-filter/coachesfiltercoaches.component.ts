@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
 import { filter } from 'rxjs/operators';
+import { ICoaches } from '../interfaces';
 import { CoachesapiService } from './coachesapi.service';
 
 @Component({
@@ -10,13 +12,14 @@ import { CoachesapiService } from './coachesapi.service';
 })
 export class CoachesfiltercoachesComponent implements OnInit {
 
- // serverUri: string = "http://drake.in:1337";
+  // serverUri: string = "http://drake.in:1337";
   serverUri: string = "http://192.168.10.50:1337";
 
-
+  coachID:string ="";
   public checkAll = true;
-
-  constructor(private _coachesApiService: CoachesapiService, private _coreSidebarService: CoreSidebarService) { }
+  coachCollection:ICoaches;
+  constructor(private _coachesApiService: CoachesapiService, private _coreSidebarService: CoreSidebarService,
+    private activatedRoute: ActivatedRoute) { }
 
 
 
@@ -24,6 +27,8 @@ export class CoachesfiltercoachesComponent implements OnInit {
   ngOnInit() {
     this.dataFilter();
     this.filterCoach();
+
+
   }
 
   //--------------------------subscribed data for for checkbox-----------------------------//
@@ -39,8 +44,8 @@ export class CoachesfiltercoachesComponent implements OnInit {
   }
 
   //----------------------subscribed coach data-----------------------------//
-  coachesArray: any = [];
-  arrays: any = [];
+  coachesArray:ICoaches[]
+  arrays: ICoaches[];
 
   filterCoach() {
     this._coachesApiService.coachesData().subscribe((data: any[]) => {
@@ -51,13 +56,11 @@ export class CoachesfiltercoachesComponent implements OnInit {
     });
   }
 
-
+  //--------------------------toggle checkbox logic--------------------------------//
   toggleCheckboxAll(event) {
 
-  
-
     if (event.target.checked) {
-      
+
       this.tempArray = this.arrays;
       this.coachesArray = [];
 
@@ -88,17 +91,13 @@ export class CoachesfiltercoachesComponent implements OnInit {
           console.log(this.coachesArray);
         }
       }
-      
-
-     
-    
     }
-    ///toggle-----
 
-    
+
+    ///-----------------toggle checkbox------------//
 
     this.checkAll = event.target.checked;
-    
+
     if (this.checkAll) {
       this.gameFilter.map(res => {
         res.checked = true;
@@ -106,15 +105,15 @@ export class CoachesfiltercoachesComponent implements OnInit {
     } else {
       this.gameFilter.map(res => {
         res.checked = false;
-        this.coachesArray=[];
-        
+        this.coachesArray = [];
+
       });
     }
 
   }
 
 
-  //logic for filter coach 
+  //---------------------logic for filter coach --------------------------//
   tempArray: any = [];
   newArray: any = [];
 
@@ -162,10 +161,10 @@ export class CoachesfiltercoachesComponent implements OnInit {
 
     this.checkAll = this.allChecked();
   }
+
+  //-----------------checkbox select all------------------------//
   allChecked() {
-  
-    
     return this.gameFilter.every(v => v.checked === true);
-   
+
   }
 }

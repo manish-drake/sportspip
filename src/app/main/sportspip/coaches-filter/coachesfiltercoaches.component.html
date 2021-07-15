@@ -1,165 +1,92 @@
-<p>coachesfiltercoaches works!</p>
 <!-- Main Sidebar -->
-<!-- <div class="container">
-  <div class="_ul_checkbox">
-    <ul>
-      <li *ngFor="let checkboxarrays of gameFilter">
-        <input type="{{checkboxarrays.type}}" value={{checkboxarrays.id}}
-          (change)="onChange($event)">{{checkboxarrays.filter}}
-      </li>
-    </ul>
-  </div>
-  <div class="_ul_product">
-    <ul>
-      <li *ngFor="let productArrays of coachesArray">
-        {{productArrays.coachName}}
-      </li>
-    </ul>
-  </div>
+<div class="content-wrapper">
+  <div class="app-calendar">
+    <div class="row no-gutters">
 
-  <div class="content-detached content-right">
-    <div class="content-body"> -->
-<!-- Coaches Head Section Starts -->
-<!-- <section id="coaches-header">
-        <div class="row ">
-          <div class="col-lg-4 col-md-6 col-12" *ngFor="let productArrays of coachesArray"> -->
+      <core-sidebar class="col app-calendar-sidebar flex-grow-0 overflow-hidden d-flex flex-column"
+        name="calendar-main-sidebar" overlayClass="body-content-overlay" collapsibleSidebar="bs-gt-lg">
+        <div class="sidebar-wrapper">
 
-<!-- *ngFor="let coach of coaches" -->
-<!--             
-            <div class="card card-developer-meetup">
-              <div class="bg-light-primary rounded-top text-center coachesDetails">
-                <a>
-                  <img src="{{ serverUri + productArrays.coachImage[0].formats.thumbnail.url}}"
-                    ng-click="cochesDetail()" alt="Logo" />
-                </a>
+          <div class="card-body pb-0">
+            <h5 class="section-label mb-1">
+              <span class="align-middle">Filter</span>
+            </h5>
+            <div class="custom-control custom-checkbox mb-1">
+              <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+                (change)="toggleCheckboxAll($event)" />
+
+              <label class="custom-control-label" for="select-all">View All</label>
+            </div>
+            <div class="coaches-filter">
+
+              <div class="custom-control  custom-checkbox mb-1 custom-control-{{ checkboxarrays.color }}"
+                *ngFor="let checkboxarrays of gameFilter">
+
+                <input (change)="onChange($event,checkboxarrays.id)" class="custom-control-input input-filter"
+                  [checked]="checkboxarrays.checked" type="checkbox" id="checkboxarrays-{{ checkboxarrays.id }}"
+                  value={{checkboxarrays.filter}} />
+
+                <label class="custom-control-label" for="checkboxarrays-{{ checkboxarrays.id }}">{{
+                  checkboxarrays.filter }}</label>
+                <!--  -->
               </div>
-              <div class="card-body">
-                <div class="meetup-header d-flex align-items-center">
-                  <div class="my-auto">
-                    <h4 class="card-title mb-25">{{productArrays.coachTitle}}</h4>
-                  </div>
-                </div>
-                <div class="media">
-                  <div class="avatar bg-light-primary rounded mr-1">
-                    <div class="avatar-content">
-                      <i data-feather="calendar" class="avatar-icon font-medium-3"></i>
-                    </div>
-                  </div>
-                </div>
-                <div class="media">
-                  <div class="avatar bg-light-primary rounded mr-1">
-                    <div class="avatar-content">
-                      <i data-feather="map-pin" class="avatar-icon font-medium-3"></i>
-                    </div>
-                  </div>
-                  <div class="media-body">
-                    <h6 class="mb-0">{{productArrays.coachName}}</h6> -->
-<!-- <small>Manhattan, New york City</small> -->
-<!-- </div>
-                </div>
-              </div>
+
             </div>
           </div>
         </div>
-      </section>
-    </div>
-  </div>
-</div> -->
-<!--------------------------------------------             --------------------------------------------------->
+        <div class="mt-auto">
 
+          <img src="assets/images/pages/calendar-illustration.png" alt="Calendar illustration" class="img-fluid" />
 
-<!-- Main Sidebar -->
-<div class="sidebar-wrapper">
+        </div>
+      </core-sidebar>
+      <div class="content-detached content-right">
+        <div class="content-body">
+          <!-- Coaches Head Section Starts -->
+          <section id="coaches-header">
+            <div class="row ">
+              <div class="col-lg-4 col-md-6 col-12" *ngFor="let productArrays of coachesArray">
+                <!-- *ngFor="let coach of coaches" -->
+                <div class="card card-developer-meetup">
+                  <div class="bg-light-primary rounded-top text-center coachesDetails">
 
-  <div class="card-body pb-0">
-    <h5 class="section-label mb-1">
-      <span class="align-middle">Filter</span>
-    </h5>
-    <div class="custom-control custom-checkbox mb-1">
-      <input 
-      type="checkbox"
-      class="custom-control-input select-all"
-      id="select-all"
-      [checked]="checkAll"
-      
-      (change)="toggleCheckboxAll($event)" />
-      
-      <label class="custom-control-label" for="select-all">View All</label>
-    </div>
-    <div class="coaches-filter">
+                    <a href="sportspip/coach-details?coachId={{productArrays.id}}">
 
-      <div class="custom-control  custom-checkbox mb-1 custom-control-{{ checkboxarrays.color }}"
-        *ngFor="let checkboxarrays of gameFilter">
-     
-        <input (change)="onChange($event,checkboxarrays.id)" 
-        class="custom-control-input input-filter"
-        
-        [checked]="checkboxarrays.checked" 
-        type= "checkbox" 
-         id="checkboxarrays-{{ checkboxarrays.id }}" 
-         value={{checkboxarrays.filter}} />
-           
-        <label class="custom-control-label" 
-        for="checkboxarrays-{{ checkboxarrays.id }}"
-       >{{ checkboxarrays.filter }}</label>
-        <!--  -->
+                      <img src="{{ serverUri + productArrays.coachImage[0].formats.thumbnail.url}}" alt="Logo" />
+                    </a>
+
+                  </div>
+                  <div class="card-body">
+                    <div class="meetup-header d-flex align-items-center">
+                      <div class="my-auto">
+                        <h4 class="card-title mb-25">{{productArrays.coachTitle}}</h4>
+                      </div>
+                    </div>
+                    <div class="media">
+                      <div class="avatar bg-light-primary rounded mr-1">
+                        <div class="avatar-content">
+                          <i data-feather="calendar" class="avatar-icon font-medium-3"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="media">
+                      <div class="avatar bg-light-primary rounded mr-1">
+                        <div class="avatar-content">
+                          <i data-feather="map-pin" class="avatar-icon font-medium-3"></i>
+                        </div>
+                      </div>
+                      <div class="media-body">
+                        <h6 class="mb-0">{{productArrays.coachName}}</h6>
+                        <!-- <small>Manhattan, New york City</small> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
       </div>
-
-    </div>
-
-  </div>
-  <div class="content-detached content-right">
-    <div class="content-body">
-      <!-- Coaches Head Section Starts -->
-      <section id="coaches-header">
-        <div class="row ">
-          <div class="col-lg-4 col-md-6 col-12" *ngFor="let productArrays of coachesArray">
-            <!-- *ngFor="let coach of coaches" -->
-            <div class="card card-developer-meetup">
-              <div class="bg-light-primary rounded-top text-center coachesDetails">
-                <a>
-                  <img src="{{ serverUri + productArrays.coachImage[0].formats.thumbnail.url}}"
-                    ng-click="cochesDetail()" alt="Logo" />
-                </a>
-              </div>
-              <div class="card-body">
-                <div class="meetup-header d-flex align-items-center">
-                  <div class="my-auto">
-                    <h4 class="card-title mb-25">{{productArrays.coachTitle}}</h4>
-                  </div>
-                </div>
-                <div class="media">
-                  <div class="avatar bg-light-primary rounded mr-1">
-                    <div class="avatar-content">
-                      <i data-feather="calendar" class="avatar-icon font-medium-3"></i>
-                    </div>
-                  </div>
-                </div>
-                <div class="media">
-                  <div class="avatar bg-light-primary rounded mr-1">
-                    <div class="avatar-content">
-                      <i data-feather="map-pin" class="avatar-icon font-medium-3"></i>
-                    </div>
-                  </div>
-                  <div class="media-body">
-                    <h6 class="mb-0">{{productArrays.coachName}}</h6>
-                    <!-- <small>Manhattan, New york City</small> -->
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   </div>
 </div>
-
-<!-- </div>
-  </div>
-</div> -->
-<div class="mt-auto">
-  <img src="assets/images/pages/calendar-illustration.png" alt="Calendar illustration" class="img-fluid" />
-</div>
-<!-- </div>
-</div> -->
