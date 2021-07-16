@@ -30,21 +30,28 @@ export class AddTeamComponent implements OnInit {
     data.sport = this.uploadForm.get('sport').value;
 
     var formData = new FormData();
+    formData.append('files.teamThumbnail', this.file)
     formData.append('data', JSON.stringify(data));
     this._teamsService.postForm(formData);
   }
 
 
-  uploadImage(team: any) {
+  uploadImage(team) {
+    debugger
     if (team.target.files && team.target.files[0]) {
       let reader = new FileReader();
 
-      reader.onload = (team: any) => {
+      reader.onload = (team:any) => {
         this.avatarImage = team.target.result;
       };
-
       reader.readAsDataURL(team.target.files[0]);
+      if(team.target.files.length>0){
+        const file=team.target.files[0];
+        this.file=file;
+        this.uploadForm.get('teamThumbnail').setValue(file);
+      }
     }
+  
   }
 
   ngOnInit(){
@@ -54,7 +61,8 @@ export class AddTeamComponent implements OnInit {
       schoolName: [''],
       country: [''],
       status: [''],
-      sport: ['']
+      sport: [''],
+      teamThumbnail: ''
     })
   }
 
