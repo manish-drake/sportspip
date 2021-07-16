@@ -1,20 +1,13 @@
-import { LocationStrategy } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 
-import { ActivatedRoute } from '@angular/router';
-import { IRoster } from '../../interfaces';
-import { TeamsService } from '../teams.service';
-import { Router } from '@angular/router';
-
 @Component({
-  selector: 'app-update-team',
-  templateUrl: './update-team.component.html',
-  styleUrls: ['./update-team.component.scss']
+  selector: 'app-add-team',
+  templateUrl: './add-team.component.html',
+  styleUrls: ['./add-team.component.scss']
 })
-export class UpdateTeamComponent implements OnInit {
-  
-  
-  
+export class AddTeamComponent implements OnInit {
+
+
   public avatarImage: string;
 
   constructor() { }
@@ -30,7 +23,7 @@ export class UpdateTeamComponent implements OnInit {
     sport:'',
     about: ''
   }
-  editTeam(team:any){
+  addTeam(team:any){
     this.isEdit = true;
     this.teamObj = team;
   }
@@ -48,4 +41,5 @@ export class UpdateTeamComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
 }

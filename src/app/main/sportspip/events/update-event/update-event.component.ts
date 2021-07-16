@@ -1,20 +1,12 @@
-import { LocationStrategy } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 
-import { ActivatedRoute } from '@angular/router';
-import { IRoster } from '../../interfaces';
-import { TeamsService } from '../teams.service';
-import { Router } from '@angular/router';
-
 @Component({
-  selector: 'app-update-team',
-  templateUrl: './update-team.component.html',
-  styleUrls: ['./update-team.component.scss']
+  selector: 'app-update-event',
+  templateUrl: './update-event.component.html',
+  styleUrls: ['./update-event.component.scss']
 })
-export class UpdateTeamComponent implements OnInit {
-  
-  
-  
+export class UpdateEventComponent implements OnInit {
+
   public avatarImage: string;
 
   constructor() { }

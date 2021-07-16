@@ -21,31 +21,18 @@ export class CoachesapiService {
   public onCoachesChange: BehaviorSubject<any>;
   onEventChange: any;
 
-  constructor(private _httpClient: HttpClient,
-    ) {
-      this.onCoachesChange = new BehaviorSubject({});
-     }
+  constructor(private _httpClient: HttpClient) { }
 
-  
+  getCoachX(id: string): Observable<ICoaches> {
+    var uri: string = `${this._urlCoaches}?id=${ id }`;
+    console.log(uri);
+    return this._httpClient.get<ICoaches>(uri);
+  }
    coachesData(){
     return this._httpClient.get(this._urlCoaches);
   }
    filterData(){
     return this._httpClient.get(this._urlFilter);
   }
-  coachUpdate(coaches) {
-    const coachesChecked = coaches.filter(coach => {
-      return coach.checked === true;
-    });
-
-    let coachesArray = [];
-    coachesChecked.map(res => {
-      coachesArray.push(res.filter);
-    });
-
-    let filteredCoach = this.tempEvents.filter(event => coachesArray.includes(event.coach));
-    this.events = filteredCoach;
-    this.onEventChange.next(this.events);
-  }
-  
+ 
 }

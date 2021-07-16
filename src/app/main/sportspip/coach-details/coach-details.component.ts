@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CoachesapiService } from '../coaches-filter/coachesapi.service';
 import { CoachesService } from '../coaches/coaches.service';
 import { ICoaches } from '../interfaces';
 
@@ -16,14 +17,14 @@ export class CoachDetailsComponent implements OnInit {
   coachId:string ="";
   coachCollection: ICoaches;
   
-  constructor(private activatedRoute: ActivatedRoute, private _coachesService:CoachesService) { }
+  constructor(private activatedRoute: ActivatedRoute, private _coachesApiService: CoachesapiService) { }
 
   ngOnInit(): void {
 
     this.activatedRoute.params.subscribe(params => {
       this.coachId = this.activatedRoute.snapshot.queryParamMap.get('coachId');
       console.log('Url Id: ', this.coachId);
-      this._coachesService.getCoachX(this.coachId).subscribe(
+      this._coachesApiService.getCoachX(this.coachId).subscribe(
         data=> {
           this.coachCollection = data[0] as ICoaches;
           console.log(this.coachCollection);

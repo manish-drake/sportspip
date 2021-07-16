@@ -1,3 +1,7 @@
+<div class="position-relative">
+    <h2>Edit Event</h2><br>
+</div>
+
 <div class="content-wrapper">
     <div class="content-body">
       <!-- page users view start -->
@@ -35,7 +39,7 @@
                           </div>
                         </ng-template>
                         <div class="media-body mt-50">
-                          <h4>Team Name</h4>
+                          <h4>Team Logo</h4>
                           <div class="col-12 d-flex mt-1 px-0">
                             <label class="btn btn-primary mr-75 mb-0" for="change-picture">
                               <span class="d-none d-sm-block">Change</span>
@@ -73,45 +77,23 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <h4 class="card-title mb-2">Team Details</h4>
+                <h4 class="card-title mb-2">Event Details</h4>
               </div>
               <div class="card-body">
                 <form>
                   <div class="form-row">
-                      <div class="col-md-6 mb-3">
-                          <label for="validationServer01">Team Name</label>
+                      <div class="col-md-4 mb-2">
+                          <label for="validationServer01">Event Name</label>
                           <input type="text" class="form-control" [(ngModel)]="teamObj.name">
                       </div>
-                      <div class="col-md-6 mb-3">
-                          <label for="validationServer02">Role</label>
-                          <input type="text" class="form-control" [(ngModel)]="teamObj.role">
+                      <div class="col-md-4 mb-2">
+                          <label for="validationServer02">Event Date</label>
+                          <input type="date" class="form-control" [(ngModel)]="teamObj.role">
                       </div>
-                  </div>
-                  <div class="form-row">
-                      <div class="col-md-6 mb-3">
-                          <label for="validationServer03">School/University Name</label>
-                          <input type="text" class="form-control" [(ngModel)]="teamObj.school">
-                      </div>
-                      <div class="col-md-6 mb-3">
-                          <label for="validationServer03">Country</label>
-                          <input type="text" class="form-control" [(ngModel)]="teamObj.country">
-                      </div>
-                  </div>
-                  <div class="form-row">
-                      <div class="col-md-6 mb-3">
-                          <label for="validationServer01">Status</label>
-                          <input type="text" class="form-control" [(ngModel)]="teamObj.status">
-                      </div>
-                      <div class="col-md-6 mb-3">
-                          <label for="validationServer01">Sport</label>
-                          <input type="text" class="form-control" [(ngModel)]="teamObj.sport">
-                      </div>
-                  </div>
-                  <div class="form-row">
-                      <div class="col-md-12 mb-3">
-                          <label for="validationServer01">About Team</label>
-                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" [(ngModel)]="teamObj.about"></textarea>
-                        </div>
+                      <div class="col-md-4 mb-2">
+                        <label for="validationServer02">Event Location</label>
+                        <input type="text" class="form-control" [(ngModel)]="teamObj.role">
+                    </div>
                   </div>
                   <button class="btn btn-primary" type="submit">Save</button>
               </form>

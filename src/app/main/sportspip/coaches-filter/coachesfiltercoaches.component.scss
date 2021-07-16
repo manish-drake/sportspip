@@ -1,28 +1,48 @@
-._ul_checkbox ul{
-    padding: 0;
-    margin: 0;
+@import '@core/scss/base/pages/app-calendar.scss';
+@import '@core/scss/angular/libs/flatpickr.component.scss';
+@import '@core/scss/angular/libs/select.component.scss';
+
+@import '@core/scss/base/bootstrap-extended/include.scss'; // Bootstrap includes
+@import '~@fullcalendar/daygrid/main.css';
+
+//  Main Sidebar
+app-calendar-main-sidebar {
+  height: 100%;
+  flex-direction: column;
+  display: flex;
 }
 
-._ul_checkbox ul li{
-    list-style-type: none;
-    display: inline-block;
-    margin-right: 10px;
+// Sidebar Toggle Button
+.fc-sidebarToggle-button {
+  background-image: url(str-replace(str-replace($menu, 'currentColor', $body-color), '#', '%23'));
+  width: 24px;
+  height: 24px;
+  margin-right: 0.7rem !important;
+  display: block;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+// Hide sidebar toggle in lg screen
+@include media-breakpoint-up(lg) {
+  .fc-sidebarToggle-button {
+    display: none !important;
+  }
 }
 
-._ul_checkbox ul input{
-     margin-right: 3px;
-}
-._ul_product ul li input{
-    margin-right: 4px;
-}
-._ul_product ul{
-    padding: 0;
-    margin: 0;
-}
-._ul_product ul li{
-    list-style-type: none;
-    display: block;
-    font-size: 30px;
-    font-weight: 600;
-    margin-top: 10px;
+.fc {
+  .fc-button-primary {
+    &:not(:disabled) {
+      &:active:focus {
+        box-shadow: none !important;
+      }
+    }
+  }
+  .fc-button-active {
+    &:focus {
+      box-shadow: none !important;
+      &:active {
+        box-shadow: none !important;
+      }
+    }
+  }
 }

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddRosterComponent } from './add-roster.component';
+import { DeleteEventComponent } from './delete-event.component';
 
-describe('AddRosterComponent', () => {
-  let component: AddRosterComponent;
-  let fixture: ComponentFixture<AddRosterComponent>;
+describe('DeleteEventComponent', () => {
+  let component: DeleteEventComponent;
+  let fixture: ComponentFixture<DeleteEventComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AddRosterComponent ]
+      declarations: [ DeleteEventComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddRosterComponent);
+    fixture = TestBed.createComponent(DeleteEventComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

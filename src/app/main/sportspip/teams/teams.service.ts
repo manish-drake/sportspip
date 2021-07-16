@@ -25,7 +25,16 @@ export class TeamsService {
     return this._httpClient.get<ITeams>(uri);
   }
   deleteUser(user:any){
-    return this._httpClient.delete("http://drake.in:1337/teams" +user.id)
+    return this._httpClient.delete("http://192.168.10.50:1337/teams" +user.id)
+  }
+  updateTeamsx() {
+    let id: number = 1;
+    let endPoints = + id;
+    this._httpClient.get(this._urlTeams + endPoints).subscribe(data => {
+      console.log(data);
+    });
   }
  
 }
+
+

@@ -18,9 +18,9 @@ export class DeleteRosterComponent implements OnInit {
     this.activatedRoute.params.subscribe(data => {
       this.rosterId = data.id; // Capture the ID which i want delete product
       console.log(this.rosterId);
-      this._roster.deleteRoster(this.rosterId).subscribe(deleteddata => {
-        console.log("Roster has been Deleted") //delete Data  selected id
-      })
+      // this._roster.deleteRoster(this.rosterId).subscribe(deleteddata => {
+      //   console.log("Roster has been Deleted") //delete Data  selected id
+      // })
     });
   }
 

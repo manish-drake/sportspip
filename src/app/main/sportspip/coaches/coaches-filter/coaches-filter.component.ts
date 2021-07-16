@@ -20,119 +20,128 @@ export class CoachesFilterComponent implements OnInit {
   constructor(private _coreSidebarService: CoreSidebarService,private _coachesService: CoachesService) { }
 
 
-  /**
-   * If all checkbox are checked : returns TRUE
-   */
-   allChecked() {
-     //if(e.target.checked==true){
-    return this.coachesRef.every(v => v.checked === true);
+    ngOnInit(): void {
+      this.dataFilter();
+      this.filterCoach();
+   }
+ 
+  //--------------------------subscribed data for for checkbox-----------------------------//
 
-    // }
-  // else{
-  //  return this.coachesRef.every(v => v.checked === false);
-  // }
+  gameFilter: any = [];
+
+  dataFilter() {
+    this._coachesService.filterData().subscribe((data: any[]) => {
+      console.log(data);
+      this.gameFilter = data;
+      console.log(this.gameFilter);
+    });
   }
-   /**
-   * Checkbox Change
-   *
-   * @param event
-   * @param id
-   */
-    checkboxChange(event, id) {
-      const index = this.coachesRef.findIndex(r => {
-        if (r.id === id) {
-          
-          return id;
-          
-        }
-      });
-      this.coachesRef[index].checked = event.target.checked;
-      this._coachesService.coachesUpdate(this.coachesRef);
 
-     
-      this.checkAll = this.allChecked();
+  //----------------------subscribed coach data-----------------------------//
+  coachesArray: any = [];
+  arrays: any = [];
+
+  filterCoach() {
+    this._coachesService.coachesData().subscribe((data: any[]) => {
+      console.log(data);
+      this.coachesArray = data;
+      this.arrays = this.coachesArray;
+      console.log(this.coachesArray)
+    });
+  }
+
+
+  toggleCheckboxAll(event) {
+
+
+
+    if (event.target.checked) {
+      this.tempArray = this.arrays;
+      this.coachesArray = [];
+
+      this.newArray.push(this.tempArray);
+
+      for (let i = 0; i < this.newArray.length; i++) {
+        var firstArray = this.newArray[i];
+        console.log(firstArray)
+        for (let i = 0; i < firstArray.length; i++) {
+          var obj = firstArray[i];
+          this.coachesArray.push(obj);
+          console.log(this.coachesArray)
+        }
+      }
+    }
+    else {
+      this.coachesArray = [];
     }
 
-     /**
-   * Toggle All Checkbox
-   *
-   * @param event
-   */
-  toggleCheckboxAll(event) {
+    //--------------------------toggle-------------------------//
+
+
     this.checkAll = event.target.checked;
     if (this.checkAll) {
-      this.coachesRef.map(res => {
+      this.gameFilter.map(res => {
         res.checked = true;
       });
     } else {
-      this.coachesRef.map(res => {
+      this.gameFilter.map(res => {
         res.checked = false;
       });
     }
-    this._coachesService.coachesUpdate(this.coachesRef);
+
   }
 
- /**
-   * On init
-   */
-  
-  ngOnInit(): void {
-    // Subscribe to Coaches changes
-    this._coachesService.onCoachesChange.subscribe(res => {
-      this.coachesRef = res; 
+
+  //logic for filter coach 
+  tempArray: any = [];
+  newArray: any = [];
+
+  onChange(event: any, id) {
+
+    if (event.target.checked) {
+      this.tempArray = this.arrays.filter((e: any) => e.filter == event.target.value);
+      this.coachesArray = [];
+
+      this.newArray.push(this.tempArray);
+
+      for (let i = 0; i < this.newArray.length; i++) {
+        var firstArray = this.newArray[i];
+        console.log(firstArray)
+        for (let i = 0; i < firstArray.length; i++) {
+          var obj = firstArray[i];
+          this.coachesArray.push(obj);
+          console.log(this.coachesArray)
+        }
+      }
+    }
+
+    else {
+
+      this.tempArray = this.coachesArray.filter((e: any) => e.filter != event.target.value);
+      this.newArray = [];
+      this.coachesArray = [];
+      this.newArray.push(this.tempArray);
+      for (let i = 0; i < this.newArray.length; i++) {
+        var firstArray = this.newArray[i];
+        console.log(firstArray)
+        for (let i = 0; i < firstArray.length; i++) {
+          var obj = firstArray[i];
+          this.coachesArray.push(obj);
+          console.log(this.coachesArray);
+        }
+      }
+    }
+    const index = this.gameFilter.findIndex(r => {
+      if (r.id === id) {
+        return id;
+      }
     });
-   
-   
-   }
-  //  coachesData(){
-  //   this._coachesService.getCoache().subscribe(data=> this.coaches = data)
-  //   console.log(this.coachesRef);
-  //   this.coachArrays=this._coachesService.getCoache().subscribe()
-  //   console.log(this.coachArrays);
-  //  }
-  //  coachArrays:any=[];
-  //  coaches:ICoaches[];
-  //  coachTempArray:any =[];
-  //  coachNewArray:any =[];
-  //  onChange(event:any){
+    this.gameFilter[index].checked = event.target.checked;
 
-  //   if(event.target.checked)
-  //   {
-  //       this.coachTempArray = this.coachNewArray.filter((e:any)=>e.id == event.target.value);
-  //       this.coaches=[];
- 
-  //       this.coachNewArray.push(this.coachTempArray);
-
-  //       for(let i=0; i<this.coachNewArray.length; i++)
-  //       {
-  //         var firstArray = this.coachNewArray[i];
-  //         console.log(firstArray)
-  //         for(let i=0; i<firstArray.length; i++)
-  //         {
-  //           var obj = firstArray[i];
-  //           this.coaches.push(obj);
-  //           console.log(this.coaches)
-  //         }
-  //       }
-  //   }
-  //   else
-  //   {
-  //     this.coachTempArray = this.coaches.filter((e:any)=>e.id != event.target.value);
-  //     this.coachNewArray=[];
-  //     this.coaches=[];
-  //     this.coachNewArray.push(this.coachTempArray);
-  //     for(let i=0; i<this.coachNewArray.length; i++)
-  //     {
-  //       var firstArray = this.coachNewArray[i];
-  //       console.log(firstArray)
-  //       for(let i=0; i<firstArray.length; i++)
-  //       {
-  //         var obj = firstArray[i];
-  //         this.coaches.push(obj);
-  //         console.log(this.coaches);
-  //       }
-  //     }
-  //   }
-  // }
-  
+    this.checkAll = this.allChecked();
+  }
+  allChecked() {
+   
+    return this.gameFilter.every(v => v.checked === true);
+  }
 }
