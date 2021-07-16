@@ -31,7 +31,7 @@ export class CoachesComponent implements OnInit {
 
     // content header
     this.contentHeader = {
-      headerTitle: 'Coaches',
+      headerTitle: 'Coaches',  
       actionButton: true,
       breadcrumb: {
         type: '',
