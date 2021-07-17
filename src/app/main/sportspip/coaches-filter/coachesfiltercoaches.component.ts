@@ -58,10 +58,6 @@ export class CoachesfiltercoachesComponent implements OnInit {
 
   //--------------------------toggle checkbox logic--------------------------------//
   toggleCheckboxAll(event) {
-<<<<<<< HEAD
-=======
-
->>>>>>> ba397c19b34a49e46f03079777d430752a07055d
     if (event.target.checked) {
 
       this.tempArray = this.arrays;

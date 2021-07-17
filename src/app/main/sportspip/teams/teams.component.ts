@@ -20,9 +20,10 @@ import { id } from '@swimlane/ngx-datatable';
   styleUrls: ['./teams.component.scss']
 })
 export class TeamsComponent implements OnInit {
- // serverUri:string = "http://drake.in:1337";192.168.10.50:1337
+  serverUri:string = "http://drake.in:1337";
+  // 192.168.10.50:1337
 
-  serverUri:string = "http://192.168.10.50:1337";
+ // serverUri:string = "http://192.168.10.50:1337";
 
   teamsCollection:ITeams[];
   allTeam:any;
