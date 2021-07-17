@@ -7,6 +7,7 @@ import { ICoaches } from '../interfaces';
   providedIn: 'root'
 })
 export class CoachesapiService {
+ 
   private _urlCoaches : string = "http://drake.in:1337/coaches";
   private _urlFilter : string = "http://drake.in:1337/Game-Filters";
 
@@ -21,18 +22,22 @@ export class CoachesapiService {
   public onCoachesChange: BehaviorSubject<any>;
   onEventChange: any;
 
-  constructor(private _httpClient: HttpClient) { }
+  constructor(private _httpClient: HttpClient,
+    ) {
+      this.onCoachesChange = new BehaviorSubject({});
+     }
 
-  getCoachX(id: string): Observable<ICoaches> {
-    var uri: string = `${this._urlCoaches}?id=${ id }`;
-    console.log(uri);
-    return this._httpClient.get<ICoaches>(uri);
-  }
-   coachesData(){
-    return this._httpClient.get(this._urlCoaches);
-  }
-   filterData(){
-    return this._httpClient.get(this._urlFilter);
-  }
- 
+  
+     getCoachX(id: string): Observable<ICoaches> {
+      var uri: string = `${this._urlCoaches}?id=${ id }`;
+      console.log(uri);
+      return this._httpClient.get<ICoaches>(uri);
+    }
+     coachesData(){
+      return this._httpClient.get(this._urlCoaches);
+    }
+     filterData(){
+      return this._httpClient.get(this._urlFilter);
+    }
+  
 }

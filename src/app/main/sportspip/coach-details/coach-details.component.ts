@@ -19,7 +19,7 @@ export class CoachDetailsComponent implements OnInit {
   
   constructor(private activatedRoute: ActivatedRoute, private _coachesApiService: CoachesapiService) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
 
     this.activatedRoute.params.subscribe(params => {
       this.coachId = this.activatedRoute.snapshot.queryParamMap.get('coachId');

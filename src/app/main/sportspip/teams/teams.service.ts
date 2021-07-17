@@ -24,16 +24,8 @@ export class TeamsService {
     console.log(uri);
     return this._httpClient.get<ITeams>(uri);
   }
-  deleteUser(user:any){
-    return this._httpClient.delete("http://192.168.10.50:1337/teams" +user.id)
-  }
-  updateTeamsx() {
-    let id: number = 1;
-    let endPoints = + id;
-    this._httpClient.get(this._urlTeams + endPoints).subscribe(data => {
-      console.log(data);
-    });
-  }
+ 
+ 
 
   postForm(data:any){
     const httpOptions = {
@@ -49,6 +41,12 @@ export class TeamsService {
         console.log(res);
       },
     )
+  }
+
+  // ----------------------------------------------------------------
+
+  update(id, data): Observable<any> {
+    return this._httpClient.put(`${this._urlTeams}/${id}`, data);
   }
 }
 
