@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ICoaches } from '../interfaces';
@@ -33,11 +33,27 @@ export class CoachesapiService {
       console.log(uri);
       return this._httpClient.get<ICoaches>(uri);
     }
-     coachesData(){
-      return this._httpClient.get(this._urlCoaches);
+     coachesData(): Observable<ICoaches[]>{
+      return this._httpClient.get<ICoaches[]>(this._urlCoaches);
     }
      filterData(){
       return this._httpClient.get(this._urlFilter);
+    }
+
+    postForm(data:any){
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Accept': 'application/json'
+        })
+  
+      };
+  
+      this._httpClient.post<any>(this._urlCoaches, data, httpOptions).subscribe(
+  
+        (res)=>{
+          console.log(res);
+        },
+      )
     }
   
 }

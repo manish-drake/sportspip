@@ -13,7 +13,7 @@ import { CoachesapiService } from './coachesapi.service';
 export class CoachesfiltercoachesComponent implements OnInit {
 
   // serverUri: string = "http://drake.in:1337";
-  serverUri: string = "http://192.168.10.50:1337";
+  serverUri: string = "http://drake.in:1337";
 
   coachID:string ="";
   public checkAll = true;

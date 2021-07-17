@@ -5,6 +5,27 @@
 @import '@core/scss/base/bootstrap-extended/include.scss'; // Bootstrap includes
 @import '~@fullcalendar/daygrid/main.css';
 
+@import '@core/scss/base/pages/app-user.scss';
+
+
+.addButton{
+
+margin-bottom: 25px;
+text-align: right
+;
+}
+
+.addButtonBottom{
+
+    margin-top: 25px;
+    text-align: center;
+}
+
+.card{
+    margin: 5px;
+  }
+ 
+
 //  Main Sidebar
 app-calendar-main-sidebar {
   height: 100%;
