@@ -45,7 +45,7 @@ export class TeamsService {
 
   // ----------------------------------------------------------------
 
-  update(id, data): Observable<any> {
+  updateTeam(id, data): Observable<any> {
     return this._httpClient.put(`${this._urlTeams}/${id}`, data);
   }
 }
