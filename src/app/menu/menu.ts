@@ -54,14 +54,14 @@ export const menu: CoreMenu[] = [
             icon: 'dribbble',
             url: 'sportspip/teams'
           },
-          {
-            id: 'Coaches',
-            title: 'Coaches',
-            translate: 'MENU.SPORTSPIP.COACHES',
-            type: 'item',
-            icon: 'users',
-            url: 'sportspip/coaches'
-          },
+          // {
+          //   id: 'Coaches',
+          //   title: 'Coaches',
+          //   translate: 'MENU.SPORTSPIP.COACHES',
+          //   type: 'item',
+          //   icon: 'users',
+          //   url: 'sportspip/coaches'
+          // },
           {
             id: 'Coachesfilter',
             title: 'Coaches',

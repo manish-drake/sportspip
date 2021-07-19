@@ -22,6 +22,7 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
   public slideoutShow = false;
   public events = [];
   public event;
+  public contentHeader: object;
 
   public calendarOptions: CalendarOptions = {
     headerToolbar: {
@@ -142,6 +143,29 @@ export class ScheduleComponent implements OnInit, AfterViewInit {
     this._scheduleService.onCurrentEventChange.subscribe(res => {
       this.event = res;
     });
+
+    this.contentHeader = {
+      headerTitle: 'Roster',
+      breadcrumb: {
+        type: '',
+        links: [
+          {
+            name: 'Home',
+            isLink: true,
+            link: '/'
+          },
+          // {
+          //   name: '',
+          //   isLink: true,
+          //   link: '/'
+          // },
+          {
+            name: 'Roster',
+            isLink: false
+          }
+        ]
+      }
+    };
   }
 
   /**

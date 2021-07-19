@@ -10,6 +10,8 @@ import { CoachesapiService } from './coachesapi.service';
   styleUrls: ['./coachesfiltercoaches.component.scss']
 })
 export class CoachesfiltercoachesComponent implements OnInit {
+  public contentHeader: object;
+
   // serverUri: string = "http://drake.in:1337";
   serverUri: string = "http://drake.in:1337";
   coachID:string ="";
@@ -20,6 +22,29 @@ export class CoachesfiltercoachesComponent implements OnInit {
   ngOnInit() {
     this.dataFilter();
     this.filterCoach();
+
+    this.contentHeader = {
+      headerTitle: 'Coaches',
+      breadcrumb: {
+        type: '',
+        links: [
+          {
+            name: 'Home',
+            isLink: true,
+            link: '/'
+          },
+          // {
+          //   name: '',
+          //   isLink: true,
+          //   link: '/'
+          // },
+          {
+            name: 'Coaches',
+            isLink: false
+          }
+        ]
+      }
+    };
   }
   //--------------------------subscribed data for for checkbox-----------------------------//
   gameFilter: any = [];

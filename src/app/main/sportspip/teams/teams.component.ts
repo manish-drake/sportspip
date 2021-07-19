@@ -76,7 +76,6 @@ export class TeamsComponent implements OnInit {
     // content header
     this.contentHeader = {
       headerTitle: 'Teams',
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [
