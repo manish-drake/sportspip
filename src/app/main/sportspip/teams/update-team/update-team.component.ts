@@ -37,6 +37,7 @@ export class UpdateTeamComponent implements OnInit {
       reader.readAsDataURL(team.target.files[0]);
     }
   }
+  teamId = 0;
 
   // updateTeam(){
   //   this.isEdit = !this.isEdit;
@@ -82,4 +83,5 @@ export class UpdateTeamComponent implements OnInit {
   backToTeam() {
     this.router.navigate(['/sportspip/team']);
   }
+  
 }

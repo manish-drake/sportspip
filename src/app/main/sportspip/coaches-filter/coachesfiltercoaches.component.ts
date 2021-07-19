@@ -4,37 +4,25 @@ import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.s
 import { filter } from 'rxjs/operators';
 import { ICoaches } from '../interfaces';
 import { CoachesapiService } from './coachesapi.service';
-
 @Component({
   selector: 'app-coachesfiltercoaches',
   templateUrl: './coachesfiltercoaches.component.html',
   styleUrls: ['./coachesfiltercoaches.component.scss']
 })
 export class CoachesfiltercoachesComponent implements OnInit {
-
   // serverUri: string = "http://drake.in:1337";
   serverUri: string = "http://drake.in:1337";
-
   coachID:string ="";
   public checkAll = true;
   coachCollection:ICoaches;
   constructor(private _coachesApiService: CoachesapiService, private _coreSidebarService: CoreSidebarService,
     private activatedRoute: ActivatedRoute) { }
-
-
-
-
   ngOnInit() {
     this.dataFilter();
     this.filterCoach();
-
-
   }
-
   //--------------------------subscribed data for for checkbox-----------------------------//
-
   gameFilter: any = [];
-
   dataFilter() {
     this._coachesApiService.filterData().subscribe((data: any[]) => {
       console.log(data);
@@ -42,11 +30,9 @@ export class CoachesfiltercoachesComponent implements OnInit {
       console.log(this.gameFilter);
     });
   }
-
   //----------------------subscribed coach data-----------------------------//
   coachesArray:ICoaches[]
   arrays: ICoaches[];
-
   filterCoach() {
     this._coachesApiService.coachesData().subscribe((data: any[]) => {
       console.log(data);
@@ -55,21 +41,15 @@ export class CoachesfiltercoachesComponent implements OnInit {
       console.log(this.coachesArray)
     });
   }
-
   //--------------------------toggle checkbox logic--------------------------------//
   toggleCheckboxAll(event) {
     if (event.target.checked) {
-
       this.tempArray = this.arrays;
-
       this.coachesArray = [];
-
       this.newArray.push(this.tempArray);
-
       for (let i = 0; i < this.newArray.length; i++) {
         var firstArray = this.newArray[i];
         console.log(firstArray)
-        
         for (let i = 0; i < firstArray.length; i++) {
           var obj = firstArray[i];
           this.coachesArray.push(obj);
@@ -93,12 +73,8 @@ export class CoachesfiltercoachesComponent implements OnInit {
         }
       }
     }
-
-
     ///-----------------toggle checkbox------------//
-
     this.checkAll = event.target.checked;
-
     if (this.checkAll) {
       this.gameFilter.map(res => {
         res.checked = true;
@@ -107,25 +83,17 @@ export class CoachesfiltercoachesComponent implements OnInit {
       this.gameFilter.map(res => {
         res.checked = false;
         this.coachesArray = [];
-
       });
     }
-
   }
-
-
   //---------------------logic for filter coach --------------------------//
   tempArray: any = [];
   newArray: any = [];
-
   onChange(event: any, id) {
-
     if (event.target.checked) {
       this.tempArray = this.arrays.filter((e: any) => e.filter == event.target.value);
       this.coachesArray = [];
-
       this.newArray.push(this.tempArray);
-
       for (let i = 0; i < this.newArray.length; i++) {
         var firstArray = this.newArray[i];
         console.log(firstArray)
@@ -136,9 +104,7 @@ export class CoachesfiltercoachesComponent implements OnInit {
         }
       }
     }
-
     else {
-
       this.tempArray = this.coachesArray.filter((e: any) => e.filter != event.target.value);
       this.newArray = [];
       this.coachesArray = [];
@@ -159,13 +125,10 @@ export class CoachesfiltercoachesComponent implements OnInit {
       }
     });
     this.gameFilter[index].checked = event.target.checked;
-
     this.checkAll = this.allChecked();
   }
-
   //-----------------checkbox select all------------------------//
   allChecked() {
     return this.gameFilter.every(v => v.checked === true);
-
   }
 }
