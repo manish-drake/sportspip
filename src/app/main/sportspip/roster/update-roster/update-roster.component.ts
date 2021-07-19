@@ -12,7 +12,8 @@ import { Router } from '@angular/router';
 })
 export class UpdateRosterComponent implements OnInit {
 
-  rosterId = 0;
+  // rosterId = 0;
+  id: string= '';
 
   rosterDetails: IRoster;
 
@@ -23,9 +24,9 @@ export class UpdateRosterComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(data => {
-      this.rosterId = data.id;
+      this.id = data.id;
 
-      this._rosterService.viewRoster(this.rosterId).subscribe(data => {
+      this._rosterService.viewRoster(this.id).subscribe(data => {
         this.rosterDetails = data; // get the existing data of the product
         console.log(this.rosterDetails);
       });
@@ -49,7 +50,7 @@ export class UpdateRosterComponent implements OnInit {
       isAvailable: 1,
     };
     console.log(form);
-    this._rosterService.updateRoster(this.rosterId, updateRoster).subscribe(data => {
+    this._rosterService.updateRoster(this.id, updateRoster).subscribe(data => {
       console.log(data);
       this.backToRoster();
     });
