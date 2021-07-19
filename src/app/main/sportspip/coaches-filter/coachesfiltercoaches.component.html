@@ -28,7 +28,115 @@
 
               <label class="custom-control-label" for="select-all">View All</label>
             </div>
+             <!-- ------------------------School Checkbox------------------------------- -->
+             <!-- <h5 class="section-label mb-1">
+              <span class="align-middle">School</span>
+            </h5>
+            <div class="custom-control custom-checkbox mb-1">
+              <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+                (change)="toggleCheckboxAll($event)" />
+
+
+              <label class="custom-control-label" for="select-all">Home</label>
+            </div>
+            <div class="custom-control custom-checkbox mb-1">
+              <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+                (change)="toggleCheckboxAll($event)" />
+
+
+              <label class="custom-control-label" for="select-all">Visitors</label>
+            </div> -->
+            <!-- ------------------------School Checkbox------------------------------- -->
+             <!-- ------------------------Sports Checkbox------------------------------- -->
+             <h5 class="section-label mb-1">
+              <span class="align-middle">Sports</span>
+            </h5>
+
             <div class="coaches-filter">
+
+              <div class="custom-control  custom-checkbox mb-1 custom-control-{{ sports.color }}"
+                *ngFor="let sports of sport">
+
+                <input (change)="onChange($event,sports.id)" class="custom-control-input input-filter"
+                   type="checkbox" id="sports-{{ sports.id }}" [checked]="checkAll" 
+                  value={{sports.filter}} />
+
+                <label class="custom-control-label" for="checkboxarrays-{{ sports.id }}">
+                  {{sports.name }}</label>
+              </div>
+
+            </div>
+            <!-- ------------------------/Sports Checkbox------------------------------- -->
+             <!-- ------------------------level Checkbox------------------------------- -->
+             <h5 class="section-label mb-1">
+              <span class="align-middle">Level</span>
+            </h5>
+            <div class="custom-control custom-checkbox mb-1"  *ngFor="let levels of level">
+              <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll" 
+                (change)="toggleCheckboxAll($event)" />
+
+              <label class="custom-control-label" for="select-all">{{levels.name}}</label>
+
+            </div>
+            <!-- <div class="custom-control custom-checkbox mb-1">
+              <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+                (change)="toggleCheckboxAll($event)" />
+
+              <label class="custom-control-label" for="select-all">Junior Varsity</label>
+
+            </div> -->
+            <!-- <div class="custom-control custom-checkbox mb-1">
+              <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+                (change)="toggleCheckboxAll($event)" />
+
+
+              <label class="custom-control-label" for="select-all">Varsity</label>
+            </div> -->
+
+            <!-- ------------------------/Leve Checkbox------------------------------- -->
+             <!-- ------------------------program Checkbox------------------------------- -->
+
+             <h5 class="section-label mb-1">
+              <span class="align-middle">Program</span>
+            </h5>
+
+            <div class="custom-control custom-checkbox mb-1"  *ngFor="let programs of program">
+              <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+                (change)="toggleCheckboxAll($event)" />
+
+              <label class="custom-control-label" for="select-all">{{programs.name}}</label>
+
+            </div>
+            <!-- <div class="custom-control custom-checkbox mb-1">
+              <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+                (change)="toggleCheckboxAll($event)" />
+
+              <label class="custom-control-label" for="select-all"> Mans</label>
+
+            </div> -->
+            <!-- ------------------------/program Checkbox------------------------------- -->
+             <!-- ------------------------year Checkbox------------------------------- -->
+             <h5 class="section-label mb-1">
+              <span class="align-middle">Year</span>
+            </h5>
+
+            <div class="custom-control custom-checkbox mb-1"  *ngFor="let years of year">
+              <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll" 
+                (change)="toggleCheckboxAll($event)" />
+                <!-- -->
+
+              <label class="custom-control-label" for="select-all">{{years.name}}</label>
+
+            </div>
+            <!-- <div class="custom-control custom-checkbox mb-1">
+              <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+                (change)="toggleCheckboxAll($event)" />
+
+              <label class="custom-control-label" for="select-all"> 2019</label>
+
+            </div> -->
+            <!-- ------------------------/year Checkbox------------------------------- -->
+            <!-- <div class="coaches-filter">
               <div class="custom-control  custom-checkbox mb-1 custom-control-{{ checkboxarrays.color }}"
                 *ngFor="let checkboxarrays of gameFilter">
 
@@ -38,7 +146,7 @@
                 <label class="custom-control-label" for="checkboxarrays-{{ checkboxarrays.id }}">{{
                   checkboxarrays.filter }}</label>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </core-sidebar> 

@@ -10,6 +10,14 @@ export class CoachesapiService {
   private _urlFilter : string = "http://drake.in:1337/Game-Filters";
   // private _urlFilter : string ="http://192.168.10.50:1337/Game-Filters";
   // private _urlCoaches : string = "http://192.168.10.50:1337/coaches";
+  private _urlcoachesdatafrom: string = "http://drake.in:1339/coaches";
+
+  private _urllevel : string ="http://drake.in:1339/levels";
+  private _urlSports : string = "http://drake.in:1339/sports";
+ private _urlProgram: string ="http://drake.in:1339/programs";
+ private _urlYears : string ="http://drake.in:1339/years";
+
+
   public tempEvents;
   public events;
   public coaches;
@@ -43,5 +51,27 @@ export class CoachesapiService {
           console.log(res);
         },
       )
+    }
+
+  
+
+    coachData(){
+
+      return this._httpClient.get(this._urlcoachesdatafrom);
+    }
+  
+    // -------------------------------------------------------------------------------
+    getLevel()
+    {
+      return this._httpClient.get(this._urllevel);
+    }
+    getSports(){
+      return this._httpClient.get(this._urlSports);
+    }
+    getProgram(){
+      return this._httpClient.get(this._urlProgram);
+    }
+    getYear(){
+      return this._httpClient.get(this._urlYears);
     }
 }

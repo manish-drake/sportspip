@@ -20,6 +20,15 @@ export class CoachesfiltercoachesComponent implements OnInit {
   ngOnInit() {
     this.dataFilter();
     this.filterCoach();
+    //this.filterCoachfrom();
+    this.GetCoachData();
+
+    // ---------------------------- filter --------------------------------------//
+    this.sports() ;
+    this.levels();
+    
+    this. programs();
+    this.years();
   }
   //--------------------------subscribed data for for checkbox-----------------------------//
   gameFilter: any = [];
@@ -41,6 +50,25 @@ export class CoachesfiltercoachesComponent implements OnInit {
       console.log(this.coachesArray)
     });
   }
+   coachData:ICoaches[];
+  // filterCoachfrom(){
+  //   this._coachesApiService.coachesdatafrom().subscribe((data: any[]) => {
+  //     console.log(data);
+  //     this.coachData = data;
+     
+  //     console.log(this.coachData)
+  //   });
+  // }
+
+  // coachFilterData:ICoaches[];
+  // filterCoachfrom(){
+  //   this._coachesApiService.coachesdatafrom().subscribe((data: any[]) => {
+  //     console.log(data);
+  //     this.coachData = data;
+     
+  //     console.log(this.coachData)
+  //   });
+  // }
   //--------------------------toggle checkbox logic--------------------------------//
   toggleCheckboxAll(event) {
     if (event.target.checked) {
@@ -73,7 +101,7 @@ export class CoachesfiltercoachesComponent implements OnInit {
         }
       }
     }
-    ///-----------------toggle checkbox------------//
+  //   ///-----------------toggle checkbox------------//
     this.checkAll = event.target.checked;
     if (this.checkAll) {
       this.gameFilter.map(res => {
@@ -86,7 +114,7 @@ export class CoachesfiltercoachesComponent implements OnInit {
       });
     }
   }
-  //---------------------logic for filter coach --------------------------//
+  // //---------------------logic for filter coach --------------------------//
   tempArray: any = [];
   newArray: any = [];
   onChange(event: any, id) {
@@ -127,8 +155,71 @@ export class CoachesfiltercoachesComponent implements OnInit {
     this.gameFilter[index].checked = event.target.checked;
     this.checkAll = this.allChecked();
   }
-  //-----------------checkbox select all------------------------//
+  // //-----------------checkbox select all------------------------//
   allChecked() {
     return this.gameFilter.every(v => v.checked === true);
   }
+
+
+//-----------------------------------coach data--------------------------
+  coachtData: any = [];
+  displayCoach: any = [];
+  coachFilter: any = [];
+ 
+
+  GetCoachData() {
+    this._coachesApiService.coachData()
+      .subscribe((
+        data:any )=> {
+          this.coachtData = data;
+          // console.log(this.coachtData[0].levels);
+          // this.displayCoach = this.coachtData.levels;
+          console.log(this.coachtData)
+        
+        
+
+        });
+  }
+//-----------------------------------/coach data--------------------------
+  // -----------------------------------Data for sidebar filter-----------------------------
+
+  level:any=[];
+  levels() {
+    this._coachesApiService.getLevel()
+      .subscribe((
+        data:any )=> {
+          this.level = data;
+          console.log(this.level);
+        });
+  }
+
+  sport:any=[];
+  sports() {
+    this._coachesApiService.getSports()
+      .subscribe((
+        data:any )=> {
+          this.sport = data;
+          console.log(this.sport);
+        });
+  }
+  program:any=[];
+  programs() {
+    this._coachesApiService.getProgram()
+      .subscribe((
+        data:any )=> {
+          this.program = data;
+          console.log(this.program);
+        });
+  }
+  year:any=[];
+  years() {
+    this._coachesApiService.getYear()
+      .subscribe((
+        data:any )=> {
+          this.year = data;
+          console.log(this.year);
+        });
+  }
+   // -----------------------------------/Data for sidebar filter-----------------------------
+
 }

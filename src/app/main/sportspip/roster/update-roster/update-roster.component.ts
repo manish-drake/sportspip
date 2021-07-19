@@ -23,6 +23,7 @@ export class UpdateRosterComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
+  
     this.activatedRoute.params.subscribe(data => {
       this.id = data.id;
 

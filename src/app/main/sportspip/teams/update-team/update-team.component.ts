@@ -47,7 +47,7 @@ export class UpdateTeamComponent implements OnInit {
  // }
  
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.activatedRoute.params.subscribe(data => {
       this.id = data.id;
 

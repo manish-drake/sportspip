@@ -5,8 +5,9 @@
 @import '@core/scss/base/bootstrap-extended/include.scss'; // Bootstrap includes
 @import '~@fullcalendar/daygrid/main.css';
 
+
 //  Main Sidebar
-app-schedule-filter {
+.app-schedule-filter {
   height: 100%;
   flex-direction: column;
   display: flex;

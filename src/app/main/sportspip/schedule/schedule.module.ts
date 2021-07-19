@@ -42,7 +42,8 @@ const routes: Routes = [
     FormsModule,
     FullCalendarModule,
     Ng2FlatpickrModule,
-    CoreCommonModule
+    CoreCommonModule,
+    CoreSidebarModule,
   ],
   providers: [ScheduleService]
 })
