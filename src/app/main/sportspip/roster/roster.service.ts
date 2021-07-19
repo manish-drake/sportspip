@@ -43,7 +43,7 @@ export class RosterService {
 
   delete(id : number){
     console.log(id);
-return this.http.delete(`${this._urlroster}/${id}}, options`)
+    return this.http.delete(`${this._urlroster}/${id}}, options`)
 
 }
 

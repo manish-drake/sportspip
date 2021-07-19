@@ -1,3 +1,14 @@
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-12">
+    <div class="addButton">
+      <span><b> Add New Coach </b></span>
+      <button type="button" class="btn btn-icon btn-icon rounded-circle btn-primary"
+        [routerLink]="['/sportspip/add-coach']" [routerLinkActive]="'is-active'" rippleEffect>
+        <span [data-feather]="'plus'"></span></button>
+    </div>
+  </div>
+</div>
+
 <!-- Main Sidebar -->
 <div class="content-wrapper">
   <div class="app-calendar">
@@ -27,7 +38,7 @@
                   value={{checkboxarrays.filter}} />
 
                 <label class="custom-control-label" for="checkboxarrays-{{ checkboxarrays.id }}">{{
-                  checkboxarrays.filter }}</label>
+                  checkboxarrays.name }}</label>
               </div>
 
             </div>

@@ -13,6 +13,7 @@ import { TeamsService } from './teams.service';
 import { IFootball, ITeams } from '../interfaces';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { id } from '@swimlane/ngx-datatable';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-teams',
@@ -38,15 +39,26 @@ export class TeamsComponent implements OnInit {
     about: '',
     id:''
   }
+
   constructor(
     private _coreSidebarService: CoreSidebarService,
     private _httpClient: HttpClient,
     private _coreConfigService: CoreConfigService,
-    private _teamsService:TeamsService
+    private _teamsService:TeamsService,
+    private activatedRoute: ActivatedRoute
   ) {}
-  
+  teamId="0"
   ngOnInit(): void {
     this._teamsService.getTeams().subscribe(data=> this.teamsCollection =data);
+
+
+    
+    this.activatedRoute.params.subscribe(data => {
+      this.teamId = data.id; // Capture the ID which i want delete product
+      console.log(this.teamId);
+      
+    });
+    
 
 
     

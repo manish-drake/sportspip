@@ -13,9 +13,9 @@ import { CoachesapiService } from './coachesapi.service';
 export class CoachesfiltercoachesComponent implements OnInit {
 
   // serverUri: string = "http://drake.in:1337";
-  serverUri: string = "http://192.168.10.50:1337";
+  serverUri: string = "http://drake.in:1337";
 
-  coachID:string ="";
+  coachID:string = "";
   public checkAll = true;
   coachCollection:ICoaches;
   constructor(private _coachesApiService: CoachesapiService, private _coreSidebarService: CoreSidebarService,
@@ -113,8 +113,8 @@ export class CoachesfiltercoachesComponent implements OnInit {
 
   }
 
-
   //---------------------logic for filter coach --------------------------//
+  
   tempArray: any = [];
   newArray: any = [];
 

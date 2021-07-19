@@ -42,7 +42,10 @@ export class TeamsService {
       },
     )
   }
-
+  viewTeam(id,data): Observable<any> {
+    const rosterUrl = 'http://192.168.10.50:1337/rosters/' + id;
+    return this._httpClient.get(`${this._urlTeams}/${id}`, data); // return an observable
+  }
   // ----------------------------------------------------------------
 
   updateTeam(id, data): Observable<any> {
