@@ -11,6 +11,8 @@ import { IFootball, ITeams } from '../interfaces';
 export class TeamsService {
   private _urlTeams: string = "http://drake.in:1337/teams";
  // private _urlTeams: string = "http://192.168.10.50:1337/teams";
+ serverUri:string = "http://drake.in:1337";
+ private _urlFilter : string = "http://drake.in:1337/Game-Filters";
   
   
 
@@ -42,14 +44,23 @@ export class TeamsService {
       },
     )
   }
-  viewTeam(id,data): Observable<any> {
-    const rosterUrl = 'http://192.168.10.50:1337/rosters/' + id;
-    return this._httpClient.get(`${this._urlTeams}/${id}`, data); // return an observable
+  filterData(){
+    return this._httpClient.get(this._urlFilter);
   }
   // ----------------------------------------------------------------
 
-  updateTeam(id, data): Observable<any> {
-    return this._httpClient.put(`${this._urlTeams}/${id}`, data);
+ 
+  updateTeam(id, rosterBody): Observable<ITeams> {
+    const teamUrl = 'http://drake.in:1337/teams/' + id;
+    return this._httpClient.put<ITeams>(teamUrl , rosterBody); // return an observable
+  }
+  deleteTeam(team:any){
+    
+    return this._httpClient.delete("http://drake.in:1337/teams/" +team.id)
+  }
+  viewTeam(id:any): Observable<ITeams> {
+    const teamUrl = 'http://drake.in:1337/teams/' + id;
+    return this._httpClient.get<ITeams>(teamUrl); // return an observable
   }
 }
 

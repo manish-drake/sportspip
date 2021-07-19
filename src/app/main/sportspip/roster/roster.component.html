@@ -75,47 +75,59 @@
                 </div>
             </div>
         </section>
+    </div>
+</div>
 
-        <!-- Roaster Table -->
+
+
+
+
+<ul ngbNav #navJustified="ngbNav" class="nav nav-pills nav-justified">
+    <li ngbNavItem>
+      <a ngbNavLink>Team A</a>
+      <ng-template ngbNavContent>
         <div class="row" id="table-hover-animation">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Team Player Roster</h4>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">
-                            It is a long established fact that a reader will be distracted by the readable
-                            content of a page when looking at its layout.
-                        </p>
-                    </div>
                     <div class="table-responsive">
                         <table class="table table-hover-animation">
                             <thead>
                                 <tr>
-
+                                    <th>Player</th>
                                     <th>Name</th>
-                                    <th>Jersey Number</th>
-                                    <th>Level</th>
-                                    <th>Address</th>
-                                    <th>School</th>
+                                    <th>Jersey </th>
+                                    <th>Position</th>
+                                    <th>Schedule</th>
                                     <th>Action</th>
+
 
                                 </tr>
                             </thead>
 
                             <tbody>
                                 <tr *ngFor="let rosters of roster">
-
-
+                                    <td>
+                                        <div class="avatar-group">
+                                          <div
+                                            data-toggle="tooltip"
+                                            data-popup="tooltip-custom"
+                                            placement="top"
+                                            container="body"
+                                            title=""
+                                            class="avatar pull-up my-0"
+                                            ngbTooltip="Lilian Nenez"
+                                          >
+                                            <img src="assets/images/portrait/small/avatar-s-5.jpg" alt="Avatar" height="26" width="26" />
+                                          </div>
+                                        </div>
+                                      </td>
                                     <td>{{rosters.name}}</td>
 
                                     <td> <span
                                             class="badge badge-pill badge-light-primary mr-1">{{rosters.playerNumber}}</span>
                                     </td>
                                     <td>{{rosters.level}}</td>
-                                    <td>{{rosters.address}} </td>
-                                    <td>{{rosters.school}}</td>
+                                    <td></td>
                                     <td class="overflow-hidden">
                                         <div ngbDropdown container="body">
                                             <button type="button" class="btn btn-sm hide-arrow" ngbDropdownToggle
@@ -146,6 +158,84 @@
                 </div>
             </div>
         </div>
-        <!--/ Roaster Table  -->
-    </div>
-</div>
+      </ng-template>
+    </li>
+    <li ngbNavItem>
+      <a ngbNavLink>Team B</a>
+      <ng-template ngbNavContent>
+        <div class="row" id="table-hover-animation">
+            <div class="col-12">
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="table table-hover-animation">
+                            <thead>
+                                <tr>
+                                    <th>Player</th>
+                                    <th>Name</th>
+                                    <th>Jersey </th>
+                                    <th>Position</th>
+                                    <th>Schedule</th>
+                                    <th>Action</th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr *ngFor="let rosters of roster">
+                                    <td>
+                                        <div class="avatar-group">
+                                          <div
+                                            data-toggle="tooltip"
+                                            data-popup="tooltip-custom"
+                                            placement="top"
+                                            container="body"
+                                            title=""
+                                            class="avatar pull-up my-0"
+                                            ngbTooltip="Lilian Nenez"
+                                          >
+                                            <img src="assets/images/portrait/small/avatar-s-5.jpg" alt="Avatar" height="26" width="26" />
+                                          </div>
+                                        </div>
+                                      </td>
+                                    <td>{{rosters.name}}</td>
+
+                                    <td> <span
+                                            class="badge badge-pill badge-light-primary mr-1">{{rosters.playerNumber}}</span>
+                                    </td>
+                                    <td>{{rosters.level}}</td>
+                                    <td> </td>
+                                    <td class="overflow-hidden">
+                                        <div ngbDropdown container="body">
+                                            <button type="button" class="btn btn-sm hide-arrow" ngbDropdownToggle
+                                                data-toggle="dropdown">
+                                                <i data-feather="more-vertical"></i>
+                                            </button>
+                                            <div ngbDropdownMenu>
+                                                <a ngbDropdownItem href="javascript:void(0);"
+                                                    href="/sportspip/update-roster/{{rosters.id}}">
+
+                                                    <i data-feather="edit-2" class="mr-50"></i>
+                                                    <span>Edit</span></a>
+
+                                                <a ngbDropdownItem href="javascript:void(0);" 
+                                                
+                                                (click)="deleteRoster(roster.id)">
+
+                                                    <i data-feather="trash" class="mr-50"></i>
+                                                    <span>Delete</span></a>
+                                                    <!-- <swal #SweetAlertConfirmColor (open)="ConfirmColorOpen()"></swal> -->
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </ng-template>
+    </li>
+  </ul>
+  <div [ngbNavOutlet]="navJustified" class="mt-1"></div>
+    

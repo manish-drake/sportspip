@@ -71,18 +71,26 @@ export class CalendarMainSidebarComponent implements OnInit {
    *
    * @param event
    */
-  toggleCheckboxAll(event) {
+   toggleCheckboxAll(event) {
     this.checkAll = event.target.checked;
+    debugger
+    console.log(this.calendarRef[0]+ "ranjan");
     if (this.checkAll) {
+
       this.calendarRef.map(res => {
         res.checked = true;
       });
+      
+     
     } else {
       this.calendarRef.map(res => {
         res.checked = false;
       });
+      
     }
+    
     this._calendarService.calendarUpdate(this.calendarRef);
+
   }
 
   // Lifecycle Hooks

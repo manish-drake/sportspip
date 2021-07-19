@@ -17,23 +17,15 @@ export class UpdateTeamComponent implements OnInit {
   
   public avatarImage: string;
 
-  constructor(private activatedRoute: ActivatedRoute, private _teamService:TeamsService) { }
+  constructor(private _teamsService:TeamsService,private activatedRoute: ActivatedRoute,private router: Router) { }
+  id: string= '';
 
-  allTeam:any;
-  isEdit=false;
-  teamObj={
-    teamName:'',
-    role:'',
-    school:'',
-    country:'',
-    status:'',
-    sport:'',
-    aboutTeam: ''
-  }
-  editTeam(team:any){
-    this.isEdit = true;
-    this.teamObj = team;
-  }
+  teamDetails: ITeams;
+  teamsID:string ="";
+  teamsCollection:ITeams;
+
+  
+ 
   uploadImage(team: any) {
     if (team.target.files && team.target.files[0]) {
       let reader = new FileReader();
@@ -47,42 +39,49 @@ export class UpdateTeamComponent implements OnInit {
   }
   teamId = 0;
 
-  rosterDetails: IRoster;
-  teamUpdate(form) {
-    const teamUpdate = {
+  // updateTeam(){
+  //   this.isEdit = !this.isEdit;
+  //   this._teamsService.updateTeam(this.teamObj).subscribe(()=>{
+      
+  //   })
+ // }
+ 
+
+  ngOnInit(): void {
+    this.activatedRoute.params.subscribe(data => {
+      this.id = data.id;
+
+      this._teamsService.viewTeam(this.id).subscribe(data => {
+        this.teamDetails = data; // get the existing data of the product
+        console.log(this.teamDetails);
+      });
+
+    });
+    
+  }
+  updateTeam(form) {
+    const updateTeam = {
       id: form.value.id,
-      sport: form.value.sport,
-      level: form.value.level,
-      // program: form.value.program,
-      year: form.value.year,
       name: form.value.name,
-      // playerNumber: form.value.playerNumber,
+      role: form.value.role,
+      // program: form.value.program,
       school: form.value.school,
-      address: form.value.address,
-      rosterId: form.value.rosterId,
-      playerLevel: form.value.playerLevel,
+      country: form.value.country,
+      // playerNumber: form.value.playerNumber,
+      status: form.value.status,
+      sport: form.value.sport,
+      about: form.value.about,
+      //playerLevel: form.value.playerLevel,
       isAvailable: 1,
     };
     console.log(form);
-    this._teamService.updateTeam(this.teamId, teamUpdate).subscribe(data => {
+    this._teamsService.updateTeam(this.id, updateTeam).subscribe(data => {
       console.log(data);
-     // this.backToRoster();
+      this.backToTeam();
     });
   }
-  teamsID:string ="";
-  teamsCollection:ITeams;
-  ngOnInit(): void {
-
-    this.activatedRoute.params.subscribe(params => {
-      this.teamsID = this.activatedRoute.snapshot.queryParamMap.get('teamId');
-      console.log('Url Id: ', this.teamsID);
-      this._teamService.getTeamsx(this.teamsID).subscribe(
-        data=> {
-          this.teamsCollection = data[0] as ITeams;
-          console.log(this.teamsCollection);
-        }
-      );
-    });
+  backToTeam() {
+    this.router.navigate(['/sportspip/team']);
   }
   
 }

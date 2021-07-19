@@ -1,3 +1,4 @@
+<app-content-header [contentHeader]="contentHeader"></app-content-header>
 <div class="row">
   <div class="col-lg-12 col-md-12 col-12">
     <div class="addButton">
@@ -9,98 +10,247 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-lg-4 col-md-6 col-12" *ngFor="let team of teamsCollection">
-    <div class="card card-developer-meetup">
-      <div class="bg-light-primary rounded-top text-center">
-        <a href="sportspip/teamsdetails?teamId={{team.id}}">
-          <img src="{{ serverUri + team.teamThumbnail[0].url}}" alt="Logo" height="200" width="200" />
-        </a>
-      </div>
+<!-- Main Sidebar -->
+<div class="content-wrapper">
+  <div class="app-calendar">
+    <div class="row no-gutters">
 
-      <div class="card card-transaction">
-        <div class="card-header">
-          <div class="my-auto">
-            <h4 class="card-title mb-25">{{team.teamName}}</h4>
-          </div>
-          <div ngbDropdown>
-            <button rippleEffect class="btn btn-sm border-0 p-0 hide-arrow" ngbDropdownToggle type="button"
-              id="dropdownItem4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i data-feather="more-vertical" class="font-medium-3 cursor-pointer"></i>
-            </button>
-            <div ngbDropdownMenu class="dropdown-menu-right" aria-labelledby="dropdownItem4">
+      <core-sidebar class="col app-calendar-sidebar flex-grow-0 overflow-hidden d-flex flex-column"
+        name="calendar-main-sidebar" overlayClass="body-content-overlay" collapsibleSidebar="bs-gt-lg">
+        <div class="sidebar-wrapper">
 
-              <a [routerLink]="['/sportspip/update-team']" ngbDropdownItem
-                href="javascript:void(0);" href="sportspip/update-team?teamId={{team.id}}">
-                <i data-feather="edit-2" class="mr-50" (click)="editTeam(team)"></i>
-                Edit
-              </a>
-              <a ngbDropdownItem href="javascript:void(0);" [swal]="SweetAlertConfirmColor" (click)="deleteTeam(team)">
-                <i data-feather="trash" class="mr-50"></i>
-                Delete
-              </a>
-              <swal #SweetAlertConfirmColor (open)="ConfirmColorOpen()"></swal>
+          <div class="card-body pb-0">
+
+            <!-- -----------------------------------Checkall----------------------------- -->
+            <div class="custom-control custom-checkbox mb-1">
+              <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+                (change)="toggleCheckboxAll($event)" />
+
+              <label class="custom-control-label" for="select-all">View All</label>
             </div>
+            <!-- -----------------------------------/Checkall----------------------------- -->
+            <!-- ------------------------School Checkbox------------------------------- -->
+            <h5 class="section-label mb-1">
+              <span class="align-middle">School</span>
+            </h5>
+            <div class="custom-control custom-checkbox mb-1">
+              <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+                (change)="toggleCheckboxAll($event)" />
+
+
+              <label class="custom-control-label" for="select-all">Home</label>
+            </div>
+            <div class="custom-control custom-checkbox mb-1">
+              <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+                (change)="toggleCheckboxAll($event)" />
+
+
+              <label class="custom-control-label" for="select-all">Visitors</label>
+            </div>
+            <!-- ------------------------School Checkbox------------------------------- -->
+            <!-- ------------------------Sports Checkbox------------------------------- -->
+            <h5 class="section-label mb-1">
+              <span class="align-middle">Sports</span>
+            </h5>
+
+            <div class="coaches-filter">
+
+              <div class="custom-control  custom-checkbox mb-1 custom-control-{{ checkboxarrays.color }}"
+                *ngFor="let checkboxarrays of gameFilter">
+
+                <input (change)="onChange($event,checkboxarrays.id)" class="custom-control-input input-filter"
+                  [checked]="checkboxarrays.checked" type="checkbox" id="checkboxarrays-{{ checkboxarrays.id }}"
+                  value={{checkboxarrays.filter}} />
+
+                <label class="custom-control-label" for="checkboxarrays-{{ checkboxarrays.id }}">{{
+                  checkboxarrays.filter }}</label>
+              </div>
+
+            </div>
+            <!-- ------------------------/Sports Checkbox------------------------------- -->
+            <!-- ------------------------level Checkbox------------------------------- -->
+            <h5 class="section-label mb-1">
+              <span class="align-middle">Level</span>
+            </h5>
+            <div class="custom-control custom-checkbox mb-1">
+              <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+                (change)="toggleCheckboxAll($event)" />
+
+              <label class="custom-control-label" for="select-all">Freahman</label>
+
+            </div>
+            <div class="custom-control custom-checkbox mb-1">
+              <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+                (change)="toggleCheckboxAll($event)" />
+
+              <label class="custom-control-label" for="select-all">Junior Varsity</label>
+
+            </div>
+            <div class="custom-control custom-checkbox mb-1">
+              <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+                (change)="toggleCheckboxAll($event)" />
+
+
+              <label class="custom-control-label" for="select-all">Varsity</label>
+            </div>
+
+            <!-- ------------------------/Leve Checkbox------------------------------- -->
+            <!-- ------------------------/program Checkbox------------------------------- -->
+
+            <h5 class="section-label mb-1">
+              <span class="align-middle">Program</span>
+            </h5>
+
+            <div class="custom-control custom-checkbox mb-1">
+              <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+                (change)="toggleCheckboxAll($event)" />
+
+              <label class="custom-control-label" for="select-all">Woman's</label>
+
+            </div>
+            <div class="custom-control custom-checkbox mb-1">
+              <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+                (change)="toggleCheckboxAll($event)" />
+
+              <label class="custom-control-label" for="select-all"> Mans</label>
+
+            </div>
+            <!-- ------------------------/program Checkbox------------------------------- -->
+            <!-- ------------------------year Checkbox------------------------------- -->
+            <h5 class="section-label mb-1">
+              <span class="align-middle">Year</span>
+            </h5>
+
+            <div class="custom-control custom-checkbox mb-1">
+              <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+                (change)="toggleCheckboxAll($event)" />
+
+              <label class="custom-control-label" for="select-all">2020</label>
+
+            </div>
+            <div class="custom-control custom-checkbox mb-1">
+              <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+                (change)="toggleCheckboxAll($event)" />
+
+              <label class="custom-control-label" for="select-all"> 2019</label>
+
+            </div>
+            <!-- ------------------------/year Checkbox------------------------------- -->
           </div>
         </div>
-        <div class="card-body">
-          <div class="media">
-            <div class="avatar bg-light-primary rounded mr-1">
-              <div class="avatar-content">
-                <i data-feather="calendar" class="avatar-icon font-medium-3"></i>
+        <!-- <div class="mt-auto">
+
+          <img src="assets/images/pages/calendar-illustration.png" alt="Calendar illustration" class="img-fluid" />
+
+        </div> -->
+      </core-sidebar>
+
+      <!-- --------------------------------------------------------------------------------------------- -->
+
+      <div class="content-detached content-right">
+        <div class="content-body">
+          <!-- Coaches Head Section Starts -->
+          <section id="coaches-header">
+            <div class="row">
+
+
+              <div class="col-lg-4 col-md-6 col-12" *ngFor="let team of teamArray">
+                <div class="card card-developer-meetup">
+                  <div class="bg-light-primary rounded-top text-center">
+                    <a href="sportspip/teamsdetails?teamId={{team.id}}">
+                      <img src="{{ serverUri + team.teamThumbnail[0].url}}" alt="Logo" height="200" width="200" />
+                    </a>
+                  </div>
+
+                  <div class="card card-transaction">
+                    <div class="card-header">
+                      <div class="my-auto">
+                        <h4 class="card-title mb-25">{{team.teamName}}</h4>
+                      </div>
+                      <div ngbDropdown>
+                        <button rippleEffect class="btn btn-sm border-0 p-0 hide-arrow" ngbDropdownToggle type="button"
+                          id="dropdownItem4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i data-feather="more-vertical" class="font-medium-3 cursor-pointer"></i>
+                        </button>
+                        <div ngbDropdownMenu class="dropdown-menu-right" aria-labelledby="dropdownItem4">
+
+                          <a ngbDropdownItem
+                            href="javascript:void(0);" href="sportspip/update-team?teamId={{team.id}}">
+                            <i data-feather="edit-2" class="mr-50" ></i>
+                            Edit
+                          </a>
+                          <a ngbDropdownItem href="javascript:void(0);" [swal]="SweetAlertConfirmColor"
+                          (click)="deleteUser(team)">
+                            <i data-feather="trash" class="mr-50"></i>
+                            Delete
+                          </a>
+                          <swal #SweetAlertConfirmColor (open)="ConfirmColorOpen()"></swal>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <div class="media">
+                        <div class="avatar bg-light-primary rounded mr-1">
+                          <div class="avatar-content">
+                            <i data-feather="calendar" class="avatar-icon font-medium-3"></i>
+                          </div>
+                        </div>
+                        <div class="media-body">
+                          <h6 class="mb-0">{{team.date}}</h6>
+                          <small>10:AM to 6:PM</small>
+                        </div>
+                      </div>
+                      <div class="media">
+                        <div class="avatar bg-light-primary rounded mr-1">
+                          <div class="avatar-content">
+                            <i data-feather="map-pin" class="avatar-icon font-medium-3"></i>
+                          </div>
+                        </div>
+                        <div class="media-body">
+                          <h6 class="mb-0">Central Park</h6>
+                          <small>Manhattan, New york City</small>
+                        </div>
+                      </div>
+                      <div class="avatar-group">
+                        <div placement="bottom" container="body" ngbTooltip="Billy Hopkins" class="avatar pull-up">
+                          <img src="assets/images/portrait/small/avatar-s-9.jpg" alt="Avatar" width="33" height="33" />
+                        </div>
+                        <div placement="bottom" container="body" ngbTooltip="Amy Carson" class="avatar pull-up">
+                          <img src="assets/images/portrait/small/avatar-s-6.jpg" alt="Avatar" width="33" height="33" />
+                        </div>
+                        <div placement="bottom" container="body" ngbTooltip="Brandon Miles" class="avatar pull-up">
+                          <img src="assets/images/portrait/small/avatar-s-8.jpg" alt="Avatar" width="33" height="33" />
+                        </div>
+                        <div placement="bottom" container="body" ngbTooltip="Daisy Weber" class="avatar pull-up">
+                          <img src="assets/images/portrait/small/avatar-s-7.jpg" alt="Avatar" width="33" height="33" />
+                        </div>
+                        <div placement="bottom" container="body" ngbTooltip="Jenny Looper" class="avatar pull-up">
+                          <img src="assets/images/portrait/small/avatar-s-20.jpg" alt="Avatar" width="33" height="33" />
+                        </div>
+                        <h6 class="align-self-center cursor-pointer ml-50 mb-0">+10</h6>
+                      </div>
+                    </div>
+                    <a *ngIf="isWishlistOpen === true" href="javascript:void(0)" class="btn btn-light btn-wishlist"
+                      (click)="toggleWishlist(product)" rippleEffect>
+                      <i data-feather="x"></i>
+                      <span>Remove</span>
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="media-body">
-              <h6 class="mb-0">{{team.date}}</h6>
-              <small>10:AM to 6:PM</small>
-            </div>
-          </div>
-          <div class="media">
-            <div class="avatar bg-light-primary rounded mr-1">
-              <div class="avatar-content">
-                <i data-feather="map-pin" class="avatar-icon font-medium-3"></i>
+
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-12">
+                <div class="addButtonBottom">
+                  <button type="button" [routerLink]="['/sportspip/add-team']" [routerLinkActive]="'is-active'"
+                    class="btn btn-relief-primary" rippleEffect>Add New Team</button>
+                </div>
               </div>
             </div>
-            <div class="media-body">
-              <h6 class="mb-0">Central Park</h6>
-              <small>Manhattan, New york City</small>
-            </div>
-          </div>
-          <div class="avatar-group">
-            <div placement="bottom" container="body" ngbTooltip="Billy Hopkins" class="avatar pull-up">
-              <img src="assets/images/portrait/small/avatar-s-9.jpg" alt="Avatar" width="33" height="33" />
-            </div>
-            <div placement="bottom" container="body" ngbTooltip="Amy Carson" class="avatar pull-up">
-              <img src="assets/images/portrait/small/avatar-s-6.jpg" alt="Avatar" width="33" height="33" />
-            </div>
-            <div placement="bottom" container="body" ngbTooltip="Brandon Miles" class="avatar pull-up">
-              <img src="assets/images/portrait/small/avatar-s-8.jpg" alt="Avatar" width="33" height="33" />
-            </div>
-            <div placement="bottom" container="body" ngbTooltip="Daisy Weber" class="avatar pull-up">
-              <img src="assets/images/portrait/small/avatar-s-7.jpg" alt="Avatar" width="33" height="33" />
-            </div>
-            <div placement="bottom" container="body" ngbTooltip="Jenny Looper" class="avatar pull-up">
-              <img src="assets/images/portrait/small/avatar-s-20.jpg" alt="Avatar" width="33" height="33" />
-            </div>
-            <h6 class="align-self-center cursor-pointer ml-50 mb-0">+10</h6>
-          </div>
+          </section>
         </div>
-        <a *ngIf="isWishlistOpen === true" href="javascript:void(0)" class="btn btn-light btn-wishlist"
-          (click)="toggleWishlist(product)" rippleEffect>
-          <i data-feather="x"></i>
-          <span>Remove</span>
-        </a>
       </div>
     </div>
   </div>
 </div>
-
-<div class="row">
-  <div class="col-lg-12 col-md-12 col-12">
-    <div class="addButtonBottom">
-      <button type="button" [routerLink]="['/sportspip/add-team']" [routerLinkActive]="'is-active'"
-        class="btn btn-relief-primary" rippleEffect>Add New Team</button>
-    </div>
-  </div>
-</div>
-

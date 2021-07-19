@@ -88,6 +88,7 @@ export class CalendarService implements Resolve<any> {
    * @param calendars
    */
   calendarUpdate(calendars) {
+    debugger
     const calendarsChecked = calendars.filter(calendar => {
       return calendar.checked === true;
     });
@@ -123,7 +124,7 @@ export class CalendarService implements Resolve<any> {
    */
   addEvent(eventForm) {
     const newEvent = new EventRef();
-    newEvent.url = eventForm.url;
+    //newEvent.url = eventForm.url;
     newEvent.title = eventForm.title;
     newEvent.start = eventForm.start;
     newEvent.end = eventForm.end;

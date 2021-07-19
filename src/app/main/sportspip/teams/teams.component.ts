@@ -26,8 +26,11 @@ export class TeamsComponent implements OnInit {
 
  // serverUri:string = "http://192.168.10.50:1337";
 
+ public checkAll = true;
   teamsCollection:ITeams[];
   allTeam:any;
+  public contentHeader: object;
+
   isEdit=false;
   teamObj={
     name:'',
@@ -47,11 +50,55 @@ export class TeamsComponent implements OnInit {
     private _teamsService:TeamsService,
     private activatedRoute: ActivatedRoute
   ) {}
-  teamId="0"
+
+  deleteUser(team:any){
+    this._teamsService.deleteTeam(team).subscribe(()=>{
+      
+    })
+  }
+
+    //--------------------------subscribed data for for checkbox-----------------------------//
+
+    gameFilter: any = [];
+
+    teamId=0; 
+    dataFilter() {
+      this._teamsService.filterData().subscribe((data: any[]) => {
+        console.log(data);
+        this.gameFilter = data;
+        console.log(this.gameFilter);
+      });
+    }
+  
   ngOnInit(): void {
-    this._teamsService.getTeams().subscribe(data=> this.teamsCollection =data);
+    //this._teamsService.getTeams().subscribe(data=> this.teamsCollection =data);
 
-
+    // content header
+    this.contentHeader = {
+      headerTitle: 'Teams',
+      actionButton: true,
+      breadcrumb: {
+        type: '',
+        links: [
+          {
+            name: 'Home',
+            isLink: true,
+            link: '/'
+          },
+          // {
+          //   name: '',
+          //   isLink: true,
+          //   link: '/'
+          // },
+          {
+            name: 'Teams',
+            isLink: false
+          }
+        ]
+      }
+    };
+    this.dataFilter();
+    this.filterplayer();
     
     this.activatedRoute.params.subscribe(data => {
       this.teamId = data.id; // Capture the ID which i want delete product
@@ -64,6 +111,137 @@ export class TeamsComponent implements OnInit {
     
 
     
+  }
+
+
+
+
+        //----------------------subscribed coach data-----------------------------//
+        teamArray:ITeams[]
+        arrays: ITeams[];
+      
+        filterplayer() {
+          this._teamsService.getTeams().subscribe((data: any[]) => {
+            console.log(data);
+            this.teamArray= data;
+            this.arrays = this.teamArray;
+            console.log(this.teamArray)
+          });
+        }
+
+   //--------------------------toggle checkbox logic--------------------------------//
+   toggleCheckboxAll(event) {
+
+    if (event.target.checked) {
+
+      this.tempArray = this.arrays;
+
+      this.teamArray= [];
+
+      this.newArray.push(this.tempArray);
+
+      for (let i = 0; i < this.newArray.length; i++) {
+        var firstArray = this.newArray[i];
+        console.log(firstArray)
+        
+        for (let i = 0; i < firstArray.length; i++) {
+          var obj = firstArray[i];
+          this.teamArray.push(obj);
+          console.log(this.teamArray)
+        }
+      }
+    }
+    else {
+      this.teamArray= [];
+      this.tempArray = this.teamArray
+
+      this.newArray = [];
+      this.teamArray= [];
+      this.newArray.push(this.tempArray);
+      for (let i = 0; i < this.newArray.length; i++) {
+        var firstArray = this.newArray[i];
+        console.log(firstArray)
+        for (let i = 0; i < firstArray.length; i++) {
+          var obj = firstArray[i];
+          this.teamArray.push(obj);
+          console.log(this.teamArray);
+        }
+      }
+    }
+
+
+    ///-----------------toggle checkbox------------//
+
+    this.checkAll = event.target.checked;
+
+    if (this.checkAll) {
+      this.gameFilter.map(res => {
+        res.checked = true;
+      });
+    } else {
+      this.gameFilter.map(res => {
+        res.checked = false;
+        this.teamArray= [];
+
+      });
+    }
+
+  }
+
+
+  //---------------------logic for filter coach --------------------------//
+  tempArray: any = [];
+  newArray: any = [];
+
+  onChange(event: any, id) {
+
+    if (event.target.checked) {
+      this.tempArray = this.arrays.filter((e: any) => e.filter == event.target.value);
+      this.teamArray= [];
+
+      this.newArray.push(this.tempArray);
+
+      for (let i = 0; i < this.newArray.length; i++) {
+        var firstArray = this.newArray[i];
+        console.log(firstArray)
+        for (let i = 0; i < firstArray.length; i++) {
+          var obj = firstArray[i];
+          this.teamArray.push(obj);
+          console.log(this.teamArray)
+        }
+      }
+    }
+
+    else {
+
+      this.tempArray = this.teamArray.filter((e: any) => e.filter != event.target.value);
+      this.newArray = [];
+      this.teamArray= [];
+      this.newArray.push(this.tempArray);
+      for (let i = 0; i < this.newArray.length; i++) {
+        var firstArray = this.newArray[i];
+        console.log(firstArray)
+        for (let i = 0; i < firstArray.length; i++) {
+          var obj = firstArray[i];
+          this.teamArray.push(obj);
+          console.log(this.teamArray);
+        }
+      }
+    }
+    const index = this.gameFilter.findIndex(r => {
+      if (r.id === id) {
+        return id;
+      }
+    });
+    this.gameFilter[index].checked = event.target.checked;
+
+    this.checkAll = this.allChecked();
+  }
+
+  //-----------------checkbox select all------------------------//
+  allChecked() {
+    return this.gameFilter.every(v => v.checked === true);
+
   }
  
 }

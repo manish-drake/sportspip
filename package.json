@@ -1,6 +1,7 @@
 {
   "name": "vuexy-admin-template",
   "version": "6.6.0",
+  
   "scripts": {
     "ng": "ng",
     "start": "ng serve --open",

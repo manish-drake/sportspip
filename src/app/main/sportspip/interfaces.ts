@@ -18,15 +18,19 @@ export interface IFootball {
 }
 export interface ITeams {
     id: string,
-    date: string,
-    teamName: string,
-    teamThumbnail: any,
-    contact: string,
-    status: string,
-    country: string,
-    role: string,
-    schoolName: string,
-    userName: string,
+    date?: string,
+    teamName?: string,
+    teamThumbnail?: any,
+    contact?: string,
+    status?: string,
+    country?: string,
+    role?: string,
+    schoolName?: string,
+    userName?: string,
+    school?:string,
+    name?:string,
+    about?:string,
+    sport?:string
 }
 export interface ICoaches {
     id: string,
