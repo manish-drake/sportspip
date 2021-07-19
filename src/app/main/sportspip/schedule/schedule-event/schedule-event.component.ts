@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
 
 import { EventRef } from '../schedule.model';
@@ -16,6 +16,10 @@ export class ScheduleEventComponent implements OnInit {
   //  Decorator
   @ViewChild('startDatePicker') startDatePicker;
   @ViewChild('endDatePicker') endDatePicker;
+
+  dropdownList = [];
+  selectedItems = [];
+  dropdownSettings:IDropdownSettings;
 
   // Public
   public event: EventRef;
@@ -35,6 +39,7 @@ export class ScheduleEventComponent implements OnInit {
     { name: 'Sandy Vega', avatar: 'assets/images/avatars/9-small.png' },
     { name: 'Cheryl May', avatar: 'assets/images/avatars/11-small.png' }
   ];
+  
   public startDateOptions = {
     altInput: true,
     mode: 'single',
@@ -131,5 +136,24 @@ export class ScheduleEventComponent implements OnInit {
         this.isDataEmpty = true;
       }
     });
+
+    this.dropdownList = [
+      { item_id: 1, item_text: 'Mumbai' },
+      { item_id: 2, item_text: 'Bangaluru' },
+      { item_id: 3, item_text: 'Pune' },
+      { item_id: 4, item_text: 'Navsari' },
+      { item_id: 5, item_text: 'New Delhi' }
+    ];
+    this.selectedItems = [
+      { item_id: 3, item_text: 'Pune' },
+      { item_id: 4, item_text: 'Navsari' }
+    ];
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      itemsShowLimit: 3,
+      allowSearchFilter: true
+    };
   }
 }
