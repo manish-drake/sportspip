@@ -28,7 +28,6 @@ export class PlayerComponent implements OnInit {
      // content header
      this.contentHeader = {
       headerTitle: 'Players',
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [

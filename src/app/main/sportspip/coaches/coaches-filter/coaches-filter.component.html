@@ -1,4 +1,4 @@
-<div class="sidebar-wrapper">
+<!-- <div class="sidebar-wrapper">
 
   <div class="card-body pb-0">
     <h5 class="section-label mb-1">
@@ -30,19 +30,268 @@
            
         <label class="custom-control-label" 
         for="checkboxarrays-{{ checkboxarrays.id }}"
-       >{{ checkboxarrays.filter }}</label>
+       >{{ checkboxarrays.filter }}</label> -->
         <!--  -->
-      </div>
+      <!-- </div>
 
     </div>
 
-  </div>
+  </div> -->
 
 <!-- </div>
   </div>
 </div> -->
-<div class="mt-auto">
+<!-- <div class="mt-auto">
   <img src="assets/images/pages/calendar-illustration.png" alt="Calendar illustration" class="img-fluid" />
-</div>
+</div> -->
 <!-- </div>
 </div> -->
+
+<!-- ---------------------------------------------------------------------------------------- -->
+
+<!-- Ecommerce Sidebar Starts -->
+<div class="card">
+  <div class="card-body">
+<div class="row mt-1">
+  <div class="col-sm-12">
+    <h6 class="filter-heading d-none d-lg-block">Filters</h6>
+  </div>
+</div>
+
+
+     <!-- ------------------------School Checkbox------------------------------- -->
+     <h5 class="section-label mb-1">
+      <span class="align-middle">School</span>
+    </h5>
+    <div class="custom-control custom-checkbox mb-1">
+      <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+        (change)="toggleCheckboxAll($event)" />
+
+
+      <label class="custom-control-label" for="select-all">Home</label>
+    </div>
+    <div class="custom-control custom-checkbox mb-1">
+      <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+        (change)="toggleCheckboxAll($event)" />
+
+
+      <label class="custom-control-label" for="select-all">Visitors</label>
+    </div>
+    <!-- ------------------------School Checkbox------------------------------- -->
+    <!-- ------------------------Sports Checkbox------------------------------- -->
+    <h5 class="section-label mb-1">
+      <span class="align-middle">Sports</span>
+    </h5>
+
+    <div class="coaches-filter">
+
+      <div class="custom-control  custom-checkbox mb-1 custom-control-{{ checkboxarrays.color }}"
+        *ngFor="let checkboxarrays of gameFilter">
+
+        <input (change)="onChange($event,checkboxarrays.id)" class="custom-control-input input-filter"
+          [checked]="checkboxarrays.checked" type="checkbox" id="checkboxarrays-{{ checkboxarrays.id }}"
+          value={{checkboxarrays.filter}} />
+
+        <label class="custom-control-label" for="checkboxarrays-{{ checkboxarrays.id }}">{{
+          checkboxarrays.filter }}</label>
+      </div>
+
+    </div>
+    <!-- ------------------------/Sports Checkbox------------------------------- -->
+    <!-- ------------------------level Checkbox------------------------------- -->
+    <h5 class="section-label mb-1">
+      <span class="align-middle">Level</span>
+    </h5>
+    <div class="custom-control custom-checkbox mb-1">
+      <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+        (change)="toggleCheckboxAll($event)" />
+
+      <label class="custom-control-label" for="select-all">Freahman</label>
+
+    </div>
+    <div class="custom-control custom-checkbox mb-1">
+      <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+        (change)="toggleCheckboxAll($event)" />
+
+      <label class="custom-control-label" for="select-all">Junior Varsity</label>
+
+    </div>
+    <div class="custom-control custom-checkbox mb-1">
+      <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+        (change)="toggleCheckboxAll($event)" />
+
+
+      <label class="custom-control-label" for="select-all">Varsity</label>
+    </div>
+
+    <!-- ------------------------/Leve Checkbox------------------------------- -->
+    <!-- ------------------------/program Checkbox------------------------------- -->
+
+    <h5 class="section-label mb-1">
+      <span class="align-middle">Program</span>
+    </h5>
+
+    <div class="custom-control custom-checkbox mb-1">
+      <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+        (change)="toggleCheckboxAll($event)" />
+
+      <label class="custom-control-label" for="select-all">Woman's</label>
+
+    </div>
+    <div class="custom-control custom-checkbox mb-1">
+      <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+        (change)="toggleCheckboxAll($event)" />
+
+      <label class="custom-control-label" for="select-all"> Mans</label>
+
+    </div>
+    <!-- ------------------------/program Checkbox------------------------------- -->
+    <!-- ------------------------year Checkbox------------------------------- -->
+    <h5 class="section-label mb-1">
+      <span class="align-middle">Year</span>
+    </h5>
+
+    <div class="custom-control custom-checkbox mb-1">
+      <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+        (change)="toggleCheckboxAll($event)" />
+
+      <label class="custom-control-label" for="select-all">2020</label>
+
+    </div>
+    <div class="custom-control custom-checkbox mb-1">
+      <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+        (change)="toggleCheckboxAll($event)" />
+
+      <label class="custom-control-label" for="select-all"> 2019</label>
+
+    </div>
+    <!-- ------------------------/year Checkbox------------------------------- -->
+    <!-- Price Filter starts -->
+    <!-- <div class="multi-range-price">
+      <h6 class="filter-title mt-0">Multi Range</h6>
+      <ul class="list-unstyled price-range" id="price-range">
+        <li>
+          <div class="custom-control custom-radio">
+            <input type="radio" id="priceAll" name="price-range" class="custom-control-input" checked />
+            <label class="custom-control-label" for="priceAll">All</label>
+          </div>
+        </li>
+        <li>
+          <div class="custom-control custom-radio">
+            <input type="radio" id="priceRange1" name="price-range" class="custom-control-input" />
+            <label class="custom-control-label" for="priceRange1">&lt;=$10</label>
+          </div>
+        </li>
+        <li>
+          <div class="custom-control custom-radio">
+            <input type="radio" id="priceRange2" name="price-range" class="custom-control-input" />
+            <label class="custom-control-label" for="priceRange2">$10 - $100</label>
+          </div>
+        </li>
+        <li>
+          <div class="custom-control custom-radio">
+            <input type="radio" id="priceARange3" name="price-range" class="custom-control-input" />
+            <label class="custom-control-label" for="priceARange3">$100 - $500</label>
+          </div>
+        </li>
+        <li>
+          <div class="custom-control custom-radio">
+            <input type="radio" id="priceRange4" name="price-range" class="custom-control-input" />
+            <label class="custom-control-label" for="priceRange4">&gt;= $500</label>
+          </div>
+        </li>
+      </ul>
+    </div>
+  ] -->
+    <!-- Categories Ends -->
+
+    <!-- Brands starts -->
+    <!-- <div class="brands">
+      <h6 class="filter-title">Brands</h6>
+      <ul class="list-unstyled brand-list">
+        <li>
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="productBrand1" />
+            <label class="custom-control-label" for="productBrand1">Insignia™</label>
+          </div>
+          <span>746</span>
+        </li>
+        <li>
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="productBrand2" checked />
+            <label class="custom-control-label" for="productBrand2">Samsung</label>
+          </div>
+          <span>633</span>
+        </li>
+        <li>
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="productBrand3" />
+            <label class="custom-control-label" for="productBrand3">Metra</label>
+          </div>
+          <span>591</span>
+        </li>
+        <li>
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="productBrand4" />
+            <label class="custom-control-label" for="productBrand4">HP</label>
+          </div>
+          <span>530</span>
+        </li>
+        <li>
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="productBrand5" checked />
+            <label class="custom-control-label" for="productBrand5">Apple</label>
+          </div>
+          <span>442</span>
+        </li>
+        <li>
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="productBrand6" />
+            <label class="custom-control-label" for="productBrand6">GE</label>
+          </div>
+          <span>394</span>
+        </li>
+        <li>
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="productBrand7" />
+            <label class="custom-control-label" for="productBrand7">Sony</label>
+          </div>
+          <span>350</span>
+        </li>
+        <li>
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="productBrand8" />
+            <label class="custom-control-label" for="productBrand8">Incipio</label>
+          </div>
+          <span>320</span>
+        </li>
+        <li>
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="productBrand9" />
+            <label class="custom-control-label" for="productBrand9">KitchenAid</label>
+          </div>
+          <span>318</span>
+        </li>
+        <li>
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="productBrand10" />
+            <label class="custom-control-label" for="productBrand10">Whirlpool</label>
+          </div>
+          <span>298</span>
+        </li>
+      </ul>
+    </div>
+     Brand ends -->
+
+    <!-- Rating starts -->
+    
+    <!-- Rating ends -->
+
+    <!-- Clear Filters Starts -->
+    <div id="clear-filters">
+      <button type="button" class="btn btn-block btn-primary" rippleEffect>Clear All Filters</button>
+    </div>
+    <!-- Clear Filters Ends -->
+  </div>
+</div>
+<!-- Ecommerce Sidebar Ends -->

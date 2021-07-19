@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { events } from '../interfaces';
 import { EventService } from './event.service';
+import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
+import { CoreConfigService } from '@core/services/config.service';
 
 
 @Component({
@@ -9,6 +11,7 @@ import { EventService } from './event.service';
   styleUrls: ['./events.component.scss']
 })
 export class EventsComponent implements OnInit {
+  public contentHeader: object;
 
   serverUri: string;
   eventData: events[];
@@ -21,6 +24,8 @@ export class EventsComponent implements OnInit {
       this.eventData = data;
       console.log(this.eventData)
     });
+
+
   }
 
 }

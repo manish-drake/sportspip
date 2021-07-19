@@ -16,7 +16,7 @@ export class RosterComponent implements OnInit {
 
   roster:IRoster[];
   rosters: any;
-
+  public contentHeader: object;
 
   ConfirmColorOpen() {
     Swal.fire({
@@ -73,6 +73,29 @@ export class RosterComponent implements OnInit {
       console.log(this.rosterId);
       
     });
+
+    this.contentHeader = {
+      headerTitle: 'Roster',
+      breadcrumb: {
+        type: '',
+        links: [
+          {
+            name: 'Home',
+            isLink: true,
+            link: '/'
+          },
+          // {
+          //   name: '',
+          //   isLink: true,
+          //   link: '/'
+          // },
+          {
+            name: 'Roster',
+            isLink: false
+          }
+        ]
+      }
+    };
 
     
     

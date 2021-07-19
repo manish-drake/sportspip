@@ -18,7 +18,7 @@ import { ScheduleComponent } from './schedule.component';
 import { ScheduleFilterComponent } from './schedule-filter/schedule-filter.component';
 import { ScheduleEventComponent } from './schedule-event/schedule-event.component';
 import { ScheduleService } from './schedule.service';
-
+// import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]);
 const routes: Routes = [
@@ -44,6 +44,8 @@ const routes: Routes = [
     Ng2FlatpickrModule,
     CoreCommonModule,
     CoreSidebarModule,
+    // NgMultiSelectDropDownModule.forRoot()
+
   ],
   providers: [ScheduleService]
 })

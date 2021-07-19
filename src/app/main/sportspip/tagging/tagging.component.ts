@@ -21,6 +21,7 @@ import { PlyrComponent } from 'ngx-plyr';
 })
 export class TaggingComponent implements OnInit {
 
+  public contentHeader: object;
 
   today = new Date();
   session: string = '05-03-2021 12:00:00';
@@ -109,7 +110,29 @@ export class TaggingComponent implements OnInit {
   }
   ngOnInit() {
 
-    
+    this.contentHeader = {
+      headerTitle: 'Tagging',
+      breadcrumb: {
+        type: '',
+        links: [
+          {
+            name: 'Home',
+            isLink: true,
+            link: '/'
+          },
+          // {
+          //   name: '',
+          //   isLink: true,
+          //   link: '/'
+          // },
+          {
+            name: 'Tagging',
+            isLink: false
+          }
+        ]
+      }
+    };
+
   }
 
   Play(): void {

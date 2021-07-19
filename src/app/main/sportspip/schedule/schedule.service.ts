@@ -132,14 +132,16 @@ export class ScheduleService implements Resolve<any>  {
    */
   addEvent(eventForm) {
     const newEvent = new EventRef();
-    newEvent.title = eventForm.title;
+    // newEvent.title = eventForm.title;
     newEvent.start = eventForm.start;
     newEvent.end = eventForm.end;
     newEvent.home = eventForm.home;
     newEvent.schedule = eventForm.selectlabel;
-    newEvent.extendedProps.location = eventForm.location;
-    newEvent.extendedProps.description = eventForm.description;
-    newEvent.extendedProps.addGuest = eventForm.addGuest;
+    newEvent.extendedProps.teams = eventForm.teams;
+    newEvent.extendedProps.level = eventForm.level;
+    newEvent.extendedProps.program = eventForm.program;
+    newEvent.extendedProps.year = eventForm.year;
+    newEvent.extendedProps.venue = eventForm.venue;
     this.currentEvent = newEvent;
     this.onCurrentEventChange.next(this.currentEvent);
     this.postNewEvent();
@@ -154,13 +156,15 @@ export class ScheduleService implements Resolve<any>  {
     const newEvent = new EventRef();
     newEvent.home = eventRef.event.home;
     newEvent.id = parseInt(eventRef.event.id);
-    newEvent.title = eventRef.event.title;
+    // newEvent.title = eventRef.event.title;
     newEvent.start = eventRef.event.start;
     newEvent.end = eventRef.event.end;
     newEvent.schedule = eventRef.event.extendedProps.schedule;
-    newEvent.extendedProps.location = eventRef.event.extendedProps.location;
-    newEvent.extendedProps.description = eventRef.event.extendedProps.description;
-    newEvent.extendedProps.addGuest = eventRef.event.extendedProps.addGuest;
+    newEvent.extendedProps.teams = eventRef.event.extendedProps.teams;
+    newEvent.extendedProps.level = eventRef.event.extendedProps.level;
+    newEvent.extendedProps.program = eventRef.event.extendedProps.program;
+    newEvent.extendedProps.year = eventRef.event.extendedProps.year;
+    newEvent.extendedProps.venue = eventRef.event.extendedProps.venue;
     this.currentEvent = newEvent;
     this.onCurrentEventChange.next(this.currentEvent);
   }

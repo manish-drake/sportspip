@@ -11,6 +11,9 @@ import { Ng2FlatpickrModule } from 'ng2-flatpickr';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
+import { SwiperConfigInterface, SwiperModule, SWIPER_CONFIG } from 'ngx-swiper-wrapper';
+import { CoreTouchspinModule } from '@core/components/core-touchspin/core-touchspin.module';
+import { NouisliderModule } from 'ng2-nouislider';
 
 const routes:Routes = [
 
@@ -24,14 +27,16 @@ const routes:Routes = [
 @NgModule({
   declarations: [CoachesComponent,CoachesFilterComponent],
   imports: [
-    CommonModule,RouterModule.forChild(routes),
-    CoreCommonModule,
-    CoreSidebarModule,
+    CommonModule,
+    RouterModule.forChild(routes),
+    SwiperModule,
     FormsModule,
-    Ng2FlatpickrModule,
-    NgSelectModule,
+    CoreTouchspinModule,
+    ContentHeaderModule,
+    CoreSidebarModule,
+    CoreCommonModule,
     NgbModule,
-    ContentHeaderModule
+    NouisliderModule
     
 
   ],

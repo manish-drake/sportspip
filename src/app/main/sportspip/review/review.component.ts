@@ -12,6 +12,7 @@ import { TaggingService } from '../tagging/tagging.service';
   encapsulation: ViewEncapsulation.None
 })
 export class ReviewComponent implements OnInit {
+  public contentHeader: object;
 
   forSession: string;
   deliveries: Delivery[];
@@ -120,8 +121,35 @@ export class ReviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.Play();
-  }
+
+    // this._playerService.getPlayer().subscribe(data=> this.player = data)
+ 
+      // content header
+      this.Play();
+      this.contentHeader = {
+       headerTitle: 'Review',
+       breadcrumb: {
+         type: '',
+         links: [
+           {
+             name: 'Home',
+             isLink: true,
+             link: '/'
+           },
+           // {
+           //   name: '',
+           //   isLink: true,
+           //   link: '/'
+           // },
+           {
+             name: 'Review',
+             isLink: false
+           }
+         ]
+       }
+     };
+     
+   }
 
   move(ts: string): void {
     console.log(ts)
