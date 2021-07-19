@@ -1,10 +1,9 @@
 export class EventRef {
     id? = undefined;
-    url: string;
     title: string = '';
     start: string;
     end: string;
-    allDay = false;
+    home = false;
     schedule: '';
     extendedProps = {
       location: '',

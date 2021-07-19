@@ -9,15 +9,21 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 import { AddCoachComponent } from './add-coach/add-coach.component';
+import { CoachUpdateComponent } from './coach-update/coach-update.component';
+import { CoachDeleteComponent } from './coach-delete/coach-delete.component';
 
 const routes:Routes = [
 
-  { path:'coachesfilter', component:CoachesfiltercoachesComponent},
-  {path:"add-coach", component:AddCoachComponent }
+  {path:'coachesfilter', component:CoachesfiltercoachesComponent},
+  {path:"add-coach", component:AddCoachComponent },
+  {path:"update-coach", component:AddCoachComponent },
+  {path:"delete-coach", component:AddCoachComponent }
+
+
 ];
 
 @NgModule({
-  declarations: [CoachesfiltercoachesComponent, AddCoachComponent],
+  declarations: [CoachesfiltercoachesComponent, AddCoachComponent, CoachUpdateComponent, CoachDeleteComponent],
   imports: [
     CommonModule, RouterModule.forChild(routes),
   NgbModule, CoreCommonModule,

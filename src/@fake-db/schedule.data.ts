@@ -6,7 +6,7 @@ export class ScheduleFakeData {
         title: 'Design Review',
         start: new Date(),
         end: new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
-        allDay: false,
+        home: false,
         calendar: 'Business',
         extendedProps: {}
       },
@@ -16,7 +16,7 @@ export class ScheduleFakeData {
         title: 'Meeting With Client',
         start: new Date(new Date().getFullYear(), new Date().getMonth() + 1, -11),
         end: new Date(new Date().getFullYear(), new Date().getMonth() + 1, -10),
-        allDay: true,
+        home: true,
         calendar: 'Business',
         extendedProps: {}
       },
@@ -24,7 +24,7 @@ export class ScheduleFakeData {
         id: 3,
         url: '',
         title: 'Family Trip',
-        allDay: true,
+        home: true,
         start: new Date(new Date().getFullYear(), new Date().getMonth() + 1, -9),
         end: new Date(new Date().getFullYear(), new Date().getMonth() + 1, -7),
         calendar: 'Holiday',
@@ -36,7 +36,7 @@ export class ScheduleFakeData {
         title: 'URL event',
         start: new Date(new Date().getFullYear(), new Date().getMonth() + 1, -11),
         end: new Date(new Date().getFullYear(), new Date().getMonth() + 1, -10),
-        allDay: true,
+        home: true,
         calendar: 'Personal',
         extendedProps: {}
       },
@@ -46,7 +46,7 @@ export class ScheduleFakeData {
         title: 'Dart Game?',
         start: new Date(new Date().getFullYear(), new Date().getMonth() + 1, -13),
         end: new Date(new Date().getFullYear(), new Date().getMonth() + 1, -12),
-        allDay: true,
+        home: true,
         calendar: 'ETC',
         extendedProps: {
           location: 'Chicago',
@@ -60,7 +60,7 @@ export class ScheduleFakeData {
         title: 'Meditation',
         start: new Date(new Date().getFullYear(), new Date().getMonth() + 1, -13),
         end: new Date(new Date().getFullYear(), new Date().getMonth() + 1, -12),
-        allDay: true,
+        home: true,
         calendar: 'Personal',
         extendedProps: {}
       },
@@ -70,7 +70,7 @@ export class ScheduleFakeData {
         title: 'Dinner',
         start: new Date(new Date().getFullYear(), new Date().getMonth() + 1, -13),
         end: new Date(new Date().getFullYear(), new Date().getMonth() + 1, -12),
-        allDay: true,
+        home: true,
         calendar: 'Family',
         extendedProps: {
           location: 'Moscow',
@@ -83,7 +83,7 @@ export class ScheduleFakeData {
         title: 'Product Review',
         start: new Date(new Date().getFullYear(), new Date().getMonth() + 1, -13),
         end: new Date(new Date().getFullYear(), new Date().getMonth() + 1, -12),
-        allDay: true,
+        home: true,
         calendar: 'Business',
         extendedProps: {
           location: 'Japan',
@@ -102,7 +102,7 @@ export class ScheduleFakeData {
           new Date().getMonth() === 11
             ? new Date(new Date().getFullYear() + 1, 0, 1)
             : new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1),
-        allDay: true,
+        home: true,
         calendar: 'Business',
         extendedProps: {}
       },
@@ -118,7 +118,7 @@ export class ScheduleFakeData {
           new Date().getMonth() === 11
             ? new Date(new Date().getFullYear() - 1, 0, 1)
             : new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1),
-        allDay: true,
+        home: true,
         calendar: 'Personal',
         extendedProps: {}
       }

@@ -132,11 +132,10 @@ export class ScheduleService implements Resolve<any>  {
    */
   addEvent(eventForm) {
     const newEvent = new EventRef();
-    newEvent.url = eventForm.url;
     newEvent.title = eventForm.title;
     newEvent.start = eventForm.start;
     newEvent.end = eventForm.end;
-    newEvent.allDay = eventForm.allDay;
+    newEvent.home = eventForm.home;
     newEvent.schedule = eventForm.selectlabel;
     newEvent.extendedProps.location = eventForm.location;
     newEvent.extendedProps.description = eventForm.description;
@@ -153,9 +152,8 @@ export class ScheduleService implements Resolve<any>  {
    */
   updateCurrentEvent(eventRef) {
     const newEvent = new EventRef();
-    newEvent.allDay = eventRef.event.allDay;
+    newEvent.home = eventRef.event.home;
     newEvent.id = parseInt(eventRef.event.id);
-    newEvent.url = eventRef.event.url;
     newEvent.title = eventRef.event.title;
     newEvent.start = eventRef.event.start;
     newEvent.end = eventRef.event.end;

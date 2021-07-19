@@ -10,7 +10,7 @@ import { IRoster } from 'app/main/sportspip/interfaces';
 })
 export class RosterService {
 
-  private _urlroster: string = "http://192.168.10.50:1337/rosters";
+  private _urlroster: string = "http://drake.in:1337/rosters";
   http: any;
 
   constructor(private _httpClient: HttpClient) { }
@@ -27,17 +27,17 @@ export class RosterService {
   //   return this._httpClient.delete<IRoster>(rosterUrl); // return an observable
   // }
   updateRoster(rosterId, rosterBody): Observable<IRoster> {
-    const rosterUrl = 'http://192.168.10.50:1337/rosters/' + rosterId;
+    const rosterUrl = 'http://drake.in:1337/rosters/' + rosterId;
     return this._httpClient.put<IRoster>(rosterUrl, rosterBody); // return an observable
   }
 
   addRoster(rosterId, rosterBody): Observable<IRoster> {
-    const rosterUrl = 'http://192.168.10.50:1337/rosters/';
+    const rosterUrl = 'http://drake.in:1337/rosters/';
     return this._httpClient.post<IRoster>(rosterUrl, rosterBody); // return an observable
   }
   
   viewRoster(productId): Observable<IRoster> {
-    const rosterUrl = 'http://192.168.10.50:1337/rosters/' + productId;
+    const rosterUrl = 'http://drake.in:1337/rosters/' + productId;
     return this._httpClient.get<IRoster>(rosterUrl); // return an observable
   }
 

@@ -19,8 +19,8 @@
               [items]="selectLabel"
               name="selectlabel"
               [(ngModel)]="event.schedule"
-              bindLabel="label"
-              bindValue="label"
+              bindLabel="sport"
+              bindValue="sport"
               required
               [class.error]="eventForm.submitted && formLabelRef.invalid"
               #formLabelRef="ngModel"
@@ -35,7 +35,7 @@
             </span>
           </div>
           <div class="form-group position-relative">
-            <label for="start-date" class="form-label">From</label>
+            <label for="start-date" class="form-label">Start Date/Time</label>
             <ng2-flatpickr
               [config]="startDateOptions"
               name="startDate"
@@ -45,8 +45,9 @@
               [class.error]="eventForm.submitted"
             ></ng2-flatpickr>
           </div>
+
           <div class="form-group position-relative">
-            <label for="end-date" class="form-label">Till</label>
+            <label for="end-date" class="form-label">End Date/Time</label>
             <ng2-flatpickr
               [config]="endDateOptions"
               name="endDate"
@@ -56,14 +57,15 @@
               [class.error]="eventForm.submitted"
             ></ng2-flatpickr>
           </div>
+          
           <div class="form-group">
             <div class="custom-control custom-switch">
               <input
                 type="checkbox"
-                class="custom-control-input allDay-switch"
+                class="custom-control-input home-switch"
                 id="customSwitch3"
-                [(ngModel)]="event.allDay"
-                name="allDay"
+                [(ngModel)]="event.home"
+                name="home"
               />
               <label class="custom-control-label" for="customSwitch3">Home</label>
             </div>
