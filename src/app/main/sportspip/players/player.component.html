@@ -1,111 +1,103 @@
 <app-content-header [contentHeader]="contentHeader"></app-content-header>
-<!-- <div class="row">
-    <div class="col-lg-4 col-md-6 col-12" *ngFor= "let players of player">
-        <div class="card card-developer-meetup">
-            <div class="bg-light-primary rounded-top text-center">
-                <a href="sportspip/player-details?playerId={{players.id}}">
-                <img src="{{ serverUri + players.playerImage[0].formats.thumbnail.url}}" alt="Meeting Pic" height="170" />
-                </a>
-            </div>
-          
-            <div class="card-body">
-                <div class="meetup-header d-flex align-items-center">
-                    <div class="my-auto">
-                        <h4 class="card-title mb-25">{{players.playerName}}</h4>
-                    </div>
-                </div>
-                <div class="media">
-                    <div class="avatar bg-light-primary rounded mr-1">
-                        <div class="avatar-content">
-                            <i data-feather="calendar" class="avatar-icon font-medium-3"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="media">
-                    <div class="avatar bg-light-primary rounded mr-1">
-                        <div class="avatar-content">
-                            <i data-feather="map-pin" class="avatar-icon font-medium-3"></i>
-                        </div>
-                    </div>
-                    <div class="media-body">
-                        <h6 class="mb-0">{{players.playerRole}}</h6>
-                        <small>Manhattan, New york City</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
+
+
 <div class="row">
-  <div class="col-lg-4 col-md-6 col-12" *ngFor="let players of player">
-    <a href="sportspip/player-details?playerId={{players.id}}">
-    <div class="card card-profile">
-      <img src="assets/images/banner/banner-12.jpg" class="img-fluid card-img-top" alt="Profile Cover Photo" />
-      <div class="card-body">
-        <div class="profile-image-wrapper">
-          <div class="profile-image">
-            <div class="avatar">            
-                <img src="{{ serverUri + players.playerImage[0].formats.thumbnail.url}}" alt="Profile Picture" />
-            </div>
-          </div>
-        </div>
-        <h3>{{players.playerName}}</h3>
-        <h6 class="text-muted">{{players.playerRole}}</h6>
-        <div class="badge badge-light-primary profile-badge">{{players.playerClass}}</div>
-        <h6 class="text-muted">{{players.playerHometown}}</h6>
-        <hr class="mb-2" />
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <h6 class="text-muted font-weight-bolder">PlayerHeight</h6>
-            <h3 class="mb-0">{{players.playerHeight}}</h3>
-          </div>
-          <div>
-            <h6 class="text-muted font-weight-bolder">PlayerWeight</h6>
-            <h3 class="mb-0">{{players.playerWeight}}</h3>
-          </div>
-          <!-- <div>
-            <h6 class="text-muted font-weight-bolder">Rank</h6>
-            <h3 class="mb-0">23</h3>
-          </div> -->
-        </div>
-      </div>
+  <div class="col-lg-12 col-md-12 col-12">
+    <div class="addButton">
+      <span><b> Add New Coach </b></span>
+      <button type="button" class="btn btn-icon btn-icon rounded-circle btn-primary"
+        [routerLink]="['/sportspip/add-coach']" [routerLinkActive]="'is-active'" rippleEffect>
+        <span [data-feather]="'plus'"></span></button>
     </div>
-  </a>
   </div>
 </div>
-<!--/ Profile Card -->
 
-<!-- Apply Job Card -->
-<!-- <div class="col-lg-4 col-md-6 col-12">
-    <div class="card card-apply-job">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-1">
-          <div class="media">
-            <div class="avatar mr-1">
-              <img src="assets/images/portrait/small/avatar-s-7.jpg" alt="Avatar" width="42" height="42" />
+<!-- Main Sidebar -->
+<div class="content-wrapper">
+  <div class="app-calendar">
+    <div class="row no-gutters">
+
+      <core-sidebar class="col app-calendar-sidebar flex-grow-0 overflow-hidden d-flex flex-column"
+        name="calendar-main-sidebar" overlayClass="body-content-overlay" collapsibleSidebar="bs-gt-lg">
+        <div class="sidebar-wrapper">
+
+          <div class="card-body pb-0">
+            <h5 class="section-label mb-1">
+              <span class="align-middle">Filter</span>
+            </h5>
+            <div class="custom-control custom-checkbox mb-1">
+              <input type="checkbox" class="custom-control-input select-all" id="select-all" [checked]="checkAll"
+                (change)="toggleCheckboxAll($event)" />
+
+              <label class="custom-control-label" for="select-all">View All</label>
             </div>
-            <div class="media-body">
-              <h5 class="mb-0">Mittie Evans</h5>
-              <small class="text-muted">Updated 12m ago</small>
+            <div class="coaches-filter">
+
+              <div class="custom-control  custom-checkbox mb-1 custom-control-{{ checkboxarrays.color }}"
+                *ngFor="let checkboxarrays of gameFilter">
+
+                <input (change)="onChange($event,checkboxarrays.id)" class="custom-control-input input-filter"
+                  [checked]="checkboxarrays.checked" type="checkbox" id="checkboxarrays-{{ checkboxarrays.id }}"
+                  value={{checkboxarrays.filter}} />
+
+                <label class="custom-control-label" for="checkboxarrays-{{ checkboxarrays.id }}">{{
+                  checkboxarrays.filter }}</label>
+              </div>
+
             </div>
           </div>
-          <div class="badge badge-pill badge-light-primary">Design</div>
         </div>
-        <h5 class="apply-job-title">Need a designer to form branding essentials for my business.</h5>
-        <p class="card-text mb-2">
-          Design high-quality designs, graphics, mock-ups and layouts for both new and existing web sites/ web
-          applications / mobile applications.
-        </p>
-        <div class="apply-job-package bg-light-primary rounded">
-          <div>
-            <sup class="text-body"><small>$</small></sup>
-            <h2 class="d-inline mr-25">9,800</h2>
-            <sub class="text-body"><small>/ month</small></sub>
-          </div>
-          <div class="badge badge-pill badge-light-primary">Full Time</div>
+        <!-- <div class="mt-auto">
+
+          <img src="assets/images/pages/calendar-illustration.png" alt="Calendar illustration" class="img-fluid" />
+
+        </div> -->
+      </core-sidebar>
+
+
+      <div class="content-detached content-right">
+        <div class="content-body">
+          <!-- Coaches Head Section Starts -->
+          <section id="coaches-header">
+            <div class="row">
+              <div class="col-lg-4 col-md-6 col-12" *ngFor="let players of coachesArray">
+                <a href="sportspip/player-details?playerId={{players.id}}">
+                  <div class="card card-profile">
+                    <img src="assets/images/banner/banner-12.jpg" class="img-fluid card-img-top"
+                      alt="Profile Cover Photo" />
+                    <div class="card-body">
+                      <div class="profile-image-wrapper">
+                        <div class="profile-image">
+                          <div class="avatar">
+                            <img src="{{ serverUri + players.playerImage[0].formats.thumbnail.url}}"
+                              alt="Profile Picture" />
+                          </div>
+                        </div>
+                      </div>
+                      <h3>{{players.playerName}}</h3>
+                      <h6 class="text-muted">{{players.playerRole}}</h6>
+                      <div class="badge badge-light-primary profile-badge">{{players.playerClass}}</div>
+                      <h6 class="text-muted">{{players.playerHometown}}</h6>
+                      <hr class="mb-2" />
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                          <h6 class="text-muted font-weight-bolder">PlayerHeight</h6>
+                          <h3 class="mb-0">{{players.playerHeight}}</h3>
+                        </div>
+                        <div>
+                          <h6 class="text-muted font-weight-bolder">PlayerWeight</h6>
+                          <h3 class="mb-0">{{players.playerWeight}}</h3>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </section>
         </div>
-        <button type="button" class="btn btn-primary btn-block" rippleEffect>Apply For This Job</button>
       </div>
     </div>
-  </div> -->
-<!--/ Apply Job Card -->
+  </div>
+</div>

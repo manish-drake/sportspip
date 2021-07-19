@@ -10,6 +10,7 @@ export class CalendarFakeData {
       calendar: 'Business',
       extendedProps: {}
     },
+    
     {
       id: 2,
       url: '',
@@ -121,7 +122,27 @@ export class CalendarFakeData {
       allDay: true,
       calendar: 'Personal',
       extendedProps: {}
-    }
+    },
+    {
+      id: 11,
+      url: '',
+      title: 'Golf Review',
+      start: new Date(),
+      end: new Date(new Date().getTime() + 24 * 60 * 60 * 1001),
+      allDay: false,
+      calendar: 'Golf',
+      extendedProps: {}
+    },
+    {
+      id: 12,
+      url: '',
+      title: 'Hockey Review',
+      start: new Date(),
+      end: new Date(new Date().getTime() + 24 * 60 * 60 * 1011),
+      allDay: false,
+      calendar: 'Hockey',
+      extendedProps: {}
+    },
   ];
   public static calendar = [
     { id: 1, filter: 'Football', color: 'primary', checked: true },

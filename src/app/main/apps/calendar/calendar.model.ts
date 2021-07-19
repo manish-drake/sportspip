@@ -1,6 +1,6 @@
 export class EventRef {
   id? = undefined;
-  url: string;
+  url?: string;
   title: string = '';
   start: string;
   end: string;

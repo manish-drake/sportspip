@@ -26,8 +26,8 @@ export class RosterService {
   //   const rosterUrl = 'http://192.168.10.50:1337/rosters/' + rostertId;
   //   return this._httpClient.delete<IRoster>(rosterUrl); // return an observable
   // }
-  updateRoster(rosterId, rosterBody): Observable<IRoster> {
-    const rosterUrl = 'http://drake.in:1337/rosters/' + rosterId;
+  updateRoster(id, rosterBody): Observable<IRoster> {
+    const rosterUrl = 'http://drake.in:1337/rosters/' + id;
     return this._httpClient.put<IRoster>(rosterUrl, rosterBody); // return an observable
   }
 
@@ -35,16 +35,16 @@ export class RosterService {
     const rosterUrl = 'http://drake.in:1337/rosters/';
     return this._httpClient.post<IRoster>(rosterUrl, rosterBody); // return an observable
   }
-  
-  viewRoster(productId): Observable<IRoster> {
-    const rosterUrl = 'http://drake.in:1337/rosters/' + productId;
+
+  viewRoster(id:any): Observable<IRoster> {
+    const rosterUrl = 'http://drake.in:1337/rosters/' + id;
     return this._httpClient.get<IRoster>(rosterUrl); // return an observable
   }
 
-  delete(id : number){
+  delete(id: number) {
     console.log(id);
-return this.http.delete(`${this._urlroster}/${id}}, options`)
+    return this.http.delete(`${this._urlroster}/${id}}, options`)
 
-}
+  }
 
 }

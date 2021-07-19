@@ -9,6 +9,7 @@ import { IPlayer } from '../interfaces';
 export class PlayerService {
 
   private _urlplayer : string = "http://drake.in:1337/players";
+  private _urlFilter : string = "http://drake.in:1337/Game-Filters";
 
   constructor(private _httpClient:HttpClient) { }
 
@@ -20,5 +21,8 @@ export class PlayerService {
     var uri: string = `${this._urlplayer}?id=${ id }`;
     console.log(uri);
     return this._httpClient.get<IPlayer>(uri);
+  }
+  filterData(){
+    return this._httpClient.get(this._urlFilter);
   }
 }

@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { PlayerComponent } from './player.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
+import { CoreSidebarModule } from '@core/components';
+import { CoreCommonModule } from '@core/common.module';
 
 
 
@@ -15,7 +17,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    ContentHeaderModule
+    ContentHeaderModule,CoreSidebarModule,CoreCommonModule
 
   ]
 })
